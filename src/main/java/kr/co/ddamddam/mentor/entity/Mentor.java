@@ -1,6 +1,7 @@
 package kr.co.ddamddam.mentor.entity;
 
 
+import kr.co.ddamddam.user.entity.User;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -8,8 +9,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Setter @Getter
-@ToString(exclude = {""})
-@EqualsAndHashCode(of = {"id"})
+@ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -37,7 +38,10 @@ public class Mentor {
     @Column(updatable = false)
     private LocalDateTime mentorDate; // 작성시간
 
+    @Column(columnDefinition = "Integer default 0")
     private int mentorLike;
 
-    private String memberIdx;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "memberIdx")
+    private User user;
 }
