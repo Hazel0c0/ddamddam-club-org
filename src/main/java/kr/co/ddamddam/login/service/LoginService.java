@@ -1,6 +1,6 @@
 package kr.co.ddamddam.login.service;
 
-import kr.co.ddamddam.login.repository.UserRepository;
+import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.DynamicInsert;

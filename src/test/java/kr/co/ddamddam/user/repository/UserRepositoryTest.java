@@ -1,7 +1,6 @@
 package kr.co.ddamddam.user.repository;
 
 import kr.co.ddamddam.user.entity.User;
-import kr.co.ddamddam.login.repository.UserRepository;
 import kr.co.ddamddam.user.entity.UserPosition;
 import kr.co.ddamddam.user.entity.UserRole;
 import org.junit.jupiter.api.BeforeEach;
