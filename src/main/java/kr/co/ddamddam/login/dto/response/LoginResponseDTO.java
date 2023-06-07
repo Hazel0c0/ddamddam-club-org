@@ -24,7 +24,7 @@ public class LoginResponseDTO {
     private LocalDate userBirth;
     private UserPosition userPosition;
     private int userCareer;
-    private int userPoint;
+    private Long userPoint;
     private String userProfile;
     private UserRole userRole;
     private String token; // 인증 토큰

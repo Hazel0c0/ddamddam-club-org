@@ -57,9 +57,9 @@ public class User {
     @Column(name = "user_career", nullable = false)
     private int userCareer; // n년
 
-    @Column(name = "user_point", length = 10)
+    @Column(name = "user_point")
     @Builder.Default // builder 를 사용했기 때문에
-    private int userPoint = 0;
+    private Long userPoint = 0L;
 
     @Column(name = "user_profile", length = 200)
     private String userProfile;
