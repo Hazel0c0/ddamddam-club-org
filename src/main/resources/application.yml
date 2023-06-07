@@ -5,15 +5,15 @@ server:
 spring:
   datasource:
     url: jdbc:mariadb://oslobdb.cqd7fh7vsssg.ap-northeast-2.rds.amazonaws.com:3306/ddamddam
-    username: teamjang
-    password: 1234
+    username: oslob
+    password: oslob5486
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     # show-sql: true  # ?? ??? ??? ???? ??
     # ??? ?? ? ?? ??? ?? ???? ??
     database-platform: org.hibernate.dialect.MariaDB106Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true # sql? ????? ??? ??
