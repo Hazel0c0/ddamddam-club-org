@@ -1,7 +1,9 @@
 package kr.co.ddamddam.login.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import kr.co.ddamddam.login.entity.User;
+import kr.co.ddamddam.user.entity.User;
+import kr.co.ddamddam.user.entity.UserPosition;
+import kr.co.ddamddam.user.entity.UserRole;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,10 +22,11 @@ public class LoginResponseDTO {
     private LocalDateTime userRegdate;
     @JsonFormat(pattern = "yyyy년 MM월 dd일")
     private LocalDate userBirth;
-    private String userPosition;
-    private String userCareer;
+    private UserPosition userPosition;
+    private int userCareer;
     private int userPoint;
     private String userProfile;
+    private UserRole userRole;
     private String token; // 인증 토큰
 
     // 엔터티를 DTO 로 변경
