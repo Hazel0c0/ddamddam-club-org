@@ -1,0 +1,30 @@
+server:
+  port: 8181
+
+
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/jpa
+    username: root
+    password: 1111
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    # show-sql: true  # ?? ??? ??? ???? ??
+    # ??? ?? ? ?? ??? ?? ???? ??
+    database-platform: org.hibernate.dialect.MariaDB106Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true # sql? ????? ??? ??
+    database: mysql # ?? ?? ??
+
+logging.level:
+  org.hibernate.SQL: debug
+
+# swagger setting
+springdoc:
+  swagger-ui:
+    path: /myapi.html
+
+
