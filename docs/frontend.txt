@@ -1,0 +1,8 @@
+# FrontEnd
+$ npm install react-icons //아이콘
+$ npm install classnames //클래스 add/remove 편리한거
+$ npm install node-sass // scss문법 사용
+$ npm install reactstrap bootstrap //bootStrap을 react로 사용
+$ npm install @mui/material @emotion/react @emotion/styled
+$ npm install @mui/icons-material
+$ npm install react-router-dom

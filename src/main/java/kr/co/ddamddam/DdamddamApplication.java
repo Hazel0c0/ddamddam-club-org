@@ -1,4 +1,4 @@
-package co.kr.ddamddam;
+package kr.co.ddamddam;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

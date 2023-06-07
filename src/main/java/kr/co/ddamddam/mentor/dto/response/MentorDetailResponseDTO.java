@@ -1,0 +1,31 @@
+package kr.co.ddamddam.mentor.dto.response;
+
+
+import kr.co.ddamddam.mentor.entity.Mentor;
+import lombok.*;
+
+@Setter
+@Getter
+@ToString
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class MentorDetailResponseDTO {
+
+    private String title;
+    private String content;
+    private String subject;
+    private String current;
+    private String nickName;
+    private String profile;
+
+    public MentorDetailResponseDTO(Mentor mentor){
+        this.title = mentor.getMentorTitle();
+        this.content = mentor.getMentorContent();
+        this.subject = mentor.getMentorSubject();
+        this.current = mentor.getMentorCurrent();
+//        this.nickName;
+    }
+
+}

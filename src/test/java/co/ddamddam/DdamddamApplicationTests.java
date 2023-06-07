@@ -1,4 +1,4 @@
-package co.kr.ddamddam;
+package co.ddamddam;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
