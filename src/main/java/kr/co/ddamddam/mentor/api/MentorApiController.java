@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/mentors")
+@RequestMapping("/api/mentors")
 public class MentorApiController {
 
     // 리소스 : 게시물 (Mentors)
@@ -28,10 +28,9 @@ public class MentorApiController {
     @GetMapping
     public ResponseEntity<?> list(PageDTO pageDTO){
 
-        log.info("/api/v1/posts?page{}&size={}",pageDTO.getPage(),pageDTO.getSize());
+        log.info("/api/mentors?page{}&size={}&sort={}",pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort());
 
-        MentorListResponseDTO dto = mentorService.getMentors(pageDTO);
-
+        MentorListResponseDTO dto = mentorService.getList(pageDTO);
         return ResponseEntity.ok().body(dto);
     }
 
