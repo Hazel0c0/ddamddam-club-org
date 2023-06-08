@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MentorInsertRequestDTO {
+public class MentorWriteRequestDTO {
 
 
     @NotBlank
