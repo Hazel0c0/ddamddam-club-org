@@ -20,7 +20,7 @@ public class PageResponseDTO<T> {
     private int totalCount;
 
     // 한페이지에 배치할 페이지 수 (1~9 // 10~18)
-    private static final int PAGE_COUNT = 10;
+    private static final int PAGE_COUNT = 9;
 
     public PageResponseDTO(Page<T> pageData) {
         this.totalCount = (int) pageData.getTotalElements();

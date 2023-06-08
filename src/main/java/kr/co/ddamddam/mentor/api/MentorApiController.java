@@ -2,6 +2,7 @@ package kr.co.ddamddam.mentor.api;
 
 
 import kr.co.ddamddam.mentor.dto.page.PageDTO;
+import kr.co.ddamddam.mentor.dto.request.MentorWriteRequestDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorDetailResponseDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorListResponseDTO;
 import kr.co.ddamddam.mentor.service.MentorService;
@@ -9,9 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -45,7 +45,26 @@ public class MentorApiController {
         return ResponseEntity.ok().body(dto);
     }
 
- // 좋아요 기능 만들기
+    // 게시물 생성
+    @PostMapping
+    public ResponseEntity<?> write(@Validated @RequestBody MentorWriteRequestDTO dto, PageDTO pageDTO) {
+        // 요청 URL(POST) /api/mentors?page{}&size={}&sort={}
+        // payload{
+        //  "title": "게시글 제목",
+        //  "content": "게시글 내용",
+        //  "subject": "게시글 주제",
+        //  "current": "현재 상태"
+        //}
+        log.info("/api/mentors?page{}&size={}&sort={} POST!! - payload {}"
+                ,pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort(), dto);
+        // 로그인한 토큰방식으로 user_idx값 받아와 서비스 파라미터에 넣기
+        MentorListResponseDTO responseDTO = mentorService.write(dto, pageDTO);
+
+        return ResponseEntity.ok().body(responseDTO);
+    }
+
+
+    // 좋아요 기능 만들기(멘토에 대한 좋아요인지 게시판에 대한 좋아요인지)
 
 
 }

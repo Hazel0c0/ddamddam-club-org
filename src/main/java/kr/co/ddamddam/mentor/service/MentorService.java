@@ -2,6 +2,7 @@ package kr.co.ddamddam.mentor.service;
 
 import kr.co.ddamddam.mentor.dto.page.PageDTO;
 import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
+import kr.co.ddamddam.mentor.dto.request.MentorWriteRequestDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorDetailResponseDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorListResponseDTO;
 import kr.co.ddamddam.mentor.entity.Mentor;
@@ -9,7 +10,6 @@ import kr.co.ddamddam.mentor.repository.MentorRepository;
 import kr.co.ddamddam.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.*;
 
@@ -85,5 +84,12 @@ public class MentorService {
             dto.setNickName(user.getUserNickname());
         }
         return dto;
+    }
+
+    // 게시글 작성
+    // user_idx값을 받아와 save하기전에 mentor테이블 user_idx값에 넣기[User]
+    public MentorListResponseDTO write(MentorWriteRequestDTO dto, PageDTO pageDTO) {
+        mentorRepository.save(dto.toEntity());
+        return getList(pageDTO);
     }
 }
