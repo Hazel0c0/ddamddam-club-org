@@ -71,10 +71,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-//    @OneToMany
-//    @JoinColumn(name = "mentor_idx")
-//    @Builder.Default
-//    private List<Mentor> mentor = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Mentor> mentor = new ArrayList<>();
 
 }
 
