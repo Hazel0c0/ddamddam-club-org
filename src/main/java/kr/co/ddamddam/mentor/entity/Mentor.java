@@ -42,6 +42,6 @@ public class Mentor {
     private int mentorLike;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberIdx")
+    @JoinColumn(name = "user_idx")
     private User user;
 }

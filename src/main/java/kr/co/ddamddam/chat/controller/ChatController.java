@@ -29,7 +29,7 @@ public class ChatController {
             @PathVariable("roomId") Long roomId,
             @RequestBody ChatMessageRequestDTO requestDTO
     ) {
-        ChatMessageResponseDTO responseDTO = chatService.sendMessage(roomId, requestDTO);
+        ChatMessageResponseDTO responseDTO = chatService.sendM123456essage(roomId, requestDTO);
         return ResponseEntity.ok(responseDTO);
     }
 
