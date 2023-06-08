@@ -9,6 +9,7 @@ import kr.co.ddamddam.mentor.repository.MentorRepository;
 import kr.co.ddamddam.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -49,6 +50,7 @@ public class MentorService {
             dto.setContent(mentor.getMentorContent());
             dto.setSubject(mentor.getMentorSubject());
             dto.setCurrent(mentor.getMentorCurrent());
+            dto.setDate(mentor.getMentorDate());
 
             User user = mentor.getUser();
             if (user != null){
@@ -66,11 +68,22 @@ public class MentorService {
     }
 
     // 멘토 게시판 상세 조회
-    public MentorDetailResponseDTO getDetail(int mentorIdx) {
+    public MentorDetailResponseDTO getDetail(Long mentorIdx) {
 
         Optional<Mentor> mentorOptional = mentorRepository.findById(mentorIdx);
         Mentor mentor = mentorOptional.get();
+        MentorDetailResponseDTO dto = new MentorDetailResponseDTO();
+        dto.setTitle(mentor.getMentorTitle());
+        dto.setContent(mentor.getMentorContent());
+        dto.setSubject(mentor.getMentorSubject());
+        dto.setCurrent(mentor.getMentorCurrent());
+        dto.setDate(mentor.getMentorDate());
 
-        return new MentorDetailResponseDTO(mentor);
+        User user = mentor.getUser();
+        if (user != null){
+            dto.setProfile(user.getUserProfile());
+            dto.setNickName(user.getUserNickname());
+        }
+        return dto;
     }
 }
