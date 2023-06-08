@@ -24,9 +24,8 @@ class UserRepositoryTest {
     @BeforeEach
     void insertUser() {
         User user = User.builder()
-                .userid("test")
-                .userPw("1234")
                 .userEmail("test@test.com")
+                .userPw("1234")
                 .userName("테스트")
                 .userNickname("테스트")
                 .userBirth(LocalDate.of(1990, 5, 15))
@@ -40,7 +39,7 @@ class UserRepositoryTest {
 
     @Test
     @DisplayName("유저 더미데이터 50명 생성")
-    void bulkInsert() {
+    void insertBulk() {
         //given
 
         for (int i = 1; i <= 50; i++) {
@@ -52,7 +51,6 @@ class UserRepositoryTest {
             UserPosition[] userPosition = {UserPosition.BACKEND, UserPosition.FRONTEND};
 
             User user = User.builder()
-                    .userid("test" + i)
                     .userPw("1234")
                     .userEmail("test" + i + "@test.com")
                     .userName("테스트" + i)
