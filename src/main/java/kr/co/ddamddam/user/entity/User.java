@@ -28,14 +28,11 @@ public class User {
     @Column(name = "user_idx")
     private Long userIdx; // 식별번호
 
-    @Column(name = "user_id", unique = true, nullable = false, length = 30)
-    private String userid;
+    @Column(name = "user_email", unique = true, nullable = false, length = 100)
+    private String userEmail;
 
     @Column(name = "user_password", nullable = false, length = 30)
     private String userPw;
-
-    @Column(name = "user_email", unique = true, nullable = false, length = 100)
-    private String userEmail;
 
     @Column(name = "user_name", nullable = false, length = 30)
     private String userName;
