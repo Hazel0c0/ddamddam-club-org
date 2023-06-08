@@ -20,25 +20,26 @@ public class Mentor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int mentorIdx;
+    @Column(name = "mentor_idx")
+    private Long mentorIdx;
 
-    @Column(nullable = false)
+    @Column(name = "mentor_title", nullable = false)
     private String mentorTitle;
 
-    @Column(nullable = false)
+    @Column(name = "mentor_content",nullable = false)
     private String mentorContent;
 
-    @Column(nullable = false)
+    @Column(name = "mentor_subject",nullable = false)
     private String mentorSubject;
 
-    @Column(nullable = false)
+    @Column(name = "mentor_current",nullable = false)
     private String mentorCurrent;
 
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(name = "mentor_date",updatable = false)
     private LocalDateTime mentorDate; // 작성시간
 
-    @Column(columnDefinition = "Integer default 0")
+    @Column(name = "mentor_like",columnDefinition = "Integer default 0")
     private int mentorLike;
 
     @ManyToOne(fetch = FetchType.LAZY)

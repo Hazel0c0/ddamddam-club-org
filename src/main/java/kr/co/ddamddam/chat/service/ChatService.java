@@ -11,22 +11,19 @@ import kr.co.ddamddam.chat.repository.ChatMessageRepository;
 import kr.co.ddamddam.chat.repository.ChatRoomRepository;
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class ChatService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final UserRepository userRepository;
 
-    public ChatService(ChatRoomRepository chatRoomRepository, ChatMessageRepository chatMessageRepository, UserRepository userRepository) {
-        this.chatRoomRepository = chatRoomRepository;
-        this.chatMessageRepository = chatMessageRepository;
-        this.userRepository = userRepository;
-    }
 
     public ChatRoomResponseDTO createChatRoom(ChatRoomRequestDTO requestDTO) {
         User sender = userRepository.findById(requestDTO.getSenderId())

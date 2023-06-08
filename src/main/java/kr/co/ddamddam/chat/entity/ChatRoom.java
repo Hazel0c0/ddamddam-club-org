@@ -20,15 +20,16 @@ public class ChatRoom {
     private Long roomId;
 
     @ManyToOne
-    @JoinColumn(name = "sender_id", referencedColumnName = "userIdx")
+    @JoinColumn(name = "sender_id", referencedColumnName = "user_idx")
     private User sender;
 
     @ManyToOne
-    @JoinColumn(name = "receiver_id", referencedColumnName = "userIdx")
+    @JoinColumn(name = "receiver_id", referencedColumnName = "user_idx")
     private User receiver;
 
     // 채팅 메시지와의 관계 설정
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
     private List<ChatMessage> messages = new ArrayList<>();
 }
 
