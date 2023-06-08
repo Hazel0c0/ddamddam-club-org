@@ -27,7 +27,7 @@ public class QnaService {
 
     private final UserRepository userRepository;
 
-//     QNA 게시글 페이징 조회
+    // QNA 게시글 페이징 조회
     public QnaListResponseDTO getList(PageDTO dto) {
 
         Pageable pageable = PageRequest.of(
@@ -38,7 +38,7 @@ public class QnaService {
 
         // 데이터베이스에서 QNA 게시글 목록 조회
         Page<Qna> qnas = qnaRepository.findAll(pageable);
-                
+
         // DTO 리스트로 꺼내기
         List<QnaDetailResponseDTO> detailList
                 = qnas.getContent().stream()
