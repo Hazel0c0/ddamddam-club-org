@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 /**
  * QNA 페이지에 일부 정보만 보여주는 DTO
  */
-@Setter
 @Getter
 @ToString
 @EqualsAndHashCode
@@ -18,9 +17,11 @@ import java.time.LocalDateTime;
 @Builder
 public class QnaListResponseDTO {
 
+    // TODO : Validated 처리
     private String boardTitle;
     private String boardContent;
     private String boardWriter;
+    private String boardProfile;
     private LocalDateTime boardDate;
     private QnaAdoption boardAdoption;
 

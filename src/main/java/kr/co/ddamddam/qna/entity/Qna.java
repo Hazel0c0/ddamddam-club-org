@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -44,4 +45,9 @@ public class Qna {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx") // FK
     private User user;
+
+    @OneToMany(mappedBy = "qna", orphanRemoval = true)
+    @JoinColumn(name = "qna_idx") // FK
+    private List<QnaHashtag> qnaHashtag;
+
 }

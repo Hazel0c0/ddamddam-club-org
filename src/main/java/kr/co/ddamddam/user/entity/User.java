@@ -1,5 +1,6 @@
 package kr.co.ddamddam.user.entity;
 
+import kr.co.ddamddam.qna.entity.Qna;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -64,6 +66,9 @@ public class User {
     @Column(name = "user_role", nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Qna> qna;
 
 }
 

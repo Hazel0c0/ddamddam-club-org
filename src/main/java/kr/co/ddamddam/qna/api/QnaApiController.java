@@ -18,15 +18,15 @@ public class QnaApiController {
 
     /**
      * [GET] /api/ddamddam/qna
-     * @param pageDTO - 페이지 정보와 게시글 리스트
-     * @return - QNA 게시글 전체조회
+     * @param pageDTO - 클라이언트에서 요청한 페이지 정보
+     * @return - 페이징 처리된 QNA 게시글 리스트
      */
     @GetMapping
     public ApplicationResponse<QnaListPageResponseDTO> getList(
             PageDTO pageDTO
     ) {
-        log.info("/qna/page/{}/size/{}", pageDTO.getPage(), pageDTO.getSize());
-    pageDTO=null;
+        log.info("GET : /qna?page={}&size={}", pageDTO.getPage(), pageDTO.getSize());
+
         QnaListPageResponseDTO list = qnaService.getList(pageDTO);
 
         return ApplicationResponse.ok(list);
@@ -37,10 +37,14 @@ public class QnaApiController {
      * @param boardId - 게시글의 인덱스번호
      * @return QNA 게시글 1개 상세조회
      */
-//    @GetMapping("/{boardId}")
-//    public ApplicationResponse<?> getDatail(
-//            @PathVariable("boardId") Long boardId
-//    ) {
-////        log.info("/qna/", pageDTO.getPage(), pageDTO.getSize())
-//    }
+    @GetMapping("/{boardId}")
+    public ApplicationResponse<?> getDatail(
+            @PathVariable("boardId") Long boardId
+    ) {
+        log.info("GET : /qna/{}", boardId);
+
+        qnaService.getDetail(boardId);
+
+        return null;
+    }
 }

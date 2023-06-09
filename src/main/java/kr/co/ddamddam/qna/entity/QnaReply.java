@@ -7,7 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Setter
 @Getter
 @ToString
 @EqualsAndHashCode(of = "qna_reply_idx")
@@ -21,7 +20,7 @@ public class QnaReply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qna_reply_idx")
-    private Long qnaIdx; // 식별번호
+    private Long qnaReplyIdx; // 식별번호
 
     @Column(name = "qna_reply_content", nullable = false, length = 1000)
     private String qnaContent;
