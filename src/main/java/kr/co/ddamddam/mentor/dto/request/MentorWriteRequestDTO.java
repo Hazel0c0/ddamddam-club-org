@@ -17,26 +17,26 @@ public class MentorWriteRequestDTO {
 
     @NotBlank
     @Size(min = 1 ,max = 30)
-    private String title;
+    private String mentorTitle;
 
     @NotBlank
-    private String content;
+    private String mentorContent;
 
     @NotBlank
-    private String subject;
+    private String mentorSubject;
 
     @NotBlank
-    private String current;
+    private String mentorCurrent;
 
 
 
     // dto를 엔터티로 변환하는 메서드
     public Mentor toEntity(){
         return Mentor.builder()
-                .mentorTitle(this.title)
-                .mentorContent(this.content)
-                .mentorSubject(this.subject)
-                .mentorCurrent(this.current)
+                .mentorTitle(this.mentorTitle)
+                .mentorContent(this.mentorContent)
+                .mentorSubject(this.mentorSubject)
+                .mentorCurrent(this.mentorCurrent)
                 .build();
     }
 

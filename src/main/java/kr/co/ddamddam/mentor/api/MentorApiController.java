@@ -2,6 +2,7 @@ package kr.co.ddamddam.mentor.api;
 
 
 import kr.co.ddamddam.mentor.dto.page.PageDTO;
+import kr.co.ddamddam.mentor.dto.request.MentorModifyRequestDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorWriteRequestDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorDetailResponseDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorListResponseDTO;
@@ -47,20 +48,60 @@ public class MentorApiController {
 
     // 게시물 생성
     @PostMapping
-    public ResponseEntity<?> write(@Validated @RequestBody MentorWriteRequestDTO dto, PageDTO pageDTO) {
-        // 요청 URL(POST) /api/mentors?page{}&size={}&sort={}
+    public ResponseEntity<?> write(@Validated @RequestBody MentorWriteRequestDTO dto) {
+        // 요청 URL(POST) /api/mentors
         // payload{
-        //  "title": "게시글 제목",
-        //  "content": "게시글 내용",
-        //  "subject": "게시글 주제",
-        //  "current": "현재 상태"
+        //  "mentorTitle": "게시글 제목",
+        //  "mentorContent": "게시글 내용",
+        //  "mentorSubject": "게시글 주제",
+        //  "mentorCurrent": "현재 상태"
+        // 게시글 작성 후 상세 모달 보기로 일단 처리
         //}
-        log.info("/api/mentors?page{}&size={}&sort={} POST!! - payload {}"
-                ,pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort(), dto);
+        log.info("/api/mentors POST!! - payload {}",dto);
         // 로그인한 토큰방식으로 user_idx값 받아와 서비스 파라미터에 넣기
-        MentorListResponseDTO responseDTO = mentorService.write(dto, pageDTO);
+        MentorDetailResponseDTO responseDTO = mentorService.write(dto);
 
         return ResponseEntity.ok().body(responseDTO);
+    }
+
+    // 게시글 수정
+    @RequestMapping(method = {RequestMethod.PUT,RequestMethod.PATCH})
+    public ResponseEntity<?> modify(
+            @Validated @RequestBody MentorModifyRequestDTO dto
+            ){
+        // 요청 URL(PUT, PATCH) /api/mentors
+        // payload{
+        //  "mentorIdx" : 게시글 번호,
+        //  "mentorTitle": "게시글 제목",
+        //  "mentorContent": "게시글 내용",
+        //  "mentorSubject": "게시글 주제",
+        //  "mentorCurrent": "현재 상태"
+        // 게시글 수정 후 상세 모달 보기로 일단 처리
+        //}
+        log.info("/api/mentors PUT!! - payload {}",dto);
+
+        try {
+            MentorDetailResponseDTO responseDTO = mentorService.modify(dto);
+            return ResponseEntity.ok().body(responseDTO);
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body("해당 게시판은 존재하지 않습니다");
+        }
+
+    }
+
+    // 게시글 삭제
+    @DeleteMapping("/{mentorIdx}")
+    public ResponseEntity<?> delete(
+            @PathVariable Long mentorIdx
+    ){
+        log.info("/api/mentors/{} DELETE!!",mentorIdx);
+        try {
+            mentorService.delete(mentorIdx);
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body("해당 게시판은 존재하지 않습니다");
+        }
+
+        return ResponseEntity.ok().body("삭제 성공!");
     }
 
 
