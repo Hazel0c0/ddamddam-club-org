@@ -33,6 +33,7 @@ import static kr.co.ddamddam.qna.exception.custom.QnaErrorCode.*;
 @RequiredArgsConstructor
 public class QnaService {
 
+    private final int VIEW_COUNT_UP = 1;
     private final QnaRepository qnaRepository;
     private final UserRepository userRepository;
     private final QnaReplyRepository qnaReplyRepository;
@@ -55,7 +56,7 @@ public class QnaService {
         // DTO 리스트로 꺼내기
         List<QnaListResponseDTO> detailList
                 = qnas.getContent().stream()
-                    .map(QnaListResponseDTO::new)
+                .map(QnaListResponseDTO::new)
                 .collect(Collectors.toList());
 
         // 데이터베이스에서 조회한 정보를 JSON 형태에 맞는 DTO 로 변환
@@ -117,4 +118,20 @@ public class QnaService {
 
         return SUCCESS;
     }
+
+    public ResponseMessage updateViewCount(Long boardIdx) {
+
+        log.info("[Qna/Service] QNA 게시글 조회수 상승 - {}", boardIdx);
+
+        Qna qna = qnaRepository.findById(boardIdx).orElseThrow(() -> {
+            throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, boardIdx);
+        });
+
+        qna.setQnaView(qna.getQnaView() + VIEW_COUNT_UP);
+
+        qnaRepository.save(qna);
+
+        return SUCCESS;
+    }
+
 }

@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Setter
+//@Setter
 @Getter
 @ToString(exclude = {"qnaReply", "qnaHashtag", "user"})
 @EqualsAndHashCode
@@ -38,11 +38,14 @@ public class Qna {
     @Column(name = "qna_date", nullable = false)
     private LocalDateTime qnaDate;
 
+    @Column(name = "qna_view", nullable = false)
+    @Builder.Default
+    private int qnaView = 0;
+
     @Column(name = "qna_adoption", nullable = false, length = 1)
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private QnaAdoption qnaAdoption = QnaAdoption.N; // 기본값: 채택되지 않은 상태인 N
-
 
     @OneToMany(mappedBy = "qna")
     private List<QnaReply> qnaReply;
@@ -54,4 +57,11 @@ public class Qna {
     @JoinColumn(name = "user_idx") // FK
     private User user;
 
+    /**
+     * 조회수 상승 처리용 Setter
+     * @param qnaView - 게시글의 기존 조회수 + 1
+     */
+    public void setQnaView(int qnaView) {
+        this.qnaView = qnaView;
+    }
 }
