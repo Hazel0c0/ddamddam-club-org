@@ -2,8 +2,8 @@ package kr.co.ddamddam.qna.service;
 
 import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
 import kr.co.ddamddam.qna.dto.page.PageDTO;
-import kr.co.ddamddam.qna.dto.response.QnaDetailResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaListResponseDTO;
+import kr.co.ddamddam.qna.dto.response.QnaListPageResponseDTO;
 import kr.co.ddamddam.qna.entity.Qna;
 import kr.co.ddamddam.qna.repository.QnaRepository;
 import kr.co.ddamddam.user.repository.UserRepository;
@@ -28,7 +28,11 @@ public class QnaService {
     private final UserRepository userRepository;
 
     // QNA 게시글 페이징 조회
-    public QnaListResponseDTO getList(PageDTO dto) {
+    public QnaListPageResponseDTO getList(PageDTO dto) {
+
+        if (dto == null) {
+            throw new RuntimeException("페이지 정보가 없습니다");
+        }
 
         Pageable pageable = PageRequest.of(
                 dto.getPage() - 1,
@@ -40,13 +44,13 @@ public class QnaService {
         Page<Qna> qnas = qnaRepository.findAll(pageable);
 
         // DTO 리스트로 꺼내기
-        List<QnaDetailResponseDTO> detailList
+        List<QnaListResponseDTO> detailList
                 = qnas.getContent().stream()
-                    .map(QnaDetailResponseDTO::new)
+                    .map(QnaListResponseDTO::new)
                 .collect(Collectors.toList());
 
         // 데이터베이스에서 조회한 정보를 JSON 형태에 맞는 DTO 로 변환
-        QnaListResponseDTO responseDTO = QnaListResponseDTO.builder()
+        QnaListPageResponseDTO responseDTO = QnaListPageResponseDTO.builder()
                 .count(detailList.size())
                 .pageInfo(new PageResponseDTO<Qna>(qnas)) // TODO : mentors 꺼 갖다썼음. 공용이니까 나중에 리팩터링할때 common 으로 옮길게요.
                 .qnas(detailList)
