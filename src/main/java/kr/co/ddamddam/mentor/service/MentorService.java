@@ -2,6 +2,7 @@ package kr.co.ddamddam.mentor.service;
 
 import kr.co.ddamddam.mentor.dto.page.PageDTO;
 import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
+import kr.co.ddamddam.mentor.dto.request.MentorModifyRequestDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorWriteRequestDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorDetailResponseDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorListResponseDTO;
@@ -88,8 +89,39 @@ public class MentorService {
 
     // 게시글 작성
     // user_idx값을 받아와 save하기전에 mentor테이블 user_idx값에 넣기[User]
-    public MentorListResponseDTO write(MentorWriteRequestDTO dto, PageDTO pageDTO) {
-        mentorRepository.save(dto.toEntity());
-        return getList(pageDTO);
+    public MentorDetailResponseDTO write(MentorWriteRequestDTO dto) {
+        Mentor saved = mentorRepository.save(dto.toEntity());
+        return getDetail(saved.getMentorIdx());
+    }
+
+    // 게시글 수정
+    public MentorDetailResponseDTO modify(MentorModifyRequestDTO dto) throws RuntimeException{
+        Optional<Mentor> targetMentor = mentorRepository.findById(dto.getMentorIdx());
+
+        if (targetMentor.isPresent()){
+            Mentor mentor = targetMentor.get();
+            mentor.setMentorTitle(dto.getMentorTitle());
+            mentor.setMentorContent(dto.getMentorContent());
+            mentor.setMentorSubject(dto.getMentorSubject());
+            mentor.setMentorCurrent(dto.getMentorCurrent());
+
+            mentorRepository.save(mentor);
+        }else {
+            throw new RuntimeException("해당 게시판은 없습니다");
+        }
+
+        return getDetail(dto.getMentorIdx());
+    }
+
+    public void delete(Long mentorIdx) throws RuntimeException{
+
+        Optional<Mentor> targetMentor = mentorRepository.findById(mentorIdx);
+        if (targetMentor.isPresent()){
+            mentorRepository.delete(targetMentor.get());
+        }
+        else {
+            throw new RuntimeException(mentorIdx+"해당 게시판은 없습니다");
+        }
+
     }
 }
