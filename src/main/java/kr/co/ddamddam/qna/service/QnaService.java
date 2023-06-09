@@ -2,9 +2,11 @@ package kr.co.ddamddam.qna.service;
 
 import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
 import kr.co.ddamddam.qna.dto.page.PageDTO;
+import kr.co.ddamddam.qna.dto.response.QnaDetailResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaListResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaListPageResponseDTO;
 import kr.co.ddamddam.qna.entity.Qna;
+import kr.co.ddamddam.qna.repository.QnaReplyRepository;
 import kr.co.ddamddam.qna.repository.QnaRepository;
 import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +28,12 @@ public class QnaService {
     private final QnaRepository qnaRepository;
 
     private final UserRepository userRepository;
+    private final QnaReplyRepository qnaReplyRepository;
 
-    // QNA 게시글 페이징 조회
     public QnaListPageResponseDTO getList(PageDTO dto) {
 
         if (dto == null) {
-            throw new RuntimeException("페이지 정보가 없습니다");
+            throw new RuntimeException();
         }
 
         Pageable pageable = PageRequest.of(
@@ -60,4 +62,16 @@ public class QnaService {
 
     }
 
+    public QnaDetailResponseDTO getDetail(Long boardId) {
+
+        if (boardId == null) {
+            throw new RuntimeException();
+        }
+
+        Qna foundQna = qnaRepository.findById(boardId).orElseThrow();
+
+
+
+        return null;
+    }
 }
