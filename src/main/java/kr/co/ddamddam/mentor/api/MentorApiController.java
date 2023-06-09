@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -59,13 +61,14 @@ public class MentorApiController {
         //}
         log.info("/api/mentors POST!! - payload {}",dto);
         // 로그인한 토큰방식으로 user_idx값 받아와 서비스 파라미터에 넣기
-        MentorDetailResponseDTO responseDTO = mentorService.write(dto);
+        Long userIdx = 2L;
+        MentorDetailResponseDTO responseDTO = mentorService.write(dto,userIdx);
 
         return ResponseEntity.ok().body(responseDTO);
     }
 
     // 게시글 수정
-    @RequestMapping(method = {RequestMethod.PUT,RequestMethod.PATCH})
+    @RequestMapping(value = "/modify",method = {RequestMethod.PUT,RequestMethod.PATCH})
     public ResponseEntity<?> modify(
             @Validated @RequestBody MentorModifyRequestDTO dto
             ){
@@ -104,6 +107,16 @@ public class MentorApiController {
         return ResponseEntity.ok().body("삭제 성공!");
     }
 
+    // 멘티 확정 시 생성
+    @RequestMapping(value = "/mentee/{mentorIdx}",method = {RequestMethod.PUT,RequestMethod.PATCH})
+    public ResponseEntity<?> menteeSave(
+            @PathVariable Long mentorIdx
+    ){
+        Long userIdx = 2L;
+        mentorService.menteeSave(mentorIdx,userIdx);
+
+        return null;
+    }
 
     // 좋아요 기능 만들기(멘토에 대한 좋아요인지 게시판에 대한 좋아요인지)
 

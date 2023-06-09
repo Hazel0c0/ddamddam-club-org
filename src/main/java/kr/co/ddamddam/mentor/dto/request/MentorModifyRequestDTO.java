@@ -32,6 +32,9 @@ public class MentorModifyRequestDTO {
     @NotBlank
     private String mentorCurrent;
 
+    @NotBlank
+    private int mentorMentee;
+
 
 
     // dto를 엔터티로 변환하는 메서드
@@ -41,6 +44,7 @@ public class MentorModifyRequestDTO {
                 .mentorContent(this.mentorContent)
                 .mentorSubject(this.mentorSubject)
                 .mentorCurrent(this.mentorCurrent)
+                .mentorMentee(this.mentorMentee)
                 .build();
     }
 

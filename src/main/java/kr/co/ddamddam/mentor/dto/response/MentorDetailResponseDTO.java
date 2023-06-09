@@ -20,6 +20,7 @@ public class MentorDetailResponseDTO {
     private String content;
     private String subject;
     private String current;
+    private int mentee;
     private String nickName;
     private String profile;
     @JsonFormat(pattern = "yyyy/MM/dd")
@@ -31,6 +32,7 @@ public class MentorDetailResponseDTO {
         this.subject = mentor.getMentorSubject();
         this.current = mentor.getMentorCurrent();
         this.date = mentor.getMentorDate();
+        this.mentee = mentor.getMentorMentee();
     }
 
 }
