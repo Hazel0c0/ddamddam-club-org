@@ -2,6 +2,7 @@ package kr.co.ddamddam.qna.api;
 
 import kr.co.ddamddam.common.response.ApplicationResponse;
 import kr.co.ddamddam.qna.dto.page.PageDTO;
+import kr.co.ddamddam.qna.dto.response.QnaDetailResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaListPageResponseDTO;
 import kr.co.ddamddam.qna.service.QnaService;
 import lombok.RequiredArgsConstructor;
@@ -43,8 +44,8 @@ public class QnaApiController {
     ) {
         log.info("GET : /qna/{}", boardId);
 
-        qnaService.getDetail(boardId);
+        QnaDetailResponseDTO dto = qnaService.getDetail(boardId);
 
-        return null;
+        return ApplicationResponse.ok(dto);
     }
 }

@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Setter
 @Getter
 @ToString
 @EqualsAndHashCode
@@ -17,10 +18,12 @@ import java.time.LocalDateTime;
 @Builder
 public class QnaReplyResponseDTO {
 
-    private Long qnaReplyIdx; // 식별번호
-    private String qnaContent;
-    private String qnaWriter;
-    private LocalDateTime qnaDate;
-    private QnaAdoption qnaAdoption = QnaAdoption.N; // 기본값: 채택되지 않은 상태인 N
+    // TODO : Validate 처리
+    private Long ReplyIdx; // 식별번호
+    private String ReplyContent;
+    private String ReplyWriter;
+    private String ReplyProfile;
+    private LocalDateTime ReplyDate;
+    private QnaAdoption ReplyAdoption = QnaAdoption.N; // 기본값: 채택되지 않은 상태인 N
 
 }

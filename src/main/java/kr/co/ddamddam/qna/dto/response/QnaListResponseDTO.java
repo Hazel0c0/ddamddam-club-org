@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 /**
  * QNA 페이지에 일부 정보만 보여주는 DTO
  */
+@Setter
 @Getter
 @ToString
 @EqualsAndHashCode

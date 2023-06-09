@@ -8,7 +8,6 @@ import java.util.List;
 /**
  * QNA 페이지 처리를 하는 DTO
  */
-@Setter
 @Getter
 @ToString
 @EqualsAndHashCode
