@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @ToString
-@EqualsAndHashCode(of = "qna_reply_idx")
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @ToString
-@EqualsAndHashCode(of = "qna_hashtag_idx")
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -17,7 +17,7 @@ import java.util.Objects;
 @Setter
 @Getter
 @ToString
-@EqualsAndHashCode(of = "user_idx")
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -29,15 +29,13 @@ public class QnaDetailResponseDTO {
 
     // Qna 엔터티, User 엔터티를 이용하여 해당 DTO 를 만드는 생성자
     public QnaDetailResponseDTO(Qna qna, User user) {
-        QnaDetailResponseDTO.builder()
-            .boardTitle(qna.getQnaTitle())
-            .boardContent(qna.getQnaContent())
-            .boardWriter(user.getUserNickname())
-            .boardProfile(user.getUserProfile())
-            .boardDate(qna.getQnaDate())
-            .boardAdoption(qna.getQnaAdoption())
-            .replyList(qna.getQnaReply())
-            .build();
+        this.boardTitle = qna.getQnaTitle();
+        this.boardContent = qna.getQnaContent();
+        this.boardWriter = user.getUserNickname();
+        this.boardProfile = user.getUserProfile();
+        this.boardDate = qna.getQnaDate();
+        this.boardAdoption = qna.getQnaAdoption();
+        this.replyList = qna.getQnaReply();
     }
 
 }
