@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class QnaExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
-    public ExceptionResponse<QnaException, Long> notFoundQnaException(QnaException e) {
+    public ExceptionResponse<QnaException, Long> qnaException(QnaException e) {
         // 에러 코드, 에러 메세지, 에러가 발생한 QNA 게시글 번호
         log.error("QnaExceptionHandler : {} {} {}", e.getErrorCode(), e.getMessage(), e.getQnaIdx());
         return new ExceptionResponse<>(e, e.getQnaIdx());

@@ -6,8 +6,10 @@ import kr.co.ddamddam.qna.dto.response.QnaDetailResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaListResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaListPageResponseDTO;
 import kr.co.ddamddam.qna.entity.Qna;
+import kr.co.ddamddam.qna.exception.custom.CustomException;
 import kr.co.ddamddam.qna.repository.QnaReplyRepository;
 import kr.co.ddamddam.qna.repository.QnaRepository;
+import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +28,6 @@ import java.util.stream.Collectors;
 public class QnaService {
 
     private final QnaRepository qnaRepository;
-
     private final UserRepository userRepository;
     private final QnaReplyRepository qnaReplyRepository;
 
@@ -69,9 +70,26 @@ public class QnaService {
         }
 
         Qna foundQna = qnaRepository.findById(boardId).orElseThrow();
+        User foundUser = userRepository.findById(foundQna.getUser().getUserIdx()).orElseThrow();
 
+//        QnaDetailResponseDTO.builder()
+//                .boardTitle(foundQna.getQnaTitle())
+//                .boardContent(foundQna.getQnaContent())
+//                .boardWriter(foundUser.getUserNickname())
+//                .boardProfile(foundUser.getUserProfile())
+//                .boardDate(foundQna.getQnaDate())
+//                .boardAdoption(foundQna.getQnaAdoption())
+//                .replyList(foundQna.getQnaReply())
+//                .build();
 
+        QnaDetailResponseDTO dto = new QnaDetailResponseDTO(foundQna, foundUser);
 
-        return null;
+        log.info("QNA 게시글 상세보기 - {}", dto);
+
+        if (dto == null) {
+            throw new RuntimeException();
+        }
+
+        return dto;
     }
 }

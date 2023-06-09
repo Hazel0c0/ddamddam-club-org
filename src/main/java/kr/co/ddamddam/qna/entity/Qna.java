@@ -46,8 +46,10 @@ public class Qna {
     @JoinColumn(name = "user_idx") // FK
     private User user;
 
-    @OneToMany(mappedBy = "qna", orphanRemoval = true)
-    @JoinColumn(name = "qna_idx") // FK
+    @OneToMany(mappedBy = "qna")
+    private List<QnaReply> qnaReply;
+
+    @OneToMany(mappedBy = "qna")
     private List<QnaHashtag> qnaHashtag;
 
 }
