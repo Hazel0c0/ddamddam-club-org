@@ -1,14 +1,14 @@
-package kr.co.ddamddam.company.dto.page;
+package kr.co.ddamddam.review.dto.page;
 
 import lombok.*;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @Builder
-@ToString @EqualsAndHashCode
-
+@ToString
+@EqualsAndHashCode
 public class PageDTO {
-
     private int page;
     private int size;
     private String sort;
@@ -16,6 +16,8 @@ public class PageDTO {
     public PageDTO(){
         this.page = 1;
         this.size = 9;
-        this.sort = "companyDate";
+        this.sort = "reviewDate";
     }
+
+
 }
