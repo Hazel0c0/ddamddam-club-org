@@ -2,11 +2,15 @@ package kr.co.ddamddam.qna.service;
 
 import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
 import kr.co.ddamddam.qna.dto.page.PageDTO;
+import kr.co.ddamddam.qna.dto.request.QnaInsertRequestDTO;
 import kr.co.ddamddam.qna.dto.response.QnaDetailResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaListResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaListPageResponseDTO;
+import kr.co.ddamddam.qna.dto.response.QnaResponseDTO;
 import kr.co.ddamddam.qna.entity.Qna;
 import kr.co.ddamddam.qna.exception.custom.CustomException;
+import kr.co.ddamddam.qna.exception.custom.QnaErrorCode;
+import kr.co.ddamddam.qna.exception.custom.QnaException;
 import kr.co.ddamddam.qna.repository.QnaReplyRepository;
 import kr.co.ddamddam.qna.repository.QnaRepository;
 import kr.co.ddamddam.user.entity.User;
@@ -21,6 +25,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static kr.co.ddamddam.qna.exception.custom.QnaErrorCode.*;
 
 @Service
 @Slf4j
@@ -65,31 +71,45 @@ public class QnaService {
 
     public QnaDetailResponseDTO getDetail(Long boardId) {
 
+        log.info("[Qna/Service] QNA 게시글 상세보기 boardId - {}", boardId);
+
         if (boardId == null) {
-            throw new RuntimeException();
+            throw new QnaException(QnaErrorCode.INVALID_PARAMETER, boardId);
         }
 
-        Qna foundQna = qnaRepository.findById(boardId).orElseThrow();
-        User foundUser = userRepository.findById(foundQna.getUser().getUserIdx()).orElseThrow();
+        Qna qna = qnaRepository.findById(boardId).orElseThrow(() -> {
+            throw new QnaException(NOT_FOUND_BOARD, boardId);
+        });
+        log.info("[Qna/Service] QNA 게시글 상세보기 qna - {}", qna);
+        User user = userRepository.findById(qna.getUser().getUserIdx()).orElseThrow(() -> {
+            throw new QnaException(NOT_FOUND_USER, qna.getUser().getUserIdx());
+        });
+        log.info("[Qna/Service] QNA 게시글 상세보기 user - {}", user);
 
-//        QnaDetailResponseDTO.builder()
-//                .boardTitle(foundQna.getQnaTitle())
-//                .boardContent(foundQna.getQnaContent())
-//                .boardWriter(foundUser.getUserNickname())
-//                .boardProfile(foundUser.getUserProfile())
-//                .boardDate(foundQna.getQnaDate())
-//                .boardAdoption(foundQna.getQnaAdoption())
-//                .replyList(foundQna.getQnaReply())
-//                .build();
+        QnaDetailResponseDTO dto = new QnaDetailResponseDTO(qna, user);
 
-        QnaDetailResponseDTO dto = new QnaDetailResponseDTO(foundQna, foundUser);
-
-        log.info("QNA 게시글 상세보기 - {}", dto);
-
-        if (dto == null) {
-            throw new RuntimeException();
-        }
+        log.info("[Qna/Service] QNA 게시글 상세보기 - {}", dto);
 
         return dto;
+    }
+
+    // TODO : DB 에 저장은 잘 되는데 responseDTO 의 필드값들이 null 로 뜬다...............
+    public QnaDetailResponseDTO writeBoard(Long userIdx, QnaInsertRequestDTO dto) {
+
+        log.info("[Qna/Service] QNA 게시글 작성 - {}", dto);
+
+        User user = userRepository.findById(userIdx).orElseThrow(() -> {
+            throw new QnaException(NOT_FOUND_USER, userIdx);
+        });
+
+        Qna saved = qnaRepository.save(dto.toEntity(user));
+
+        QnaDetailResponseDTO responseDTO = getDetail(saved.getQnaIdx());
+
+        if (responseDTO == null) {
+            throw new QnaException(FAIL_WRITE_BOARD, saved.getQnaIdx());
+        }
+
+        return responseDTO;
     }
 }

@@ -1,5 +1,6 @@
 package kr.co.ddamddam.qna.entity;
 
+import kr.co.ddamddam.qna.dto.request.QnaInsertRequestDTO;
 import kr.co.ddamddam.user.entity.User;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,8 +11,8 @@ import java.util.List;
 
 @Setter
 @Getter
-@ToString
-@EqualsAndHashCode(of = "qna_idx")
+@ToString(exclude = {"qnaReply", "qnaHashtag", "user"})
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -42,14 +43,15 @@ public class Qna {
     @Builder.Default
     private QnaAdoption qnaAdoption = QnaAdoption.N; // 기본값: 채택되지 않은 상태인 N
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_idx") // FK
-    private User user;
 
     @OneToMany(mappedBy = "qna")
     private List<QnaReply> qnaReply;
 
     @OneToMany(mappedBy = "qna")
     private List<QnaHashtag> qnaHashtag;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_idx") // FK
+    private User user;
 
 }

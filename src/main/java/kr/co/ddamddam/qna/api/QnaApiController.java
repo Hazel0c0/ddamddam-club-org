@@ -2,6 +2,7 @@ package kr.co.ddamddam.qna.api;
 
 import kr.co.ddamddam.common.response.ApplicationResponse;
 import kr.co.ddamddam.qna.dto.page.PageDTO;
+import kr.co.ddamddam.qna.dto.request.QnaInsertRequestDTO;
 import kr.co.ddamddam.qna.dto.response.QnaDetailResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaListPageResponseDTO;
 import kr.co.ddamddam.qna.service.QnaService;
@@ -23,7 +24,7 @@ public class QnaApiController {
      * @return - 페이징 처리된 QNA 게시글 리스트
      */
     @GetMapping
-    public ApplicationResponse<QnaListPageResponseDTO> getList(
+    public ApplicationResponse<?> getList(
             PageDTO pageDTO
     ) {
         log.info("GET : /qna?page={}&size={}", pageDTO.getPage(), pageDTO.getSize());
@@ -48,4 +49,20 @@ public class QnaApiController {
 
         return ApplicationResponse.ok(dto);
     }
+
+    @PostMapping("/write")
+    public ApplicationResponse<?> writeBoard(
+//            Long userIdx,
+            @RequestBody QnaInsertRequestDTO dto
+    ) {
+        log.info("POST : /qna/write - {}", dto);
+
+        // TODO : 토큰 방식으로 로그인한 회원의 idx 를 가져와서 Service 파라미터로 넣는 처리 필요
+        Long userIdx = 1L;
+
+        QnaDetailResponseDTO responseDTO = qnaService.writeBoard(userIdx, dto);
+
+        return ApplicationResponse.ok(responseDTO);
+    }
+
 }
