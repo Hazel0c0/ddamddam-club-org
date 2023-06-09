@@ -32,7 +32,7 @@ public class QnaApiController {
     public ApplicationResponse<?> getList(
             PageDTO pageDTO
     ) {
-        log.info("GET : /qna?page={}&size={}", pageDTO.getPage(), pageDTO.getSize());
+        log.info("GET : /qna?page={}&size={} - 게시글 전체보기", pageDTO.getPage(), pageDTO.getSize());
 
         QnaListPageResponseDTO list = qnaService.getList(pageDTO);
 
@@ -49,7 +49,7 @@ public class QnaApiController {
     public ApplicationResponse<?> getDatail(
             @PathVariable("boardId") Long boardId
     ) {
-        log.info("GET : /qna/{}", boardId);
+        log.info("GET : /qna/{} - 게시글 상세조회", boardId);
 
         QnaDetailResponseDTO dto = qnaService.getDetail(boardId);
 
@@ -67,7 +67,7 @@ public class QnaApiController {
 //            Long userIdx,
             @RequestBody QnaInsertRequestDTO dto
     ) {
-        log.info("POST : /qna/write - {}", dto);
+        log.info("POST : /qna/write - 게시글 생성 {}", dto);
 
         // TODO : 토큰 방식으로 로그인한 회원의 idx 를 가져와서 Service 파라미터로 넣는 처리 필요
         Long userIdx = 1L;
@@ -87,9 +87,25 @@ public class QnaApiController {
     public ApplicationResponse<?> deleteBoard(
             @PathVariable Long boardIdx
     ) {
-        log.info("DELETE : /qna/delete - {}", boardIdx);
+        log.info("DELETE : /qna/delete/{} - 게시글 삭제", boardIdx);
 
         ResponseMessage result = qnaService.deleteBoard(boardIdx);
+
+        return ApplicationResponse.ok(result);
+    }
+
+    /**
+     * 게시글 조회수 상승
+     * @param boardIdx - 조회수를 상승시킬 게시글의 index
+     * @return - 상승 성공시 SUCCESS, 상승 실패시 FAIL
+     */
+    @PatchMapping("/{boardIdx}/views")
+    public ApplicationResponse<?> updateViewCount(
+            @PathVariable Long boardIdx
+    ) {
+        log.info("PATCH : /qna/{}/views - 조회수 상승", boardIdx);
+
+        ResponseMessage result = qnaService.updateViewCount(boardIdx);
 
         return ApplicationResponse.ok(result);
     }
