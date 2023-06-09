@@ -6,9 +6,12 @@ import kr.co.ddamddam.mentor.dto.request.MentorModifyRequestDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorWriteRequestDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorDetailResponseDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorListResponseDTO;
+import kr.co.ddamddam.mentor.entity.Mentee;
 import kr.co.ddamddam.mentor.entity.Mentor;
+import kr.co.ddamddam.mentor.repository.MenteeRepository;
 import kr.co.ddamddam.mentor.repository.MentorRepository;
 import kr.co.ddamddam.user.entity.User;
+import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -30,6 +33,8 @@ import static java.util.stream.Collectors.*;
 public class MentorService {
 
     private final MentorRepository mentorRepository;
+    private final UserRepository userRepository;
+    private final MenteeRepository menteeRepository;
 
     public MentorListResponseDTO getList(PageDTO pageDTO) {
 
@@ -51,6 +56,7 @@ public class MentorService {
             dto.setSubject(mentor.getMentorSubject());
             dto.setCurrent(mentor.getMentorCurrent());
             dto.setDate(mentor.getMentorDate());
+            dto.setMentee(mentor.getMentorMentee());
 
             User user = mentor.getUser();
             if (user != null){
@@ -78,6 +84,7 @@ public class MentorService {
         dto.setSubject(mentor.getMentorSubject());
         dto.setCurrent(mentor.getMentorCurrent());
         dto.setDate(mentor.getMentorDate());
+        dto.setMentee(mentor.getMentorMentee());
 
         User user = mentor.getUser();
         if (user != null){
@@ -89,8 +96,11 @@ public class MentorService {
 
     // 게시글 작성
     // user_idx값을 받아와 save하기전에 mentor테이블 user_idx값에 넣기[User]
-    public MentorDetailResponseDTO write(MentorWriteRequestDTO dto) {
-        Mentor saved = mentorRepository.save(dto.toEntity());
+    public MentorDetailResponseDTO write(MentorWriteRequestDTO dto, Long userIdx) {
+        Mentor mentor = dto.toEntity();
+        Optional<User> optionalUser = userRepository.findById(userIdx);
+        mentor.setUser(optionalUser.get());
+        Mentor saved = mentorRepository.save(mentor);
         return getDetail(saved.getMentorIdx());
     }
 
@@ -104,6 +114,7 @@ public class MentorService {
             mentor.setMentorContent(dto.getMentorContent());
             mentor.setMentorSubject(dto.getMentorSubject());
             mentor.setMentorCurrent(dto.getMentorCurrent());
+            mentor.setMentorMentee(dto.getMentorMentee());
 
             mentorRepository.save(mentor);
         }else {
@@ -112,6 +123,8 @@ public class MentorService {
 
         return getDetail(dto.getMentorIdx());
     }
+
+    // 게시판 삭제
 
     public void delete(Long mentorIdx) throws RuntimeException{
 
@@ -123,5 +136,15 @@ public class MentorService {
             throw new RuntimeException(mentorIdx+"해당 게시판은 없습니다");
         }
 
+    }
+
+    // 멘티 테이블 저장
+    public void menteeSave(Long mentorIdx, Long userIdx) {
+        Optional<Mentor> optionalMentor = mentorRepository.findById(mentorIdx);
+        Optional<User> optionalUser = userRepository.findById(userIdx);
+        Mentee mentee = new Mentee();
+        mentee.setMentor(optionalMentor.get());
+        mentee.setUser(optionalUser.get());
+        menteeRepository.save(mentee);
     }
 }

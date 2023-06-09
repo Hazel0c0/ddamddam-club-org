@@ -1,5 +1,6 @@
 package kr.co.ddamddam.user.entity;
 
+import kr.co.ddamddam.mentor.entity.Mentee;
 import kr.co.ddamddam.mentor.entity.Mentor;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -74,6 +75,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     @Builder.Default
     private List<Mentor> mentor = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Mentee> mentee = new ArrayList<>();
 
 }
 

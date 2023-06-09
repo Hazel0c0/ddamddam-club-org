@@ -1,18 +1,14 @@
 package kr.co.ddamddam.mentor.service;
 
-import kr.co.ddamddam.mentor.dto.page.PageDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorModifyRequestDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorWriteRequestDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorDetailResponseDTO;
-import kr.co.ddamddam.mentor.dto.response.MentorListResponseDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -25,14 +21,14 @@ class MentorServiceTest {
     @Test
     @DisplayName("게시글 작성이 성공해야한다")
     void writeTest(){
-
+        Long userIdx = 2L;
         MentorDetailResponseDTO mentorDetailResponseDTO = mentorService.write(MentorWriteRequestDTO.builder()
-                .mentorTitle("제발!")
-                .mentorContent("됐냐?!")
-                .mentorSubject("backend")
+                .mentorTitle("제발!@#")
+                .mentorContent("됐냐?!!!")
+                .mentorSubject("back")
                 .mentorCurrent("신입")
-                .build()
-        );
+                .build(),
+                userIdx);
 
         System.out.println("mentorDetailResponseDTO = " + mentorDetailResponseDTO);
     }

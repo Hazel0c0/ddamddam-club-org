@@ -39,8 +39,8 @@ public class Mentor {
     @Column(name = "mentor_date",updatable = false)
     private LocalDateTime mentorDate; // 작성시간
 
-    @Column(name = "mentor_like",columnDefinition = "Integer default 0")
-    private int mentorLike;
+    @Column(name = "mentor_mentee",columnDefinition = "Integer default 0")
+    private int mentorMentee; // 멘티 인원 제한 컬럼
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx")
