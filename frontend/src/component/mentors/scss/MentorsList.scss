@@ -1,0 +1,31 @@
+@mixin content-center {
+  display: flex;
+  justify-content: center;
+}
+
+.mentors-list-wrapper{
+  padding: 36px 370px 0;
+  display: flex;
+
+  .mentors-list{
+    @include content-center;
+
+    .profile-img{
+      background-image: url("../../../src_assets/IMG_4525.JPG");
+      width: 112px;
+      height: 112px;
+      border-radius: 200px;
+    }
+
+    .list-text-wrapper{
+      display: flex;
+      flex-direction: column;
+
+      .writer{
+        color: #1e4fff;
+        font-weight: 600;
+      }
+    }
+  }
+
+}
