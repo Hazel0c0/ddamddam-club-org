@@ -7,6 +7,7 @@ import kr.co.ddamddam.qna.dto.request.QnaInsertRequestDTO;
 import kr.co.ddamddam.qna.dto.response.QnaDetailResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaListResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaListPageResponseDTO;
+import kr.co.ddamddam.qna.dto.response.QnaTopListResponseDTO;
 import kr.co.ddamddam.qna.entity.Qna;
 import kr.co.ddamddam.qna.exception.custom.FailDeleteBoardException;
 import kr.co.ddamddam.qna.exception.custom.NotFoundQnaBoardException;
@@ -67,6 +68,22 @@ public class QnaService {
                 .qnas(detailList)
                 .build();
 
+    }
+
+    public List<QnaTopListResponseDTO> getListTop3() {
+
+        log.info("[Qna/Service] QNA 게시글 조회순 TOP3 정렬");
+
+        List<Qna> qnasTopByView = qnaRepository.findTop3ByOrderByQnaViewDesc();
+
+        return qnasTopByView.stream()
+                .map(qna -> QnaTopListResponseDTO.builder()
+                        .boardTitle(qna.getQnaTitle())
+                        .boardWriter(qna.getQnaWriter())
+                        .boardView(qna.getQnaView())
+                        .replyCount(qna.getQnaReply().size())
+                        .build()
+                ).collect(Collectors.toList());
     }
 
     public QnaDetailResponseDTO getDetail(Long boardId) {
