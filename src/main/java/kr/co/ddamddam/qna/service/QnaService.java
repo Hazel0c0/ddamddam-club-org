@@ -9,7 +9,6 @@ import kr.co.ddamddam.qna.dto.response.QnaListResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaListPageResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaTopListResponseDTO;
 import kr.co.ddamddam.qna.entity.Qna;
-import kr.co.ddamddam.qna.entity.QnaAdoption;
 import kr.co.ddamddam.qna.exception.custom.NotFoundQnaBoardException;
 import kr.co.ddamddam.qna.repository.QnaReplyRepository;
 import kr.co.ddamddam.qna.repository.QnaRepository;
@@ -19,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static kr.co.ddamddam.common.response.ResponseMessage.*;
+import static kr.co.ddamddam.qna.entity.QnaAdoption.*;
 import static kr.co.ddamddam.qna.exception.custom.QnaErrorCode.*;
 
 @Service
@@ -39,44 +38,53 @@ public class QnaService {
     private final UserRepository userRepository;
     private final QnaReplyRepository qnaReplyRepository;
 
-    public QnaListPageResponseDTO getList(PageDTO dto) {
+    public QnaListPageResponseDTO getList(PageDTO pageDTO) {
 
-        if (dto == null) {
-            throw new RuntimeException();
-        }
+        PageRequest pageable = getPageable(pageDTO);
 
-        Pageable pageable = PageRequest.of(
-                dto.getPage() - 1,
-                dto.getSize(),
-                Sort.by("qnaDate").descending()
-        );
-
-        // 데이터베이스에서 QNA 게시글 목록 조회
+        // 데이터베이스에서 QNA 게시글 목록 조회 후 DTO 리스트로 꺼내기
         Page<Qna> qnas = qnaRepository.findAll(pageable);
-
-        // DTO 리스트로 꺼내기
-        List<QnaListResponseDTO> detailList
-                = qnas.getContent().stream()
-                .map(QnaListResponseDTO::new)
-                .collect(Collectors.toList());
+        List<QnaListResponseDTO> qnaList = getQnaDtoList(qnas);
 
         // 데이터베이스에서 조회한 정보를 JSON 형태에 맞는 DTO 로 변환
-
         return QnaListPageResponseDTO.builder()
-                .count(detailList.size())
+                .count(qnaList.size())
                 .pageInfo(new PageResponseDTO<Qna>(qnas)) // TODO : mentors 꺼 갖다썼음. 공용이니까 나중에 리팩터링할때 common 으로 옮길게요.
-                .qnas(detailList)
+                .qnas(qnaList)
                 .build();
+    }
+    
+    private PageRequest getPageable(PageDTO pageDTO) {
+        
+        return PageRequest.of(
+                pageDTO.getPage() - 1,
+                pageDTO.getSize(),
+                Sort.by("qnaDate").descending()
+        );
+    }
 
+    private List<QnaListResponseDTO> getQnaDtoList(Page<Qna> qnas) {
+
+        return qnas.getContent().stream()
+                .map(QnaListResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    private List<QnaListResponseDTO> getQnaDtoListByAdoption(Page<Qna> qnas) {
+
+        return qnas.getContent().stream()
+                .filter(qna -> qna.getQnaAdoption() == Y)
+                .map(QnaListResponseDTO::new)
+                .collect(Collectors.toList());
     }
 
     public List<QnaTopListResponseDTO> getListTop3ByView() {
 
         log.info("[Qna/Service] QNA 게시글 조회순 TOP3 정렬");
 
-        List<Qna> qnasTop3ByView = qnaRepository.findTop3ByOrderByQnaViewDesc();
+        List<Qna> qnaListTop3 = qnaRepository.findTop3ByOrderByQnaViewDesc();
 
-        return qnasTop3ByView.stream()
+        return qnaListTop3.stream()
                 .map(qna -> QnaTopListResponseDTO.builder()
                         .boardIdx(qna.getQnaIdx())
                         .boardTitle(qna.getQnaTitle())
@@ -116,13 +124,13 @@ public class QnaService {
 
         Qna saved = qnaRepository.save(dto.toEntity(user));
 
-        QnaDetailResponseDTO responseDTO = getDetail(saved.getQnaIdx());
+        QnaDetailResponseDTO qnaDetail = getDetail(saved.getQnaIdx());
 
-        if (responseDTO == null) {
+        if (qnaDetail == null) {
             throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, saved.getQnaIdx());
         }
 
-        return responseDTO;
+        return qnaDetail;
     }
 
     public ResponseMessage deleteBoard(Long boardIdx) {
@@ -157,11 +165,26 @@ public class QnaService {
             throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, boardIdx);
         });
 
-        qna.setQnaAdoption(QnaAdoption.Y);
+        qna.setQnaAdoption(Y);
 
         qnaRepository.save(qna);
 
         return SUCCESS;
 
+    }
+
+    public QnaListPageResponseDTO getListAdoption(PageDTO pageDTO) {
+
+        log.info("[Qna/Service] QNA 채택완료 상태인 게시글들만 조회");
+
+        PageRequest pageable = getPageable(pageDTO);
+        Page<Qna> qnas = qnaRepository.findAll(pageable);
+        List<QnaListResponseDTO> qnaList = getQnaDtoListByAdoption(qnas);
+
+        return QnaListPageResponseDTO.builder()
+                .count(qnaList.size())
+                .pageInfo(new PageResponseDTO<Qna>(qnas)) // TODO : mentors 꺼 갖다썼음. 공용이니까 나중에 리팩터링할때 common 으로 옮길게요.
+                .qnas(qnaList)
+                .build();
     }
 }

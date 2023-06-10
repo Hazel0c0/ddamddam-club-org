@@ -37,25 +37,11 @@ public class QnaApiController {
     ) {
         log.info("GET : /qna?page={}&size={} - 게시글 전체보기", pageDTO.getPage(), pageDTO.getSize());
 
-        QnaListPageResponseDTO list = qnaService.getList(pageDTO);
+        QnaListPageResponseDTO qnaList = qnaService.getList(pageDTO);
 
-        return ApplicationResponse.ok(list);
+        return ApplicationResponse.ok(qnaList);
     }
 
-    /**
-     * QNA 게시글 조회순 TOP3 조회
-     * [GET] /api/ddamddam/qna/top
-     * ❗ 조회수가 같을 경우, 게시글 index 번호가 낮은 게시글이 우선 조회됩니다.
-     * @return - QNA 전체 게시글 중 조회수가 높은 상위 3개 게시글 리스트
-     */
-    @GetMapping("/top")
-    public ApplicationResponse<?> getListTop3() {
-        log.info("GET : /qna/top - 게시글 TOP3 보기");
-
-        List<QnaTopListResponseDTO> listTop3 = qnaService.getListTop3ByView();
-
-        return ApplicationResponse.ok(listTop3);
-    }
 
     /**
      * QNA 게시글 상세조회
@@ -69,9 +55,40 @@ public class QnaApiController {
     ) {
         log.info("GET : /qna/{} - 게시글 상세조회", boardId);
 
-        QnaDetailResponseDTO dto = qnaService.getDetail(boardId);
+        QnaDetailResponseDTO qnaDetail = qnaService.getDetail(boardId);
 
-        return ApplicationResponse.ok(dto);
+        return ApplicationResponse.ok(qnaDetail);
+    }
+
+    /**
+     * QNA 게시글 조회순 TOP3 조회
+     * [GET] /api/ddamddam/qna/top
+     * ❗ 조회수가 같을 경우, 게시글 index 번호가 낮은 게시글이 우선 조회됩니다.
+     * @return - QNA 전체 게시글 중 조회수가 높은 상위 3개 게시글 리스트
+     */
+    @GetMapping("/top")
+    public ApplicationResponse<?> getListTop3() {
+        log.info("GET : /qna/top - 게시글 TOP3 보기");
+
+        List<QnaTopListResponseDTO> qnaListTop3 = qnaService.getListTop3ByView();
+
+        return ApplicationResponse.ok(qnaListTop3);
+    }
+
+    /**
+     * QNA 채택완료 게시글만 조회
+     * @param pageDTO - 클라이언트에서 요청한 페이지 정보
+     * @return 페이징 처리된 QNA 채택완료 게시글 리스트
+     */
+    @GetMapping("/adopts")
+    public ApplicationResponse<?> getListAdoption(
+            PageDTO pageDTO
+    ) {
+        log.info("GET : /qna/adopts - 채택된 게시글만 보여주기");
+
+        QnaListPageResponseDTO qnaListAdopt = qnaService.getListAdoption(pageDTO);
+
+        return ApplicationResponse.ok(qnaListAdopt);
     }
 
     /**
@@ -90,9 +107,9 @@ public class QnaApiController {
         // TODO : 토큰 방식으로 로그인한 회원의 idx 를 가져와서 Service 파라미터로 넣는 처리 필요
         Long userIdx = 1L;
 
-        QnaDetailResponseDTO responseDTO = qnaService.writeBoard(userIdx, dto);
+        QnaDetailResponseDTO qnaDetail = qnaService.writeBoard(userIdx, dto);
 
-        return ApplicationResponse.ok(responseDTO);
+        return ApplicationResponse.ok(qnaDetail);
     }
 
     /**

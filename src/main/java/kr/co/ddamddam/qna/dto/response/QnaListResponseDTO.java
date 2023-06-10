@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 /**
  * QNA 페이지에 일부 정보만 보여주는 DTO
  */
-@Setter
 @Getter
 @ToString
 @EqualsAndHashCode
@@ -29,6 +28,7 @@ public class QnaListResponseDTO {
 
     // Entity 를 DTO 로 변환하는 생성자
     public QnaListResponseDTO(Qna qna) {
+        this.boardIdx = qna.getQnaIdx();
         this.boardTitle = qna.getQnaTitle();
         this.boardContent = qna.getQnaContent();
         this.boardWriter = qna.getQnaWriter();
