@@ -64,4 +64,12 @@ public class Qna {
     public void setQnaView(int qnaView) {
         this.qnaView = qnaView;
     }
+
+    /**
+     * 게시글 채택 완료 처리용 Setter
+     * @param qnaAdoption - 게시글의 채택 완료 여부 (Y or N)
+     */
+    public void setQnaAdoption(QnaAdoption qnaAdoption) {
+        this.qnaAdoption = qnaAdoption;
+    }
 }

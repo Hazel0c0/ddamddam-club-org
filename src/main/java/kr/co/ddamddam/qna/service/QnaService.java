@@ -9,6 +9,7 @@ import kr.co.ddamddam.qna.dto.response.QnaListResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaListPageResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaTopListResponseDTO;
 import kr.co.ddamddam.qna.entity.Qna;
+import kr.co.ddamddam.qna.entity.QnaAdoption;
 import kr.co.ddamddam.qna.exception.custom.FailDeleteBoardException;
 import kr.co.ddamddam.qna.exception.custom.NotFoundQnaBoardException;
 import kr.co.ddamddam.qna.repository.QnaReplyRepository;
@@ -91,7 +92,7 @@ public class QnaService {
         log.info("[Qna/Service] QNA 게시글 상세보기 boardId - {}", boardId);
 
         if (boardId == null) {
-            throw new NotFoundQnaBoardException(INVALID_BOARD_PARAMETER, boardId);
+            throw new NotFoundQnaBoardException(INVALID_PARAMETER, boardId);
         }
 
         Qna qna = qnaRepository.findById(boardId).orElseThrow(() -> {
@@ -130,7 +131,7 @@ public class QnaService {
         try {
             qnaRepository.deleteById(boardIdx);
         } catch (IllegalAccessError e) {
-            throw new FailDeleteBoardException(INVALID_BOARD_PARAMETER, boardIdx);
+            throw new FailDeleteBoardException(INVALID_PARAMETER, boardIdx);
         }
 
         return SUCCESS;
@@ -151,4 +152,19 @@ public class QnaService {
         return SUCCESS;
     }
 
+    public ResponseMessage adoptQnaBoard(Long boardIdx) {
+
+        log.info("[Qna/Service] QNA 게시글 채택 완료 상태로 변경 - {}", boardIdx);
+
+        Qna qna = qnaRepository.findById(boardIdx).orElseThrow(() -> {
+            throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, boardIdx);
+        });
+
+        qna.setQnaAdoption(QnaAdoption.Y);
+
+        qnaRepository.save(qna);
+
+        return SUCCESS;
+
+    }
 }
