@@ -98,7 +98,7 @@ public class QnaApiController {
      * QNA 게시글 삭제
      * [DELETE] /api/ddamddam/qna/delete/{boardIdx}
      * @param boardIdx - 삭제할 게시글의 index
-     * @return - 삭제 성공시 SUCCESS, 삭제 실패시 FAIL
+     * @return - SUCCESS
      */
     @DeleteMapping("/delete/{boardIdx}")
     public ApplicationResponse<?> deleteBoard(
@@ -114,7 +114,7 @@ public class QnaApiController {
     /**
      * 게시글 조회수 상승
      * @param boardIdx - 조회수를 상승시킬 게시글의 index
-     * @return - 상승 성공시 SUCCESS, 상승 실패시 FAIL
+     * @return -  SUCCESS
      */
     @PatchMapping("/{boardIdx}/views")
     public ApplicationResponse<?> updateViewCount(
@@ -123,6 +123,22 @@ public class QnaApiController {
         log.info("PATCH : /qna/{}/views - 조회수 상승", boardIdx);
 
         ResponseMessage result = qnaService.updateViewCount(boardIdx);
+
+        return ApplicationResponse.ok(result);
+    }
+
+    /**
+     * QNA 게시글 채택 완료 처리
+     * @param boardIdx - 채택 완료 처리를 할 게시글의 index
+     * @return - SUCCESS
+     */
+    @PatchMapping("/{boardIdx}/adopts")
+    public ApplicationResponse<?> adoptQnaBoard(
+            @PathVariable Long boardIdx
+    ) {
+        log.info("PATCH : /qna/{}/adopts - 게시글 채택 완료 상태로 변경", boardIdx);
+
+        ResponseMessage result = qnaService.adoptQnaBoard(boardIdx);
 
         return ApplicationResponse.ok(result);
     }
