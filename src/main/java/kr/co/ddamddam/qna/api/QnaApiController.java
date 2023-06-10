@@ -63,7 +63,7 @@ public class QnaApiController {
     /**
      * QNA 게시글 조회순 TOP3 조회
      * [GET] /api/ddamddam/qna/top
-     * ❗ 조회수가 같을 경우, 게시글 index 번호가 낮은 게시글이 우선 조회됩니다.
+     * ❗ 조회수가 같을 경우, 게시글 index 번호가 낮은 게시글(더 먼저 작성된)이 우선 조회됩니다.
      * @return - QNA 전체 게시글 중 조회수가 높은 상위 3개 게시글 리스트
      */
     @GetMapping("/top")
@@ -75,8 +75,10 @@ public class QnaApiController {
         return ApplicationResponse.ok(qnaListTop3);
     }
 
+    // TODO : Postman 테스트 시 prev, next 계속 false 로 뜸
     /**
-     * QNA 채택완료 게시글만 조회
+     * QNA 채택완료 게시글만 정렬 조회
+     * [GET] ex) /api/ddamddam/qna/adopts?page=2
      * @param pageDTO - 클라이언트에서 요청한 페이지 정보
      * @return 페이징 처리된 QNA 채택완료 게시글 리스트
      */
@@ -89,6 +91,23 @@ public class QnaApiController {
         QnaListPageResponseDTO qnaListAdopt = qnaService.getListAdoption(pageDTO);
 
         return ApplicationResponse.ok(qnaListAdopt);
+    }
+
+    /**
+     * QNA 미채택 게시글만 정렬 조회
+     * [GET] ex) /api/ddamddam/qna/non-adopts?page=3
+     * @param pageDTO - 클라이언트에서 요청한 페이지 정보
+     * @return 페이징 처리된 QNA 채택완료 게시글 리스트
+     */
+    @GetMapping("/non-adopts")
+    public ApplicationResponse<?> getListNonAdoption(
+            PageDTO pageDTO
+    ) {
+        log.info("GET : /qna/adopts - 미채택 상태인 게시글만 보여주기");
+
+        QnaListPageResponseDTO qnaListNonAdopt = qnaService.getListNonAdoption(pageDTO);
+
+        return ApplicationResponse.ok(qnaListNonAdopt);
     }
 
     /**
