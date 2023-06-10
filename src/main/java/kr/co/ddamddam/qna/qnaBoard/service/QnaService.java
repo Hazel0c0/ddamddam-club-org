@@ -4,11 +4,13 @@ import kr.co.ddamddam.common.response.ResponseMessage;
 import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.page.PageDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.request.QnaInsertRequestDTO;
+import kr.co.ddamddam.qna.qnaBoard.dto.request.QnaModifyRequestDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaDetailResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaListResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaListPageResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaTopListResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
+import kr.co.ddamddam.qna.qnaHashtag.entity.QnaHashtag;
 import kr.co.ddamddam.qna.qnaBoard.exception.custom.NotFoundQnaBoardException;
 import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
 import kr.co.ddamddam.qna.qnaReply.repository.QnaReplyRepository;
@@ -113,7 +115,35 @@ public class QnaService {
 
         log.info("[Qna/Service] QNA 게시글 삭제 - {}", boardIdx);
 
+        Qna qna = qnaRepository.findById(boardIdx).orElseThrow(() -> {
+            throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, boardIdx);
+        });
+
+        if (qna.getQnaAdoption() == Y) {
+            return FAIL;
+        }
+
         qnaRepository.deleteById(boardIdx);
+
+        return SUCCESS;
+    }
+    
+    public ResponseMessage modifyBoard(Long boardIdx, QnaModifyRequestDTO dto) {
+
+        log.info("[Qna/Service] QNA 게시글 수정 - {}, payload - {}", boardIdx, dto);
+
+        Qna qna = qnaRepository.findById(boardIdx).orElseThrow(() -> {
+            throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, boardIdx);
+        });
+
+        if (qna.getQnaAdoption() == Y) {
+            return FAIL;
+        }
+
+        qna.setQnaTitle(dto.getBoardTitle());
+        qna.setQnaContent(dto.getBoardContent());
+
+        qnaRepository.save(qna);
 
         return SUCCESS;
     }

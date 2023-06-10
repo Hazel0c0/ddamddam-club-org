@@ -1,5 +1,6 @@
-package kr.co.ddamddam.qna.qnaBoard.entity;
+package kr.co.ddamddam.qna.qnaHashtag.entity;
 
+import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,10 +19,10 @@ public class QnaHashtag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qna_hashtag_idx")
-    private Long QnaHashtagIdx;
+    private Long qnaHashtagIdx;
 
     @Column(name = "qna_hashtag_name", nullable = false, length = 10)
-    private String QnaHashtagName;
+    private String qnaHashtagName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "qna_idx") // FK

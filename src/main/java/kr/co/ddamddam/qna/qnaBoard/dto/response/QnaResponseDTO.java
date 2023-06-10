@@ -1,7 +1,7 @@
 package kr.co.ddamddam.qna.qnaBoard.dto.response;
 
 import kr.co.ddamddam.qna.qnaBoard.entity.QnaAdoption;
-import kr.co.ddamddam.qna.qnaBoard.entity.QnaHashtag;
+import kr.co.ddamddam.qna.qnaHashtag.entity.QnaHashtag;
 import kr.co.ddamddam.qna.qnaReply.entity.QnaReply;
 import kr.co.ddamddam.user.entity.User;
 import lombok.*;

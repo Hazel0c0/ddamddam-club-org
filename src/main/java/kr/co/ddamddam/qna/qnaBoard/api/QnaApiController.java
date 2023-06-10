@@ -4,6 +4,7 @@ import kr.co.ddamddam.common.response.ApplicationResponse;
 import kr.co.ddamddam.common.response.ResponseMessage;
 import kr.co.ddamddam.qna.qnaBoard.dto.page.PageDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.request.QnaInsertRequestDTO;
+import kr.co.ddamddam.qna.qnaBoard.dto.request.QnaModifyRequestDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaDetailResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaListPageResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaTopListResponseDTO;
@@ -134,8 +135,10 @@ public class QnaApiController {
     /**
      * QNA 게시글 삭제
      * [DELETE] /api/ddamddam/qna/delete/{boardIdx}
+     * ❗ 채택이 완료된 게시글은 삭제가 불가능합니다.
      * @param boardIdx - 삭제할 게시글의 index
-     * @return - SUCCESS
+     * @return - 삭제 성공시 SUCCESS
+     *          - 삭제 실패시 FAIL
      */
     @DeleteMapping("/delete/{boardIdx}")
     public ApplicationResponse<?> deleteBoard(
@@ -144,6 +147,18 @@ public class QnaApiController {
         log.info("DELETE : /qna/delete/{} - 게시글 삭제", boardIdx);
 
         ResponseMessage result = qnaService.deleteBoard(boardIdx);
+
+        return ApplicationResponse.ok(result);
+    }
+
+    @PatchMapping("/modify/{boardIdx}")
+    public ApplicationResponse<?> modifyBoard(
+            @PathVariable Long boardIdx,
+            @RequestBody QnaModifyRequestDTO dto
+    ) {
+        log.info("PATCH : /qna/modify/{} - 게시글 수정, payload - {}", boardIdx, dto);
+
+        ResponseMessage result = qnaService.modifyBoard(boardIdx, dto);
 
         return ApplicationResponse.ok(result);
     }

@@ -1,5 +1,6 @@
 package kr.co.ddamddam.qna.qnaBoard.entity;
 
+import kr.co.ddamddam.qna.qnaHashtag.entity.QnaHashtag;
 import kr.co.ddamddam.qna.qnaReply.entity.QnaReply;
 import kr.co.ddamddam.user.entity.User;
 import lombok.*;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-//@Setter
+@Setter
 @Getter
 @ToString(exclude = {"qnaReply", "qnaHashtag", "user"})
 @EqualsAndHashCode
@@ -50,26 +51,11 @@ public class Qna {
     @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY)
     private List<QnaReply> qnaReply;
 
-    @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<QnaHashtag> qnaHashtag;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx") // FK
     private User user;
 
-    /**
-     * 조회수 상승 처리용 Setter
-     * @param qnaView - 게시글의 기존 조회수 + 1
-     */
-    public void setQnaView(int qnaView) {
-        this.qnaView = qnaView;
-    }
-
-    /**
-     * 게시글 채택 완료 처리용 Setter
-     * @param qnaAdoption - 게시글의 채택 완료 여부 (Y or N)
-     */
-    public void setQnaAdoption(QnaAdoption qnaAdoption) {
-        this.qnaAdoption = qnaAdoption;
-    }
 }
