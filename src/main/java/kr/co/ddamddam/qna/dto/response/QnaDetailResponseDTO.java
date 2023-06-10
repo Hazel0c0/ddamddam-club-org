@@ -2,14 +2,13 @@ package kr.co.ddamddam.qna.dto.response;
 
 import kr.co.ddamddam.qna.entity.Qna;
 import kr.co.ddamddam.qna.entity.QnaAdoption;
-import kr.co.ddamddam.qna.entity.QnaReply;
+import kr.co.ddamddam.qnaReply.entity.QnaReply;
 import kr.co.ddamddam.user.entity.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Setter
 @Getter
 @ToString
 @EqualsAndHashCode

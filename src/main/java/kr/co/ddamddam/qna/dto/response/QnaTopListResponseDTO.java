@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 public class QnaTopListResponseDTO {
 
+    // TODO : Validate 처리
     private Long boardIdx; // 식별번호
     private String boardTitle;
     private String boardWriter;
