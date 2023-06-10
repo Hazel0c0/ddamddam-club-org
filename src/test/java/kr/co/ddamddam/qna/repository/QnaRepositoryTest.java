@@ -1,14 +1,12 @@
 package kr.co.ddamddam.qna.repository;
 
-import kr.co.ddamddam.qna.entity.Qna;
+import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
+import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Rollback(false)

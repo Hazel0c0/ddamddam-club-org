@@ -1,7 +1,8 @@
 package kr.co.ddamddam.qna.service;
 
-import kr.co.ddamddam.qna.dto.response.QnaDetailResponseDTO;
-import kr.co.ddamddam.qna.dto.response.QnaTopListResponseDTO;
+import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaDetailResponseDTO;
+import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaTopListResponseDTO;
+import kr.co.ddamddam.qna.qnaBoard.service.QnaService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
 
-import static kr.co.ddamddam.qna.entity.QnaAdoption.*;
+import static kr.co.ddamddam.qna.qnaBoard.entity.QnaAdoption.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest

@@ -1,8 +1,8 @@
 package kr.co.ddamddam.common.exception;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import kr.co.ddamddam.qna.exception.custom.CustomErrorCode;
-import kr.co.ddamddam.qna.exception.custom.CustomException;
+import kr.co.ddamddam.qna.qnaBoard.exception.custom.CustomErrorCode;
+import kr.co.ddamddam.qna.qnaBoard.exception.custom.CustomException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
