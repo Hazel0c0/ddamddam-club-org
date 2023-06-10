@@ -19,6 +19,7 @@ import java.util.List;
 public class QnaDetailResponseDTO {
 
     // TODO : Validated 처리
+    private Long boardIdx; // 식별번호
     private String boardTitle;
     private String boardContent;
     private String boardWriter;
@@ -29,6 +30,7 @@ public class QnaDetailResponseDTO {
 
     // Qna 엔터티, User 엔터티를 이용하여 해당 DTO 를 만드는 생성자
     public QnaDetailResponseDTO(Qna qna, User user) {
+        this.boardIdx = qna.getQnaIdx();
         this.boardTitle = qna.getQnaTitle();
         this.boardContent = qna.getQnaContent();
         this.boardWriter = user.getUserNickname();

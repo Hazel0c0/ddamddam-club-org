@@ -1,4 +1,4 @@
-package kr.co.ddamddam.qna.exception.handler;
+package kr.co.ddamddam.qnaReply.exception.handler;
 
 import kr.co.ddamddam.common.exception.ExceptionResponse;
 import kr.co.ddamddam.qna.exception.custom.NotFoundQnaBoardException;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
 @RestControllerAdvice
-public class QnaExceptionHandler {
+public class QnaReplyExceptionHandler {
 
     @ExceptionHandler(NotFoundQnaBoardException.class)
     public ExceptionResponse<NotFoundQnaBoardException, Long> qnaBoardException(NotFoundQnaBoardException e) {

@@ -10,7 +10,6 @@ import kr.co.ddamddam.qna.dto.response.QnaListPageResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaTopListResponseDTO;
 import kr.co.ddamddam.qna.entity.Qna;
 import kr.co.ddamddam.qna.entity.QnaAdoption;
-import kr.co.ddamddam.qna.exception.custom.FailDeleteBoardException;
 import kr.co.ddamddam.qna.exception.custom.NotFoundQnaBoardException;
 import kr.co.ddamddam.qna.repository.QnaReplyRepository;
 import kr.co.ddamddam.qna.repository.QnaRepository;
@@ -71,18 +70,20 @@ public class QnaService {
 
     }
 
-    public List<QnaTopListResponseDTO> getListTop3() {
+    public List<QnaTopListResponseDTO> getListTop3ByView() {
 
         log.info("[Qna/Service] QNA 게시글 조회순 TOP3 정렬");
 
-        List<Qna> qnasTopByView = qnaRepository.findTop3ByOrderByQnaViewDesc();
+        List<Qna> qnasTop3ByView = qnaRepository.findTop3ByOrderByQnaViewDesc();
 
-        return qnasTopByView.stream()
+        return qnasTop3ByView.stream()
                 .map(qna -> QnaTopListResponseDTO.builder()
+                        .boardIdx(qna.getQnaIdx())
                         .boardTitle(qna.getQnaTitle())
                         .boardWriter(qna.getQnaWriter())
                         .boardView(qna.getQnaView())
-                        .replyCount(qna.getQnaReply().size())
+                        // TODO : 댓글과 연관관계 매핑할 때 에러나네요... 댓글 구현 후 다시 테스트 필요합니다.
+//                        .replyCount(qna.getQnaReply().size())
                         .build()
                 ).collect(Collectors.toList());
     }
@@ -128,11 +129,7 @@ public class QnaService {
 
         log.info("[Qna/Service] QNA 게시글 삭제 - {}", boardIdx);
 
-        try {
-            qnaRepository.deleteById(boardIdx);
-        } catch (IllegalAccessError e) {
-            throw new FailDeleteBoardException(INVALID_PARAMETER, boardIdx);
-        }
+        qnaRepository.deleteById(boardIdx);
 
         return SUCCESS;
     }
