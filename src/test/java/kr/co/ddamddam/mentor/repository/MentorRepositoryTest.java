@@ -1,0 +1,43 @@
+package kr.co.ddamddam.mentor.repository;
+
+import kr.co.ddamddam.mentor.entity.Mentor;
+import kr.co.ddamddam.user.entity.User;
+import kr.co.ddamddam.user.entity.UserPosition;
+import kr.co.ddamddam.user.entity.UserRole;
+import kr.co.ddamddam.user.repository.UserRepository;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.LocalDate;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+class MentorRepositoryTest {
+
+    @Autowired
+    private MentorRepository mentorRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Test
+    @DisplayName("멘토 게시판 9개 생성")
+    void bulkInsert(){
+        Optional<User> userOptional = userRepository.findById(1L);
+        for (int i = 1; i < 10; i++) {
+            mentorRepository.save(
+                    Mentor.builder()
+                            .mentorTitle("하하하" + i)
+                            .mentorContent("한근두근태근"+i)
+                            .mentorSubject("프론트엔드")
+                            .mentorCurrent("1년")
+                            .user(userOptional.get())
+                            .build()
+            );
+        }
+
+    }
+}
