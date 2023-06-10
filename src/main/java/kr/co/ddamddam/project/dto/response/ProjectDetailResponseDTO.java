@@ -1,5 +1,6 @@
 package kr.co.ddamddam.project.dto.response;
 
+import kr.co.ddamddam.project.entity.Applicant;
 import kr.co.ddamddam.project.entity.Project;
 import lombok.*;
 
@@ -26,8 +27,8 @@ public class ProjectDetailResponseDTO {
   private int maxBack;
 
   // 모집 된 인원
-  private int applicantOfFront;
-  private int applicantOfBack;
+  private Applicant applicantOfFront;
+  private Applicant applicantOfBack;
 
   private String applicantionPeriod; //모집기간
 
@@ -40,8 +41,8 @@ public class ProjectDetailResponseDTO {
     this.projectType = project.getProjectType();
     this.maxFront=project.getMaxFront();
     this.maxBack=project.getMaxBack();
-    this.applicantOfFront=0;
-    this.applicantOfBack=0;
+    this.applicantOfFront=null;
+    this.applicantOfBack=null;
     this.applicantionPeriod=project.getApplicantionPeriod();
     this.projectDate=project.getProjectDate();
   }
