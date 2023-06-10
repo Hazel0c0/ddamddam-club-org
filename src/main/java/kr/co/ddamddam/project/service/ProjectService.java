@@ -57,7 +57,7 @@ public class ProjectService {
     return new ProjectDetailResponseDTO(foundProject);
   }
 
-  private Project getProject(Long id) {
+  public Project getProject(Long id) {
     return projectRepository.findById(id)
         .orElseThrow(
             () -> new RuntimeException(
