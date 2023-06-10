@@ -47,10 +47,10 @@ public class Qna {
     @Builder.Default
     private QnaAdoption qnaAdoption = QnaAdoption.N; // 기본값: 채택되지 않은 상태인 N
 
-    @OneToMany(mappedBy = "qna")
+    @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY)
     private List<QnaReply> qnaReply;
 
-    @OneToMany(mappedBy = "qna")
+    @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY)
     private List<QnaHashtag> qnaHashtag;
 
     @ManyToOne(fetch = FetchType.LAZY)

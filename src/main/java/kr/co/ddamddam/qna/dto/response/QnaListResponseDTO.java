@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 public class QnaListResponseDTO {
 
     // TODO : Validated 처리
+    private Long boardIdx; // 식별번호
     private String boardTitle;
     private String boardContent;
     private String boardWriter;
