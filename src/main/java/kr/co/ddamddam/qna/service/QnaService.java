@@ -53,30 +53,6 @@ public class QnaService {
                 .qnas(qnaList)
                 .build();
     }
-    
-    private PageRequest getPageable(PageDTO pageDTO) {
-        
-        return PageRequest.of(
-                pageDTO.getPage() - 1,
-                pageDTO.getSize(),
-                Sort.by("qnaDate").descending()
-        );
-    }
-
-    private List<QnaListResponseDTO> getQnaDtoList(Page<Qna> qnas) {
-
-        return qnas.getContent().stream()
-                .map(QnaListResponseDTO::new)
-                .collect(Collectors.toList());
-    }
-
-    private List<QnaListResponseDTO> getQnaDtoListByAdoption(Page<Qna> qnas) {
-
-        return qnas.getContent().stream()
-                .filter(qna -> qna.getQnaAdoption() == Y)
-                .map(QnaListResponseDTO::new)
-                .collect(Collectors.toList());
-    }
 
     public List<QnaTopListResponseDTO> getListTop3ByView() {
 
@@ -187,4 +163,52 @@ public class QnaService {
                 .qnas(qnaList)
                 .build();
     }
+
+    public QnaListPageResponseDTO getListNonAdoption(PageDTO pageDTO) {
+
+        log.info("[Qna/Service] QNA 미채택 상태인 게시글들만 조회");
+
+        PageRequest pageable = getPageable(pageDTO);
+        Page<Qna> qnas = qnaRepository.findAll(pageable);
+        List<QnaListResponseDTO> qnaList = getQnaDtoListByNonAdoption(qnas);
+
+        return QnaListPageResponseDTO.builder()
+                .count(qnaList.size())
+                .pageInfo(new PageResponseDTO<Qna>(qnas)) // TODO : mentors 꺼 갖다썼음. 공용이니까 나중에 리팩터링할때 common 으로 옮길게요.
+                .qnas(qnaList)
+                .build();
+    }
+
+    private PageRequest getPageable(PageDTO pageDTO) {
+
+        return PageRequest.of(
+                pageDTO.getPage() - 1,
+                pageDTO.getSize(),
+                Sort.by("qnaDate").descending()
+        );
+    }
+
+    private List<QnaListResponseDTO> getQnaDtoList(Page<Qna> qnas) {
+
+        return qnas.getContent().stream()
+                .map(QnaListResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    private List<QnaListResponseDTO> getQnaDtoListByAdoption(Page<Qna> qnas) {
+
+        return qnas.getContent().stream()
+                .filter(qna -> qna.getQnaAdoption() == Y)
+                .map(QnaListResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    private List<QnaListResponseDTO> getQnaDtoListByNonAdoption(Page<Qna> qnas) {
+
+        return qnas.getContent().stream()
+                .filter(qna -> qna.getQnaAdoption() == N)
+                .map(QnaListResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
 }

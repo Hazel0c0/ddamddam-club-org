@@ -21,7 +21,7 @@ class QnaRepositoryTest {
     @DisplayName("QNA 게시글 더미데이터 50개 생성")
     void InsertBulk() {
 
-        for (int i = 1; i <= 50; i++) {
+        for (int i = 11; i <= 50; i++) {
 
             Qna qna = Qna.builder()
                     .qnaTitle("Qna Title " + i)
