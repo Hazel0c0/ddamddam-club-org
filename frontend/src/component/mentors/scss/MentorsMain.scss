@@ -13,7 +13,8 @@
     @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
     font-family: 'IBM Plex Mono', sans-serif !important;
     font-size: 43.2px;
-    font-weight: 400;
+    font-weight: 500;
+    letter-spacing: -1.5px;
   }
 
   .sub-title {
@@ -36,20 +37,21 @@
 
       //정렬 버튼
       .sort-title{
-        margin-right: 13px;
+        margin-right: 10px;
         margin-left: 10px;
-        font-size: 14px;
-        font-weight: 700;
+        font-size: 13px;
+        font-weight: 600;
       }
 
       .sort-front,
       .sort-back,
       .sort-employee,
       .sort-etc {
+
         margin-right: 10px;
-        width: 103px;
-        height: 30px;
-        font-size: 14px;
+        width: 90px;
+        height: 25px;
+        font-size: 12px;
         border: none;
         //padding: 6px 35px;
         border-radius: 50px;
@@ -63,11 +65,12 @@
     }
 
     .mentors-write-btn{
-      padding: 12px 20px;
+      padding: 13px 21px;
       background-color: #292834;
       color: white;
       border-radius: 6px;
       text-decoration: none;
+      font-size: 14px;
     }
 
     .mentors-write-btn:hover{
