@@ -2,6 +2,7 @@ import React from 'react';
 import Common from "../common/Common";
 import {Link} from "react-router-dom";
 import './scss/MentorsMain.scss'
+import MentorsList from "./MentorsList";
 
 const MentorsMain = () => {
     return (
@@ -22,6 +23,7 @@ const MentorsMain = () => {
                     <Link to={'/mentors/write'} className={'mentors-write-btn'}>
                         멘토 모집하기
                     </Link>
+                    {/*<MentorsList />*/}
                 </div>
         </Common>
     );
