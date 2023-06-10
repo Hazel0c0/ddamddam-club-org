@@ -6,10 +6,13 @@ import kr.co.ddamddam.qna.dto.page.PageDTO;
 import kr.co.ddamddam.qna.dto.request.QnaInsertRequestDTO;
 import kr.co.ddamddam.qna.dto.response.QnaDetailResponseDTO;
 import kr.co.ddamddam.qna.dto.response.QnaListPageResponseDTO;
+import kr.co.ddamddam.qna.dto.response.QnaTopListResponseDTO;
 import kr.co.ddamddam.qna.service.QnaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * QNA 게시판 Controller
@@ -37,6 +40,20 @@ public class QnaApiController {
         QnaListPageResponseDTO list = qnaService.getList(pageDTO);
 
         return ApplicationResponse.ok(list);
+    }
+
+    /**
+     * QNA 게시글 조회순 TOP3 조회
+     * [GET] /api/ddamddam/qna/top
+     * @return - QNA 전체 게시글 중 조회수가 높은 상위 3개 게시글 리스트
+     */
+    @GetMapping("/top")
+    public ApplicationResponse<?> getListTop3() {
+        log.info("GET : /qna/top - 게시글 TOP3 보기");
+
+        List<QnaTopListResponseDTO> listTop3 = qnaService.getListTop3();
+
+        return ApplicationResponse.ok(listTop3);
     }
 
     /**
