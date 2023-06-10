@@ -1,95 +1,55 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Common from "../common/Common";
 import './scss/MentorsList.scss';
 import profile from "../../src_assets/IMG_4525.JPG"
-const MentorsList = (mentors) => {
-const {title,content,subject,current,mentee,nickName,profile,date}= mentors;
+
+const MentorsList = () => {
+
+    const [mentorsList, setMentorsList] = useState([]);
+    const [pageNation, setPageNation] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost:8181/api/ddamddam/mentors/list')
+            .then(res => {
+                if (res.status === 500) {
+                    alert('잠시 후 다시 접속해주세요.[서버오류]');
+                    return;
+                }
+                return res.json();
+            })
+            .then(result => {
+                if (!!result) {
+                    setMentorsList(result.mentors);
+                    setPageNation(result.pageInfo);
+                }
+
+            });
+    }, []);
 
     return (
         <Common className={'mentors-list-wrapper'}>
-            <div className={'mentors-list'}>
-                <div className={'speech-bubble'}>
-                    {title}
-                </div>
-                <div className={'profile-img'}>
-                </div>
-                <div className={'list-text-wrapper'}>
-                    <div className={'writer'}>홍길동</div>
-                    <div className={'text'}>
-                        {content}
+            {mentorsList.map((mentor) => (
+                <div className={'mentors-list'}>
+                    <div className={'speech-bubble'} key={mentor.title}>
+                        {mentor.title}
                     </div>
-                    <ul className={'category'}>
-                        <li>{subject}</li>
-                    </ul>
-                    <div className={'career'}>경력 : {current}</div>
+                    {/*Profile 수정 필요*/}
+                    <div className={'profile-img'}></div>
+
+                    <div className={'list-text-wrapper'}>
+                        <div className={'writer'} key={mentor.nickName}>
+                            {mentor.nickName}
+                        </div>
+                        <div className={'text'} key={mentor.content}>
+                            {mentor.content}
+                        </div>
+                        <ul className={'category'} key={mentor.subject}>
+                            <li>{mentor.subject}</li>
+                        </ul>
+                        <div className={'career'} key={mentor.current}>경력 : {mentor.current}</div>
+                    </div>
                 </div>
-            </div>
-
-            {/*<div className={'mentors-list'}>*/}
-            {/*    <div className={'speech-bubble'}>*/}
-            {/*        프론트엔드에 고민이 있으신가요?*/}
-            {/*    </div>*/}
-            {/*    <div className={'profile-img'}>*/}
-            {/*    </div>*/}
-            {/*    <div className={'list-text-wrapper'}>*/}
-            {/*        <div className={'writer'}>홍길동</div>*/}
-            {/*        <div className={'text'}>*/}
-            {/*            안녕하세요! 당신을 도와드릴*/}
-            {/*            멘토 홍길동입니다.*/}
-            {/*            어려움을 겪고 계시면 신청해주세요!*/}
-            {/*        </div>*/}
-            {/*        <ul className={'category'}>*/}
-            {/*            <li>프론트엔드</li>*/}
-            {/*            <li>백엔드</li>*/}
-            {/*            <li>취업진로</li>*/}
-            {/*        </ul>*/}
-            {/*        <div className={'career'}>경력 : 3년 이상</div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-
-            {/*<div className={'mentors-list'}>*/}
-            {/*    <div className={'speech-bubble'}>*/}
-            {/*        프론트엔드에 고민이 있으신가요?*/}
-            {/*    </div>*/}
-            {/*    <div className={'profile-img'}>*/}
-            {/*    </div>*/}
-            {/*    <div className={'list-text-wrapper'}>*/}
-            {/*        <div className={'writer'}>홍길동</div>*/}
-            {/*        <div className={'text'}>*/}
-            {/*            안녕하세요! 당신을 도와드릴*/}
-            {/*            멘토 홍길동입니다.*/}
-            {/*            어려움을 겪고 계시면 신청해주세요!*/}
-            {/*        </div>*/}
-            {/*        <ul className={'category'}>*/}
-            {/*            <li>프론트엔드</li>*/}
-            {/*            <li>백엔드</li>*/}
-            {/*            <li>취업진로</li>*/}
-            {/*        </ul>*/}
-            {/*        <div className={'career'}>경력 : 3년 이상</div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-
-            {/*<div className={'mentors-list'}>*/}
-            {/*    <div className={'speech-bubble'}>*/}
-            {/*        프론트엔드에 고민이 있으신가요?*/}
-            {/*    </div>*/}
-            {/*    <div className={'profile-img'}>*/}
-            {/*    </div>*/}
-            {/*    <div className={'list-text-wrapper'}>*/}
-            {/*        <div className={'writer'}>홍길동</div>*/}
-            {/*        <div className={'text'}>*/}
-            {/*            안녕하세요! 당신을 도와드릴*/}
-            {/*            멘토 홍길동입니다.*/}
-            {/*            어려움을 겪고 계시면 신청해주세요!*/}
-            {/*        </div>*/}
-            {/*        <ul className={'category'}>*/}
-            {/*            <li>프론트엔드</li>*/}
-            {/*            <li>백엔드</li>*/}
-            {/*            <li>취업진로</li>*/}
-            {/*        </ul>*/}
-            {/*        <div className={'career'}>경력 : 3년 이상</div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
+            ))}
         </Common>
     );
 };

@@ -21,7 +21,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         // 시큐리티 설치시 초기에 뜨는 강제 인증을 해제
-        http.csrf().disable() // csrf 토큰공격 방어기능 해제
+        http
+                .csrf().disable() // csrf 토큰공격 방어기능 해제
                 .authorizeRequests()
                 .antMatchers("/**") // 해당하는 url 패턴은 로그인 없이도 들어갈 수 있도록
                 .permitAll();
