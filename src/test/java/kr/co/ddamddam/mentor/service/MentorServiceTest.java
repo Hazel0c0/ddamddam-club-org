@@ -57,4 +57,14 @@ class MentorServiceTest {
         mentorService.delete(5L);
     }
 
+    @Test
+    @DisplayName("게시글 11번의 멘티 생성 성공해야한다")
+    void saveMenteeTest(){
+        Long userIdx = 2L;
+        Long mentorIdx = 1L;
+
+        mentorService.menteeSave(mentorIdx,userIdx);
+
+    }
+
 }

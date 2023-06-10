@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/mentors")
+@RequestMapping("/api/ddamddam/mentors")
 public class MentorApiController {
 
     // 리소스 : 게시물 (Mentors)
