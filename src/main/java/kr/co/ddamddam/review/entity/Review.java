@@ -1,7 +1,8 @@
 package kr.co.ddamddam.review.entity;
 
+import kr.co.ddamddam.company.entity.Company;
+import kr.co.ddamddam.user.entity.User;
 import lombok.*;
-import org.apache.catalina.User;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -26,8 +27,10 @@ public class Review {
      @Column(name = "review_idx")
     private Long reviewIdx;
 
-    @Column(name = "review_company",length = 30)
-    private Long reviewCompany;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_idx") //company 숫자 ...? 채용공고에서 연결되는건가?
+    @Column(name = "review_company")
+    private Company reviewCompany;
 
     @Column(name = "review_title",nullable = false, length = 300)
     private String reviewTitle;
@@ -35,17 +38,17 @@ public class Review {
     @Column(name ="review_content", nullable = false , length = 3000)
     private String reviewContent;
 
-    @Column(name ="review_grade", columnDefinition = "FLOAT(1,3)")
-    private Float  reviewGrade;
+    @Column(name ="review_rating", nullable = false, columnDefinition = "FLOAT(1,3)")
+    private Float  reviewRating; //별점
 
-    @Column(name = "review_job",length = 30)
+    @Column(name = "review_job",nullable = false,length = 30)
     private String reviewJob;
 
-    @Column(name = "review_rating", columnDefinition = "int(3)")
-    private int reviewRating; //별점
+    @Column(name = "review_tenure", nullable = false, columnDefinition = "INT(3)")
+    private int reviewTenure; //경력
 
-    @Column(name = "review_location",length = 30)
-    private String reviewLocation;
+    @Column(name = "review_location",nullable = false,length = 30)
+    private String reviewLocation; //
 
     @UpdateTimestamp //Defualt current_timestamp
     @CreationTimestamp
@@ -53,10 +56,7 @@ public class Review {
     private Timestamp reviewDate;
 
     @Column(name = "review_view")
-    private int reviewView;
-
-    @Column(name = "review_like")
-    private int reviewLike;
+    private int reviewView; //조회수
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx")
