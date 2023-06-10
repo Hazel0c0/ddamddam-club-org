@@ -1,7 +1,7 @@
 package kr.co.ddamddam.qna.qnaBoard.dto.request;
 
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
-import kr.co.ddamddam.qna.qnaBoard.entity.QnaHashtag;
+import kr.co.ddamddam.qna.qnaHashtag.entity.QnaHashtag;
 import kr.co.ddamddam.user.entity.User;
 import lombok.*;
 
@@ -21,7 +21,7 @@ public class QnaInsertRequestDTO {
     // TODO : Validated 처리
     private String boardTitle;
     private String boardContent;
-    private List<QnaHashtag> QnaHashtagList;
+    private List<QnaHashtag> qnaHashtagList;
 
     // DTO 를 Entity 로 변환
     public Qna toEntity(User user) {

@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Setter
 @Getter
 @ToString
 @EqualsAndHashCode
@@ -25,19 +26,19 @@ public class QnaReply {
     private Long qnaReplyIdx; // 식별번호
 
     @Column(name = "qna_reply_content", nullable = false, length = 1000)
-    private String qnaContent;
+    private String qnaReplyContent;
 
     @Column(name = "qna_reply_writer", nullable = false, length = 10)
-    private String qnaWriter;
+    private String qnaReplyWriter;
 
     @CreationTimestamp // 데이터가 추가되는 시간을 값으로 설정합니다.
     @Column(name = "qna_reply_date", nullable = false)
-    private LocalDateTime qnaDate;
+    private LocalDateTime qnaReplyDate;
 
     @Column(name = "qna_reply_adoption", nullable = false, length = 1)
     @Enumerated(EnumType.STRING)
     @Builder.Default
-    private QnaAdoption qnaAdoption = QnaAdoption.N; // 기본값: 채택되지 않은 상태인 N
+    private QnaAdoption qnaReplyAdoption = QnaAdoption.N; // 기본값: 채택되지 않은 상태인 N
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "qna_idx") // FK

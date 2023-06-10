@@ -1,6 +1,7 @@
 package kr.co.ddamddam.qna.qnaReply.api;
 
 import kr.co.ddamddam.common.response.ApplicationResponse;
+import kr.co.ddamddam.qna.qnaBoard.dto.page.PageDTO;
 import kr.co.ddamddam.qna.qnaReply.service.QnaReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ public class QnaReplyApiController {
 
     @GetMapping
     public ApplicationResponse<?> getList(
-
+        PageDTO pageDTO
     ) {
         return null;
     }
