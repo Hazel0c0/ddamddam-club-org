@@ -1,14 +1,10 @@
 package kr.co.ddamddam.project.dto.response;
 
-import kr.co.ddamddam.project.entity.Applicant;
+import kr.co.ddamddam.project.entity.applicant.Apply;
 import kr.co.ddamddam.project.entity.Project;
 import lombok.*;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
 
 @Setter @Getter @ToString
 @EqualsAndHashCode
@@ -27,8 +23,8 @@ public class ProjectDetailResponseDTO {
   private int maxBack;
 
   // 모집 된 인원
-  private Applicant applicantOfFront;
-  private Applicant applicantOfBack;
+  private Apply applicantOfFront;
+  private Apply applicantOfBack;
 
   private String applicantionPeriod; //모집기간
 
