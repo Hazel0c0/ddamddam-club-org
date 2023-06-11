@@ -4,20 +4,16 @@ import kr.co.ddamddam.mentor.entity.Mentor;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+
+@Getter @Setter
+@ToString @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MentorModifyRequestDTO {
+public class MentorWriteRequestDTO {
 
-    @NotNull
-    private Long mentorIdx;
 
     @NotBlank
     @Size(min = 1 ,max = 30)
@@ -31,7 +27,6 @@ public class MentorModifyRequestDTO {
 
     @NotBlank
     private String mentorCurrent;
-
     @NotBlank
     private String mentorCareer;
 
@@ -54,3 +49,4 @@ public class MentorModifyRequestDTO {
 
 
 }
+

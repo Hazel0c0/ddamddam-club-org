@@ -2,6 +2,7 @@ package kr.co.ddamddam.chat.service;
 
 import kr.co.ddamddam.chat.dto.request.ChatMessageRequestDTO;
 import kr.co.ddamddam.chat.dto.request.ChatRoomRequestDTO;
+import kr.co.ddamddam.chat.dto.response.ChatAllListResponseDTO;
 import kr.co.ddamddam.chat.dto.response.ChatMessageResponseDTO;
 import kr.co.ddamddam.chat.dto.response.ChatRoomResponseDTO;
 import kr.co.ddamddam.chat.dto.response.UserResponseDTO;
@@ -9,24 +10,28 @@ import kr.co.ddamddam.chat.entity.ChatMessage;
 import kr.co.ddamddam.chat.entity.ChatRoom;
 import kr.co.ddamddam.chat.repository.ChatMessageRepository;
 import kr.co.ddamddam.chat.repository.ChatRoomRepository;
+import kr.co.ddamddam.mentor.entity.Mentor;
+import kr.co.ddamddam.mentor.repository.MentorRepository;
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ChatService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final UserRepository userRepository;
+    private final MentorRepository mentorRepository;
 
-    public ChatService(ChatRoomRepository chatRoomRepository, ChatMessageRepository chatMessageRepository, UserRepository userRepository) {
-        this.chatRoomRepository = chatRoomRepository;
-        this.chatMessageRepository = chatMessageRepository;
-        this.userRepository = userRepository;
-    }
 
     public ChatRoomResponseDTO createChatRoom(ChatRoomRequestDTO requestDTO) {
         User sender = userRepository.findById(requestDTO.getSenderId())
@@ -85,6 +90,52 @@ public class ChatService {
         responseDTO.setUserName(user.getUserName());
         responseDTO.setUserNickname(user.getUserNickname());
         return responseDTO;
+    }
+
+    // 멘토가 보는 채팅방 (멘티들의 채팅방들이 다 보임)
+    public List<ChatMessageResponseDTO> getList(Long mentorIdx) {
+
+        List<ChatRoom> chatRoomList = chatRoomRepository.findByMentorMentorIdx(mentorIdx);
+
+        List<ChatMessageResponseDTO> collect = chatRoomList.stream().map(room -> {
+            ChatMessageResponseDTO dto = new ChatMessageResponseDTO();
+            dto.setRoomId(room.getRoomId());
+            dto.setSender(new UserResponseDTO(room.getSender()));
+            dto.setMessage(room.getMessages().get(room.getMessages().size() - 1).getContent());
+            dto.setSentAt(room.getMessages().get(room.getMessages().size() - 1).getSentAt());
+            dto.setMessageId(room.getMessages().get(room.getMessages().size() - 1).getId());
+
+            return dto;
+        }).collect(Collectors.toList());
+        return collect;
+    }
+
+    // 멘티 채팅방 메세지 조회
+    public List<ChatMessageResponseDTO> getDetail(Long mentorIdx, Long senderIdx) {
+        ChatRoom senderUserId = chatRoomRepository.findByMentorMentorIdxAndSenderUserIdx(mentorIdx, senderIdx);
+
+
+        List<ChatMessageResponseDTO> responseDTOS = senderUserId.getMessages().stream().map(msg -> {
+            ChatMessageResponseDTO dto = new ChatMessageResponseDTO();
+            dto.setMessageId(msg.getId());
+            dto.setRoomId(msg.getRoom().getRoomId());
+            dto.setSentAt(msg.getSentAt());
+            dto.setSender(new UserResponseDTO(msg.getSender()));
+            dto.setMessage(msg.getContent());
+
+            return dto;
+        }).collect(Collectors.toList());
+
+        return responseDTOS;
+
+    }
+
+    // 채팅방 삭제
+    public void delete(Long roomId) {
+
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow();
+
+        chatRoomRepository.delete(chatRoom);
     }
 }
 

@@ -1,5 +1,7 @@
 package kr.co.ddamddam.user.entity;
 
+import kr.co.ddamddam.mentor.entity.Mentee;
+import kr.co.ddamddam.mentor.entity.Mentor;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,13 +11,15 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
 @Setter
 @Getter
 @ToString
-@EqualsAndHashCode(of = "user_idx")
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -67,6 +71,14 @@ public class User {
     @Column(name = "user_role", nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Mentor> mentor = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Mentee> mentee = new ArrayList<>();
 
 }
 
