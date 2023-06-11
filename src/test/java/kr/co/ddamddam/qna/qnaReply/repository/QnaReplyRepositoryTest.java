@@ -24,7 +24,7 @@ class QnaReplyRepositoryTest {
     @DisplayName("QNA 댓글 더미데이터 20개 생성")
     void insertBulk() {
 
-        for (int i = 1; i <= 20 ; i++) {
+        for (int i = 21; i <= 40 ; i++) {
 
             QnaReply qnaReply = QnaReply.builder()
                     .qnaReplyContent("댓글 내용" + i)

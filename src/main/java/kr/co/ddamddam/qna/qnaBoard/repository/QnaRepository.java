@@ -17,8 +17,9 @@ public interface QnaRepository extends JpaRepository<Qna, Long> {
      */
     List<Qna> findTop3ByOrderByQnaViewDesc();
 
-    @Query("SELECT qr FROM Qna q JOIN q.qnaReply qr WHERE q.qnaIdx = :qnaIdx ORDER BY qr.qnaReplyDate DESC")
-    List<QnaReply> findSortedRepliesByQnaIdx(@Param("qnaIdx") Long qnaIdx);
+//    @Query("SELECT qr FROM Qna q JOIN QnaReply qr WHERE qr.qna.qnaIdx = :qnaIdx ORDER BY qr.qnaReplyDate DESC")
+//@Query("SELECT qr FROM QnaReply qr WHERE qr.qna.qnaIdx = :boardIdx ORDER BY qr.qnaReplyDate ASC")
+
 
 
 }

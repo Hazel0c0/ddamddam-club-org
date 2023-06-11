@@ -7,9 +7,7 @@ import kr.co.ddamddam.qna.qnaReply.dto.response.QnaReplyListResponseDTO;
 import kr.co.ddamddam.qna.qnaReply.service.QnaReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,21 +19,31 @@ public class QnaReplyApiController {
 
     private final QnaReplyService qnaReplyService;
 
+    /**
+     * QNA 댓글 전체보기
+     * [GET] /api/ddamddam/qna-reply/{boardIdx}
+     * @param boardIdx - 댓글 목록을 확인할 게시글의 index
+     * @return - 요청받은 게시글의 댓글 리스트 (과거순)
+     */
     @GetMapping("/{boardIdx}")
     public ApplicationResponse<?> getList(
-        PageDTO pageDTO,
-        Long boardIdx
+        @PathVariable Long boardIdx
     ) {
-        log.info("GET : /qna/{}/replies?page={}&size={} - 댓글 전체보기", boardIdx, pageDTO.getPage(), pageDTO.getSize());
-
-
+        log.info("GET : /qna-reply/{} - 댓글 전체보기", boardIdx);
 
 //        QnaReplyListPageResponseDTO qnaReplyList = qnaReplyService.getList(pageDTO, boardIdx);
 
-        List<QnaReplyListResponseDTO> list = qnaReplyService.getList(pageDTO, boardIdx);
+        List<QnaReplyListResponseDTO> list = qnaReplyService.getList(boardIdx);
 
         System.out.println("list = " + list);
 
         return ApplicationResponse.ok(list);
     }
+//
+//    @PostMapping("/write")
+//    public ApplicationResponse<?> writeReply(
+//            @RequestBody QnaReplyInsertRequestDTO dto
+//    ) {
+//        log.info("POST : /qna-reply/write - 댓글 작성");
+//    }
 }
