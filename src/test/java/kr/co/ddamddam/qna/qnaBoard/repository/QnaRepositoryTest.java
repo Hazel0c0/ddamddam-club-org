@@ -1,4 +1,4 @@
-package kr.co.ddamddam.qna.repository;
+package kr.co.ddamddam.qna.qnaBoard.repository;
 
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;

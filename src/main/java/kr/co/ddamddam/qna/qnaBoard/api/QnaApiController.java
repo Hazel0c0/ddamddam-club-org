@@ -151,6 +151,14 @@ public class QnaApiController {
         return ApplicationResponse.ok(result);
     }
 
+    /**
+     * 게시글 수정
+     * [PATCH] /api/ddamddam/qna/modify/{boardIdx}
+     * ❗ 채택이 완료된 게시글은 수정이 불가능합니다.
+     * @param boardIdx - 수정할 게시글의 index
+     * @param dto - 게시글 제목, 게시글 내용 / boardTitle, boardContent
+     * @return 수정 성공시 SUCCESS, 수정 실패시 FAIL
+     */
     @PatchMapping("/modify/{boardIdx}")
     public ApplicationResponse<?> modifyBoard(
             @PathVariable Long boardIdx,

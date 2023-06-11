@@ -1,7 +1,10 @@
 package kr.co.ddamddam.qna.qnaBoard.repository;
 
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
+import kr.co.ddamddam.qna.qnaReply.entity.QnaReply;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,12 +17,8 @@ public interface QnaRepository extends JpaRepository<Qna, Long> {
      */
     List<Qna> findTop3ByOrderByQnaViewDesc();
 
-    /**
-     * QNA 게시글 중 채택 or 미채택 게시글만 조회
-     *
-     * @param qnaAdoption - 채택 또는 미채택 상태 (Y or N)
-     * @return - 채택 또는 미채택 상태인 QNA 게시글 리스트
-     */
-//    Page<Qna> findByQnaAdoption(QnaAdoption qnaAdoption, Pageable pageable);
+    @Query("SELECT qr FROM Qna q JOIN q.qnaReply qr WHERE q.qnaIdx = :qnaIdx ORDER BY qr.qnaReplyDate DESC")
+    List<QnaReply> findSortedRepliesByQnaIdx(@Param("qnaIdx") Long qnaIdx);
+
 
 }

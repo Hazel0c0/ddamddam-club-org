@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Setter
 @Getter
-@ToString
+@ToString(exclude = {"qna", "user"})
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,11 +40,11 @@ public class QnaReply {
     @Builder.Default
     private QnaAdoption qnaReplyAdoption = QnaAdoption.N; // 기본값: 채택되지 않은 상태인 N
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "qna_idx") // FK
     private Qna qna;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_idx") // FK
     private User user;
 

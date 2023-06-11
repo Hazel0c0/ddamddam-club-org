@@ -51,10 +51,10 @@ public class Qna {
     @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY)
     private List<QnaReply> qnaReply;
 
-    @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY)
     private List<QnaHashtag> qnaHashtag;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_idx") // FK
     private User user;
 
