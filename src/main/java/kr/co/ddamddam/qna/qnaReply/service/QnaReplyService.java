@@ -112,4 +112,28 @@ public class QnaReplyService {
 
         return SUCCESS;
     }
+
+    public ResponseMessage adoptQnaReply(Long replyIdx) {
+
+        log.info("[Qna/Service] QNA 댓글 채택, index - {}", replyIdx);
+
+        QnaReply qnaReply = qnaReplyRepository.findById(replyIdx).orElseThrow(() -> {
+            throw new NotFoundQnaReplyException(NOT_FOUND_REPLY, replyIdx);
+        });
+
+        Qna qna = qnaReply.getQna();
+
+        if (qna.getQnaAdoption() == Y) {
+            return FAIL;
+        }
+
+        // 댓글 1개가 채택되면, 해당 댓글이 달려있는 게시글도 채택완료 처리
+        qnaReply.setQnaReplyAdoption(Y);
+        qna.setQnaAdoption(Y);
+
+        qnaReplyRepository.save(qnaReply);
+        qnaRepository.save(qna);
+
+        return SUCCESS;
+    }
 }

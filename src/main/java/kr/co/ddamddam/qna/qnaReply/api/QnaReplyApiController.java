@@ -43,6 +43,7 @@ public class QnaReplyApiController {
 
     /**
      * QNA 댓글 작성
+     * [POST] /api/ddamddam/qna-reply/write
      * @param dto - 댓글을 작성할 게시글의 index, 작성한 댓글 내용
      * @return - 저장 성공시 게시글의 index, 저장 실패시 FAIL
      */
@@ -68,6 +69,7 @@ public class QnaReplyApiController {
     /**
      * QNA 댓글 삭제
      * ❗ 채택이 완료된 댓글은 삭제가 불가능합니다.
+     * [DELETE] /api/ddamddam/delete/{replyIdx}
      * @param replyIdx - 삭제할 댓글의 index
      * @return 삭제 성공시 SUCCESS, 삭제 실패시 FAIL
      */
@@ -86,6 +88,13 @@ public class QnaReplyApiController {
         return ApplicationResponse.ok(result);
     }
 
+    /**
+     * QNA 댓글 수정
+     * ❗ 채택이 완료된 게시글의 댓글은 수정이 불가능합니다.
+     * [PATCH] /api/ddamddam/modify
+     * @param dto - 댓글 index, 수정한 댓글 내용
+     * @return - 수정 성공시 SUCCESS, 수정 실패시 FAIL
+     */
     @PatchMapping("/modify")
     public ApplicationResponse<?> modifyReply(
             @RequestBody QnaReplyModifyRequestDTO dto
@@ -93,6 +102,23 @@ public class QnaReplyApiController {
         log.info("PATCH : /qna-reply/modify/{} - QNA 댓글 수정", dto.getReplyIdx());
 
         ResponseMessage result = qnaReplyService.modifyReply(dto);
+
+        return ApplicationResponse.ok(result);
+    }
+
+    /**
+     * QNA 댓글 채택
+     * ❗ 이미 채택이 완료된 게시글에서는 댓글 채택 처리가 불가능합니다.
+     * @param replyIdx - 채택 처리를 할 댓글의 index
+     * @return - 채택 성공시 SUCCESS, 채택 실패시 FAIL
+     */
+    @PatchMapping("/adopts/{replyIdx}")
+    public ApplicationResponse<?> adoptQnaReply(
+            @PathVariable Long replyIdx
+    ) {
+        log.info("PATCH : /qna-reply/adopts/{} - QNA 댓글 채택", replyIdx);
+
+        ResponseMessage result = qnaReplyService.adoptQnaReply(replyIdx);
 
         return ApplicationResponse.ok(result);
     }
