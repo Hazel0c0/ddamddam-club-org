@@ -32,7 +32,7 @@ class QnaReplyRepositoryTest {
                     .qna(qnaRepository.findById(11L).orElseThrow(() -> {
                         throw new RuntimeException();
                     }))
-                    .user(userRepository.findById(5L).orElseThrow(() -> {
+                    .user(userRepository.findById(11L).orElseThrow(() -> {
                         throw new RuntimeException();
                     }))
                     .build();
