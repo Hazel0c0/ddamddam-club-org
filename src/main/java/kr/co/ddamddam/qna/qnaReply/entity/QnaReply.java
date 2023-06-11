@@ -2,6 +2,7 @@ package kr.co.ddamddam.qna.qnaReply.entity;
 
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.qna.qnaBoard.entity.QnaAdoption;
+import kr.co.ddamddam.qna.qnaReply.dto.request.QnaReplyInsertRequestDTO;
 import kr.co.ddamddam.user.entity.User;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

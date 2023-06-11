@@ -1,7 +1,9 @@
 package kr.co.ddamddam.qna.qnaReply.api;
 
 import kr.co.ddamddam.common.response.ApplicationResponse;
+import kr.co.ddamddam.common.response.ResponseMessage;
 import kr.co.ddamddam.qna.qnaReply.dto.page.PageDTO;
+import kr.co.ddamddam.qna.qnaReply.dto.request.QnaReplyInsertRequestDTO;
 import kr.co.ddamddam.qna.qnaReply.dto.response.QnaReplyListPageResponseDTO;
 import kr.co.ddamddam.qna.qnaReply.dto.response.QnaReplyListResponseDTO;
 import kr.co.ddamddam.qna.qnaReply.service.QnaReplyService;
@@ -10,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static kr.co.ddamddam.common.response.ResponseMessage.*;
 
 @RestController
 @Slf4j
@@ -31,19 +35,33 @@ public class QnaReplyApiController {
     ) {
         log.info("GET : /qna-reply/{} - 댓글 전체보기", boardIdx);
 
-//        QnaReplyListPageResponseDTO qnaReplyList = qnaReplyService.getList(pageDTO, boardIdx);
-
         List<QnaReplyListResponseDTO> list = qnaReplyService.getList(boardIdx);
-
-        System.out.println("list = " + list);
 
         return ApplicationResponse.ok(list);
     }
-//
-//    @PostMapping("/write")
-//    public ApplicationResponse<?> writeReply(
-//            @RequestBody QnaReplyInsertRequestDTO dto
-//    ) {
-//        log.info("POST : /qna-reply/write - 댓글 작성");
-//    }
+
+    /**
+     * QNA 댓글 작성
+     * @param boardIdx - 댓글을 작성할 게시글의 index
+     * @param replyContent - 작성한 댓글 내용
+     * @return - 저장 성공시 게시글의 index, 저장 실패시 FAIL
+     */
+    @PostMapping("/write")
+    public ApplicationResponse<?> writeReply(
+//            Long userIdx,
+            @RequestBody QnaReplyInsertRequestDTO dto
+    ) {
+        log.info("POST : /qna-reply/write - QNA {}번 게시글에 '{}' 댓글 작성", dto.getBoardIdx(), dto.getReplyContent());
+
+        // TODO : 토큰 방식으로 로그인한 회원의 idx 를 가져와서 Service 파라미터로 넣는 처리 필요
+        Long userIdx = 2L;
+
+        ResponseMessage result = qnaReplyService.writeReply(userIdx, dto);
+
+        if (result == FAIL) {
+            return ApplicationResponse.error(result);
+        }
+
+        return ApplicationResponse.ok(dto.getBoardIdx());
+    }
 }
