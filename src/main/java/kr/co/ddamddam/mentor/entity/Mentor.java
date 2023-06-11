@@ -1,12 +1,15 @@
 package kr.co.ddamddam.mentor.entity;
 
 
+import kr.co.ddamddam.chat.entity.ChatRoom;
 import kr.co.ddamddam.user.entity.User;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter @Getter
 @ToString
@@ -45,4 +48,8 @@ public class Mentor {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx")
     private User user;
+
+    @OneToMany(mappedBy = "mentor")
+    @Builder.Default
+    private List<ChatRoom> chatRooms = new ArrayList<>();
 }
