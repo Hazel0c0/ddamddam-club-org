@@ -27,6 +27,8 @@ public class MentorWriteRequestDTO {
 
     @NotBlank
     private String mentorCurrent;
+    @NotBlank
+    private String mentorCareer;
 
     @NotBlank
     private int mentorMentee;
@@ -41,6 +43,7 @@ public class MentorWriteRequestDTO {
                 .mentorSubject(this.mentorSubject)
                 .mentorCurrent(this.mentorCurrent)
                 .mentorMentee(this.mentorMentee)
+                .mentorCareer(this.mentorCareer)
                 .build();
     }
 

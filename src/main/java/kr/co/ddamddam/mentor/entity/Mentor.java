@@ -38,6 +38,9 @@ public class Mentor {
     @Column(name = "mentor_current",nullable = false)
     private String mentorCurrent;
 
+    @Column(name = "mentor_career",nullable = false)
+    private String mentorCareer;
+
     @CreationTimestamp
     @Column(name = "mentor_date",updatable = false)
     private LocalDateTime mentorDate; // 작성시간
