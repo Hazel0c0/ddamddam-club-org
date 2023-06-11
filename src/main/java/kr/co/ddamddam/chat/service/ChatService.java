@@ -2,6 +2,7 @@ package kr.co.ddamddam.chat.service;
 
 import kr.co.ddamddam.chat.dto.request.ChatMessageRequestDTO;
 import kr.co.ddamddam.chat.dto.request.ChatRoomRequestDTO;
+import kr.co.ddamddam.chat.dto.response.ChatAllListResponseDTO;
 import kr.co.ddamddam.chat.dto.response.ChatMessageResponseDTO;
 import kr.co.ddamddam.chat.dto.response.ChatRoomResponseDTO;
 import kr.co.ddamddam.chat.dto.response.UserResponseDTO;
@@ -9,12 +10,18 @@ import kr.co.ddamddam.chat.entity.ChatMessage;
 import kr.co.ddamddam.chat.entity.ChatRoom;
 import kr.co.ddamddam.chat.repository.ChatMessageRepository;
 import kr.co.ddamddam.chat.repository.ChatRoomRepository;
+import kr.co.ddamddam.mentor.entity.Mentor;
+import kr.co.ddamddam.mentor.repository.MentorRepository;
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +30,7 @@ public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final UserRepository userRepository;
+    private final MentorRepository mentorRepository;
 
 
     public ChatRoomResponseDTO createChatRoom(ChatRoomRequestDTO requestDTO) {
@@ -82,6 +90,18 @@ public class ChatService {
         responseDTO.setUserName(user.getUserName());
         responseDTO.setUserNickname(user.getUserNickname());
         return responseDTO;
+    }
+
+    public List<ChatMessageResponseDTO> getList(Long mentorIdx) {
+
+        List<ChatRoom> chatRoomList = chatRoomRepository.findByMentorMentorIdx(mentorIdx);
+
+//        List<ChatMessageResponseDTO> collect = chatRoomList.stream().map(room -> {
+//            ChatMessageResponseDTO dto = new ChatMessageResponseDTO();
+//            dto.setMessage(room.getMessages().get(room.getMessages().size()).getContent());
+//            dto.setSentAt(room.getMessages().);
+//        }).collect(Collectors.toList());
+        return null;
     }
 }
 
