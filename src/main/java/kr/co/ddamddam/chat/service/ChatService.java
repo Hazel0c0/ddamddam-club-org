@@ -109,5 +109,33 @@ public class ChatService {
         }).collect(Collectors.toList());
         return collect;
     }
+
+    // 멘티 채팅방 메세지 조회
+    public List<ChatMessageResponseDTO> getDetail(Long mentorIdx, Long senderIdx) {
+        ChatRoom senderUserId = chatRoomRepository.findByMentorMentorIdxAndSenderUserIdx(mentorIdx, senderIdx);
+
+
+        List<ChatMessageResponseDTO> responseDTOS = senderUserId.getMessages().stream().map(msg -> {
+            ChatMessageResponseDTO dto = new ChatMessageResponseDTO();
+            dto.setMessageId(msg.getId());
+            dto.setRoomId(msg.getRoom().getRoomId());
+            dto.setSentAt(msg.getSentAt());
+            dto.setSender(new UserResponseDTO(msg.getSender()));
+            dto.setMessage(msg.getContent());
+
+            return dto;
+        }).collect(Collectors.toList());
+
+        return responseDTOS;
+
+    }
+
+    // 채팅방 삭제
+    public void delete(Long roomId) {
+
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow();
+
+        chatRoomRepository.delete(chatRoom);
+    }
 }
 

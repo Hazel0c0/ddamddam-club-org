@@ -37,17 +37,22 @@ public class MentorService {
     private final UserRepository userRepository;
     private final MenteeRepository menteeRepository;
 
-    public MentorListResponseDTO getList(PageDTO pageDTO) {
+    public MentorListResponseDTO getList(PageDTO pageDTO, List<String> subjects) {
 
         // Pageable 객체생성
         Pageable pageable = PageRequest.of(
                 pageDTO.getPage() - 1,
-                pageDTO.getSize(),
-                Sort.by(pageDTO.getSort()).descending()
+                pageDTO.getSize()
         );
 
         // 게시글 목록 조회
-        Page<Mentor> mentors = mentorRepository.findAll(pageable);
+        Page<Mentor> mentors;
+    if (subjects != null && !subjects.isEmpty()) {
+        mentors = mentorRepository.findByMentorSubjectInIgnoreCase(subjects, pageable);
+    } else {
+        mentors = mentorRepository.findAll(pageable);
+    }
+
 
         List<Mentor> mentorList = mentors.getContent();
         List<MentorDetailResponseDTO> mentorDetailResponseDTOList = mentorList.stream().map(mentor -> {
@@ -59,6 +64,7 @@ public class MentorService {
             dto.setCurrent(mentor.getMentorCurrent());
             dto.setDate(mentor.getMentorDate());
             dto.setMentee(mentor.getMentorMentee());
+            dto.setCareer(mentor.getMentorCareer());
 
             User user = mentor.getUser();
             if (user != null){
@@ -88,6 +94,7 @@ public class MentorService {
         dto.setCurrent(mentor.getMentorCurrent());
         dto.setDate(mentor.getMentorDate());
         dto.setMentee(mentor.getMentorMentee());
+        dto.setCareer(mentor.getMentorCareer());
 
         User user = mentor.getUser();
         if (user != null){

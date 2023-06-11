@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -32,18 +33,23 @@ public class MentorApiController {
 
     // 멘토페이지 전체 목록 조회
     @GetMapping("/list")
-    public ResponseEntity<?> list(PageDTO pageDTO){
+    public ResponseEntity<?> list(
+            PageDTO pageDTO, @RequestParam(required = false) List<String> subjects
+    ){
 
-        log.info("/api/mentors/list?page{}&size={}&sort={}",pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort());
+        log.info("/api/ddamddam/mentors/list?page{}&size={}&subjects={}",pageDTO.getPage(),pageDTO.getSize());
 
-        MentorListResponseDTO dto = mentorService.getList(pageDTO);
+        // 키워드가 여러 개인 경우 (&subjects={})를 더해서 보내주기
+        // log.info("/api/ddamddam/mentors/list?page{}&size={}&subjects={}&subjects={}");
+
+        MentorListResponseDTO dto = mentorService.getList(pageDTO,subjects);
         return ResponseEntity.ok().body(dto);
     }
 
     // 게시물 상세 페이지 조회
     @GetMapping("/detail")
     public ResponseEntity<?> detail(Long mentorIdx){
-        log.info("/api/mentors/detail?mentorIdx={}",mentorIdx);
+        log.info("/api/ddamddam/mentors/detail?mentorIdx={}",mentorIdx);
         MentorDetailResponseDTO dto = mentorService.getDetail(mentorIdx);
 
         return ResponseEntity.ok().body(dto);
@@ -60,7 +66,7 @@ public class MentorApiController {
         //  "mentorCurrent": "현재 상태"
         // 게시글 작성 후 상세 모달 보기로 일단 처리
         //}
-        log.info("/api/mentors POST!! - payload {}",dto);
+        log.info("/api/ddamddam/mentors POST!! - payload {}",dto);
         // 로그인한 토큰방식으로 user_idx값 받아와 서비스 파라미터에 넣기
         Long userIdx = 2L;
         MentorDetailResponseDTO responseDTO = mentorService.write(dto,userIdx);
@@ -82,7 +88,7 @@ public class MentorApiController {
         //  "mentorCurrent": "현재 상태"
         // 게시글 수정 후 상세 모달 보기로 일단 처리
         //}
-        log.info("/api/mentors PUT!! - payload {}",dto);
+        log.info("/api/ddamddam/mentors PUT!! - payload {}",dto);
 
         try {
             MentorDetailResponseDTO responseDTO = mentorService.modify(dto);
@@ -98,7 +104,7 @@ public class MentorApiController {
     public ResponseEntity<?> delete(
             @PathVariable Long mentorIdx
     ){
-        log.info("/api/mentors/{} DELETE!!",mentorIdx);
+        log.info("/api/ddamddam/mentors/{} DELETE!!",mentorIdx);
         try {
             mentorService.delete(mentorIdx);
         }catch (RuntimeException e){
