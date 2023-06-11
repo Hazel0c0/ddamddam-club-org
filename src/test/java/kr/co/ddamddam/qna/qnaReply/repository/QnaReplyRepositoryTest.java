@@ -24,15 +24,15 @@ class QnaReplyRepositoryTest {
     @DisplayName("QNA 댓글 더미데이터 20개 생성")
     void insertBulk() {
 
-        for (int i = 21; i <= 40 ; i++) {
+        for (int i = 1; i <= 20 ; i++) {
 
             QnaReply qnaReply = QnaReply.builder()
                     .qnaReplyContent("댓글 내용" + i)
                     .qnaReplyWriter("댓글 작성자" + i)
-                    .qna(qnaRepository.findById(1L).orElseThrow(() -> {
+                    .qna(qnaRepository.findById(11L).orElseThrow(() -> {
                         throw new RuntimeException();
                     }))
-                    .user(userRepository.findById(1L).orElseThrow(() -> {
+                    .user(userRepository.findById(5L).orElseThrow(() -> {
                         throw new RuntimeException();
                     }))
                     .build();

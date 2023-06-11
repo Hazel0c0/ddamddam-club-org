@@ -148,6 +148,10 @@ public class QnaApiController {
 
         ResponseMessage result = qnaService.deleteBoard(boardIdx);
 
+        if (result == ResponseMessage.FAIL) {
+            return ApplicationResponse.error(result);
+        }
+
         return ApplicationResponse.ok(result);
     }
 

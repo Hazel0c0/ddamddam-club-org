@@ -2,7 +2,9 @@ package kr.co.ddamddam.qna.qnaReply.service;
 
 import kr.co.ddamddam.common.response.ResponseMessage;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
+import kr.co.ddamddam.qna.qnaBoard.entity.QnaAdoption;
 import kr.co.ddamddam.qna.qnaBoard.exception.custom.NotFoundQnaBoardException;
+import kr.co.ddamddam.qna.qnaBoard.exception.custom.NotFoundQnaReplyException;
 import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
 import kr.co.ddamddam.qna.qnaReply.dto.page.PageDTO;
 import kr.co.ddamddam.qna.qnaReply.dto.request.QnaReplyInsertRequestDTO;
@@ -23,8 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static kr.co.ddamddam.common.response.ResponseMessage.*;
-import static kr.co.ddamddam.qna.qnaBoard.exception.custom.QnaErrorCode.NOT_FOUND_BOARD;
-import static kr.co.ddamddam.qna.qnaBoard.exception.custom.QnaErrorCode.NOT_FOUND_USER;
+import static kr.co.ddamddam.qna.qnaBoard.exception.custom.QnaErrorCode.*;
 
 @SuppressWarnings("unchecked")
 @Service
@@ -93,4 +94,20 @@ public class QnaReplyService {
         );
     }
 
+    public ResponseMessage deleteReply(Long replyIdx) {
+
+        log.info("[Qna/Service] QNA 댓글 삭제");
+
+        QnaReply qnaReply = qnaReplyRepository.findById(replyIdx).orElseThrow(() -> {
+            throw new NotFoundQnaReplyException(NOT_FOUND_REPLY, replyIdx);
+        });
+
+        if (qnaReply.getQnaReplyAdoption() == QnaAdoption.Y) {
+            return FAIL;
+        }
+
+        qnaReplyRepository.deleteById(replyIdx);
+
+        return SUCCESS;
+    }
 }
