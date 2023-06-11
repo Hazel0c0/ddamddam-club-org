@@ -21,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +52,7 @@ public class MentorService {
         List<Mentor> mentorList = mentors.getContent();
         List<MentorDetailResponseDTO> mentorDetailResponseDTOList = mentorList.stream().map(mentor -> {
             MentorDetailResponseDTO dto = new MentorDetailResponseDTO();
+            dto.setIdx(mentor.getMentorIdx());
             dto.setTitle(mentor.getMentorTitle());
             dto.setContent(mentor.getMentorContent());
             dto.setSubject(mentor.getMentorSubject());
@@ -79,6 +81,7 @@ public class MentorService {
         Optional<Mentor> mentorOptional = mentorRepository.findById(mentorIdx);
         Mentor mentor = mentorOptional.get();
         MentorDetailResponseDTO dto = new MentorDetailResponseDTO();
+        dto.setIdx(mentor.getMentorIdx());
         dto.setTitle(mentor.getMentorTitle());
         dto.setContent(mentor.getMentorContent());
         dto.setSubject(mentor.getMentorSubject());
