@@ -4,6 +4,7 @@ import kr.co.ddamddam.common.response.ApplicationResponse;
 import kr.co.ddamddam.common.response.ResponseMessage;
 import kr.co.ddamddam.qna.qnaReply.dto.page.PageDTO;
 import kr.co.ddamddam.qna.qnaReply.dto.request.QnaReplyInsertRequestDTO;
+import kr.co.ddamddam.qna.qnaReply.dto.request.QnaReplyModifyRequestDTO;
 import kr.co.ddamddam.qna.qnaReply.dto.response.QnaReplyListPageResponseDTO;
 import kr.co.ddamddam.qna.qnaReply.dto.response.QnaReplyListResponseDTO;
 import kr.co.ddamddam.qna.qnaReply.service.QnaReplyService;
@@ -42,8 +43,7 @@ public class QnaReplyApiController {
 
     /**
      * QNA 댓글 작성
-     * @param boardIdx - 댓글을 작성할 게시글의 index
-     * @param replyContent - 작성한 댓글 내용
+     * @param dto - 댓글을 작성할 게시글의 index, 작성한 댓글 내용
      * @return - 저장 성공시 게시글의 index, 저장 실패시 FAIL
      */
     @PostMapping("/write")
@@ -65,17 +65,34 @@ public class QnaReplyApiController {
         return ApplicationResponse.ok(dto.getBoardIdx());
     }
 
+    /**
+     * QNA 댓글 삭제
+     * ❗ 채택이 완료된 댓글은 삭제가 불가능합니다.
+     * @param replyIdx - 삭제할 댓글의 index
+     * @return 삭제 성공시 SUCCESS, 삭제 실패시 FAIL
+     */
     @DeleteMapping("/delete/{replyIdx}")
     public ApplicationResponse<?> deleteReply(
             @PathVariable Long replyIdx
     ) {
-        log.info("DELETE : /qna-reply/delete/{} - 댓글 삭제", replyIdx);
+        log.info("DELETE : /qna-reply/delete/{} - QNA 댓글 삭제", replyIdx);
 
         ResponseMessage result = qnaReplyService.deleteReply(replyIdx);
 
-        if (result == ResponseMessage.FAIL) {
-            return ApplicationResponse.error(result);
+        if (result == FAIL) {
+            return ApplicationResponse.bad(result);
         }
+
+        return ApplicationResponse.ok(result);
+    }
+
+    @PatchMapping("/modify")
+    public ApplicationResponse<?> modifyReply(
+            @RequestBody QnaReplyModifyRequestDTO dto
+    ) {
+        log.info("PATCH : /qna-reply/modify/{} - QNA 댓글 수정", dto.getReplyIdx());
+
+        ResponseMessage result = qnaReplyService.modifyReply(dto);
 
         return ApplicationResponse.ok(result);
     }
