@@ -64,4 +64,19 @@ public class QnaReplyApiController {
 
         return ApplicationResponse.ok(dto.getBoardIdx());
     }
+
+    @DeleteMapping("/delete/{replyIdx}")
+    public ApplicationResponse<?> deleteReply(
+            @PathVariable Long replyIdx
+    ) {
+        log.info("DELETE : /qna-reply/delete/{} - 댓글 삭제", replyIdx);
+
+        ResponseMessage result = qnaReplyService.deleteReply(replyIdx);
+
+        if (result == ResponseMessage.FAIL) {
+            return ApplicationResponse.error(result);
+        }
+
+        return ApplicationResponse.ok(result);
+    }
 }

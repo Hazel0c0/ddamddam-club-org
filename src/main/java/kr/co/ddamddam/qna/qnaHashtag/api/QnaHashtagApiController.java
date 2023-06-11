@@ -10,4 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam/qna-hashtag")
 public class QnaHashtagApiController {
+
+
+
 }
