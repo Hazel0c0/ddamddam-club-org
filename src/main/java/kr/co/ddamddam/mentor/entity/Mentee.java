@@ -1,5 +1,6 @@
 package kr.co.ddamddam.mentor.entity;
 
+import kr.co.ddamddam.chat.entity.ChatRoom;
 import kr.co.ddamddam.user.entity.User;
 import lombok.*;
 
@@ -28,4 +29,8 @@ public class Mentee {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mentor_idx")
     private Mentor mentor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "roomId")
+    private ChatRoom chatRoom;
 }

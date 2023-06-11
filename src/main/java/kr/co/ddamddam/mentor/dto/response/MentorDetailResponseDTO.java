@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import kr.co.ddamddam.mentor.entity.Mentor;
 import lombok.*;
 
+import java.io.PipedReader;
 import java.time.LocalDateTime;
 
 @Setter
@@ -16,6 +17,8 @@ import java.time.LocalDateTime;
 @Builder
 public class MentorDetailResponseDTO {
 
+
+    private Long idx;
     private String title;
     private String content;
     private String subject;

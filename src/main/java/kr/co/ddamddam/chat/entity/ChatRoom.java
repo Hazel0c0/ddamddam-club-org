@@ -1,5 +1,7 @@
 package kr.co.ddamddam.chat.entity;
 
+import kr.co.ddamddam.mentor.entity.Mentee;
+import kr.co.ddamddam.mentor.entity.Mentor;
 import kr.co.ddamddam.user.entity.User;
 import lombok.*;
 
@@ -31,5 +33,13 @@ public class ChatRoom {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<ChatMessage> messages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "chatRoom")
+    @Builder.Default
+    private List<Mentee> mentee = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "mentor_idx")
+    private Mentor mentor;
 }
 
