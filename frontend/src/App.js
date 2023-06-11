@@ -13,6 +13,7 @@ import QnaMain from "./component/qna/QnaMain";
 import Footer from "./component/common/Footer";
 import MentorsTemplate from "./component/mentors/MentorsTemplate";
 import MentorsWrite from "./component/mentors/MentorsWrite";
+import MentorsDetail from "./component/mentors/MentorsDetail";
 
 function App() {
     //로그인 상태 관리(session완료 시 )
@@ -24,11 +25,12 @@ function App() {
                 <Routes>
                     {/*메인*/}
                     <Route path={'/'} element={<MainTemplate />}></Route>
-
+                    {/*<Route path="/board/:idx" element={<BoardDetail/>}/>*/}
                     {/*멘토,멘티*/}
                     <Route path={'/mentors'} element={<MentorsTemplate />}></Route>
                     <Route path={'/mentors/write'} element={<MentorsWrite />}></Route>
-
+                    {/*<Route path={'/mentors/detail:mentorIdx'} element={<MentorsDetail />}></Route>*/}
+                    <Route path="/mentors/detail/mentorIdx/:idx" element={<MentorsDetail />} />
                     {/*프로젝트 모집*/}
                     <Route path={'/projects'} element={<ProjectsMain />}></Route>
 
