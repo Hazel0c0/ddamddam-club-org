@@ -46,7 +46,7 @@ public class Company {
     @Column(name = "company_url",updatable = false, length = 100)
     private  String companyUrl; // 회사URL
 
-    @UpdateTimestamp //Defualt current_timestamp
+
     @CreationTimestamp
     @Column(name = "company_date",updatable = false)
     private Timestamp companyDate; //작성날짜(채용시작날짜)

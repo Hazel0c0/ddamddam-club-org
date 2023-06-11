@@ -4,7 +4,6 @@ import kr.co.ddamddam.company.entity.Company;
 import kr.co.ddamddam.user.entity.User;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -29,8 +28,7 @@ public class Review {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_idx") //company 숫자 ...? 채용공고에서 연결되는건가?
-    @Column(name = "review_company")
-    private Company reviewCompany;
+    private Company company;
 
     @Column(name = "review_title",nullable = false, length = 300)
     private String reviewTitle;
@@ -47,10 +45,9 @@ public class Review {
     @Column(name = "review_tenure", nullable = false, columnDefinition = "INT(3)")
     private int reviewTenure; //경력
 
-    @Column(name = "review_location",nullable = false,length = 30)
-    private String reviewLocation; //
+//    @Column(name = "review_location",nullable = false,length = 30)
+//    private String reviewLocation; //회사 위치
 
-    @UpdateTimestamp //Defualt current_timestamp
     @CreationTimestamp
     @Column(updatable = false)
     private Timestamp reviewDate;
