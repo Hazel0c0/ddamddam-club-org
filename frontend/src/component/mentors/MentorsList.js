@@ -38,7 +38,7 @@ const MentorsList = () => {
 
     };
 
-    const { title, content, subject, current, nickName, date,mentee } = detailMember;
+    const {title, content, subject, current, nickName, date, mentee, career} = detailMember;
 
 
     // fetch('http://localhost:8181/api/ddamddam/mentors/list?page=&size=&sort=')
@@ -111,17 +111,17 @@ const MentorsList = () => {
                         <h3 className={'detail-sub-title'}>{title}</h3>
                         <div className={'etc-wrapper'}>
                             <div className={'member-count'}><p className={'detail-sub-text'}>인원</p>{mentee}명 모집</div>
-                            <div className={'subject'}><p className={'detail-sub-text'}>인원</p>{subject}</div>
-                            <div className={'career'}><p className={'detail-sub-text'}>인원</p>{current}</div>
+                            <div className={'subject'}><p className={'detail-sub-text'}>주제</p>{subject}</div>
+                            <div className={'career'}><p className={'detail-sub-text'}>경력</p>{current}</div>
                             {/*값 받아와야함*/}
-                            <div className={'current'}><p className={'detail-sub-text'}>인원</p>Rookies</div>
+                            <div className={'current'}><p className={'detail-sub-text'}>현직</p>{career}</div>
                         </div>
                     </div>
                 </section>
 
                 <section className={'main-section'}>
                     <div className={'main-section-text'}>
-                        {current}
+                        {content}
                     </div>
                 </section>
                 {/*<Link to={''}*/}
