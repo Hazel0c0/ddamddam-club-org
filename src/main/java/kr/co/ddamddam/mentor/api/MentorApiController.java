@@ -31,7 +31,9 @@ public class MentorApiController {
 
     // 멘토페이지 전체 목록 조회
     @GetMapping("/list")
-    public ResponseEntity<?> list(PageDTO pageDTO){
+    public ResponseEntity<?> list(
+            PageDTO pageDTO
+    ){
 
         log.info("/api/mentors/list?page{}&size={}&sort={}",pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort());
 

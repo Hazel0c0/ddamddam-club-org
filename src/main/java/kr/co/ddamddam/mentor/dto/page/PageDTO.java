@@ -15,6 +15,6 @@ public class PageDTO {
     public PageDTO(){
         this.page = 1;
         this.size = 9;
-        this.sort = "mentorDate";
+        this.sort = "";
     }
 }
