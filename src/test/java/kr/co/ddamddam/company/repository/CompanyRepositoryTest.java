@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
 class CompanyRepositoryTest {
 
     @Autowired
@@ -29,7 +28,7 @@ class CompanyRepositoryTest {
                             .companyArea("서울특별시"+i)
                             .companyContent("Springboot를 이용한 web개발 경험이 있으신분"+i)
                             .companyCareer("3")
-                            .companyEnddate(LocalDate.parse("2023-08-"+i))
+                            .companyEnddate(LocalDate.parse("2023-08-0"+i))
                             .build()
             );
 

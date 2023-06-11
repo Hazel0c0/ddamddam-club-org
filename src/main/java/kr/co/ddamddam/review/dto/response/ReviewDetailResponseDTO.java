@@ -1,7 +1,6 @@
 package kr.co.ddamddam.review.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import kr.co.ddamddam.company.entity.Company;
 import kr.co.ddamddam.review.entity.Review;
 import lombok.*;
@@ -22,18 +21,19 @@ public class ReviewDetailResponseDTO {
     private String reviewContent;
     private String reviewJob;
     private Float reviewRating; //별점
-    private String reviewLocation;
+    private String reviewLocation; //이렇게 선언해도 되는거임???
    @JsonFormat(pattern = "yyyy/MM/dd")
     private Timestamp reviewDate;
     private int reviewView;
 
     public ReviewDetailResponseDTO(Review review){
-        this.reviewCompany = review.getReviewCompany();
+        this.reviewCompany = review.getCompany();
         this.reviewTitle = review.getReviewTitle();
         this.reviewContent = review.getReviewContent();
         this.reviewJob = review.getReviewJob();
         this.reviewRating = review.getReviewRating();
-        this.reviewLocation = review.getReviewLocation();
+        //이거 맞는거임?????
+        this.reviewLocation = review.getCompany().getCompanyArea();
         this.reviewDate = review.getReviewDate();
         this.reviewView = review.getReviewView();
     }
