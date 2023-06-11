@@ -51,6 +51,7 @@ public class QnaService {
         // 데이터베이스에서 조회한 정보를 JSON 형태에 맞는 DTO 로 변환
         return QnaListPageResponseDTO.builder()
                 .count(qnaList.size())
+                .count(qnaList.size())
                 .pageInfo(new PageResponseDTO<Qna>(qnas)) // TODO : mentors 꺼 갖다썼음. 공용이니까 나중에 리팩터링할때 common 으로 옮길게요.
                 .qnas(qnaList)
                 .build();

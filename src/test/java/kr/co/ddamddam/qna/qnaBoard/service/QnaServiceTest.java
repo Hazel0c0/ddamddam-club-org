@@ -1,4 +1,4 @@
-package kr.co.ddamddam.qna.service;
+package kr.co.ddamddam.qna.qnaBoard.service;
 
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaDetailResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaTopListResponseDTO;
