@@ -92,16 +92,22 @@ public class ChatService {
         return responseDTO;
     }
 
+    // 멘토가 보는 채팅방 (멘티들의 채팅방들이 다 보임)
     public List<ChatMessageResponseDTO> getList(Long mentorIdx) {
 
         List<ChatRoom> chatRoomList = chatRoomRepository.findByMentorMentorIdx(mentorIdx);
 
-//        List<ChatMessageResponseDTO> collect = chatRoomList.stream().map(room -> {
-//            ChatMessageResponseDTO dto = new ChatMessageResponseDTO();
-//            dto.setMessage(room.getMessages().get(room.getMessages().size()).getContent());
-//            dto.setSentAt(room.getMessages().);
-//        }).collect(Collectors.toList());
-        return null;
+        List<ChatMessageResponseDTO> collect = chatRoomList.stream().map(room -> {
+            ChatMessageResponseDTO dto = new ChatMessageResponseDTO();
+            dto.setRoomId(room.getRoomId());
+            dto.setSender(new UserResponseDTO(room.getSender()));
+            dto.setMessage(room.getMessages().get(room.getMessages().size() - 1).getContent());
+            dto.setSentAt(room.getMessages().get(room.getMessages().size() - 1).getSentAt());
+            dto.setMessageId(room.getMessages().get(room.getMessages().size() - 1).getId());
+
+            return dto;
+        }).collect(Collectors.toList());
+        return collect;
     }
 }
 
