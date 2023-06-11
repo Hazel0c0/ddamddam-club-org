@@ -64,6 +64,7 @@ public class MentorService {
             dto.setCurrent(mentor.getMentorCurrent());
             dto.setDate(mentor.getMentorDate());
             dto.setMentee(mentor.getMentorMentee());
+            dto.setCareer(mentor.getMentorCareer());
 
             User user = mentor.getUser();
             if (user != null){
@@ -93,6 +94,7 @@ public class MentorService {
         dto.setCurrent(mentor.getMentorCurrent());
         dto.setDate(mentor.getMentorDate());
         dto.setMentee(mentor.getMentorMentee());
+        dto.setCareer(mentor.getMentorCareer());
 
         User user = mentor.getUser();
         if (user != null){
