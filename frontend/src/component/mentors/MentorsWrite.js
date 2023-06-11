@@ -1,6 +1,7 @@
 import React, {useRef, useState} from 'react';
 import Common from "../common/Common";
 import './scss/MentorWrite.scss';
+import {MENTOR} from "../common/config/HostConfig";
 
 const MentorsWrite = () => {
     const [textInput, setTextInput] = useState(
@@ -16,25 +17,46 @@ const MentorsWrite = () => {
 
     const handleSelect = (e) => {
         const {name, value} = e.target;
+        const parseValue = name === 'mentorMentee' ? parseInt(value) :value;
         setTextInput((prevTextInput) => ({
             ...prevTextInput,
-            [name]: value
+            [name]: parseValue
         }));
     };
 
 
     const handleSubmit = () => {
         // 수집한 값들을 이용하여 비동기 POST 요청 수행
-        const {mentorTitle, mentorSubject, mentorCareer, mentorCurrent, mentorMentee} = textInput;
+        const {
+            mentorTitle,
+            mentorSubject,
+            mentorCareer,
+            mentorCurrent,
+            mentorContent,
+            mentorMentee
+        } = textInput;
         const data = {
-            title: mentorTitle,
-            subject: mentorSubject,
-            career: mentorCareer,
-            current: mentorCurrent,
-            mentee: mentorMentee
+            mentorTitle: mentorTitle,
+            mentorContent : mentorContent,
+            mentorSubject: mentorSubject,
+            mentorCurrent: mentorCurrent,
+            mentorCareer: mentorCareer,
+            mentorMentee: mentorMentee
         };
         // 비동기 POST 요청 처리 로직 작성
         console.log(data); // 확인을 위해 콘솔에 출력
+
+        fetch(MENTOR, {
+            method: 'POST',
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log(`json값 어떻게 쓸지? : ${json}`);
+                alert('작성이 완료되었습니다.');
+                window.location.href = 'http://localhost:3000/mentors';
+            })
     };
 
 
