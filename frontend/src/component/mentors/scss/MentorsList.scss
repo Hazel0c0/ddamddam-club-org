@@ -4,7 +4,7 @@
 }
 
 .mentors-list-wrapper {
-  padding: 35px 370px 0;
+  padding: 35px 370px 50px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -72,7 +72,9 @@
         white-space: pre-line;
         line-height: 17px;
         font-size: 12px;
-
+        height: 50px;
+        overflow: scroll;
+        width: 160px;
       }
 
       .category {
@@ -118,6 +120,10 @@
   background-color: #f0f0f0;
 }
 
+.modal {
+  --bs-modal-margin: 5rem !important;
+}
+
 #modal-container {
   font-family: Pretendard, sans-serif;
   width: 500px;
@@ -155,7 +161,8 @@
           margin-right: 7px;
         }
       }
-      .write-date{
+
+      .write-date {
         margin-left: 10px;
         font-size: 13px;
       }
@@ -210,20 +217,21 @@
           display: inline-block;
         }
       }
-      .etc-wrapper div:not(.current){
+
+      .etc-wrapper div:not(.current) {
         padding-bottom: 5px;
       }
     }
   }
 
   // main section
-  .main-section{
+  .main-section {
     padding: 22px 10px 0px;
     margin-bottom: 42px;
     min-height: 390px;
     overflow: auto;
 
-    .main-section-text{
+    .main-section-text {
       white-space: pre-wrap;
       word-break: break-all;
       font-size: 17px;
@@ -232,12 +240,13 @@
   }
 
   //application section
-  .btn-wrapper{
+  .btn-wrapper {
     width: 100%;
     display: flex;
     justify-content: center;
   }
-  .application-btn{
+
+  .application-btn {
     border: none;
     font-size: 17px;
     color: white;

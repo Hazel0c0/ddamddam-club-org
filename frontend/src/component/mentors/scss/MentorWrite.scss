@@ -9,23 +9,30 @@
     letter-spacing: -1.5px;
   }
 
-  .write-form-wrapper{
+  .main-sub-title {
+    font-size: 16px;
+    margin-top: 10px;
+  }
+
+  .write-form-wrapper {
     margin-top: 30px;
     display: flex;
     flex-direction: column;
 
-    .title-input-wrapper{
+    .title-input-wrapper {
       display: flex;
+      align-items: center;
 
-      .title-text-input{
+      .title-text-input {
         height: 40px;
         padding: 5px 10px;
-        width: 100%;
+        width: 96%;
         border-radius: 8px;
         border: solid 1px #e6e6e6;;
       }
     }
-    .select-input-wrapper{
+
+    .select-input-wrapper {
       margin-top: 15px;
       display: flex;
 
@@ -36,30 +43,32 @@
   .subject,
   .career,
   .current,
-  .mentee
-  {
+  .mentee {
     display: flex;
     margin-right: 15px;
+    align-items: center;
   }
-  .sub-title{
+
+  .sub-title {
     font-size: 16px;
-    margin-top: 10px;
     margin-right: 10px;
+    width: fit-content;
   }
 
   .title-text-input,
   .subject-select,
   .career-select,
   .current-text-input,
-  .mentee-text-input
-  {
+  .mentee-text-input {
+    width: fit-content;
     height: 40px;
     padding: 10px 10px;
-    width: 100%;
+    //width: 100%;
     border-radius: 8px;
     border: solid 1px #e6e6e6;
   }
-  .content{
+
+  .content {
     margin-top: 16px;
     width: 100%;
     min-height: 600px;
@@ -70,7 +79,7 @@
     resize: none;
   }
 
-  .btn-wrapper{
+  .btn-wrapper {
     margin-top: 18px;
     display: flex;
     justify-content: center;
@@ -78,16 +87,19 @@
     border: none;
 
     .close-btn,
-    .submit-btn{
+    .submit-btn {
       border: none;
       width: 160px;
       height: 42px;
       border-radius: 100px;
+      margin-bottom: 50px;
     }
-    .close-btn{
+
+    .close-btn {
       width: 160px;
     }
-    .submit-btn{
+
+    .submit-btn {
       color: white;
       background-color: #1e4fff;
     }
