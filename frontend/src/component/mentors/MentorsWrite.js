@@ -157,7 +157,7 @@ const MentorsWrite = () => {
             </section>
 
             <div className={'btn-wrapper'}>
-                <Link to={'/mentors'}><button className={'close-btn'}>취소하기</button></Link>
+                <Link to={'/mentors'} className={'close-btn-a'}><button className={'close-btn'}>취소하기</button></Link>
                 <button className={'submit-btn'} onClick={handleSubmit}>작성완료</button>
             </div>
         </Common>
