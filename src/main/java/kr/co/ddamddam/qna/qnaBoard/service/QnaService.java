@@ -68,9 +68,9 @@ public class QnaService {
                         .boardIdx(qna.getQnaIdx())
                         .boardTitle(qna.getQnaTitle())
                         .boardWriter(qna.getQnaWriter())
+                        .qnaAdoption(qna.getQnaAdoption())
                         .boardView(qna.getQnaView())
-                        // TODO : 댓글과 연관관계 매핑할 때 에러나네요... 댓글 구현 후 다시 테스트 필요합니다.
-//                        .replyCount(qna.getQnaReply().size())
+                        .replyCount(qna.getQnaReply().size())
                         .build()
                 ).collect(Collectors.toList());
     }
