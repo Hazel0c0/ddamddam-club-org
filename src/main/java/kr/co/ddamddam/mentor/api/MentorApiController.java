@@ -21,6 +21,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam/mentors")
+@CrossOrigin(origins = "http://localhost:3000")
 public class MentorApiController {
 
     // 리소스 : 게시물 (Mentors)
