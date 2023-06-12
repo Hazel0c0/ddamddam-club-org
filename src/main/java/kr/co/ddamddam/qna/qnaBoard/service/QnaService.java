@@ -1,5 +1,6 @@
 package kr.co.ddamddam.qna.qnaBoard.service;
 
+import kr.co.ddamddam.common.common.TruncateString;
 import kr.co.ddamddam.common.response.ResponseMessage;
 import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.page.PageDTO;
@@ -66,11 +67,11 @@ public class QnaService {
         return qnaListTop3.stream()
                 .map(qna -> QnaTopListResponseDTO.builder()
                         .boardIdx(qna.getQnaIdx())
-                        .boardTitle(qna.getQnaTitle())
-                        .boardWriter(qna.getQnaWriter())
+                        .boardTitle(TruncateString.truncate(qna.getQnaTitle(), 15))
+                        .boardContent(TruncateString.truncate(qna.getQnaContent(), 40))
                         .qnaAdoption(qna.getQnaAdoption())
-                        .boardView(qna.getQnaView())
-                        .replyCount(qna.getQnaReply().size())
+                        .boardViewCount(qna.getQnaView())
+                        .boardReplyCount(qna.getQnaReply().size())
                         .build()
                 ).collect(Collectors.toList());
     }
