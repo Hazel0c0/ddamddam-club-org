@@ -9,7 +9,7 @@ import java.util.List;
 
 @Setter
 @Getter
-@ToString
+@ToString(exclude = "hashtagMappingList")
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,5 +25,9 @@ public class Hashtag {
 
     @Column(name = "hashtag_content", nullable = false, length = 10)
     private String hashtagContent; // 해시태그 내용
+
+    @OneToMany(mappedBy = "hashtag", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Builder.Default
+    private List<HashtagMapping> hashtagMappingList = new ArrayList<>();
 
 }

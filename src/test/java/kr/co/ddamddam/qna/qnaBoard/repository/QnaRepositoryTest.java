@@ -1,12 +1,14 @@
 package kr.co.ddamddam.qna.qnaBoard.repository;
 
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
-import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
+import kr.co.ddamddam.qna.qnaBoard.exception.custom.NotFoundQnaBoardException;
+import kr.co.ddamddam.qna.qnaBoard.exception.custom.QnaErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Rollback(false)
@@ -45,6 +47,20 @@ class QnaRepositoryTest {
 
             qnaRepository.save(qna);
         }
+    }
+    
+    @Test
+    @Transactional
+    @DisplayName("QNA 게시글의 해시태그 확인")
+    void HashtagViewTest() {
+        //given
+        Long boardIdx = 86L;
+        //when
+        Qna qna = qnaRepository.findById(boardIdx).orElseThrow(() -> {
+            throw new NotFoundQnaBoardException(QnaErrorCode.NOT_FOUND_BOARD, boardIdx);
+        });
+        //then
+        System.out.println("qna.getHashtagMappingList() = " + qna.getHashtagMappingList());
     }
 
 }

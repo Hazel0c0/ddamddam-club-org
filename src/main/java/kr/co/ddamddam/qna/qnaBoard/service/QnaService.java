@@ -14,6 +14,8 @@ import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.qna.qnaBoard.exception.custom.NotFoundQnaBoardException;
 import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
 import kr.co.ddamddam.qna.qnaHashtag.entity.Hashtag;
+import kr.co.ddamddam.qna.qnaHashtag.entity.HashtagMapping;
+import kr.co.ddamddam.qna.qnaHashtag.repository.HashtagMappingRepository;
 import kr.co.ddamddam.qna.qnaHashtag.repository.HashtagRepository;
 import kr.co.ddamddam.qna.qnaReply.repository.QnaReplyRepository;
 import kr.co.ddamddam.user.entity.User;
@@ -42,7 +44,7 @@ public class QnaService {
     private final QnaRepository qnaRepository;
     private final UserRepository userRepository;
     private final QnaReplyRepository qnaReplyRepository;
-//    private final HashtagMappingRepository hashtagMappingRepository;
+    private final HashtagMappingRepository hashtagMappingRepository;
     private final HashtagRepository hashtagRepository;
 
     public QnaListPageResponseDTO getList(PageDTO pageDTO) {
@@ -97,7 +99,7 @@ public class QnaService {
         return new QnaDetailResponseDTO(qna, user);
     }
 
-    public QnaDetailResponseDTO writeBoard(Long userIdx, QnaInsertRequestDTO dto) {
+    public Long writeBoard(Long userIdx, QnaInsertRequestDTO dto) {
 
         log.info("[Qna/Service] QNA 게시글 작성 - {}", dto);
 
@@ -105,24 +107,24 @@ public class QnaService {
             throw new NotFoundQnaBoardException(NOT_FOUND_USER, userIdx);
         });
 
-        List<Hashtag> newHashtagList = new ArrayList<>();
+        Qna savedQna = qnaRepository.save(dto.toEntity(user));
 
         for (String hashtag : dto.getHashtagList()) {
-            Hashtag hashtag1 = Hashtag.builder()
+
+            Hashtag savedHashtag = Hashtag.builder()
                     .hashtagContent(hashtag)
                     .build();
-            newHashtagList.add(hashtag1);
+            hashtagRepository.save(savedHashtag);
+
+            hashtagMappingRepository.save(
+                    HashtagMapping.builder()
+                    .hashtag(savedHashtag)
+                    .qna(savedQna)
+                    .build());
+
         }
 
-        Qna savedQna = qnaRepository.save(dto.toEntity(user, newHashtagList));
-
-        QnaDetailResponseDTO qnaDetail = getDetail(savedQna.getQnaIdx());
-
-        if (qnaDetail == null) {
-            throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, savedQna.getQnaIdx());
-        }
-
-        return qnaDetail;
+        return savedQna.getQnaIdx();
     }
 
     public ResponseMessage deleteBoard(Long boardIdx) {
