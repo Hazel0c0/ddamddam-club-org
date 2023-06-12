@@ -28,7 +28,7 @@ const MentorsChat = () => {
     const {career, content, current, date, idx, mentee, nickName, profile, subject, title} = detailMember;
 
     return (
-        <Common className={'mentors-list-wrapper'}>
+        <Common className={'mentors-chat-wrapper'}>
             <div className={'mentor-detail-wrapper'}>
                 <section className={'top-section'}>
                     <div className={'top-title'}>

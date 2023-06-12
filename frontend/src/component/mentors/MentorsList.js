@@ -51,7 +51,7 @@ const MentorsList = () => {
     const chat = chatPageIdx;
     // fetch('http://localhost:8181/api/ddamddam/mentors/list?page=&size=&sort=')
     useEffect(() => {
-        fetch(MENTOR + '/list?page=2&size9=&sort=mentorDate')
+        fetch(MENTOR + '/list?page=1&size9=&sort=mentorDate')
             .then(res => {
                 if (res.status === 500) {
                     alert('잠시 후 다시 접속해주세요.[서버오류]');
