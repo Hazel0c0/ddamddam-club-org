@@ -3,6 +3,7 @@ package kr.co.ddamddam.user.entity;
 import kr.co.ddamddam.mentor.entity.Mentee;
 import kr.co.ddamddam.mentor.entity.Mentor;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
+import kr.co.ddamddam.review.entity.Review;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -78,6 +79,10 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Qna> qna;
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Review> review = new ArrayList<>();
 
 }
 
