@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 // TODO: 채용공고 게시판
 @Setter
@@ -21,27 +22,35 @@ public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int companyIdx;
+    @Column(name = "company_idx")
+    private Long companyIdx;
 
-    private String companyImg;
-
-    @Column(nullable = false, length = 30)
+    @Column(name = "company_name",nullable = false, length = 30)
     private String companyName;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "company_img",length = 100)
+    private String companyImg;
+
+    @Column(name = "company_title",nullable = false, length = 100)
     private String companyTitle;
 
-    @Column(nullable = false, length = 10 )
+    @Column(name = "company_content",nullable = false, length = 100)
+    private String companyContent;
+
+    @Column(name = "company_career",nullable = false, length = 10 )
     private String companyCareer;
 
-    @Column(nullable = false, length = 10 )
-    private String companyArea;
+    @Column(name = "company_area",nullable = false, length = 10 )
+    private String companyArea; //위치
 
-    @Column(updatable = false, length = 100)
-    private  String companyUrl; // 작성시간
+    @Column(name = "company_url",updatable = false, length = 100)
+    private  String companyUrl; // 회사URL
 
-    @UpdateTimestamp //Defualt current_timestamp
+
     @CreationTimestamp
-    @Column(updatable = false)
-    private Timestamp companyDate;
+    @Column(name = "company_date",updatable = false)
+    private Timestamp companyDate; //작성날짜(채용시작날짜)
+
+    @Column(name = "comapany_enddate",nullable = false)
+    private LocalDate companyEnddate; //마감날짜
 }
