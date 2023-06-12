@@ -1,8 +1,6 @@
 package kr.co.ddamddam.project.api;
 
 import kr.co.ddamddam.common.response.ApplicationResponse;
-import kr.co.ddamddam.project.User.UserProject;
-import kr.co.ddamddam.project.User.repository.UserRepository;
 //import kr.co.ddamddam.project.entity.applicant.Apply;
 import kr.co.ddamddam.project.service.ApplicantService;
 import lombok.RequiredArgsConstructor;

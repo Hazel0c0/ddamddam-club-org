@@ -1,6 +1,6 @@
 package kr.co.ddamddam.project.service;
 
-import kr.co.ddamddam.project.User.repository.UserRepository;
+import kr.co.ddamddam.project.User.repository.DdamDdamUserRepository;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfFront;
@@ -25,7 +25,7 @@ public class ApplicantService {
 
   private final ApplicantRepository applicantRepository;
 
-  private final UserRepository userRepository;
+  private final DdamDdamUserRepository ddamDdamUserRepository;
   private final BackRepository backRepository;
   private final FrontRepository frontRepository;
   private final ProjectRepository projectRepository;
@@ -44,7 +44,7 @@ public class ApplicantService {
     log.info("프로젝트만 담은 apply : {}");
 
     // 유저 객체
-    UserProject foundUser = userRepository.getById(userIdx);
+    UserProject foundUser = ddamDdamUserRepository.getById(userIdx);
     log.info("foundUser : {}", foundUser);
 
     //유저 포지션별 분류

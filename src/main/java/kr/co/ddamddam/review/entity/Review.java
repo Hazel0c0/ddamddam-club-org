@@ -35,7 +35,7 @@ public class Review {
     @Column(name ="review_content", nullable = false , length = 3000)
     private String reviewContent;
 
-    @Column(name ="review_rating", nullable = false, columnDefinition = "FLOAT(1,3)")
+    @Column(name ="review_rating", nullable = false, columnDefinition = "FLOAT(4,2)")
     private Float  reviewRating; //별점
 
     @Column(name = "review_job",nullable = false,length = 30)

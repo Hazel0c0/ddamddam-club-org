@@ -1,7 +1,7 @@
 package kr.co.ddamddam.project.repository;
 
 import kr.co.ddamddam.project.User.UserProject;
-import kr.co.ddamddam.project.User.repository.UserRepository;
+import kr.co.ddamddam.project.User.repository.DdamDdamUserRepository;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.user.entity.UserPosition;
 import kr.co.ddamddam.user.entity.UserRole;
@@ -16,8 +16,6 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @Transactional
 @Rollback(false)
@@ -27,7 +25,7 @@ class ProjectRepositoryTest {
   ProjectRepository projectRepository;
 
   @Autowired
-  UserRepository userRepository;
+  DdamDdamUserRepository ddamDdamUserRepository;
 
   @Test
   @DisplayName("bulk insert")
@@ -53,7 +51,7 @@ class ProjectRepositoryTest {
   @DisplayName("bulk insert")
   void userInsert() {
     for (int i = 3; i < 30; i++) {
-      userRepository.save(
+      ddamDdamUserRepository.save(
           UserProject.builder()
               .userEmail("user" + i + "@example.com")
               .userPw("password" + i)
