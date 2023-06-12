@@ -1,5 +1,6 @@
 package kr.co.ddamddam.qna.qnaBoard.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.qna.qnaBoard.entity.QnaAdoption;
 import kr.co.ddamddam.qna.qnaReply.entity.QnaReply;
@@ -23,6 +24,7 @@ public class QnaDetailResponseDTO {
     private String boardContent;
     private String boardWriter;
     private String boardProfile;
+    @JsonFormat(pattern = "yyyy년 MM월 dd일")
     private LocalDateTime boardDate;
     private QnaAdoption boardAdoption;
     private List<String> hashtagList;

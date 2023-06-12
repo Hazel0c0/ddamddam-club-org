@@ -1,6 +1,6 @@
 package kr.co.ddamddam.qna.qnaBoard.dto.response;
 
-import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
+import kr.co.ddamddam.qna.qnaBoard.dto.page.PageResponseDTO;
 import lombok.*;
 
 import java.util.List;
