@@ -35,7 +35,7 @@ class QnaRepositoryTest {
     @DisplayName("QNA 게시글 더미데이터 10개 생성")
     void InsertBulk2() {
 
-        for (int i = 51; i <= 60; i++) {
+        for (int i = 1; i <= 20; i++) {
 
             Qna qna = Qna.builder()
                     .qnaTitle("큐앤에이큐앤에이큐앤에이큐앤큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이" + i)

@@ -11,6 +11,7 @@ import lombok.*;
 @Builder
 public class QnaTopListResponseDTO {
 
+    public boolean getBoardView;
     // TODO : Validate 처리
     private Long boardIdx; // 식별번호
     private String boardTitle;

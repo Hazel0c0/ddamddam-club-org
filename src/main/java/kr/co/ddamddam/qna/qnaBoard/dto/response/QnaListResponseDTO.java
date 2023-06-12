@@ -42,7 +42,7 @@ public class QnaListResponseDTO {
         this.boardDate = qna.getQnaDate();
         this.boardAdoption = qna.getQnaAdoption();
         this.boardViewCount = qna.getQnaView();
-        this.boardReplyCount = qna.getQnaReply().size();
+        this.boardReplyCount = qna.getQnaReplyList().size();
     }
 
 }
