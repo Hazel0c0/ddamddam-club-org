@@ -31,4 +31,20 @@ class QnaRepositoryTest {
         }
     }
 
+    @Test
+    @DisplayName("QNA 게시글 더미데이터 10개 생성")
+    void InsertBulk2() {
+
+        for (int i = 51; i <= 60; i++) {
+
+            Qna qna = Qna.builder()
+                    .qnaTitle("큐앤에이큐앤에이큐앤에이큐앤큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이" + i)
+                    .qnaContent("큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이큐앤에이" + i)
+                    .qnaWriter("Writer " + i)
+                    .build();
+
+            qnaRepository.save(qna);
+        }
+    }
+
 }
