@@ -47,7 +47,7 @@ public class UserProject {
     private LocalDate userBirth;
 
     @Column(name = "user_position", nullable = false, length = 30)
-//    @JoinColumn(name = "user")
+    @Enumerated(EnumType.STRING)
     private UserPosition userPosition;
 
     @Column(name = "user_career", nullable = false)

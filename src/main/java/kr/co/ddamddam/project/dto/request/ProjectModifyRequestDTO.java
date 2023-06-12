@@ -26,7 +26,7 @@ public class ProjectModifyRequestDTO {
   @NotNull @Max(5)
   private int maxBack;
 
-  private String applicantionPeriod; //모집기간
+  private String offerPeriod; //모집기간
 
   @NotNull
   private Long projectIdx;

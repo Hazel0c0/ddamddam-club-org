@@ -31,6 +31,6 @@ public class ProjectListResponseDTO {
     this.content=project.getProjectContent();
     this.projectType = project.getProjectType();
     this.completion=false;
-    this.applicantionPeriod=project.getApplicantionPeriod();
+    this.applicantionPeriod=project.getOfferPeriod();
   }
 }
