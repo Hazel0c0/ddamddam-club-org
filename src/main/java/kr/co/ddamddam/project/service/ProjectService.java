@@ -81,7 +81,7 @@ public class ProjectService {
     currProject.setProjectType(dto.getProjectType());
     currProject.setMaxFront(dto.getMaxFront());
     currProject.setMaxBack(dto.getMaxBack());
-    currProject.setApplicantionPeriod(dto.getApplicantionPeriod());
+    currProject.setOfferPeriod(dto.getOfferPeriod());
     currProject.setProjectIdx(dto.getProjectIdx());
 
     Project modifiedProject = projectRepository.save(currProject);

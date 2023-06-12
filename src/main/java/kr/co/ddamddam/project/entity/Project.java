@@ -1,5 +1,8 @@
 package kr.co.ddamddam.project.entity;
 
+import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
+import kr.co.ddamddam.project.entity.applicant.ApplicantOfFront;
+//import kr.co.ddamddam.project.entity.applicant.Apply;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -8,6 +11,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter @Getter @ToString
@@ -35,10 +39,12 @@ public class Project {
   private String projectType;
 
   //모집인원
+  @Column(nullable = false)
   private int maxFront;
+  @Column(nullable = false)
   private int maxBack;
 
-  private String applicantionPeriod; //모집기간
+  private String offerPeriod; //모집기간
 
   @CreationTimestamp
   @Column(
@@ -51,4 +57,26 @@ public class Project {
   // FK
 //  @Column(nullable = false)
   private String memberIdx;
+
+  // 모집 된 인원 정보
+  @OneToMany(mappedBy = "apply", orphanRemoval = true)
+  private List<ApplicantOfFront> applicantOfFronts = new ArrayList<>();
+  @OneToMany(mappedBy = "apply", orphanRemoval = true)
+  private List<ApplicantOfBack> applicantOfBacks = new ArrayList<>();
+
+  public void addFront(ApplicantOfFront front){
+    applicantOfFronts.add(front);
+    if (this != front.getProject()) {
+      System.out.println("프론트가 비었다면");
+      front.setProject(this);
+    }
+  }
+  public void addBack(ApplicantOfBack back){
+    applicantOfBacks.add(back);
+    if (this != back.getProject()) {
+      System.out.println("백이 비었다면");
+
+      back.setProject(this);
+    }
+  }
 }

@@ -5,7 +5,7 @@ server:
 spring:
   datasource:
     url: jdbc:mariadb://oslobdb.cqd7fh7vsssg.ap-northeast-2.rds.amazonaws.com:3306/ddamddam
-    username: teamjang
+    username: jiwon
     password: 1234
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
