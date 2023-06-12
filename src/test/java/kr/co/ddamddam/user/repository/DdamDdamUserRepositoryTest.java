@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Rollback(false)
-class UserRepositoryTest {
+class DdamDdamUserRepositoryTest {
 
     @Autowired
     UserRepository userRepository;
