@@ -1,5 +1,6 @@
 package kr.co.ddamddam.company.entity;
 
+import kr.co.ddamddam.review.entity.Review;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -7,6 +8,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 // TODO: 채용공고 게시판
 @Setter
@@ -53,4 +56,8 @@ public class Company {
 
     @Column(name = "comapany_enddate",nullable = false)
     private LocalDate companyEnddate; //마감날짜
+
+    @OneToMany(mappedBy = "company")
+    @Builder.Default
+    private List<Review> review = new ArrayList<>();
 }
