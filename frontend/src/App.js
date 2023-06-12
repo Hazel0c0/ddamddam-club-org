@@ -14,6 +14,7 @@ import Footer from "./component/common/Footer";
 import MentorsTemplate from "./component/mentors/MentorsTemplate";
 import MentorsWrite from "./component/mentors/MentorsWrite";
 import MentorsDetail from "./component/mentors/MentorsDetail";
+import MentorsChat from "./component/mentors/MentorsChat";
 
 function App() {
     //로그인 상태 관리(session완료 시 )
@@ -29,8 +30,14 @@ function App() {
                     {/*멘토,멘티*/}
                     <Route path={'/mentors'} element={<MentorsTemplate />}></Route>
                     <Route path={'/mentors/write'} element={<MentorsWrite />}></Route>
-                    {/*<Route path={'/mentors/detail:mentorIdx'} element={<MentorsDetail />}></Route>*/}
+
                     <Route path="/mentors/detail/mentorIdx/:idx" element={<MentorsDetail />} />
+                    {/*멘토 멘티 채팅방*/}
+                    {/*<Route*/}
+                    {/*    path="/mentors/detail/chat"*/}
+                    {/*    render={(props) => <MentorsChat {...props} detailMember={props.detailMember} />}*/}
+                    {/*/>*/}
+                    <Route path={'/mentors/detail/chat/:chatPageIdx'} element={<MentorsChat />}></Route>
                     {/*프로젝트 모집*/}
                     <Route path={'/projects'} element={<ProjectsMain />}></Route>
 
