@@ -1,6 +1,6 @@
 package kr.co.ddamddam.qna.qnaBoard.entity;
 
-import kr.co.ddamddam.qna.qnaHashtag.entity.Hashtag;
+import kr.co.ddamddam.qna.qnaHashtag.entity.HashtagMapping;
 import kr.co.ddamddam.qna.qnaReply.entity.QnaReply;
 import kr.co.ddamddam.user.entity.User;
 import lombok.*;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Setter
 @Getter
-@ToString(exclude = {"qnaReplyList", "user"})
+@ToString(exclude = {"qnaReplyList", "hashtagMappingList", "user"})
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -49,16 +49,11 @@ public class Qna {
     @Builder.Default
     private QnaAdoption qnaAdoption = QnaAdoption.N; // 기본값: 채택되지 않은 상태인 N
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "tbl_hashtag_mapping",
-            joinColumns = @JoinColumn(name = "qna_idx"),
-            inverseJoinColumns = @JoinColumn(name = "hashtag_idx")
-    )
+    @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Builder.Default
-    private List<Hashtag> hashtagList = new ArrayList<>();
+    private List<HashtagMapping> hashtagMappingList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Builder.Default
     private List<QnaReply> qnaReplyList = new ArrayList<>();
 

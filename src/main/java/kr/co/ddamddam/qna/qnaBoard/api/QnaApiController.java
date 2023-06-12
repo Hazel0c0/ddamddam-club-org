@@ -115,7 +115,7 @@ public class QnaApiController {
      * QNA 게시글 생성
      * [POST] /api/ddamddam/qna/write
      * @param dto - 게시글 제목, 게시글 내용
-     * @return 작성한 게시글의 상세정보를 담은 DTO
+     * @return 작성된 게시글의 index (index 를 통해 작성 게시글의 상세 페이지로 이동)
      */
     @PostMapping("/write")
     public ApplicationResponse<?> writeBoard(
@@ -127,9 +127,9 @@ public class QnaApiController {
         // TODO : 토큰 방식으로 로그인한 회원의 idx 를 가져와서 Service 파라미터로 넣는 처리 필요
         Long userIdx = 1L;
 
-        QnaDetailResponseDTO qnaDetail = qnaService.writeBoard(userIdx, dto);
+        Long boardIdx = qnaService.writeBoard(userIdx, dto);
 
-        return ApplicationResponse.ok(qnaDetail);
+        return ApplicationResponse.ok(boardIdx);
     }
 
     /**
