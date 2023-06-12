@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Setter @Getter @ToString
+@Setter @Getter @ToString(exclude = {"applicantOfFronts","applicantOfBacks"})
 @EqualsAndHashCode(of = {"projectIdx"})
 @NoArgsConstructor
 @AllArgsConstructor
@@ -69,17 +69,17 @@ public class Project {
 
   public void addFront(ApplicantOfFront front){
     applicantOfFronts.add(front);
-    if (this != front.getProject()) {
-      System.out.println("프론트가 비었다면");
-      front.setProject(this);
-    }
+//    if (this != front.getProject()) {
+//      System.out.println("프론트가 비었다면");
+//      front.setProject(this);
+//    }
   }
   public void addBack(ApplicantOfBack back){
     applicantOfBacks.add(back);
-    if (this != back.getProject()) {
-      System.out.println("백이 비었다면");
-
-      back.setProject(this);
-    }
+//    if (this != back.getProject()) {
+//      System.out.println("백이 비었다면");
+//
+//      back.setProject(this);
+//    }
   }
 }

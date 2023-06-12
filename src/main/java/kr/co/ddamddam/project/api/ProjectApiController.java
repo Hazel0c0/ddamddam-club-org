@@ -3,7 +3,7 @@ package kr.co.ddamddam.project.api;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import kr.co.ddamddam.common.response.ApplicationResponse;
-import kr.co.ddamddam.project.dto.request.PageDTO;
+import kr.co.ddamddam.project.dto.page.PageDTO;
 import kr.co.ddamddam.project.dto.request.ProjectModifyRequestDTO;
 import kr.co.ddamddam.project.dto.request.ProjectWriteDTO;
 import kr.co.ddamddam.project.dto.response.ProjectDetailResponseDTO;
@@ -11,12 +11,10 @@ import kr.co.ddamddam.project.dto.response.ProjectListPageResponseDTO;
 import kr.co.ddamddam.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 @RestController
 @RequiredArgsConstructor

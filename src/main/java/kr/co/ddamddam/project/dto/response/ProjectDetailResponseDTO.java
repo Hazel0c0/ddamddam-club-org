@@ -1,10 +1,15 @@
 package kr.co.ddamddam.project.dto.response;
 
 //import kr.co.ddamddam.project.entity.applicant.Apply;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.co.ddamddam.project.entity.Project;
+import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
+import kr.co.ddamddam.project.entity.applicant.ApplicantOfFront;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter @Getter @ToString
 @EqualsAndHashCode
@@ -12,10 +17,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ProjectDetailResponseDTO {
-  private String writer;
+  private String boardWriter;
 
-  private String title;
-  private String content;
+  private String boardTitle;
+  private String boardContent;
   private String projectType;
 
   //모집인원
@@ -23,23 +28,29 @@ public class ProjectDetailResponseDTO {
   private int maxBack;
 
   // 모집 된 인원
-  private int applicantOfFront;
-  private int applicantOfBack;
+//  @JsonIgnore
+  private List<Long> applicantOfFront;
+//  @JsonIgnore
+  private List<Long> applicantOfBack;
 
-  private String applicantionPeriod; //모집기간
+
+  private String offerPeriod; //모집기간
 
   private LocalDateTime projectDate;
 
   public ProjectDetailResponseDTO(Project project){
-    this.writer=project.getWriter();
-    this.title=project.getProjectTitle();
-    this.content=project.getProjectContent();
+    this.boardWriter =project.getWriter();
+    this.boardTitle =project.getProjectTitle();
+    this.boardContent =project.getProjectContent();
     this.projectType = project.getProjectType();
     this.maxFront=project.getMaxFront();
     this.maxBack=project.getMaxBack();
-    this.applicantOfFront=0;
-    this.applicantOfBack=0;
-    this.applicantionPeriod=project.getOfferPeriod();
+    this.applicantOfFront=project.getApplicantOfFronts().stream().map(ApplicantOfFront::getUserIdx).collect(Collectors.toList());
+    this.applicantOfBack=project.getApplicantOfBacks().stream().map(ApplicantOfBack::getUserIdx).collect(Collectors.toList());
+    this.offerPeriod =project.getOfferPeriod();
     this.projectDate=project.getProjectDate();
   }
+
+
+
 }

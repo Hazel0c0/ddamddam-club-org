@@ -1,9 +1,9 @@
 package kr.co.ddamddam.project.service;
 
-import kr.co.ddamddam.project.dto.request.PageDTO;
+import kr.co.ddamddam.project.dto.page.PageDTO;
 import kr.co.ddamddam.project.dto.request.ProjectModifyRequestDTO;
 import kr.co.ddamddam.project.dto.request.ProjectWriteDTO;
-import kr.co.ddamddam.project.dto.response.PageResponseDTO;
+import kr.co.ddamddam.project.dto.page.PageResponseDTO;
 import kr.co.ddamddam.project.dto.response.ProjectDetailResponseDTO;
 import kr.co.ddamddam.project.dto.response.ProjectListPageResponseDTO;
 import kr.co.ddamddam.project.dto.response.ProjectListResponseDTO;
@@ -76,8 +76,8 @@ public class ProjectService {
   public ProjectDetailResponseDTO modify(ProjectModifyRequestDTO dto) {
     Project currProject = getProject(dto.getProjectIdx());
 
-    currProject.setProjectTitle(dto.getTitle());
-    currProject.setProjectContent(dto.getContent());
+    currProject.setProjectTitle(dto.getBoardTitle());
+    currProject.setProjectContent(dto.getBoardContent());
     currProject.setProjectType(dto.getProjectType());
     currProject.setMaxFront(dto.getMaxFront());
     currProject.setMaxBack(dto.getMaxBack());

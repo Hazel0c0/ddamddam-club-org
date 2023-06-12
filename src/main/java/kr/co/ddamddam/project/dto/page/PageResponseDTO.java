@@ -1,4 +1,4 @@
-package kr.co.ddamddam.project.dto.response;
+package kr.co.ddamddam.project.dto.page;
 
 import lombok.Getter;
 import lombok.Setter;
