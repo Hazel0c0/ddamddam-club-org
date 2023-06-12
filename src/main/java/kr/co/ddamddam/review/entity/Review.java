@@ -18,7 +18,6 @@ import java.sql.Timestamp;
 @Builder
 @Entity
 @Table(name = "tbl_review")
-
 public class Review {
 
     @Id
