@@ -4,16 +4,19 @@ import Common from "../common/Common";
 import Modal from 'react-bootstrap/Modal';
 import {TfiClose} from 'react-icons/tfi';
 import './scss/MentorsList.scss';
+import {MENTOR} from "../common/config/HostConfig";
 
 
 const MentorsList = () => {
 
     const [mentorsList, setMentorsList] = useState([]);
-    const [pageNation, setPageNation] = useState();
+    const [pageNation, setPageNation] = useState([]);
 
     // 모달 useState
     const [detailMember, setDetailMember] = useState([]);
     const [show, setShow] = useState(false);
+
+    //리다이렉트
 
     const handleClose = () => {
         setShow(false)
@@ -23,7 +26,7 @@ const MentorsList = () => {
         setShow(true)
         const detailIdx = e.target.closest('.mentors-list').querySelector('.member-idx').value
 
-        fetch('http://localhost:8181/api/ddamddam/mentors/detail?mentorIdx=' + detailIdx)
+        fetch(MENTOR+'/detail?mentorIdx=' + detailIdx)
             .then(res => {
                 if (res.status === 500) {
                     alert('잠시 후 다시 접속해주세요.[서버오류]');
@@ -43,7 +46,7 @@ const MentorsList = () => {
 
     // fetch('http://localhost:8181/api/ddamddam/mentors/list?page=&size=&sort=')
     useEffect(() => {
-        fetch('http://localhost:8181/api/ddamddam/mentors/list?page=1&size=9&sort=mentorDate')
+        fetch(MENTOR + '/list?page=1&size9=&sort=mentorDate')
             .then(res => {
                 if (res.status === 500) {
                     alert('잠시 후 다시 접속해주세요.[서버오류]');
@@ -66,7 +69,7 @@ const MentorsList = () => {
             {mentorsList.map((mentor) => (
                 <div className={'mentors-list'} key={mentor.idx} onClick={handleShow}>
                     <input type={'hidden'} value={mentor.idx} className={'member-idx'}/>
-                    {/*<Link to={`/mentors/detail/mentorIdx/${mentor.idx}`}>*/}
+
                     <div className={'speech-bubble'} key={mentor.title}>
                         {mentor.title}
                     </div>
@@ -83,7 +86,7 @@ const MentorsList = () => {
                         <ul className={'category'} key={mentor.subject}>
                             <li>{mentor.subject}</li>
                         </ul>
-                        <div className={'career'} key={mentor.current}>경력 : {mentor.current}</div>
+                        <div className={'career'} key={mentor.current}>경력 : {mentor.career}</div>
                     </div>
                     {/*</Link>*/}
                 </div>
@@ -95,6 +98,8 @@ const MentorsList = () => {
                     <div className={'top-title'}>
                         <h1 className={'top-title-text'}>멘토 소개</h1>
                         <div className={'write-date'}>{date}</div>
+
+                        {/* 조건문 작성 필요 */}
                         <div className={'writer-wrapper'}>
                             <div className={'modify-btn'}>수정</div>
                             <div className={'delete-btn'}>삭제</div>
@@ -112,9 +117,8 @@ const MentorsList = () => {
                         <div className={'etc-wrapper'}>
                             <div className={'member-count'}><p className={'detail-sub-text'}>인원</p>{mentee}명 모집</div>
                             <div className={'subject'}><p className={'detail-sub-text'}>주제</p>{subject}</div>
-                            <div className={'career'}><p className={'detail-sub-text'}>경력</p>{current}</div>
-                            {/*값 받아와야함*/}
-                            <div className={'current'}><p className={'detail-sub-text'}>현직</p>{career}</div>
+                            <div className={'career'}><p className={'detail-sub-text'}>경력</p>{career}</div>
+                            <div className={'current'}><p className={'detail-sub-text'}>현직</p>{current}</div>
                         </div>
                     </div>
                 </section>

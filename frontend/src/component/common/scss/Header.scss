@@ -10,10 +10,10 @@
   flex-direction: column;
   background-color: #fafafa;
   position: absolute;
-  z-index: 9999;
+  z-index: 10;
 
   .header-wrapper{
-    z-index: 9999;
+    z-index: 10;
     @include content-center;
     height: 80px;
     border-bottom: solid 1px #e6e6f0;
