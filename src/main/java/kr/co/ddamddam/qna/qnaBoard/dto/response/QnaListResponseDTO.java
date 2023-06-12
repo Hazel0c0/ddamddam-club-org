@@ -7,6 +7,7 @@ import kr.co.ddamddam.qna.qnaBoard.entity.QnaAdoption;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static kr.co.ddamddam.common.common.TruncateString.*;
 
@@ -32,9 +33,13 @@ public class QnaListResponseDTO {
     private QnaAdoption boardAdoption;
     private int boardViewCount;
     private int boardReplyCount;
+    private List<String> hashtagList;
 
-    // Entity 를 DTO 로 변환하는 생성자
-    public QnaListResponseDTO(Qna qna) {
+    /**
+     * Entity 를 DTO 로 변환하는 생성자
+     * Hashtag 리스트를 문자열 리스트로 변경해서 생성합니다.
+     */
+    public QnaListResponseDTO(Qna qna, List<String> hashtagList) {
         this.boardIdx = qna.getQnaIdx();
         this.boardTitle = truncate(qna.getQnaTitle(), 30);
         this.boardContent = truncate(qna.getQnaContent(), 50);
@@ -43,6 +48,7 @@ public class QnaListResponseDTO {
         this.boardAdoption = qna.getQnaAdoption();
         this.boardViewCount = qna.getQnaView();
         this.boardReplyCount = qna.getQnaReplyList().size();
+        this.hashtagList = hashtagList;
     }
 
 }

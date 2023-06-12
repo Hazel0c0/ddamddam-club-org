@@ -76,7 +76,6 @@ public class QnaApiController {
         return ApplicationResponse.ok(qnaListTop3);
     }
 
-    // TODO : Postman 테스트 시 prev, next 계속 false 로 뜸
     /**
      * QNA 채택완료 게시글만 정렬 조회
      * [GET] ex) /api/ddamddam/qna/adopts?page=2

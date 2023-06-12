@@ -2,8 +2,8 @@ package kr.co.ddamddam.qna.qnaBoard.service;
 
 import kr.co.ddamddam.common.common.TruncateString;
 import kr.co.ddamddam.common.response.ResponseMessage;
-import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.page.PageDTO;
+import kr.co.ddamddam.qna.qnaBoard.dto.page.PageResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.request.QnaInsertRequestDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.request.QnaModifyRequestDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaDetailResponseDTO;
@@ -58,7 +58,7 @@ public class QnaService {
         // 데이터베이스에서 조회한 정보를 JSON 형태에 맞는 DTO 로 변환
         return QnaListPageResponseDTO.builder()
                 .count(qnaList.size())
-                .pageInfo(new PageResponseDTO<Qna>(qnas)) // TODO : mentors 꺼 갖다썼음. 공용이니까 나중에 리팩터링할때 common 으로 옮길게요.
+                .pageInfo(new PageResponseDTO(qnas))
                 .qnas(qnaList)
                 .build();
     }
@@ -99,13 +99,7 @@ public class QnaService {
         QnaDetailResponseDTO qnaDetailResponseDTO = new QnaDetailResponseDTO(qna, user);
 
         // HashtagMapping 리스트를 문자열 리스트로 변경해서 응답
-        List<String> hashtagList = new ArrayList<>();
-
-        List<Hashtag> foundHashtagList = getHashtagListByQnaIdx(boardId);
-
-        for (Hashtag hashtag : foundHashtagList) {
-            hashtagList.add(hashtag.getHashtagContent());
-        }
+        List<String> hashtagList = getHashtagListByQnaIdx(boardId);
 
         qnaDetailResponseDTO.setHashtagList(hashtagList);
 
@@ -218,7 +212,7 @@ public class QnaService {
 
         return QnaListPageResponseDTO.builder()
                 .count(qnaList.size())
-                .pageInfo(new PageResponseDTO<Qna>(qnas)) // TODO : mentors 꺼 갖다썼음. 공용이니까 나중에 리팩터링할때 common 으로 옮길게요.
+                .pageInfo(new PageResponseDTO(qnas))
                 .qnas(qnaList)
                 .build();
     }
@@ -233,7 +227,7 @@ public class QnaService {
 
         return QnaListPageResponseDTO.builder()
                 .count(qnaList.size())
-                .pageInfo(new PageResponseDTO<Qna>(qnas)) // TODO : mentors 꺼 갖다썼음. 공용이니까 나중에 리팩터링할때 common 으로 옮길게요.
+                .pageInfo(new PageResponseDTO(qnas))
                 .qnas(qnaList)
                 .build();
     }
@@ -250,7 +244,9 @@ public class QnaService {
     private List<QnaListResponseDTO> getQnaDtoList(Page<Qna> qnas) {
 
         return qnas.getContent().stream()
-                .map(QnaListResponseDTO::new)
+                .map(qna ->
+                    new QnaListResponseDTO(qna, getHashtagListByQnaIdx(qna.getQnaIdx()))
+                )
                 .collect(Collectors.toList());
     }
 
@@ -258,7 +254,9 @@ public class QnaService {
 
         return qnas.getContent().stream()
                 .filter(qna -> qna.getQnaAdoption() == Y)
-                .map(QnaListResponseDTO::new)
+                .map(qna ->
+                        new QnaListResponseDTO(qna, getHashtagListByQnaIdx(qna.getQnaIdx()))
+                )
                 .collect(Collectors.toList());
     }
 
@@ -266,16 +264,18 @@ public class QnaService {
 
         return qnas.getContent().stream()
                 .filter(qna -> qna.getQnaAdoption() == N)
-                .map(QnaListResponseDTO::new)
+                .map(qna ->
+                        new QnaListResponseDTO(qna, getHashtagListByQnaIdx(qna.getQnaIdx()))
+                )
                 .collect(Collectors.toList());
     }
 
-    public List<Hashtag> getHashtagListByQnaIdx(Long qnaIdx) {
+    public List<String> getHashtagListByQnaIdx(Long qnaIdx) {
         List<HashtagMapping> hashtagMappingList = hashtagMappingRepository.findByQnaQnaIdx(qnaIdx);
-        List<Hashtag> hashtagList = new ArrayList<>();
+        List<String> hashtagList = new ArrayList<>();
         for (HashtagMapping mapping : hashtagMappingList) {
             Hashtag hashtag = hashtagRepository.findByHashtagIdx(mapping.getHashtag().getHashtagIdx());
-            hashtagList.add(hashtag);
+            hashtagList.add(hashtag.getHashtagContent());
         }
         return hashtagList;
     }
