@@ -14,7 +14,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Setter @Getter @ToString(exclude = {"applicantOfFronts","applicantOfBacks"})
+@Setter
+@Getter
+@ToString(exclude = {"applicantOfFronts", "applicantOfBacks"})
 @EqualsAndHashCode(of = {"projectIdx"})
 @NoArgsConstructor
 @AllArgsConstructor
@@ -67,19 +69,23 @@ public class Project {
   @Builder.Default
   private List<ApplicantOfBack> applicantOfBacks = new ArrayList<>();
 
-  public void addFront(ApplicantOfFront front){
-    applicantOfFronts.add(front);
-//    if (this != front.getProject()) {
-//      System.out.println("프론트가 비었다면");
-//      front.setProject(this);
-//    }
+  public void addFront(ApplicantOfFront front) {
+    for (ApplicantOfFront existingFront : applicantOfFronts) {
+      if (existingFront.equals(front)) {
+        System.out.println("해당 front는 이미 저장되었습니다.");
+        break;
+      }
+    }
+      applicantOfFronts.add(front);
   }
-  public void addBack(ApplicantOfBack back){
-    applicantOfBacks.add(back);
-//    if (this != back.getProject()) {
-//      System.out.println("백이 비었다면");
-//
-//      back.setProject(this);
-//    }
+
+  public void addBack(ApplicantOfBack back) {
+    for (ApplicantOfBack existingBack : applicantOfBacks) {
+      if (existingBack.equals(back)) {
+        System.out.println("해당 back는 이미 저장되었습니다.");
+        return;
+      }
+    }
+      applicantOfBacks.add(back);
   }
 }
