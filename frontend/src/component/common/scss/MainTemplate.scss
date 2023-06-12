@@ -1,0 +1,68 @@
+@mixin content-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-wrapper{
+
+  //background-color: black;
+  height: 570px;
+  color: white;
+  white-space: pre-line;
+  flex-direction: column;
+  padding: 0px 370px;
+  text-align: center;
+  position: relative;
+  @include content-center;
+  background-image: url("../../../src_assets/main-background.jpg");
+  background-size: 100%;
+  background-position-y: 80px;
+
+  .input-font{
+    margin-top: 80px;
+    height: 120px;
+    line-height: 70px;
+    font-size: 60px;
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+    font-family: 'IBM Plex Mono', sans-serif !important;
+  }
+
+  .sub-title{
+    font-size: 15px;
+    margin-top: 30px;
+    line-height: 24px;
+  }
+
+  //화살표 나오는 영역
+  .show-arrow-wrapper{
+    animation: blink-effect 2s ease-in-out infinite;
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    bottom: 20px;
+    @include content-center;
+    flex-direction: column;
+  }
+
+  @keyframes blink-effect {
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  .arrow-text{
+    font-size: 14px;
+    color: rgb(230,230,230);
+    margin-bottom: 10px;
+  }
+  .arrow-icon{
+    //width: 50px;
+    //height: 50px;
+    //border-radius: 50px;
+    //background: white;
+    color: rgb(230,230,230);
+    font-size: 16px;
+    font-weight: lighter;
+  }
+}

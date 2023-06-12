@@ -1,25 +1,61 @@
 import logo from './logo.svg';
 import './App.css';
+import {useState} from "react";
+import {Route, Routes} from "react-router-dom";
+import {Reset} from "styled-reset";
+import Header from "./component/common/Header";
+import MentorsMain from "./component/mentors/MentorsMain";
+import MainTemplate from "./component/common/MainTemplate";
+import UserLogin from "./component/user/UserLogin";
+import UserJoin from "./component/user/UserJoin";
+import ProjectsMain from "./component/projects/ProjectsMain";
+import QnaMain from "./component/qna/QnaMain";
+import Footer from "./component/common/Footer";
+import MentorsTemplate from "./component/mentors/MentorsTemplate";
+import MentorsWrite from "./component/mentors/MentorsWrite";
+import MentorsDetail from "./component/mentors/MentorsDetail";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    //로그인 상태 관리(session완료 시 )
+    const [isLogin, setIsLogin] = useState(true);
+    return (
+        <>
+            <Reset />
+            <Header />
+                <Routes>
+                    {/*메인*/}
+                    <Route path={'/'} element={<MainTemplate />}></Route>
+                    {/*<Route path="/board/:idx" element={<BoardDetail/>}/>*/}
+                    {/*멘토,멘티*/}
+                    <Route path={'/mentors'} element={<MentorsTemplate />}></Route>
+                    <Route path={'/mentors/write'} element={<MentorsWrite />}></Route>
+                    {/*<Route path={'/mentors/detail:mentorIdx'} element={<MentorsDetail />}></Route>*/}
+                    <Route path="/mentors/detail/mentorIdx/:idx" element={<MentorsDetail />} />
+                    {/*프로젝트 모집*/}
+                    <Route path={'/projects'} element={<ProjectsMain />}></Route>
+
+                    {/*취업 후기 - not yet*/}
+                    <Route></Route>
+
+                    {/*채용공고 - not yet */}
+                    <Route></Route>
+
+                    {/*프로젝트 공유  - not yet*/}
+                    <Route></Route>
+
+                    {/*Q&A*/}
+                    <Route path={'/qna'} element={<QnaMain />}></Route>
+
+                    {/*로그인*/}
+                    <Route path={'/login'} element={<UserLogin />}></Route>
+
+                    {/*회원가입*/}
+                    <Route path={'/join'} element={<UserJoin />}></Route>
+
+                </Routes>
+            <Footer />
+        </>
+    );
 }
 
 export default App;
