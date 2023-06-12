@@ -14,9 +14,9 @@ public class QnaTopListResponseDTO {
     // TODO : Validate 처리
     private Long boardIdx; // 식별번호
     private String boardTitle;
-    private String boardWriter;
+    private String boardContent;
     private QnaAdoption qnaAdoption;
-    private int boardView;
-    private int replyCount; // 해당 게시글의 댓글수
+    private int boardViewCount;
+    private int boardReplyCount; // 해당 게시글의 댓글수
 
 }
