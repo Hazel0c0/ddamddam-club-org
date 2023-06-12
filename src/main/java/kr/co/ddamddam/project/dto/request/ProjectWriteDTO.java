@@ -15,11 +15,11 @@ import javax.validation.constraints.NotNull;
 public class ProjectWriteDTO {
 
   @NotBlank
-  private String writer;
+  private String boardWriter;
 
   @NotBlank
-  private String title;
-  private String content;
+  private String boardTitle;
+  private String boardContent;
   private String projectType;
 
   //모집인원
@@ -28,13 +28,13 @@ public class ProjectWriteDTO {
   @NotNull @Max(5)
   private int maxBack;
 
-  private String applicantionPeriod; //모집기간
+  private String offerPeriod; //모집기간
 
   public Project toEntity() {
     return Project.builder()
-        .writer(this.writer)
-        .projectTitle(this.title)
-        .projectContent(this.content)
+        .writer(this.boardWriter)
+        .projectTitle(this.boardTitle)
+        .projectContent(this.boardContent)
         .projectType(this.projectType)
         .maxFront(this.maxFront)
         .maxBack(this.maxBack)

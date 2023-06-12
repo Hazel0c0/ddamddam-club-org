@@ -1,5 +1,6 @@
 package kr.co.ddamddam.project.dto.response;
 
+import kr.co.ddamddam.project.dto.page.PageResponseDTO;
 import lombok.*;
 
 import java.util.List;

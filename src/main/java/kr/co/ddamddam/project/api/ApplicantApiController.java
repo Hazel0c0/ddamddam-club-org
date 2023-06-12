@@ -1,14 +1,13 @@
 package kr.co.ddamddam.project.api;
 
 import kr.co.ddamddam.common.response.ApplicationResponse;
-//import kr.co.ddamddam.project.entity.applicant.Apply;
+import kr.co.ddamddam.project.dto.response.ProjectDetailResponseDTO;
+import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.service.ApplicantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,22 +28,23 @@ public class ApplicantApiController {
    *
    * @param userIdx : 세션에서 내 (유저)정보 받아올것
    */
-  @GetMapping("/{userIdx}/{projectIdx}")
+  @PatchMapping("/{userIdx}/{projectIdx}")
   private ApplicationResponse<?> apply(
-      @PathVariable Long userIdx,
-      @PathVariable Long projectIdx
+      @RequestBody @PathVariable Long userIdx,
+      @RequestBody @PathVariable Long projectIdx
   ) {
     log.info("/api/ddamddam/applicant/user={}/board={}", userIdx, projectIdx);
 
     try {
-       applicantService.apply(userIdx, projectIdx);
-      return ApplicationResponse.ok("");
+      ProjectDetailResponseDTO projectDto = applicantService.apply(userIdx, projectIdx);
+
+      log.info("신청하기 - {}",projectDto);
+      return ApplicationResponse.ok(projectDto);
     } catch (Exception e) {
       return ApplicationResponse.bad("다시 신청해주세요");
     }
 
   }
-
 
 
 
@@ -56,9 +56,5 @@ public class ApplicantApiController {
 
 
  */
-  }
+}
 //}
-
-
-
-
