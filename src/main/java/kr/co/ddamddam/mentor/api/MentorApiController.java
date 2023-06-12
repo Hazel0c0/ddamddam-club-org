@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -107,11 +108,11 @@ public class MentorApiController {
         log.info("/api/ddamddam/mentors/{} DELETE!!",mentorIdx);
         try {
             mentorService.delete(mentorIdx);
+            MentorListResponseDTO list = mentorService.getList(new PageDTO(), new ArrayList<>());
+            return ResponseEntity.ok().body(list);
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body("해당 게시판은 존재하지 않습니다");
         }
-
-        return ResponseEntity.ok().body("삭제 성공!");
     }
 
     // 멘티 확정 시 생성

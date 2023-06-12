@@ -136,16 +136,18 @@ public class MentorService {
 
     // 게시판 삭제
 
-    public void delete(Long mentorIdx) throws RuntimeException{
+    public MentorListResponseDTO delete(Long mentorIdx) throws RuntimeException{
 
         Optional<Mentor> targetMentor = mentorRepository.findById(mentorIdx);
         if (targetMentor.isPresent()){
             mentorRepository.delete(targetMentor.get());
+
         }
         else {
             throw new RuntimeException(mentorIdx+"해당 게시판은 없습니다");
         }
 
+        return null;
     }
 
     // 멘티 테이블 저장
