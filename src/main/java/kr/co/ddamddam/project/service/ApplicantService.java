@@ -7,6 +7,7 @@ import kr.co.ddamddam.project.entity.applicant.ApplicantOfFront;
 //import kr.co.ddamddam.project.entity.applicant.Apply;
 import kr.co.ddamddam.project.User.UserProject;
 //import kr.co.ddamddam.project.repository.ApplicantRepository;
+import kr.co.ddamddam.project.repository.ApplicantRepository;
 import kr.co.ddamddam.project.repository.BackRepository;
 import kr.co.ddamddam.project.repository.FrontRepository;
 import kr.co.ddamddam.project.repository.ProjectRepository;
@@ -22,60 +23,56 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ApplicantService {
 
-//  private final ApplicantRepository applicantRepository;
+  private final ApplicantRepository applicantRepository;
 
   private final UserRepository userRepository;
   private final BackRepository backRepository;
   private final FrontRepository frontRepository;
-private final ProjectRepository projectRepository;
-/*
-  public Apply apply(Long userIdx, Long projectIdx) {
+  private final ProjectRepository projectRepository;
+  private final ProjectService projectService;
+
+  public void apply(Long userIdx, Long projectIdx) {
     log.info("apply service");
-    // 게시글 정보 담기
-    Project project = projectRepository.getReferenceById(projectIdx);
+    // 게시글 정보 가져오기
+    Project currProject = projectService.getProject(projectIdx);
 
-    Apply apply = applicantRepository.save(
-        Apply.builder()
-        .project(project)
-        .applyIdx(projectIdx)
-        .build()
-        );
+    applicantRepository.save(
+        Project.builder()
+            .build()
+    );
 
-    log.info("프로젝트만 담은 apply : {}",apply);
+    log.info("프로젝트만 담은 apply : {}");
 
     // 유저 객체
     UserProject foundUser = userRepository.getById(userIdx);
-    log.info("foundUser : {}",foundUser);
+    log.info("foundUser : {}", foundUser);
 
     //유저 포지션별 분류
     if (foundUser.getUserPosition() == UserPosition.BACKEND) {
       System.out.println("이 유저는 backend 다");
-      ApplicantOfBack back=backRepository.save(
+      ApplicantOfBack back = backRepository.save(
           ApplicantOfBack.builder()
-              .apply(apply)
               .userIdx(userIdx)
               .build()
       );
-      apply.addBack(back);
+//      apply.addBack(back);
     } else {
       System.out.println("이 유저는 front 다");
 
-      ApplicantOfFront front=frontRepository.save(
+      ApplicantOfFront front = frontRepository.save(
           ApplicantOfFront.builder()
-              .apply(apply)
               .userIdx(userIdx)
               .build()
       );
-      apply.addFront(front);
+//      apply.addFront(front);
     }
 
-    log.info("백/프론트 apply : {}",apply);
+//    log.info("백/프론트 apply : {}", apply);
 
-    return apply;
+//    return apply;
   }
 
 
- */
   // 신청자 방 개별 조회
 
 
