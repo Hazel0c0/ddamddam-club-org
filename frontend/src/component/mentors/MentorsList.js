@@ -7,8 +7,6 @@ import './scss/MentorsList.scss';
 import {MENTOR} from "../common/config/HostConfig";
 import less from "../../src_assets/less.png";
 import than from "../../src_assets/than.png";
-import {SlArrowRight} from 'react-icons/sl';
-import MentorsChat from "./MentorsChat";
 import {Link} from "react-router-dom";
 
 const MentorsList = () => {
@@ -45,6 +43,7 @@ const MentorsList = () => {
                 setChatPageIdx(result.idx);
                 console.log(result.idx);
             });
+
 
     };
 
