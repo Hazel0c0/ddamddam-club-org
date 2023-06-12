@@ -25,7 +25,7 @@ public class QnaDetailResponseDTO {
     private String boardProfile;
     private LocalDateTime boardDate;
     private QnaAdoption boardAdoption;
-//    private List<HashtagMapping> hashtagMappingList;
+    private List<String> hashtagList;
     private List<QnaReply> replyList;
 
     // Qna 엔터티, User 엔터티를 이용하여 해당 DTO 를 만드는 생성자
@@ -37,8 +37,10 @@ public class QnaDetailResponseDTO {
         this.boardProfile = user.getUserProfile();
         this.boardDate = qna.getQnaDate();
         this.boardAdoption = qna.getQnaAdoption();
-//        this.hashtagMappingList = qna.getHashtagMappingList();
         this.replyList = qna.getQnaReplyList();
     }
 
+    public void setHashtagList(List<String> hashtagList) {
+        this.hashtagList = hashtagList;
+    }
 }
