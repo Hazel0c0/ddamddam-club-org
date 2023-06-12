@@ -96,7 +96,20 @@ public class QnaService {
             throw new NotFoundQnaBoardException(NOT_FOUND_USER, qna.getUser().getUserIdx());
         });
 
-        return new QnaDetailResponseDTO(qna, user);
+        QnaDetailResponseDTO qnaDetailResponseDTO = new QnaDetailResponseDTO(qna, user);
+
+        // HashtagMapping 리스트를 문자열 리스트로 변경해서 응답
+        List<String> hashtagList = new ArrayList<>();
+
+        List<Hashtag> foundHashtagList = getHashtagListByQnaIdx(boardId);
+
+        for (Hashtag hashtag : foundHashtagList) {
+            hashtagList.add(hashtag.getHashtagContent());
+        }
+
+        qnaDetailResponseDTO.setHashtagList(hashtagList);
+
+        return qnaDetailResponseDTO;
     }
 
     public Long writeBoard(Long userIdx, QnaInsertRequestDTO dto) {
@@ -255,6 +268,16 @@ public class QnaService {
                 .filter(qna -> qna.getQnaAdoption() == N)
                 .map(QnaListResponseDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    public List<Hashtag> getHashtagListByQnaIdx(Long qnaIdx) {
+        List<HashtagMapping> hashtagMappingList = hashtagMappingRepository.findByQnaQnaIdx(qnaIdx);
+        List<Hashtag> hashtagList = new ArrayList<>();
+        for (HashtagMapping mapping : hashtagMappingList) {
+            Hashtag hashtag = hashtagRepository.findByHashtagIdx(mapping.getHashtag().getHashtagIdx());
+            hashtagList.add(hashtag);
+        }
+        return hashtagList;
     }
 
 }
