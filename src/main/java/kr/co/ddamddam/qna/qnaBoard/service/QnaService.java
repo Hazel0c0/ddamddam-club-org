@@ -11,9 +11,10 @@ import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaListResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaListPageResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaTopListResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
-import kr.co.ddamddam.qna.qnaHashtag.entity.QnaHashtag;
 import kr.co.ddamddam.qna.qnaBoard.exception.custom.NotFoundQnaBoardException;
 import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
+import kr.co.ddamddam.qna.qnaHashtag.entity.Hashtag;
+import kr.co.ddamddam.qna.qnaHashtag.repository.HashtagRepository;
 import kr.co.ddamddam.qna.qnaReply.repository.QnaReplyRepository;
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.repository.UserRepository;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +42,8 @@ public class QnaService {
     private final QnaRepository qnaRepository;
     private final UserRepository userRepository;
     private final QnaReplyRepository qnaReplyRepository;
+//    private final HashtagMappingRepository hashtagMappingRepository;
+    private final HashtagRepository hashtagRepository;
 
     public QnaListPageResponseDTO getList(PageDTO pageDTO) {
 
@@ -51,7 +55,6 @@ public class QnaService {
 
         // 데이터베이스에서 조회한 정보를 JSON 형태에 맞는 DTO 로 변환
         return QnaListPageResponseDTO.builder()
-                .count(qnaList.size())
                 .count(qnaList.size())
                 .pageInfo(new PageResponseDTO<Qna>(qnas)) // TODO : mentors 꺼 갖다썼음. 공용이니까 나중에 리팩터링할때 common 으로 옮길게요.
                 .qnas(qnaList)
@@ -71,7 +74,7 @@ public class QnaService {
                         .boardContent(TruncateString.truncate(qna.getQnaContent(), 40))
                         .qnaAdoption(qna.getQnaAdoption())
                         .boardViewCount(qna.getQnaView())
-                        .boardReplyCount(qna.getQnaReply().size())
+                        .boardReplyCount(qna.getQnaReplyList().size())
                         .build()
                 ).collect(Collectors.toList());
     }
@@ -102,12 +105,21 @@ public class QnaService {
             throw new NotFoundQnaBoardException(NOT_FOUND_USER, userIdx);
         });
 
-        Qna saved = qnaRepository.save(dto.toEntity(user));
+        List<Hashtag> newHashtagList = new ArrayList<>();
 
-        QnaDetailResponseDTO qnaDetail = getDetail(saved.getQnaIdx());
+        for (String hashtag : dto.getHashtagList()) {
+            Hashtag hashtag1 = Hashtag.builder()
+                    .hashtagContent(hashtag)
+                    .build();
+            newHashtagList.add(hashtag1);
+        }
+
+        Qna savedQna = qnaRepository.save(dto.toEntity(user, newHashtagList));
+
+        QnaDetailResponseDTO qnaDetail = getDetail(savedQna.getQnaIdx());
 
         if (qnaDetail == null) {
-            throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, saved.getQnaIdx());
+            throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, savedQna.getQnaIdx());
         }
 
         return qnaDetail;
