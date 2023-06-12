@@ -15,6 +15,7 @@ import MentorsTemplate from "./component/mentors/MentorsTemplate";
 import MentorsWrite from "./component/mentors/MentorsWrite";
 import MentorsDetail from "./component/mentors/MentorsDetail";
 import MentorsChat from "./component/mentors/MentorsChat";
+import QnaTemplate from "./component/qna/QnaTemplate";
 
 function App() {
     //로그인 상태 관리(session완료 시 )
@@ -33,10 +34,6 @@ function App() {
 
                     <Route path="/mentors/detail/mentorIdx/:idx" element={<MentorsDetail />} />
                     {/*멘토 멘티 채팅방*/}
-                    {/*<Route*/}
-                    {/*    path="/mentors/detail/chat"*/}
-                    {/*    render={(props) => <MentorsChat {...props} detailMember={props.detailMember} />}*/}
-                    {/*/>*/}
                     <Route path={'/mentors/detail/chat/:chatPageIdx'} element={<MentorsChat />}></Route>
                     {/*프로젝트 모집*/}
                     <Route path={'/projects'} element={<ProjectsMain />}></Route>
@@ -51,7 +48,7 @@ function App() {
                     <Route></Route>
 
                     {/*Q&A*/}
-                    <Route path={'/qna'} element={<QnaMain />}></Route>
+                    <Route path={'/qna'} element={<QnaTemplate />}></Route>
 
                     {/*로그인*/}
                     <Route path={'/login'} element={<UserLogin />}></Route>

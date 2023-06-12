@@ -25,20 +25,21 @@
     border-radius: 50px;
   }
   .less-icon{
-    left: 18.5%;
+    left: 16%;
   }
 
   .than-icon{
-    right: 18.5%;
+    right: 16%;
   }
 
   //전체 리스트
   .mentors-list {
+    width: 385px;
     margin-top: 30px;
     @include content-center;
     position: relative;
     background-color: #f0f0f0;
-    padding: 25px 20px 15px;
+    padding: 30px 20px 20px;
     border-radius: 10px;
     cursor: pointer;
 
@@ -73,8 +74,8 @@
     .profile-img {
       background-image: url("../../../src_assets/IMG_4525.JPG");
       background-size: 112px;
-      width: 112px;
-      height: 112px;
+      width: 120px;
+      height: 120px;
       border-radius: 200px;
       margin-right: 17px;
     }
@@ -83,7 +84,7 @@
       display: flex;
       flex-direction: column;
       font-weight: 500;
-      width: 160px;
+      width: 180px;
 
       .writer {
         color: #1e4fff;
@@ -95,15 +96,15 @@
       .text {
         white-space: pre-line;
         line-height: 17px;
-        font-size: 12px;
+        font-size: 13px;
         height: 50px;
         overflow: scroll;
-        width: 160px;
+        //width: 10px;
       }
 
       .category {
         display: flex;
-        margin-top: 12px;
+        margin-top: 15px;
       }
 
       .category li {
@@ -111,7 +112,7 @@
         align-items: center;
         width: 100px;
         height: 20px;
-        font-size: 9px;
+        font-size: 10.5px;
         text-align: center;
         background-color: rgba(30, 79, 255, 0.1);
         margin-right: 5px;
@@ -145,7 +146,7 @@
 }
 
 .modal {
-  --bs-modal-margin: 5rem !important;
+  --bs-modal-margin: 7rem !important;
 }
 
 #modal-container {
