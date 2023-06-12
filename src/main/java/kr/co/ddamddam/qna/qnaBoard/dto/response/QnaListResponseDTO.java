@@ -1,5 +1,6 @@
 package kr.co.ddamddam.qna.qnaBoard.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.qna.qnaBoard.entity.QnaAdoption;
 import lombok.*;
@@ -23,8 +24,11 @@ public class QnaListResponseDTO {
     private String boardContent;
     private String boardWriter;
     private String boardProfile;
+    @JsonFormat(pattern = "yyyy/MM/dd")
     private LocalDateTime boardDate;
     private QnaAdoption boardAdoption;
+    private int boardViewCount;
+    private int boardReplyCount;
 
     // Entity 를 DTO 로 변환하는 생성자
     public QnaListResponseDTO(Qna qna) {
@@ -34,5 +38,7 @@ public class QnaListResponseDTO {
         this.boardWriter = qna.getQnaWriter();
         this.boardDate = qna.getQnaDate();
         this.boardAdoption = qna.getQnaAdoption();
+        this.boardViewCount = qna.getQnaView();
+        this.boardReplyCount = qna.getQnaReply().size();
     }
 }
