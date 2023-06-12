@@ -59,9 +59,12 @@ public class Project {
   private String memberIdx;
 
   // 모집 된 인원 정보
-  @OneToMany(mappedBy = "apply", orphanRemoval = true)
+  @OneToMany(mappedBy = "project", orphanRemoval = true)
+  @Builder.Default
   private List<ApplicantOfFront> applicantOfFronts = new ArrayList<>();
-  @OneToMany(mappedBy = "apply", orphanRemoval = true)
+
+  @OneToMany(mappedBy = "project", orphanRemoval = true)
+  @Builder.Default
   private List<ApplicantOfBack> applicantOfBacks = new ArrayList<>();
 
   public void addFront(ApplicantOfFront front){
