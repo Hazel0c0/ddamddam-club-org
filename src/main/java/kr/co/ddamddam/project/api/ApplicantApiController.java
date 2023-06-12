@@ -37,17 +37,14 @@ public class ApplicantApiController {
       @PathVariable Long projectIdx
   ) {
     log.info("/api/ddamddam/applicant/user={}/board={}", userIdx, projectIdx);
-/*
+
     try {
-      Apply apply = applicantService.apply(userIdx, projectIdx);
-      log.info("apply : {} ", apply);
-      return ApplicationResponse.ok(apply);
+       applicantService.apply(userIdx, projectIdx);
+      return ApplicationResponse.ok("");
     } catch (Exception e) {
       return ApplicationResponse.bad("다시 신청해주세요");
     }
 
- */
-    return null;
   }
 
 

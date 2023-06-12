@@ -1,7 +1,7 @@
 package kr.co.ddamddam.project.repository;
 
-//import kr.co.ddamddam.project.entity.applicant.Apply;
+import kr.co.ddamddam.project.entity.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-//public interface ApplicantRepository extends JpaRepository<Apply,Long> {
-//}
+public interface ApplicantRepository extends JpaRepository<Project,Long> {
+}
