@@ -2,15 +2,14 @@ package kr.co.ddamddam.user.entity;
 
 import kr.co.ddamddam.mentor.entity.Mentee;
 import kr.co.ddamddam.mentor.entity.Mentor;
+import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,14 +31,11 @@ public class User {
     @Column(name = "user_idx")
     private Long userIdx; // 식별번호
 
-    @Column(name = "user_id", unique = true, nullable = false, length = 30)
-    private String userid;
+    @Column(name = "user_email", unique = true, nullable = false, length = 100)
+    private String userEmail;
 
     @Column(name = "user_password", nullable = false, length = 30)
     private String userPw;
-
-    @Column(name = "user_email", unique = true, nullable = false, length = 100)
-    private String userEmail;
 
     @Column(name = "user_name", nullable = false, length = 30)
     private String userName;
@@ -79,6 +75,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     @Builder.Default
     private List<Mentee> mentee = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Qna> qna;
 
 }
 
