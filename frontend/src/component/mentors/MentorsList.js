@@ -5,7 +5,11 @@ import Modal from 'react-bootstrap/Modal';
 import {TfiClose} from 'react-icons/tfi';
 import './scss/MentorsList.scss';
 import {MENTOR} from "../common/config/HostConfig";
-
+import less from "../../src_assets/less.png";
+import than from "../../src_assets/than.png";
+import {SlArrowRight} from 'react-icons/sl';
+import MentorsChat from "./MentorsChat";
+import {Link} from "react-router-dom";
 
 const MentorsList = () => {
 
@@ -16,7 +20,8 @@ const MentorsList = () => {
     const [detailMember, setDetailMember] = useState([]);
     const [show, setShow] = useState(false);
 
-    //리다이렉트
+    //채팅 페이지 이동
+    const [chatPageIdx, setChatPageIdx] = useState("");
 
     const handleClose = () => {
         setShow(false)
@@ -26,7 +31,7 @@ const MentorsList = () => {
         setShow(true)
         const detailIdx = e.target.closest('.mentors-list').querySelector('.member-idx').value
 
-        fetch(MENTOR+'/detail?mentorIdx=' + detailIdx)
+        fetch(MENTOR + '/detail?mentorIdx=' + detailIdx)
             .then(res => {
                 if (res.status === 500) {
                     alert('잠시 후 다시 접속해주세요.[서버오류]');
@@ -36,17 +41,18 @@ const MentorsList = () => {
             })
             .then(result => {
                 setDetailMember(result);
-                console.log(result)
+                console.log(result);
+                setChatPageIdx(result.idx);
+                console.log(result.idx);
             });
 
     };
 
-    const {title, content, subject, current, nickName, date, mentee, career} = detailMember;
-
-
+    const {title, content, subject, current, nickName, date, mentee, career, idx} = detailMember;
+    const chat = chatPageIdx;
     // fetch('http://localhost:8181/api/ddamddam/mentors/list?page=&size=&sort=')
     useEffect(() => {
-        fetch(MENTOR + '/list?page=1&size9=&sort=mentorDate')
+        fetch(MENTOR + '/list?page=2&size9=&sort=mentorDate')
             .then(res => {
                 if (res.status === 500) {
                     alert('잠시 후 다시 접속해주세요.[서버오류]');
@@ -66,6 +72,9 @@ const MentorsList = () => {
     // http://localhost:8181/api/ddamddam/mentors/detail?mentorIdx=1
     return (
         <Common className={'mentors-list-wrapper'}>
+
+            <img src={less} alt={"less-icon"} className={'less-icon'}/>
+            <img src={than} alt={"than-icon"} className={'than-icon'}/>
             {mentorsList.map((mentor) => (
                 <div className={'mentors-list'} key={mentor.idx} onClick={handleShow}>
                     <input type={'hidden'} value={mentor.idx} className={'member-idx'}/>
@@ -128,9 +137,11 @@ const MentorsList = () => {
                         {content}
                     </div>
                 </section>
-                {/*<Link to={''}*/}
+
                 <div className={'btn-wrapper'}>
-                    <button className={'application-btn'}>신청하기</button>
+                    <Link to={`/mentors/detail/chat/${chatPageIdx}`}>
+                        <button className={'application-btn'}>신청하기</button>
+                    </Link>
                 </div>
             </Modal>
         </Common>
