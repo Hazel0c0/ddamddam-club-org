@@ -21,6 +21,22 @@ const MentorsList = () => {
     //채팅 페이지 이동
     const [chatPageIdx, setChatPageIdx] = useState("");
 
+    const handleDelete = e => {
+        if (window.confirm('삭제하시겠습니까?')) {
+          fetch(`${MENTOR}/${idx}`, {
+            method: 'DELETE'
+          })
+            .then(res => res.json())
+            .then(json => {
+              setMentorsList(json.mentors);
+              setPageNation(json.pageInfo);
+              handleClose(); // 모달창 닫기
+            });
+        } else {
+          return;
+        }
+      };
+
     const handleClose = () => {
         setShow(false)
 
@@ -110,7 +126,7 @@ const MentorsList = () => {
                         {/* 조건문 작성 필요 */}
                         <div className={'writer-wrapper'}>
                             <div className={'modify-btn'}>수정</div>
-                            <div className={'delete-btn'}>삭제</div>
+                            <div className={'delete-btn'} onClick={handleDelete}>삭제</div>
                         </div>
                     </div>
 

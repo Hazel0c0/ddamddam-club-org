@@ -27,7 +27,7 @@ class MentorRepositoryTest {
     @DisplayName("멘토 게시판 9개 생성")
     void bulkInsert(){
         Optional<User> userOptional = userRepository.findById(1L);
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < 60; i++) {
             mentorRepository.save(
                     Mentor.builder()
                             .mentorTitle("하하하" + i)
