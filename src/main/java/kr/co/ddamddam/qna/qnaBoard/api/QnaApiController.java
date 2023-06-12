@@ -178,7 +178,7 @@ public class QnaApiController {
     /**
      * 게시글 조회수 상승
      * @param boardIdx - 조회수를 상승시킬 게시글의 index
-     * @return -  SUCCESS
+     * @return - SUCCESS
      */
     @PatchMapping("/{boardIdx}/views")
     public ApplicationResponse<?> updateViewCount(
