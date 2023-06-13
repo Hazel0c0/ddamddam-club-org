@@ -9,10 +9,18 @@ import less from "../../src_assets/less.png";
 import than from "../../src_assets/than.png";
 import {Link} from "react-router-dom";
 
-const MentorsList = () => {
+const MentorsList = ({selectedSubjects}) => {
 
     const [mentorsList, setMentorsList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
+
+
+
+    useEffect(()=>{
+        console.log(`selectedSubjects의 값 : ${selectedSubjects}`)
+    },[selectedSubjects]);
+
+    const test = selectedSubjects;
 
     // 모달 useState
     const [detailMember, setDetailMember] = useState([]);
@@ -91,8 +99,10 @@ const MentorsList = () => {
 
     // http://localhost:8181/api/ddamddam/mentors/detail?mentorIdx=1
     return (
-        <Common className={'mentors-list-wrapper'}>
-
+        <div className={'mentors-list-wrapper'}>
+            <div>
+                {test}
+            </div>
             <img src={less} alt={"less-icon"} className={'less-icon'}/>
             <img src={than} alt={"than-icon"} className={'than-icon'}/>
             {mentorsList.map((mentor) => (
@@ -165,7 +175,7 @@ const MentorsList = () => {
                     </Link>
                 </div>
             </Modal>
-        </Common>
+        </div>
     );
 };
 

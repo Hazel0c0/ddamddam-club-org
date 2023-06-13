@@ -8,7 +8,7 @@ const MentorsTemplate = () => {
     return (
         <>
             <MentorsMain/>
-            <MentorsList/>
+            {/*<MentorsList/>*/}
         </>
     );
 };
