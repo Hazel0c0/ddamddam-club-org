@@ -25,6 +25,7 @@ public class ReviewListResponseDTO {
     private String reviewJob; //직무
     private Float reviewRating; //별점
     private String reviewLocation; //회사위치
+    private int reviewTenure; //경력
     @JsonFormat(pattern = "yyyy/MM/dd")
     private Timestamp reviewDate;
     private int reviewView; //조회수
@@ -65,7 +66,8 @@ public class ReviewListResponseDTO {
         this.reviewContent = getLimitedContent(review.getReviewContent());
         this.reviewJob = review.getReviewJob();
         this.reviewRating = review.getReviewRating();
-        this.reviewLocation = review.getCompany().getCompanyArea(); //이거 맞는거임 ?
+        this.reviewTenure = review.getReviewTenure();
+        this.reviewLocation = review.getCompany().getCompanyArea();
         this.reviewDate = review.getReviewDate();
         this.reviewView = review.getReviewView();
     }

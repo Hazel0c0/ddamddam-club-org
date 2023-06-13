@@ -2,6 +2,7 @@ package kr.co.ddamddam.review.dto.request;
 
 import kr.co.ddamddam.company.entity.Company;
 import kr.co.ddamddam.review.entity.Review;
+import kr.co.ddamddam.user.entity.User;
 import lombok.*;
 
 import javax.validation.constraints.Min;
@@ -20,7 +21,7 @@ import java.sql.Timestamp;
 public class ReviewWriteRequestDTO {
 
     @NotBlank(message = "제목을 입력해주세요.")
-    @Size(min =1, max = 30)
+    @Size(min = 1, max = 30)
     private String reviewTitle;
 
     @NotBlank(message = "내용을 입력해주세요.")
@@ -32,22 +33,26 @@ public class ReviewWriteRequestDTO {
     @NotBlank
     private String reviewJob;
 
-    @NotBlank
+
     private int reviewTenure;
 
-    private Company reviewCompany;
+    @NotNull
+    private Long reviewCompanyId;
 
-    private String companyaName;
+//    @NotBlank
+    private String companyName;
 
+//    @NotBlank
     private String reviewLocation;
 
     @NotNull
     private Timestamp reviewDate;
 
 
-    public Review toEntity(){
+    public Review toEntity(User user){
         Company company = new Company();
-        company.setCompanyName(this.companyaName);
+        company.setCompanyIdx(this.reviewCompanyId);
+        company.setCompanyName(this.companyName);
         company.setCompanyArea(this.reviewLocation);
 
         return Review.builder()
@@ -58,6 +63,7 @@ public class ReviewWriteRequestDTO {
                 .reviewTenure(this.reviewTenure)
                 .company(company)
                 .reviewDate(this.reviewDate)
+                .user(user)
                 .build();
     }
 
