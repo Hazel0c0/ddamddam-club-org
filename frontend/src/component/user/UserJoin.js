@@ -1,28 +1,30 @@
 import React from 'react';
 import Common from "../common/Common";
-import logo from "../../src_assets/logo.png";
-import './scss/UserJoin.scss'
+import logo from "../../src_assets/logo(white).png";
+import profile from "../../src_assets/IMG_4525.JPG";
+import './scss/UserJoin.scss';
 const UserJoin = () => {
     return (
         <Common className={'join-wrapper'}>
-            <section color={'top-wrapper'}>
-                <img src={logo} alt={'logo'}/>
-                <div className={'main-title'}>HI,WE ARE DDAMDDAM CLUB</div>
+            <section className={'top-wrapper'}>
+                <img src={logo} alt={'logo'} className={'logo'}/>
+                <div className={'main-title'}>HI,WE ARE<br/>DDAMDDAM CLUB</div>
             </section>
+            <div className={'background'}></div>
             <section className={'form-wrapper'}>
-                <div className={'profile-img'}></div>
+                <img src={profile} alt={'profileImg'} className={'profile-img'}></img>
+                <div className={'profile-img-text'}>프로필을 등록해주세요</div>
                 <div className={'input-id'}>
-                    <textarea className={'id'} name={'id'} placeholder={'아이디'} />
+                    <input type={"text"} className={'id'} name={'id'} placeholder={'아이디'} />
                     <button className={'check-btn'}>중복확인</button>
                 </div>
 
                 <div className={'input-pw'}>
-                    <textarea className={'id'} name={'pw'} placeholder={'비밀번호'} />
-                    <button className={'check-btn'}>중복확인</button>
+                    <input type={"text"} className={'pw'} name={'pw'} placeholder={'비밀번호'} />
                 </div>
 
                 <div className={'input-email'}>
-                    <textarea className={'email-input'} name={'email'} placeholder={'이메일'} />
+                    <input type={"text"} className={'email-input'} name={'email'} placeholder={'이메일'} />
                         <select className={'email-select'} value={''} >
                             <option value={'gmail.com'}>@gmail.com</option>
                             <option value={'gmail.com'}>@gmail.com</option>
@@ -32,15 +34,15 @@ const UserJoin = () => {
                 </div>
 
                 <div className={'input-detail'}>
-                    <textarea className={'name'} name={'name'} placeholder={'이름'} />
-                    <textarea className={'birth'} name={'birth'} placeholder={'생년월일 8자리'} />
+                    <input type={"text"} className={'name'} name={'name'} placeholder={'이름'} />
+                    <input type={"text"} className={'birth'} name={'birth'} placeholder={'생년월일 8자리'} />
                     <select className={'position-select'} value={''} >
-                        <option ></option>
-                        <option value={'gmail.com'}>@gmail.com</option>
-                        <option value={'gmail.com'}>@gmail.com</option>
-                        <option value={'gmail.com'}>@gmail.com</option>
+                        <option value={'백엔드'}>백엔드</option>
+                        <option value={'프론트엔드'}>프론트엔드</option>
                     </select>
                 </div>
+
+                <button className={'submit-btn'}>가입완료</button>
             </section>
         </Common>
     );
