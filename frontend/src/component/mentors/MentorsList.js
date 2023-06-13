@@ -13,6 +13,8 @@ const MentorsList = ({selectedSubjects}) => {
 
     const [mentorsList, setMentorsList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
+    const [prevBtn, setPrevBtn] = useState(false);
+    const [nextBtn, setNextBtn] = useState(false);
 
     // 모달 useState
     const [detailMember, setDetailMember] = useState([]);
@@ -22,40 +24,47 @@ const MentorsList = ({selectedSubjects}) => {
     const [chatPageIdx, setChatPageIdx] = useState("");
 
     //캐러셀
-    const [currentPage, setCurrentPage] = useState(1);
-    const [carouselIndex, setCarouselIndex] = useState(0);
+    // const [currentPage, setCurrentPage] = useState(1);
+    const [carouselIndex, setCarouselIndex] = useState(1);
 
-    const handlePrevious = () =>{
-        if (carouselIndex === 0){
-            setCarouselIndex(pageNation.endPage -1);
-        }else{
+    const handlePrevious = () => {
+        if (pageNation.prev === true){
             setCarouselIndex(prevIndex => prevIndex - 1);
         }
+        // if (pageNation.currentPage > 1) {
+        //     setCarouselIndex(prevIndex => prevIndex - 1);
+        //     setPrevBtn(true);
+        // }
     };
 
     const handleNext = () => {
-        if (carouselIndex === pageNation.endPage - 1) {
-            setCarouselIndex(0);
-        } else {
+        if (pageNation.next === true){
             setCarouselIndex(prevIndex => prevIndex + 1);
         }
+        // if (pageNation.currentPage === pageNation.endPage) {
+        //     setNextBtn(false);
+        // } else {
+        //     setCarouselIndex(prevIndex => prevIndex + 1);
+        //     setNextBtn(true);
+        // }
     };
+
 
     const handleDelete = e => {
         if (window.confirm('삭제하시겠습니까?')) {
-          fetch(`${MENTOR}/${idx}`, {
-            method: 'DELETE'
-          })
-            .then(res => res.json())
-            .then(json => {
-              setMentorsList(json.mentors);
-              setPageNation(json.pageInfo);
-              handleClose(); // 모달창 닫기
-            });
+            fetch(`${MENTOR}/${idx}`, {
+                method: 'DELETE'
+            })
+                .then(res => res.json())
+                .then(json => {
+                    setMentorsList(json.mentors);
+                    setPageNation(json.pageInfo);
+                    handleClose(); // 모달창 닫기
+                });
         } else {
-          return;
+            return;
         }
-      };
+    };
 
     const handleClose = () => {
         setShow(false)
@@ -86,12 +95,14 @@ const MentorsList = ({selectedSubjects}) => {
 
     // 첫 렌더링 시 출력
     useEffect(() => {
-        let subjectsParam ='';
-        if (selectedSubjects !== null){
+        let subjectsParam = '';
+        if (selectedSubjects !== null) {
             subjectsParam = selectedSubjects.join(',');
         }
-        console.log(`subjectsParam : ${subjectsParam}`)
-        fetch(MENTOR + '/sublist?page=1&size=9&subjects='+subjectsParam)
+
+
+        // console.log(`subjectsParam : ${subjectsParam}`)
+        fetch(MENTOR + `/sublist?page=${carouselIndex}&size=9&subjects=${subjectsParam}`)
             .then(res => {
                 if (res.status === 500) {
                     alert('잠시 후 다시 접속해주세요.[서버오류]');
@@ -103,9 +114,17 @@ const MentorsList = ({selectedSubjects}) => {
                 if (!!result) {
                     setMentorsList(result.mentors);
                     setPageNation(result.pageInfo);
+
+                    // if (pageNation.currentPage === pageNation.endPage){
+                    //     setNextBtn(false);
+                    // }else {
+                    //     setCarouselIndex(prevIndex => prevIndex + 1);
+                    //     setNextBtn(true);
+                    // }
+                    console.log(`result.pageInfo : ${result.pageInfo.prev}`);
                 }
             });
-    }, [selectedSubjects]);
+    }, [selectedSubjects, carouselIndex]);
     const subStringContent = (str, n) => {
         return str?.length > n
             ? str.substr(0, n - 1) + "..."
@@ -115,12 +134,18 @@ const MentorsList = ({selectedSubjects}) => {
 
     return (
         <div className={'mentors-list-wrapper'}>
-
-            <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious} />
-            <img src={than} alt={"than-icon"} className={'than-icon'} onClick={handleNext} />
-            {mentorsList.map((mentor,index) => (
+            {/*{prevBtn &&*/}
+            {pageNation.prev &&
+                <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
+            }
+            {/*{nextBtn &&*/}
+            {pageNation.next &&
+                <img src={than} alt={"than-icon"} className={'than-icon'} onClick={handleNext}/>
+            }
+            {mentorsList.map((mentor, index) => (
                 // <div className={'mentors-list'} key={mentor.idx} onClick={handleShow}>
-                <div className={`mentors-list ${index === carouselIndex ? 'active' : ''}`} key={mentor.idx} onClick={handleShow}>
+                <div className={`mentors-list ${index === carouselIndex ? 'active' : ''}`} key={mentor.idx}
+                     onClick={handleShow}>
                     <input type={'hidden'} value={mentor.idx} className={'member-idx'}/>
 
                     <div className={'speech-bubble'} key={mentor.title}>
@@ -134,7 +159,7 @@ const MentorsList = ({selectedSubjects}) => {
                             {mentor.nickName}
                         </div>
                         <div className={'text'} key={mentor.content}>
-                            {subStringContent(mentor.content,55)}
+                            {subStringContent(mentor.content, 55)}
                             {/*{mentor.content}*/}
                         </div>
                         <ul className={'category'} key={mentor.subject}>
