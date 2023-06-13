@@ -2,9 +2,8 @@
   display: flex;
   justify-content: center;
 }
-
 .mentors-list-wrapper {
-  padding: 35px 370px 50px;
+  padding: 35px 0px 50px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -25,11 +24,11 @@
     border-radius: 50px;
   }
   .less-icon{
-    left: 16%;
+    left: -5%;
   }
 
   .than-icon{
-    right: 16%;
+    right: -5%;
   }
 
   //전체 리스트
@@ -184,6 +183,10 @@
 
         .modify-btn {
           margin-right: 7px;
+          cursor: pointer;
+        }
+        .delete-btn{
+          cursor: pointer;
         }
       }
 
@@ -195,6 +198,7 @@
 
     .close-btn {
       font-size: 17.5px;
+      cursor: pointer;
     }
   }
 

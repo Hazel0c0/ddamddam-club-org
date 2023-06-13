@@ -36,7 +36,7 @@
       border-radius: 50px;
 
       //정렬 버튼
-      .sort-title{
+      .sort-title {
         margin-right: 10px;
         margin-left: 10px;
         font-size: 13px;
@@ -46,7 +46,8 @@
       .sort-front,
       .sort-back,
       .sort-employee,
-      .sort-etc {
+      .sort-etc,
+      .selected{
 
         margin-right: 10px;
         width: 90px;
@@ -55,16 +56,28 @@
         border: none;
         //padding: 6px 35px;
         border-radius: 50px;
-        background-color: #e4e9fb;
         cursor: pointer;
       }
-
+      //선택 비활성화
+      .sort-front,
+      .sort-back,
+      .sort-employee,
       .sort-etc{
+        background-color: #e4e9fb;
+      }
+
+      //선택 활성화
+      .selected {
+      background-color: #1e4fff;
+        color: white;
+      }
+
+      .sort-etc {
         margin: 0;
       }
     }
 
-    .mentors-write-btn{
+    .mentors-write-btn {
       padding: 13px 21px;
       background-color: #292834;
       color: white;
@@ -73,10 +86,10 @@
       font-size: 14px;
     }
 
-    .mentors-write-btn:hover{
+    .mentors-write-btn:hover {
       background-color: #1e4fff;
       transition: 0.3s;
-      box-shadow: 0px 0px 3px 3px rgba(118,152,255,0.3);
+      box-shadow: 0px 0px 3px 3px rgba(118, 152, 255, 0.3);
     }
   }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProjectsMain = () => {
+const ProjectsTemplate = () => {
     return (
         <div>
             테스트
@@ -8,4 +8,4 @@ const ProjectsMain = () => {
     );
 };
 
-export default ProjectsMain;
+export default ProjectsTemplate;

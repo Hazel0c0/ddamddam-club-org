@@ -6,14 +6,15 @@
 .mentors-chat-wrapper {
   //padding: 35px 370px 50px;
   padding: 135px 370px 50px;
+
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   position: relative;
 
 
   .mentor-detail-wrapper{
-    font-family: Pretendard, sans-serif;
+    margin-right: 10px;
     width: 500px;
     background-color: #f0f0f0;
     padding: 30px;
@@ -132,6 +133,101 @@
       background-color: #292834;
     }
 
+  }
+
+  //채팅부분
+  .mentor-chat-room{
+    font-family: Pretendard, sans-serif;
+    width: 500px;
+    background-color: #292834;
+    color: #292834;
+    border-radius: 22px;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+
+
+    .chating-list{
+      padding: 0 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 15px;
+
+      .sender-wrapper{
+        width: 100%;
+        margin-bottom: 13px;
+        display: flex;
+
+        .sender-content{
+          max-width: 70%;
+          margin-left: auto;
+          width: fit-content;
+          padding: 5px 12px;
+          font-size: 16px;
+          line-height: 1.3;
+          background-color: #ffe06b;
+          border-radius: 5px;
+        }
+      }
+
+      .receiver-wrapper{
+        width: 100%;
+        margin-bottom: 10px;
+        font-size: 15px;
+        display: flex;
+        flex-direction: column;
+
+        .receiver{
+          color: white;
+          margin-bottom: 3px;
+        }
+        .receiver-content{
+          width: fit-content;
+          padding: 5px 12px;
+          font-size: 16px;
+          line-height: 1.3;
+          background-color: white;
+          border-radius: 5px;
+        }
+      }
+    }
+    .input-section{
+      width: 100%;
+      background-color: #e6e6e6;
+      padding: 15px 10px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom-left-radius: 22px;
+      border-bottom-right-radius: 22px;
+
+
+      .text-input{
+        padding: 10px;
+        border:none;
+        resize: none;
+        background-color: #e6e6e6;
+        width: 85%;
+        height: 70px;
+        outline-color: #c0c0c0;
+      }
+      .send-btn{
+        border: none;
+        width: 12%;
+        border-radius: 10px;
+        //padding: 28px 10px;
+        height: 70px;
+        background-color: white;
+        font-size: 13.5px;
+      }
+      .send-btn:hover{
+        transition: 0.5s;
+        background-color: #1e4fff;
+        color: white;
+      }
+    }
   }
 }
 
