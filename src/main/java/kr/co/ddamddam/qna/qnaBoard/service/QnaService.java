@@ -81,16 +81,16 @@ public class QnaService {
                 ).collect(Collectors.toList());
     }
 
-    public QnaDetailResponseDTO getDetail(Long boardId) {
+    public QnaDetailResponseDTO getDetail(Long boardIdx) {
 
-        log.info("[Qna/Service] QNA 게시글 상세보기 boardId - {}", boardId);
+        log.info("[Qna/Service] QNA 게시글 상세보기 boardIdx - {}", boardIdx);
 
-        if (boardId == null) {
-            throw new NotFoundQnaBoardException(INVALID_PARAMETER, boardId);
+        if (boardIdx == null) {
+            throw new NotFoundQnaBoardException(INVALID_PARAMETER, boardIdx);
         }
 
-        Qna qna = qnaRepository.findById(boardId).orElseThrow(() -> {
-            throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, boardId);
+        Qna qna = qnaRepository.findById(boardIdx).orElseThrow(() -> {
+            throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, boardIdx);
         });
 
         User user = userRepository.findById(qna.getUser().getUserIdx()).orElseThrow(() -> {
@@ -154,7 +154,6 @@ public class QnaService {
         return SUCCESS;
     }
     
-    // TODO : 완료
     public ResponseMessage modifyBoard(Long boardIdx, QnaModifyRequestDTO dto) {
 
         log.info("[Qna/Service] QNA 게시글 수정 - {}, payload - {}", boardIdx, dto);
@@ -248,7 +247,6 @@ public class QnaService {
         );
     }
 
-    // TODO : 완료
     private List<QnaListResponseDTO> getQnaDtoList(Page<Qna> qnas) {
 
         return qnas.getContent().stream()
