@@ -50,13 +50,13 @@ public class QnaApiController {
      * @param boardId - 게시글의 인덱스번호
      * @return 게시글의 상세정보를 담은 DTO
      */
-    @GetMapping("/{boardId}")
+    @GetMapping("/{boardIdx}")
     public ApplicationResponse<?> getDatail(
-            @PathVariable("boardId") Long boardId
+            @PathVariable("boardIdx") Long boardIdx
     ) {
-        log.info("GET : /qna/{} - 게시글 상세조회", boardId);
+        log.info("GET : /qna/{} - 게시글 상세조회", boardIdx);
 
-        QnaDetailResponseDTO qnaDetail = qnaService.getDetail(boardId);
+        QnaDetailResponseDTO qnaDetail = qnaService.getDetail(boardIdx);
 
         return ApplicationResponse.ok(qnaDetail);
     }
@@ -76,7 +76,6 @@ public class QnaApiController {
         return ApplicationResponse.ok(qnaListTop3);
     }
 
-    // TODO : Postman 테스트 시 prev, next 계속 false 로 뜸
     /**
      * QNA 채택완료 게시글만 정렬 조회
      * [GET] ex) /api/ddamddam/qna/adopts?page=2
@@ -114,8 +113,9 @@ public class QnaApiController {
     /**
      * QNA 게시글 생성
      * [POST] /api/ddamddam/qna/write
+     * ❗ dto 의 hashtagList 는 빈 배열로라도 받아야 합니다.
      * @param dto - 게시글 제목, 게시글 내용
-     * @return 작성한 게시글의 상세정보를 담은 DTO
+     * @return 작성된 게시글의 index (index 를 통해 작성 게시글의 상세 페이지로 이동)
      */
     @PostMapping("/write")
     public ApplicationResponse<?> writeBoard(
@@ -127,9 +127,9 @@ public class QnaApiController {
         // TODO : 토큰 방식으로 로그인한 회원의 idx 를 가져와서 Service 파라미터로 넣는 처리 필요
         Long userIdx = 1L;
 
-        QnaDetailResponseDTO qnaDetail = qnaService.writeBoard(userIdx, dto);
+        Long boardIdx = qnaService.writeBoard(userIdx, dto);
 
-        return ApplicationResponse.ok(qnaDetail);
+        return ApplicationResponse.ok(boardIdx);
     }
 
     /**
@@ -178,7 +178,7 @@ public class QnaApiController {
     /**
      * 게시글 조회수 상승
      * @param boardIdx - 조회수를 상승시킬 게시글의 index
-     * @return -  SUCCESS
+     * @return - SUCCESS
      */
     @PatchMapping("/{boardIdx}/views")
     public ApplicationResponse<?> updateViewCount(

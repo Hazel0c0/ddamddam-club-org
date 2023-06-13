@@ -18,5 +18,6 @@ public class QnaModifyRequestDTO {
     // TODO : Validated 처리
     private String boardTitle;
     private String boardContent;
+    private List<String> hashtagList;
 
 }

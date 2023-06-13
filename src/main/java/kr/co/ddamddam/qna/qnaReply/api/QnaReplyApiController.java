@@ -42,10 +42,11 @@ public class QnaReplyApiController {
     }
 
     /**
-     * QNA 댓글 작성
+     * QNA 댓글 생성 (작성)
      * [POST] /api/ddamddam/qna-reply/write
+     * ❗ 채택 완료된 게시글에는 댓글 작성이 불가능 합니다.
      * @param dto - 댓글을 작성할 게시글의 index, 작성한 댓글 내용
-     * @return - 저장 성공시 게시글의 index, 저장 실패시 FAIL
+     * @return - 작성 성공시 게시글의 index, 작성 실패시 FAIL
      */
     @PostMapping("/write")
     public ApplicationResponse<?> writeReply(
@@ -60,7 +61,7 @@ public class QnaReplyApiController {
         ResponseMessage result = qnaReplyService.writeReply(userIdx, dto);
 
         if (result == FAIL) {
-            return ApplicationResponse.error(result);
+            return ApplicationResponse.bad(result);
         }
 
         return ApplicationResponse.ok(dto.getBoardIdx());
@@ -103,12 +104,17 @@ public class QnaReplyApiController {
 
         ResponseMessage result = qnaReplyService.modifyReply(dto);
 
+        if (result == FAIL) {
+            ApplicationResponse.bad(result);
+        }
+
         return ApplicationResponse.ok(result);
     }
 
     /**
      * QNA 댓글 채택
-     * ❗ 이미 채택이 완료된 게시글에서는 댓글 채택 처리가 불가능합니다.
+     * ❗ 이미 채택 완료된 게시글에서는 댓글 채택 처리가 불가능합니다. (취소도 불가능)
+     * ❗ 댓글 채택 시, 해당 댓글이 작성된 게시글도 채택 완료 처리가 됩니다.
      * @param replyIdx - 채택 처리를 할 댓글의 index
      * @return - 채택 성공시 SUCCESS, 채택 실패시 FAIL
      */
@@ -119,6 +125,10 @@ public class QnaReplyApiController {
         log.info("PATCH : /qna-reply/adopts/{} - QNA 댓글 채택", replyIdx);
 
         ResponseMessage result = qnaReplyService.adoptQnaReply(replyIdx);
+
+        if (result == FAIL) {
+            ApplicationResponse.bad(result);
+        }
 
         return ApplicationResponse.ok(result);
     }
