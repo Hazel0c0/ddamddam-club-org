@@ -5,18 +5,43 @@ import Modal from 'react-bootstrap/Modal';
 import {TfiClose} from 'react-icons/tfi';
 import './scss/MentorsList.scss';
 import {MENTOR} from "../common/config/HostConfig";
+import less from "../../src_assets/less.png";
+import than from "../../src_assets/than.png";
+import {Link} from "react-router-dom";
 
-
-const MentorsList = () => {
+const MentorsList = ({selectedSubjects}) => {
 
     const [mentorsList, setMentorsList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
+
+    // useEffect(()=>{
+    //     console.log(`selectedSubjects의 값 : ${selectedSubjects}`)
+    // },[selectedSubjects]);
+
+    const test = selectedSubjects;
 
     // 모달 useState
     const [detailMember, setDetailMember] = useState([]);
     const [show, setShow] = useState(false);
 
-    //리다이렉트
+    //채팅 페이지 이동
+    const [chatPageIdx, setChatPageIdx] = useState("");
+
+    const handleDelete = e => {
+        if (window.confirm('삭제하시겠습니까?')) {
+          fetch(`${MENTOR}/${idx}`, {
+            method: 'DELETE'
+          })
+            .then(res => res.json())
+            .then(json => {
+              setMentorsList(json.mentors);
+              setPageNation(json.pageInfo);
+              handleClose(); // 모달창 닫기
+            });
+        } else {
+          return;
+        }
+      };
 
     const handleClose = () => {
         setShow(false)
@@ -26,7 +51,7 @@ const MentorsList = () => {
         setShow(true)
         const detailIdx = e.target.closest('.mentors-list').querySelector('.member-idx').value
 
-        fetch(MENTOR+'/detail?mentorIdx=' + detailIdx)
+        fetch(MENTOR + '/detail?mentorIdx=' + detailIdx)
             .then(res => {
                 if (res.status === 500) {
                     alert('잠시 후 다시 접속해주세요.[서버오류]');
@@ -36,17 +61,23 @@ const MentorsList = () => {
             })
             .then(result => {
                 setDetailMember(result);
-                console.log(result)
+                // console.log(result);
+                setChatPageIdx(result.idx);
+                // console.log(result.idx);
             });
-
     };
 
-    const {title, content, subject, current, nickName, date, mentee, career} = detailMember;
+    const {title, content, subject, current, nickName, date, mentee, career, idx} = detailMember;
 
 
-    // fetch('http://localhost:8181/api/ddamddam/mentors/list?page=&size=&sort=')
+    // 첫 렌더링 시 출력
     useEffect(() => {
-        fetch(MENTOR + '/list?page=1&size9=&sort=mentorDate')
+        let subjectsParam ='';
+        if (selectedSubjects !== null){
+            subjectsParam = selectedSubjects.join(',');
+        }
+        console.log(`subjectsParam : ${subjectsParam}`)
+        fetch(MENTOR + '/sublist?page=1&size=9&subjects='+subjectsParam)
             .then(res => {
                 if (res.status === 500) {
                     alert('잠시 후 다시 접속해주세요.[서버오류]');
@@ -59,13 +90,20 @@ const MentorsList = () => {
                     setMentorsList(result.mentors);
                     setPageNation(result.pageInfo);
                 }
-
             });
-    }, []);
+    }, [selectedSubjects]);
+    const subStringContent = (str, n) => {
+        return str?.length > n
+            ? str.substr(0, n - 1) + "..."
+            : str;
+    }
 
     // http://localhost:8181/api/ddamddam/mentors/detail?mentorIdx=1
     return (
-        <Common className={'mentors-list-wrapper'}>
+        <div className={'mentors-list-wrapper'}>
+
+            <img src={less} alt={"less-icon"} className={'less-icon'}/>
+            <img src={than} alt={"than-icon"} className={'than-icon'}/>
             {mentorsList.map((mentor) => (
                 <div className={'mentors-list'} key={mentor.idx} onClick={handleShow}>
                     <input type={'hidden'} value={mentor.idx} className={'member-idx'}/>
@@ -81,7 +119,8 @@ const MentorsList = () => {
                             {mentor.nickName}
                         </div>
                         <div className={'text'} key={mentor.content}>
-                            {mentor.content}
+                            {subStringContent(mentor.content,55)}
+                            {/*{mentor.content}*/}
                         </div>
                         <ul className={'category'} key={mentor.subject}>
                             <li>{mentor.subject}</li>
@@ -102,7 +141,7 @@ const MentorsList = () => {
                         {/* 조건문 작성 필요 */}
                         <div className={'writer-wrapper'}>
                             <div className={'modify-btn'}>수정</div>
-                            <div className={'delete-btn'}>삭제</div>
+                            <div className={'delete-btn'} onClick={handleDelete}>삭제</div>
                         </div>
                     </div>
 
@@ -128,12 +167,14 @@ const MentorsList = () => {
                         {content}
                     </div>
                 </section>
-                {/*<Link to={''}*/}
+
                 <div className={'btn-wrapper'}>
-                    <button className={'application-btn'}>신청하기</button>
+                    <Link to={`/mentors/detail/chat/${chatPageIdx}`}>
+                        <button className={'application-btn'}>신청하기</button>
+                    </Link>
                 </div>
             </Modal>
-        </Common>
+        </div>
     );
 };
 

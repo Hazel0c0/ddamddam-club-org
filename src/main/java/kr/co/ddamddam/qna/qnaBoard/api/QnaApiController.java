@@ -22,6 +22,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam/qna")
+@CrossOrigin(origins = "http://localhost:3000")
 public class QnaApiController {
 
     private final QnaService qnaService;
@@ -50,9 +51,9 @@ public class QnaApiController {
      * @param boardId - 게시글의 인덱스번호
      * @return 게시글의 상세정보를 담은 DTO
      */
-    @GetMapping("/{boardId}")
+    @GetMapping("/{boardIdx}")
     public ApplicationResponse<?> getDatail(
-            @PathVariable("boardId") Long boardId
+            @PathVariable("boardIdx") Long boardId
     ) {
         log.info("GET : /qna/{} - 게시글 상세조회", boardId);
 
