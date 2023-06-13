@@ -14,18 +14,32 @@ const MentorsList = ({selectedSubjects}) => {
     const [mentorsList, setMentorsList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
 
-    // useEffect(()=>{
-    //     console.log(`selectedSubjects의 값 : ${selectedSubjects}`)
-    // },[selectedSubjects]);
-
-    const test = selectedSubjects;
-
     // 모달 useState
     const [detailMember, setDetailMember] = useState([]);
     const [show, setShow] = useState(false);
 
     //채팅 페이지 이동
     const [chatPageIdx, setChatPageIdx] = useState("");
+
+    //캐러셀
+    const [currentPage, setCurrentPage] = useState(1);
+    const [carouselIndex, setCarouselIndex] = useState(0);
+
+    const handlePrevious = () =>{
+        if (carouselIndex === 0){
+            setCarouselIndex(pageNation.endPage -1);
+        }else{
+            setCarouselIndex(prevIndex => prevIndex - 1);
+        }
+    };
+
+    const handleNext = () => {
+        if (carouselIndex === pageNation.endPage - 1) {
+            setCarouselIndex(0);
+        } else {
+            setCarouselIndex(prevIndex => prevIndex + 1);
+        }
+    };
 
     const handleDelete = e => {
         if (window.confirm('삭제하시겠습니까?')) {
@@ -45,8 +59,8 @@ const MentorsList = ({selectedSubjects}) => {
 
     const handleClose = () => {
         setShow(false)
-
     };
+
     const handleShow = (e) => {
         setShow(true)
         const detailIdx = e.target.closest('.mentors-list').querySelector('.member-idx').value
@@ -98,14 +112,15 @@ const MentorsList = ({selectedSubjects}) => {
             : str;
     }
 
-    // http://localhost:8181/api/ddamddam/mentors/detail?mentorIdx=1
+
     return (
         <div className={'mentors-list-wrapper'}>
 
-            <img src={less} alt={"less-icon"} className={'less-icon'}/>
-            <img src={than} alt={"than-icon"} className={'than-icon'}/>
-            {mentorsList.map((mentor) => (
-                <div className={'mentors-list'} key={mentor.idx} onClick={handleShow}>
+            <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious} />
+            <img src={than} alt={"than-icon"} className={'than-icon'} onClick={handleNext} />
+            {mentorsList.map((mentor,index) => (
+                // <div className={'mentors-list'} key={mentor.idx} onClick={handleShow}>
+                <div className={`mentors-list ${index === carouselIndex ? 'active' : ''}`} key={mentor.idx} onClick={handleShow}>
                     <input type={'hidden'} value={mentor.idx} className={'member-idx'}/>
 
                     <div className={'speech-bubble'} key={mentor.title}>
