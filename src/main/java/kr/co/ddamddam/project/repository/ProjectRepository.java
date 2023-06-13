@@ -9,10 +9,15 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
-  @Query("SELECT p FROM Project p WHERE p.maxFront - SIZE(p.applicantOfFronts) <> 0")
+  @Query("SELECT p FROM Project p " +
+      "WHERE p.maxFront - SIZE(p.applicantOfFronts) <> 0")
   Page<Project> findByFrontNotZero(Pageable pageable);
 
-  @Query("SELECT p FROM Project p WHERE p.maxBack - SIZE(p.applicantOfBacks) <> 0")
+  @Query("SELECT p FROM Project p " +
+      "WHERE p.maxBack - SIZE(p.applicantOfBacks) <> 0 ")
   Page<Project> findByBackNotZero(Pageable pageable);
 
+
+  @Query("SELECT p FROM Project p WHERE LOWER(p.projectTitle) LIKE %:keyword%")
+  Page<Project> findProjectsBySearchWord(Pageable pageable, String keyword);
 }

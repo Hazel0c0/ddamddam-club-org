@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import kr.co.ddamddam.common.response.ApplicationResponse;
 import kr.co.ddamddam.project.dto.page.PageDTO;
 import kr.co.ddamddam.project.dto.request.ProjectModifyRequestDTO;
+import kr.co.ddamddam.project.dto.request.ProjectSearchRequestDto;
 import kr.co.ddamddam.project.dto.request.ProjectWriteDTO;
 import kr.co.ddamddam.project.dto.response.ProjectDetailResponseDTO;
 import kr.co.ddamddam.project.dto.response.ProjectListPageResponseDTO;
@@ -35,21 +36,22 @@ public class ProjectApiController {
 
   /**
    * 게시글 전체 조회
+   *
    * @param pageDTO : 페이지 정보
    * @return : 페이징 처리 된 프로젝트 리스트 정보
-   *
+   * <p>
    * 기본 조회 (조회순) - keyword 입력 없음
    * 좋아요 순 조회 - keyword : like
    * 프론트 / 백 조회 : keyword : front/back
    */
-  @GetMapping("/{keyword}/{position}")
+  @GetMapping
   private ApplicationResponse<ProjectListPageResponseDTO> getList(
       PageDTO pageDTO,
-      @PathVariable String keyword,
-      @PathVariable String position) {
+      @Validated @RequestBody ProjectSearchRequestDto searchRequestDto
+  ) {
     log.info("/api/ddamddam/page={}$size={}", pageDTO.getPage(), pageDTO.getSize());
 
-    ProjectListPageResponseDTO dto = projectService.getList(pageDTO,keyword,position);
+    ProjectListPageResponseDTO dto = projectService.getList(pageDTO, searchRequestDto);
 
     return ApplicationResponse.ok(dto);
   }
@@ -128,5 +130,19 @@ public class ProjectApiController {
     }
   }
 
+
+  /*
+   * 퀵 매칭
+   * select : 내 포지션 / 오래된 순 / 남은자리가 작은것 부터
+   */
+  @GetMapping("/quick")
+  private ApplicationResponse<?> quickMatchingList(
+      PageDTO dto, ProjectSearchRequestDto searchDto){
+    log.info("/api/ddamddam/quick");
+
+    ProjectListPageResponseDTO quickList = projectService.quickMatching(dto, searchDto);
+
+    return ApplicationResponse.ok(quickList);
+  }
 
 }
