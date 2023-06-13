@@ -113,6 +113,7 @@ public class QnaApiController {
     /**
      * QNA 게시글 생성
      * [POST] /api/ddamddam/qna/write
+     * ❗ dto 의 hashtagList 는 빈 배열로라도 받아야 합니다.
      * @param dto - 게시글 제목, 게시글 내용
      * @return 작성된 게시글의 index (index 를 통해 작성 게시글의 상세 페이지로 이동)
      */

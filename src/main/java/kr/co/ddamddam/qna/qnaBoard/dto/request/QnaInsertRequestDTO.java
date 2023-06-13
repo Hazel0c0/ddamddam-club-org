@@ -25,7 +25,7 @@ public class QnaInsertRequestDTO {
     private List<String> hashtagList;
 
     // DTO 를 Entity 로 변환
-    public Qna toEntity(User user, List<Hashtag> hashtagList) {
+    public Qna toEntity(User user) {
 
         if (hashtagList.size() == 0) {
             return Qna.builder()
@@ -40,7 +40,6 @@ public class QnaInsertRequestDTO {
                 .qnaTitle(this.boardTitle)
                 .qnaContent(this.boardContent)
                 .qnaWriter(user.getUserNickname())
-                .hashtagList(hashtagList)
                 .user(user)
                 .build();
     }

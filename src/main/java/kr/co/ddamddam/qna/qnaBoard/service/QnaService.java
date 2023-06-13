@@ -15,7 +15,9 @@ import kr.co.ddamddam.qna.qnaBoard.exception.custom.NotFoundQnaBoardException;
 import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
 import kr.co.ddamddam.qna.qnaHashtag.entity.Hashtag;
 import kr.co.ddamddam.qna.qnaHashtag.repository.HashtagRepository;
+import kr.co.ddamddam.qna.qnaReply.dto.response.QnaReplyListResponseDTO;
 import kr.co.ddamddam.qna.qnaReply.repository.QnaReplyRepository;
+import kr.co.ddamddam.qna.qnaReply.service.QnaReplyService;
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +45,7 @@ public class QnaService {
     private final UserRepository userRepository;
     private final QnaReplyRepository qnaReplyRepository;
     private final HashtagRepository hashtagRepository;
+    private final QnaReplyService qnaReplyService;
 
     public QnaListPageResponseDTO getList(PageDTO pageDTO) {
 
@@ -64,7 +67,7 @@ public class QnaService {
 
         log.info("[Qna/Service] QNA 게시글 조회순 TOP3 정렬");
 
-        List<Qna> qnaListTop3 = qnaRepository.findTop3ByOrderByQnaViewDesc();
+        List<Qna> qnaListTop3 = qnaRepository.findTop3ByOrderByViewCountDesc();
 
         return qnaListTop3.stream()
                 .map(qna -> QnaTopListResponseDTO.builder()
@@ -72,13 +75,12 @@ public class QnaService {
                         .boardTitle(TruncateString.truncate(qna.getQnaTitle(), 15))
                         .boardContent(TruncateString.truncate(qna.getQnaContent(), 40))
                         .qnaAdoption(qna.getQnaAdoption())
-                        .boardViewCount(qna.getQnaView())
-                        .boardReplyCount(qna.getQnaReplyList().size())
+                        .boardViewCount(qna.getViewCount())
+                        .boardReplyCount(qna.getReplyCount())
                         .build()
                 ).collect(Collectors.toList());
     }
 
-    // TODO : 완료
     public QnaDetailResponseDTO getDetail(Long boardId) {
 
         log.info("[Qna/Service] QNA 게시글 상세보기 boardId - {}", boardId);
@@ -90,23 +92,23 @@ public class QnaService {
         Qna qna = qnaRepository.findById(boardId).orElseThrow(() -> {
             throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, boardId);
         });
+
         User user = userRepository.findById(qna.getUser().getUserIdx()).orElseThrow(() -> {
             throw new NotFoundQnaBoardException(NOT_FOUND_USER, qna.getUser().getUserIdx());
         });
 
-        QnaDetailResponseDTO qnaDetailResponseDTO = new QnaDetailResponseDTO(qna, user);
+        List<QnaReplyListResponseDTO> replyList = qnaReplyService.getList(qna.getQnaIdx());
 
-        // Hashtag 리스트를 문자열 리스트로 변경해서 응답
+        QnaDetailResponseDTO qnaDetailResponseDTO = new QnaDetailResponseDTO(
+                qna,
+                user,
+                hashtagToString(qna.getHashtagList()),
+                replyList
+        );
 
-        if (qna.getHashtagList() != null) {
-            List<String> hashtagList = hashtagToString(qna.getHashtagList());
-            qnaDetailResponseDTO.setHashtagList(hashtagList);
-        }
-        
         return qnaDetailResponseDTO;
     }
 
-    // TODO : 수정
     public Long writeBoard(Long userIdx, QnaInsertRequestDTO dto) {
 
         log.info("[Qna/Service] QNA 게시글 작성 - {}", dto);
@@ -115,13 +117,11 @@ public class QnaService {
             throw new NotFoundQnaBoardException(NOT_FOUND_USER, userIdx);
         });
 
-        List<Hashtag> hashtagList = new ArrayList<>();
-
         Qna savedQna = qnaRepository.save(
-                dto.toEntity(user, hashtagList)
+                dto.toEntity(user)
         );
 
-        if (dto.getHashtagList() != null) {
+        if (dto.getHashtagList().size() > 0) {
 
             // 해시태그 저장
             for (String tag : dto.getHashtagList()) {
@@ -129,21 +129,14 @@ public class QnaService {
                         .hashtagContent(tag)
                         .qna(savedQna)
                         .build();
-                hashtagRepository.save(newHashtag);
-                hashtagList.add(newHashtag);
+                Hashtag saved = hashtagRepository.save(newHashtag);
+                savedQna.getHashtagList().add(saved);
             }
         }
-
-        // Qna 게시글의 해시태그 리스트에 해시태그 set
-        savedQna.setHashtagList(hashtagList);
-        qnaRepository.save(savedQna);
-
-        System.out.println("savedQna.getHashtagList() = " + savedQna.getHashtagList());
 
         return savedQna.getQnaIdx();
     }
 
-    // TODO : 완료
     public ResponseMessage deleteBoard(Long boardIdx) {
 
         log.info("[Qna/Service] QNA 게시글 삭제 - {}", boardIdx);
@@ -193,7 +186,7 @@ public class QnaService {
             throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, boardIdx);
         });
 
-        qna.setQnaView(qna.getQnaView() + VIEW_COUNT_UP);
+        qna.setViewCount(qna.getViewCount() + VIEW_COUNT_UP);
 
         qnaRepository.save(qna);
 

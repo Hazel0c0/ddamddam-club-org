@@ -46,8 +46,8 @@ public class QnaListResponseDTO {
         this.boardWriter = qna.getQnaWriter();
         this.boardDate = qna.getQnaDate();
         this.boardAdoption = qna.getQnaAdoption();
-        this.boardViewCount = qna.getQnaView();
-        this.boardReplyCount = qna.getQnaReplyList().size();
+        this.boardViewCount = qna.getViewCount();
+        this.boardReplyCount = qna.getReplyCount();
         this.hashtagList = hashtagList;
     }
 
