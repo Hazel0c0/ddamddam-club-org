@@ -14,11 +14,9 @@ const MentorsList = ({selectedSubjects}) => {
     const [mentorsList, setMentorsList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
 
-
-
-    useEffect(()=>{
-        console.log(`selectedSubjects의 값 : ${selectedSubjects}`)
-    },[selectedSubjects]);
+    // useEffect(()=>{
+    //     console.log(`selectedSubjects의 값 : ${selectedSubjects}`)
+    // },[selectedSubjects]);
 
     const test = selectedSubjects;
 
@@ -63,19 +61,23 @@ const MentorsList = ({selectedSubjects}) => {
             })
             .then(result => {
                 setDetailMember(result);
-                console.log(result);
+                // console.log(result);
                 setChatPageIdx(result.idx);
-                console.log(result.idx);
+                // console.log(result.idx);
             });
-
-
     };
 
     const {title, content, subject, current, nickName, date, mentee, career, idx} = detailMember;
-    const chat = chatPageIdx;
-    // fetch('http://localhost:8181/api/ddamddam/mentors/list?page=&size=&sort=')
+
+
+    // 첫 렌더링 시 출력
     useEffect(() => {
-        fetch(MENTOR + '/list?page=1&size9=&sort=mentorDate')
+        let subjectsParam ='';
+        if (selectedSubjects !== null){
+            subjectsParam = selectedSubjects.join(',');
+        }
+        console.log(`subjectsParam : ${subjectsParam}`)
+        fetch(MENTOR + '/sublist?page=1&size=9&subjects='+subjectsParam)
             .then(res => {
                 if (res.status === 500) {
                     alert('잠시 후 다시 접속해주세요.[서버오류]');
@@ -88,9 +90,8 @@ const MentorsList = ({selectedSubjects}) => {
                     setMentorsList(result.mentors);
                     setPageNation(result.pageInfo);
                 }
-
             });
-    }, []);
+    }, [selectedSubjects]);
     const subStringContent = (str, n) => {
         return str?.length > n
             ? str.substr(0, n - 1) + "..."
@@ -100,9 +101,7 @@ const MentorsList = ({selectedSubjects}) => {
     // http://localhost:8181/api/ddamddam/mentors/detail?mentorIdx=1
     return (
         <div className={'mentors-list-wrapper'}>
-            <div>
-                {test}
-            </div>
+
             <img src={less} alt={"less-icon"} className={'less-icon'}/>
             <img src={than} alt={"than-icon"} className={'than-icon'}/>
             {mentorsList.map((mentor) => (
