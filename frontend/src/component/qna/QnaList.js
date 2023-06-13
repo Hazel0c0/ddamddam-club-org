@@ -36,15 +36,12 @@ const QnaList = () => {
                 });
     }, [qnaDetailBoardIdx]);
 
-    const detailHandler = (boardIdx) => {
-        setqnaDetailBoardIdx(boardIdx);
-    };
 
     return (
         <Common className={'qna-list-wrapper'}>
             {qnaList.map((qna) => (
                 <section className={'qna-list'} key={qna.boardIdx}>
-                    <input type={'hidden'} value={qna.boardIdx} className={'boardIdx'}/>
+
 
                     {qna.boardAdoption === 'Y'
                         ? <div className={'checked'} key={qna.boardAdoption}>

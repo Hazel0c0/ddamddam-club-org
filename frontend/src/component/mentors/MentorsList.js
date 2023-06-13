@@ -67,6 +67,11 @@ const MentorsList = () => {
 
             });
     }, []);
+    const subStringContent = (str, n) => {
+        return str?.length > n
+            ? str.substr(0, n - 1) + "..."
+            : str;
+    }
 
     // http://localhost:8181/api/ddamddam/mentors/detail?mentorIdx=1
     return (
@@ -89,7 +94,8 @@ const MentorsList = () => {
                             {mentor.nickName}
                         </div>
                         <div className={'text'} key={mentor.content}>
-                            {mentor.content}
+                            {subStringContent(mentor.content,55)}
+                            {/*{mentor.content}*/}
                         </div>
                         <ul className={'category'} key={mentor.subject}>
                             <li>{mentor.subject}</li>
