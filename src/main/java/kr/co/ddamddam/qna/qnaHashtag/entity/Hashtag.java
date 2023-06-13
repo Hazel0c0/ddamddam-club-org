@@ -9,7 +9,7 @@ import java.util.List;
 
 @Setter
 @Getter
-@ToString(exclude = "hashtagMappingList")
+@ToString(exclude = "qna")
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,11 +23,11 @@ public class Hashtag {
     @Column(name = "hashtag_idx")
     private Long hashtagIdx; // 식별번호
 
-    @Column(name = "hashtag_content", nullable = false, length = 10)
+    @Column(name = "hashtag_content", length = 10)
     private String hashtagContent; // 해시태그 내용
 
-    @OneToMany(mappedBy = "hashtag", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @Builder.Default
-    private List<HashtagMapping> hashtagMappingList = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "qna_idx") // FK
+    private Qna qna; // 연결된 게시글
 
 }

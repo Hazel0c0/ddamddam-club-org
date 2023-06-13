@@ -14,8 +14,6 @@ import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.qna.qnaBoard.exception.custom.NotFoundQnaBoardException;
 import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
 import kr.co.ddamddam.qna.qnaHashtag.entity.Hashtag;
-import kr.co.ddamddam.qna.qnaHashtag.entity.HashtagMapping;
-import kr.co.ddamddam.qna.qnaHashtag.repository.HashtagMappingRepository;
 import kr.co.ddamddam.qna.qnaHashtag.repository.HashtagRepository;
 import kr.co.ddamddam.qna.qnaReply.repository.QnaReplyRepository;
 import kr.co.ddamddam.user.entity.User;
@@ -44,7 +42,6 @@ public class QnaService {
     private final QnaRepository qnaRepository;
     private final UserRepository userRepository;
     private final QnaReplyRepository qnaReplyRepository;
-    private final HashtagMappingRepository hashtagMappingRepository;
     private final HashtagRepository hashtagRepository;
 
     public QnaListPageResponseDTO getList(PageDTO pageDTO) {
@@ -81,6 +78,7 @@ public class QnaService {
                 ).collect(Collectors.toList());
     }
 
+    // TODO : 완료
     public QnaDetailResponseDTO getDetail(Long boardId) {
 
         log.info("[Qna/Service] QNA 게시글 상세보기 boardId - {}", boardId);
@@ -98,14 +96,17 @@ public class QnaService {
 
         QnaDetailResponseDTO qnaDetailResponseDTO = new QnaDetailResponseDTO(qna, user);
 
-        // HashtagMapping 리스트를 문자열 리스트로 변경해서 응답
-        List<String> hashtagList = getHashtagListByQnaIdx(boardId);
+        // Hashtag 리스트를 문자열 리스트로 변경해서 응답
 
-        qnaDetailResponseDTO.setHashtagList(hashtagList);
-
+        if (qna.getHashtagList() != null) {
+            List<String> hashtagList = hashtagToString(qna.getHashtagList());
+            qnaDetailResponseDTO.setHashtagList(hashtagList);
+        }
+        
         return qnaDetailResponseDTO;
     }
 
+    // TODO : 수정
     public Long writeBoard(Long userIdx, QnaInsertRequestDTO dto) {
 
         log.info("[Qna/Service] QNA 게시글 작성 - {}", dto);
@@ -114,26 +115,35 @@ public class QnaService {
             throw new NotFoundQnaBoardException(NOT_FOUND_USER, userIdx);
         });
 
-        Qna savedQna = qnaRepository.save(dto.toEntity(user));
+        List<Hashtag> hashtagList = new ArrayList<>();
 
-        for (String hashtag : dto.getHashtagList()) {
+        Qna savedQna = qnaRepository.save(
+                dto.toEntity(user, hashtagList)
+        );
 
-            Hashtag savedHashtag = Hashtag.builder()
-                    .hashtagContent(hashtag)
-                    .build();
-            hashtagRepository.save(savedHashtag);
+        if (dto.getHashtagList() != null) {
 
-            hashtagMappingRepository.save(
-                    HashtagMapping.builder()
-                    .hashtag(savedHashtag)
-                    .qna(savedQna)
-                    .build());
-
+            // 해시태그 저장
+            for (String tag : dto.getHashtagList()) {
+                Hashtag newHashtag = Hashtag.builder()
+                        .hashtagContent(tag)
+                        .qna(savedQna)
+                        .build();
+                hashtagRepository.save(newHashtag);
+                hashtagList.add(newHashtag);
+            }
         }
+
+        // Qna 게시글의 해시태그 리스트에 해시태그 set
+        savedQna.setHashtagList(hashtagList);
+        qnaRepository.save(savedQna);
+
+        System.out.println("savedQna.getHashtagList() = " + savedQna.getHashtagList());
 
         return savedQna.getQnaIdx();
     }
 
+    // TODO : 완료
     public ResponseMessage deleteBoard(Long boardIdx) {
 
         log.info("[Qna/Service] QNA 게시글 삭제 - {}", boardIdx);
@@ -151,6 +161,7 @@ public class QnaService {
         return SUCCESS;
     }
     
+    // TODO : 완료
     public ResponseMessage modifyBoard(Long boardIdx, QnaModifyRequestDTO dto) {
 
         log.info("[Qna/Service] QNA 게시글 수정 - {}, payload - {}", boardIdx, dto);
@@ -163,8 +174,11 @@ public class QnaService {
             return FAIL;
         }
 
+        qna.clearHashtagList();
+
         qna.setQnaTitle(dto.getBoardTitle());
         qna.setQnaContent(dto.getBoardContent());
+        qna.setHashtagList(stringToHashtag(dto.getHashtagList()));
 
         qnaRepository.save(qna);
 
@@ -241,11 +255,14 @@ public class QnaService {
         );
     }
 
+    // TODO : 완료
     private List<QnaListResponseDTO> getQnaDtoList(Page<Qna> qnas) {
 
         return qnas.getContent().stream()
                 .map(qna ->
-                    new QnaListResponseDTO(qna, getHashtagListByQnaIdx(qna.getQnaIdx()))
+                    new QnaListResponseDTO(qna,
+                            hashtagToString(qna.getHashtagList())
+                    )
                 )
                 .collect(Collectors.toList());
     }
@@ -255,7 +272,9 @@ public class QnaService {
         return qnas.getContent().stream()
                 .filter(qna -> qna.getQnaAdoption() == Y)
                 .map(qna ->
-                        new QnaListResponseDTO(qna, getHashtagListByQnaIdx(qna.getQnaIdx()))
+                        new QnaListResponseDTO(qna,
+                                hashtagToString(qna.getHashtagList())
+                        )
                 )
                 .collect(Collectors.toList());
     }
@@ -265,17 +284,29 @@ public class QnaService {
         return qnas.getContent().stream()
                 .filter(qna -> qna.getQnaAdoption() == N)
                 .map(qna ->
-                        new QnaListResponseDTO(qna, getHashtagListByQnaIdx(qna.getQnaIdx()))
+                        new QnaListResponseDTO(qna,
+                                hashtagToString(qna.getHashtagList())
+                        )
                 )
                 .collect(Collectors.toList());
     }
 
-    public List<String> getHashtagListByQnaIdx(Long qnaIdx) {
-        List<HashtagMapping> hashtagMappingList = hashtagMappingRepository.findByQnaQnaIdx(qnaIdx);
-        List<String> hashtagList = new ArrayList<>();
-        for (HashtagMapping mapping : hashtagMappingList) {
-            Hashtag hashtag = hashtagRepository.findByHashtagIdx(mapping.getHashtag().getHashtagIdx());
-            hashtagList.add(hashtag.getHashtagContent());
+    public List<String> hashtagToString(List<Hashtag> hashtagList) {
+        List<String> StringList = new ArrayList<>();
+        for (Hashtag foundHashtag : hashtagList) {
+            StringList.add(foundHashtag.getHashtagContent());
+        }
+        return StringList;
+    }
+
+    public List<Hashtag> stringToHashtag(List<String> strHashtagList) {
+        List<Hashtag> hashtagList = new ArrayList<>();
+        for (String tag : strHashtagList) {
+            hashtagList.add(
+                    Hashtag.builder()
+                            .hashtagContent(tag)
+                            .build()
+            );
         }
         return hashtagList;
     }
