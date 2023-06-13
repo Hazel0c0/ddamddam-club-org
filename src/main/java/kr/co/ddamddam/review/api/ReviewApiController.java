@@ -92,7 +92,7 @@ public class ReviewApiController {
 
     //게시물 생성하기
     @PostMapping("/write")
-    public  ResponseEntity<?> write(@Validated @RequestBody ReviewWriteRequestDTO dto){
+    public  ResponseEntity<?> write(@Validated @RequestBody ReviewWriteRequestDTO dto) throws ReviewNotFoundException {
         log.info("POST : /reviews/write - 게시글 생성 {}", dto);
         Long userIdx = 2L;
         ReviewDetailResponseDTO responseDTO = reviewService.write(dto,userIdx);

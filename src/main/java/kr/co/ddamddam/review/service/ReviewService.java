@@ -2,7 +2,9 @@ package kr.co.ddamddam.review.service;
 
 import kr.co.ddamddam.company.dto.page.PageDTO;
 import kr.co.ddamddam.company.dto.page.PageResponseDTO;
+import kr.co.ddamddam.company.entity.Company;
 import kr.co.ddamddam.company.repository.CompanyRepository;
+import kr.co.ddamddam.qna.qnaBoard.exception.custom.NotFoundQnaBoardException;
 import kr.co.ddamddam.review.dto.request.ReviewModifyRequestDTO;
 import kr.co.ddamddam.review.dto.request.ReviewWriteRequestDTO;
 import kr.co.ddamddam.review.dto.response.ReviewDetailResponseDTO;
@@ -26,6 +28,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
+import static kr.co.ddamddam.qna.qnaBoard.exception.custom.QnaErrorCode.NOT_FOUND_USER;
 
 @Service
 @Slf4j
@@ -147,14 +150,17 @@ public class ReviewService {
 
 
     //게시글 작성
-    public ReviewDetailResponseDTO write(ReviewWriteRequestDTO dto, Long userIdx){
-        Review review = dto.toEntity();
-        Optional<User> optionalUser = userRepository.findById(userIdx);
-        User user = optionalUser.orElseThrow(() -> new RuntimeException("User not found with id: " + userIdx));
-        review.setUser(user);
-        Review saved = reviewRepository.save(review);
+    public ReviewDetailResponseDTO write(ReviewWriteRequestDTO dto, Long userIdx) throws ReviewNotFoundException {
+//        Optional<User> optionalUser = userRepository.findById(userIdx);
+        User user = userRepository.findById(userIdx).orElseThrow(() -> {
+            throw new NotFoundQnaBoardException(NOT_FOUND_USER, userIdx);
+        });
 
-        return new ReviewDetailResponseDTO(saved);
+        Review saved = reviewRepository.save(dto.toEntity(user));
+        ReviewDetailResponseDTO detail = getDetail(saved.getReviewIdx());
+//        User user = optionalUser.orElseThrow(() -> new RuntimeException("User not found with id: " + userIdx));
+
+        return detail;
     }
 
     //수정
@@ -163,12 +169,14 @@ public class ReviewService {
 
         if (targetReview.isPresent()){
             Review review = targetReview.get();
+            Company company = companyRepository.findById(dto.getReviewCompany()).get();
+//            Review review1 = new ReviewModifyRequestDTO().toEntity();
             review.setReviewTitle(dto.getReviewTitle());
-            dto.setReviewContent(review.getReviewContent());
-            dto.setReviewJob(review.getReviewJob());
-            dto.setReviewDate(review.getReviewDate());
-            dto.setReviewRating(review.getReviewRating());
-            dto.setReviewCompany(review.getCompany());
+            review.setReviewContent(dto.getReviewContent());
+            review.setReviewJob(dto.getReviewJob());
+            review.setReviewDate(dto.getReviewDate());
+            review.setReviewRating(dto.getReviewRating());
+            review.setCompany(company);
 
             reviewRepository.save(review);
         }else {

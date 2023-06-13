@@ -36,7 +36,7 @@ public class ReviewDetailResponseDTO {
         this.reviewContent = review.getReviewContent();
         this.reviewJob = review.getReviewJob();
         this.reviewRating = review.getReviewRating();
-        this.reviewLocation = review.getCompany().getCompanyArea(); //이거 맞는거임 ?
+        this.reviewLocation = review.getCompany().getCompanyArea();
         this.reviewDate = review.getReviewDate();
         this.reviewView = review.getReviewView();
         this.reviewTenure = review.getReviewTenure();

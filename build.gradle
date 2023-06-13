@@ -42,6 +42,9 @@ dependencies {
 	// 실시간 채팅 웹소켓
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+
+	// json
+	implementation group: 'org'
 }
 
 tasks.named('test') {
