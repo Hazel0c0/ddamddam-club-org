@@ -5,7 +5,6 @@ import kr.co.ddamddam.project.dto.response.ProjectDetailResponseDTO;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfFront;
-import kr.co.ddamddam.project.repository.ApplicantRepository;
 import kr.co.ddamddam.project.repository.BackRepository;
 import kr.co.ddamddam.project.repository.FrontRepository;
 import kr.co.ddamddam.project.repository.ProjectRepository;
@@ -17,21 +16,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 public class ApplicantService {
 
-  private final ApplicantRepository applicantRepository;
+  private final ProjectRepository projectRepository;
+  private final UserRepository userRepository;
 
   private final BackRepository backRepository;
   private final FrontRepository frontRepository;
-  private final ProjectRepository projectRepository;
+
   private final ProjectService projectService;
-  private final UserRepository userRepository;
 
   public ProjectDetailResponseDTO apply(Long userIdx, Long projectIdx) {
     log.info("apply service");
@@ -39,13 +36,7 @@ public class ApplicantService {
     Project currProject = projectService.getProject(projectIdx);
 
     // 유저 객체
-    User foundUser = userRepository.findById(userIdx)
-        .orElseThrow(
-            () -> new RuntimeException(
-                userIdx + "번 유저 없음!"
-            )
-        );
-    log.info("foundUser : {}", foundUser);
+    User foundUser = getUser(userIdx);
 
     //유저 포지션별 분류
     if (foundUser.getUserPosition() == UserPosition.BACKEND) {
@@ -72,13 +63,30 @@ public class ApplicantService {
     return new ProjectDetailResponseDTO(currProject);
   }
 
+  private User getUser(Long userIdx) {
+    User foundUser = userRepository.findById(userIdx)
+        .orElseThrow(
+            () -> new RuntimeException(
+                userIdx + "번 유저 없음!"
+            )
+        );
+    log.info("foundUser : {}", foundUser);
+    return foundUser;
+  }
 
-  // 신청자 방 개별 조회
 
+  public void cancel(Long userIdx, Long projectIdx) {
+    Project currProject = projectService.getProject(projectIdx);
 
-  public void cancel(User user, Long projectIdx) {
+    User foundUser = getUser(userIdx);
 
-
+    //유저 포지션별 분류
+    if (foundUser.getUserPosition() == UserPosition.BACKEND) {
+      System.out.println("이 유저는 backend 다");
+      backRepository.deleteById(userIdx);
+    }else {
+      frontRepository.deleteById(userIdx);
+    }
   }
 
 

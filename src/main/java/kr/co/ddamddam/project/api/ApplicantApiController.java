@@ -4,6 +4,7 @@ import kr.co.ddamddam.common.response.ApplicationResponse;
 import kr.co.ddamddam.project.dto.response.ProjectDetailResponseDTO;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.service.ApplicantService;
+import kr.co.ddamddam.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -43,18 +44,22 @@ public class ApplicantApiController {
     } catch (Exception e) {
       return ApplicationResponse.bad("다시 신청해주세요");
     }
-
   }
 
+  // 신청 취소
+  @DeleteMapping("/{userIdx}/{projectIdx}")
+  public ApplicationResponse<?> cancel(
+      @RequestBody @PathVariable Long userIdx,
+      @RequestBody @PathVariable Long projectIdx
+  ) {
+    log.info("/api/ddamddam/applicant/user={}/board={} DELETE !! ", userIdx, projectIdx);
 
-
-/*
-  // 신청자 방 개별 조회
-
-
-  public void cancel(UserProject user, Long projectIdx) {
-
-
- */
+    try {
+      applicantService.cancel(userIdx,projectIdx);
+      return ApplicationResponse.ok("DELETE SUCCESS!");
+    } catch (Exception e) {
+      return ApplicationResponse.error("ERROR");
+    }
+  }
 }
-//}
+
