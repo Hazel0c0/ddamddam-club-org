@@ -1,6 +1,6 @@
 package kr.co.ddamddam.qna.qnaBoard.entity;
 
-import kr.co.ddamddam.qna.qnaHashtag.entity.QnaHashtag;
+import kr.co.ddamddam.qna.qnaHashtag.entity.Hashtag;
 import kr.co.ddamddam.qna.qnaReply.entity.QnaReply;
 import kr.co.ddamddam.user.entity.User;
 import lombok.*;
@@ -8,11 +8,12 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
 @Getter
-@ToString(exclude = {"qnaReply", "qnaHashtag", "user"})
+@ToString(exclude = {"qnaReplyList", "hashtagList", "user"})
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,7 +42,11 @@ public class Qna {
 
     @Column(name = "qna_view", nullable = false)
     @Builder.Default
-    private int qnaView = 0;
+    private int viewCount = 0;
+
+    @Column(name = "qna_reply", nullable = false)
+    @Builder.Default
+    private int replyCount = 0;
 
     @Column(name = "qna_adoption", nullable = false, length = 1)
     @Enumerated(EnumType.STRING)
@@ -49,13 +54,19 @@ public class Qna {
     private QnaAdoption qnaAdoption = QnaAdoption.N; // 기본값: 채택되지 않은 상태인 N
 
     @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<QnaReply> qnaReply;
+    @Builder.Default
+    private List<Hashtag> hashtagList = new ArrayList<>();
 
     @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<QnaHashtag> qnaHashtag;
+    @Builder.Default
+    private List<QnaReply> qnaReplyList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx") // FK
     private User user;
+
+    public void clearHashtagList() {
+        hashtagList.clear();
+    }
 
 }
