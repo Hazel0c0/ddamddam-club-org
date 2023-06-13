@@ -50,13 +50,13 @@ public class QnaApiController {
      * @param boardId - 게시글의 인덱스번호
      * @return 게시글의 상세정보를 담은 DTO
      */
-    @GetMapping("/{boardId}")
+    @GetMapping("/{boardIdx}")
     public ApplicationResponse<?> getDatail(
-            @PathVariable("boardId") Long boardId
+            @PathVariable("boardIdx") Long boardIdx
     ) {
-        log.info("GET : /qna/{} - 게시글 상세조회", boardId);
+        log.info("GET : /qna/{} - 게시글 상세조회", boardIdx);
 
-        QnaDetailResponseDTO qnaDetail = qnaService.getDetail(boardId);
+        QnaDetailResponseDTO qnaDetail = qnaService.getDetail(boardIdx);
 
         return ApplicationResponse.ok(qnaDetail);
     }

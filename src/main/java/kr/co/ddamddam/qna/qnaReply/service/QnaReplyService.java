@@ -64,6 +64,10 @@ public class QnaReplyService {
             throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, dto.getBoardIdx());
         });
 
+        if (qna.getQnaAdoption() == Y) {
+            return FAIL;
+        }
+
         QnaReply newQnaReply = QnaReplyInsertRequestDTO.builder()
                 .boardIdx(dto.getBoardIdx())
                 .replyContent(dto.getReplyContent())
