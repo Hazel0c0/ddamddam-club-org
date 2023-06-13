@@ -41,21 +41,29 @@ public class ApplicantService {
     //유저 포지션별 분류
     if (foundUser.getUserPosition() == UserPosition.BACKEND) {
       System.out.println("이 유저는 backend 다");
-      ApplicantOfBack save = backRepository.save(
-          ApplicantOfBack.builder()
-              .userIdx(userIdx)
-              .project(currProject)
-              .build()
-      );
-      currProject.addBack(save);
+      if (currProject.getApplicantOfBacks().size() < currProject.getMaxBack()) {
+        currProject.addBack(backRepository.save(
+            ApplicantOfBack.builder()
+                .userIdx(userIdx)
+                .project(currProject)
+                .build()
+        ));
+      }else {
+        // 최대 백엔드 지원자 수를 초과한 경우 예외 처리
+        throw new IllegalStateException("백엔드 지원자 정원 마감");
+      }
     } else {
       System.out.println("이 유저는 front 다");
-      currProject.addFront(frontRepository.save(
-          ApplicantOfFront.builder()
-              .userIdx(userIdx)
-              .project(currProject)
-              .build()
-      ));
+      if (currProject.getApplicantOfFronts().size() < currProject.getMaxFront()) {
+        currProject.addFront(frontRepository.save(
+            ApplicantOfFront.builder()
+                .userIdx(userIdx)
+                .project(currProject)
+                .build()
+        ));
+      } else {
+        throw new IllegalStateException("프론트 지원자 정원 마감");
+      }
     }
 
     log.info("백/프론트 currProject : {}", currProject);
@@ -84,7 +92,7 @@ public class ApplicantService {
     if (foundUser.getUserPosition() == UserPosition.BACKEND) {
       System.out.println("이 유저는 backend 다");
       backRepository.deleteById(userIdx);
-    }else {
+    } else {
       frontRepository.deleteById(userIdx);
     }
   }

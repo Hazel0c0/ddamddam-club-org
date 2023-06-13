@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/ddamddam/project-like")
+@RequestMapping("/api/ddamddam/project/like")
 @Slf4j
 public class ProjectLikeApiController {
 
@@ -27,30 +27,23 @@ public class ProjectLikeApiController {
    * @param userIdx : 세션에서 내(사용자)정보 받아올 예정
    * @param projectIdx : 좋아요 누른 게시글 번호
    */
+
   @PostMapping("/{userIdx}/{projectIdx}")
-  public ApplicationResponse<?> likeUp(
+  public ApplicationResponse<?> handleLike(
       @PathVariable Long userIdx,
       @PathVariable Long projectIdx
   ) {
     try {
-      projectLikeService.likeUp(userIdx, projectIdx);
-      return ApplicationResponse.ok("좋아요가 올라갔습니다.");
+      boolean isLiked = projectLikeService.checkIfLiked(userIdx, projectIdx);
+      if (isLiked) {
+        projectLikeService.handleLike(userIdx, projectIdx);
+        return ApplicationResponse.ok("좋아요가 취소되었습니다.");
+      } else {
+        projectLikeService.handleLike(userIdx, projectIdx);
+        return ApplicationResponse.ok("좋아요가 올라갔습니다.");
+      }
     } catch (Exception e) {
-      return ApplicationResponse.error("좋아요 업데이트 중 오류가 발생했습니다.");
+      return ApplicationResponse.error("좋아요 처리 중 오류가 발생했습니다.");
     }
   }
-
-  @PostMapping("/{userIdx}/{projectIdx}")
-  public ApplicationResponse<?> cancelLike(
-      @PathVariable Long userIdx,
-      @PathVariable Long projectIdx
-  ) {
-    try {
-      projectLikeService.cancelLike(userIdx, projectIdx);
-      return ApplicationResponse.ok("좋아요가 취소되었습니다.");
-    } catch (Exception e) {
-      return ApplicationResponse.error("좋아요 취소 중 오류가 발생했습니다.");
-    }
-  }
-
 }
