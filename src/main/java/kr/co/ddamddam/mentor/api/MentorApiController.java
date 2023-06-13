@@ -39,7 +39,7 @@ public class MentorApiController {
     public ResponseEntity<?> list(
             PageDTO pageDTO
     ){
-        log.info("/api/ddamddam/mentors/list?page{}&size={}&subjects={}", pageDTO.getPage(), pageDTO.getSize());
+        log.info("/api/ddamddam/mentors/list?page{}&size={}", pageDTO.getPage(), pageDTO.getSize());
 
         MentorListResponseDTO dto = mentorService.getList(pageDTO);
 

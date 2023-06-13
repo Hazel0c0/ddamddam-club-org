@@ -87,8 +87,11 @@ public class MentorService {
 
         // 게시글 목록 조회
         Page<Mentor> mentors;
-        mentors = mentorRepository.findByMentorSubjectInIgnoreCase(subjects, pageable);
-
+        if (subjects.isEmpty()){
+            mentors = mentorRepository.findAll(pageable);
+        }else {
+            mentors = mentorRepository.findByMentorSubjectInIgnoreCase(subjects, pageable);
+        }
 
         List<Mentor> mentorList = mentors.getContent();
         List<MentorDetailResponseDTO> mentorDetailResponseDTOList = mentorList.stream().map(mentor -> {
