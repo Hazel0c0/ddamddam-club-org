@@ -40,9 +40,11 @@ public class ChatService {
         User receiver = userRepository.findById(requestDTO.getReceiverId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid receiverId"));
 
+        Mentor mentor = mentorRepository.findById(requestDTO.getMentorIdx()).orElseThrow();
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.setSender(sender);
         chatRoom.setReceiver(receiver);
+        chatRoom.setMentor(mentor);
 
         ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
 
