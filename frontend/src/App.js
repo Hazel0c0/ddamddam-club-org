@@ -8,7 +8,7 @@ import MentorsMain from "./component/mentors/MentorsMain";
 import MainTemplate from "./component/common/MainTemplate";
 import UserLogin from "./component/user/UserLogin";
 import UserJoin from "./component/user/UserJoin";
-import ProjectsMain from "./component/projects/ProjectsMain";
+import ProjectsTemplate from "./component/projects/ProjectsTemplate";
 import QnaMain from "./component/qna/QnaMain";
 import Footer from "./component/common/Footer";
 import MentorsTemplate from "./component/mentors/MentorsTemplate";
@@ -37,7 +37,7 @@ function App() {
                     {/*멘토 멘티 채팅방*/}
                     <Route path={'/mentors/detail/chat/:chatPageIdx'} element={<MentorsChat />}></Route>
                     {/*프로젝트 모집*/}
-                    <Route path={'/projects'} element={<ProjectsMain />}></Route>
+                    <Route path={'/projects'} element={<ProjectsTemplate />}></Route>
 
                     {/*취업 후기 - not yet*/}
                     <Route></Route>

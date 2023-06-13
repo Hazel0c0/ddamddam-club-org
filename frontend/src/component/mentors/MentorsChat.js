@@ -63,6 +63,10 @@ const MentorsChat = () => {
                     <button className={'application-btn'}>멘토링중</button>
                 </div>
             </div>
+
+            <div className={'mentor-chat-room'}>
+
+            </div>
         </Common>
 
 
