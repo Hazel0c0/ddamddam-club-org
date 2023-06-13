@@ -15,7 +15,7 @@ public class QnaTopListResponseDTO {
     private Long boardIdx; // 식별번호
     private String boardTitle;
     private String boardContent;
-    private QnaAdoption qnaAdoption;
+    private QnaAdoption boardAdoption;
     private int boardViewCount;
     private int boardReplyCount; // 해당 게시글의 댓글수
 

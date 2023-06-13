@@ -74,7 +74,7 @@ public class QnaService {
                         .boardIdx(qna.getQnaIdx())
                         .boardTitle(TruncateString.truncate(qna.getQnaTitle(), 15))
                         .boardContent(TruncateString.truncate(qna.getQnaContent(), 40))
-                        .qnaAdoption(qna.getQnaAdoption())
+                        .boardAdoption(qna.getQnaAdoption())
                         .boardViewCount(qna.getViewCount())
                         .boardReplyCount(qna.getReplyCount())
                         .build()
