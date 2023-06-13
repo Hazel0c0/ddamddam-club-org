@@ -33,6 +33,7 @@ const QnaMain = () => {
     // };
 
     return (
+
         <Common className={'qna-view-wrapper'}>
             <div className={'title-wrapper'}>
                 <p className={'main-title'}>Q&A</p>

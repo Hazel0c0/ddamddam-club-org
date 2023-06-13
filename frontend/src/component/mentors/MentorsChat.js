@@ -63,6 +63,23 @@ const MentorsChat = () => {
                     <button className={'application-btn'}>멘토링중</button>
                 </div>
             </div>
+
+            <div className={'mentor-chat-room'}>
+                <section className={'chating-list'}>
+                    <div className={'sender-wrapper'}>
+                        <span className={'sender-content'}>안녕하세요 발신자안녕하세요 발신자안녕하세요 발신자안녕하세요 발신자안녕하세요 발신자</span>
+                    </div>
+                    <div className={'receiver-wrapper'}>
+                        <span className={'receiver'}>홍길동</span>
+                        <span className={'receiver-content'}>안녕하세요 수신자</span>
+                    </div>
+                </section>
+
+                <section className={'input-section'}>
+                    <textarea className={'text-input'} placeholder={'대화를 입력해 멘토님과 이야기를 나눠보세요!'} ></textarea>
+                    <button className={'send-btn'}>Send</button>
+                </section>
+            </div>
         </Common>
 
 
