@@ -183,6 +183,10 @@
 
         .modify-btn {
           margin-right: 7px;
+          cursor: pointer;
+        }
+        .delete-btn{
+          cursor: pointer;
         }
       }
 
@@ -194,6 +198,7 @@
 
     .close-btn {
       font-size: 17.5px;
+      cursor: pointer;
     }
   }
 
