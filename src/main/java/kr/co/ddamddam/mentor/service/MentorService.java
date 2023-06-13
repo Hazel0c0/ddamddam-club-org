@@ -77,12 +77,12 @@ public class MentorService {
     }
 
     // 주제 검색
-    public MentorListResponseDTO getdetailList(PageDTO pageDTO, List<String> subjects) {
-        log.info("@@@@@@@@@ list : {}",subjects);
+    public MentorListResponseDTO getSubList(PageDTO pageDTO, List<String> subjects) {
         // Pageable 객체생성
         Pageable pageable = PageRequest.of(
                 pageDTO.getPage() - 1,
-                pageDTO.getSize()
+                pageDTO.getSize(),
+                Sort.by(Sort.Direction.DESC, "mentorDate")
         );
 
         // 게시글 목록 조회

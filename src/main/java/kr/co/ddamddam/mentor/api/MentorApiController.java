@@ -56,7 +56,7 @@ public class MentorApiController {
 
         List<String> subjectList = subjects != null ? Arrays.asList(subjects) : Collections.emptyList();
 
-        MentorListResponseDTO dto = mentorService.getdetailList(pageDTO, subjectList);
+        MentorListResponseDTO dto = mentorService.getSubList(pageDTO, subjectList);
 
         log.info("!!!!!!!!!!!!: {}",dto);
         return ResponseEntity.ok().body(dto);
