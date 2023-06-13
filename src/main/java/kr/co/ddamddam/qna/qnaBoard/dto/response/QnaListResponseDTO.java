@@ -1,7 +1,6 @@
 package kr.co.ddamddam.qna.qnaBoard.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import kr.co.ddamddam.common.common.TruncateString;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.qna.qnaBoard.entity.QnaAdoption;
 import lombok.*;
@@ -31,8 +30,8 @@ public class QnaListResponseDTO {
     @JsonFormat(pattern = "yyyy년 MM월 dd일")
     private LocalDateTime boardDate;
     private QnaAdoption boardAdoption;
-    private int boardViewCount;
-    private int boardReplyCount;
+    private int viewCount;
+    private int replyCount;
     private List<String> hashtagList;
 
     /**
@@ -46,8 +45,8 @@ public class QnaListResponseDTO {
         this.boardWriter = qna.getQnaWriter();
         this.boardDate = qna.getQnaDate();
         this.boardAdoption = qna.getQnaAdoption();
-        this.boardViewCount = qna.getViewCount();
-        this.boardReplyCount = qna.getReplyCount();
+        this.viewCount = qna.getViewCount();
+        this.replyCount = qna.getReplyCount();
         this.hashtagList = hashtagList;
     }
 
