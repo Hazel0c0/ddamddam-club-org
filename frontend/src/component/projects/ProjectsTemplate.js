@@ -1,9 +1,10 @@
 import React from 'react';
+import QnaMain from "../qna/QnaMain";
 
 const ProjectsTemplate = () => {
     return (
         <div>
-            테스트
+          <ProjectsMain />
         </div>
     );
 };
