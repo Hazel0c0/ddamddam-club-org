@@ -32,23 +32,35 @@ public class ProjectApiController {
 
   private final ProjectService projectService;
 
-  // 게시글 전체 조회
-  @GetMapping
-  private ApplicationResponse<ProjectListPageResponseDTO> getList(PageDTO pageDTO) {
+
+  /**
+   * 게시글 전체 조회
+   * @param pageDTO : 페이지 정보
+   * @return : 페이징 처리 된 프로젝트 리스트 정보
+   *
+   * 기본 조회 (조회순) - keyword 입력 없음
+   * 좋아요 순 조회 - keyword : like
+   * 프론트 / 백 조회 : keyword : front/back
+   */
+  @GetMapping("/{keyword}/{position}")
+  private ApplicationResponse<ProjectListPageResponseDTO> getList(
+      PageDTO pageDTO,
+      @PathVariable String keyword,
+      @PathVariable String position) {
     log.info("/api/ddamddam/page={}$size={}", pageDTO.getPage(), pageDTO.getSize());
 
-    ProjectListPageResponseDTO dto = projectService.getList(pageDTO);
+    ProjectListPageResponseDTO dto = projectService.getList(pageDTO,keyword,position);
 
     return ApplicationResponse.ok(dto);
   }
 
   // 게시글 상세 보기
   @GetMapping("/{idx}")
-  public ApplicationResponse<?> getDetail(@PathVariable Long idx) {
-    log.info("/api/ddamddam/{} GET", idx);
+  public ApplicationResponse<?> getDetail(@PathVariable Long projectIdx) {
+    log.info("/api/ddamddam/{} GET", projectIdx);
 
     try {
-      ProjectDetailResponseDTO dto = projectService.getDetail(idx);
+      ProjectDetailResponseDTO dto = projectService.getDetail(projectIdx);
 
       return ApplicationResponse.ok(dto);
 

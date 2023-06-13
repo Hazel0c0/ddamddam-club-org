@@ -29,9 +29,9 @@ public class ProjectDetailResponseDTO {
 
   // 모집 된 인원
 //  @JsonIgnore
-  private List<Long> applicantOfFront;
+  private int applicantOfFront;
 //  @JsonIgnore
-  private List<Long> applicantOfBack;
+  private int applicantOfBack;
 
 
   private String offerPeriod; //모집기간
@@ -45,8 +45,9 @@ public class ProjectDetailResponseDTO {
     this.projectType = project.getProjectType();
     this.maxFront=project.getMaxFront();
     this.maxBack=project.getMaxBack();
-    this.applicantOfFront=project.getApplicantOfFronts().stream().map(ApplicantOfFront::getUserIdx).collect(Collectors.toList());
-    this.applicantOfBack=project.getApplicantOfBacks().stream().map(ApplicantOfBack::getUserIdx).collect(Collectors.toList());
+//    this.applicantOfFront=project.getApplicantOfFronts().stream().map(ApplicantOfFront::getUserIdx).collect(Collectors.toList());
+    this.applicantOfFront=project.getApplicantOfFronts().size();
+    this.applicantOfBack=project.getApplicantOfBacks().size();
     this.offerPeriod =project.getOfferPeriod();
     this.projectDate=project.getProjectDate();
   }

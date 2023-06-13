@@ -27,7 +27,7 @@ public class ProjectListResponseDTO {
     this.boardTitle =project.getProjectTitle();
     this.boardContent =project.getProjectContent();
     this.projectType = project.getProjectType();
-    this.completion=false;
+    this.completion = (project.getMaxFront() - project.getApplicantOfFronts().size()) == 0;
     this.offerPeriod =project.getOfferPeriod();
   }
 }
