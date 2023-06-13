@@ -42,7 +42,11 @@ public class Qna {
 
     @Column(name = "qna_view", nullable = false)
     @Builder.Default
-    private int qnaView = 0;
+    private int viewCount = 0;
+
+    @Column(name = "qna_reply", nullable = false)
+    @Builder.Default
+    private int replyCount = 0;
 
     @Column(name = "qna_adoption", nullable = false, length = 1)
     @Enumerated(EnumType.STRING)
