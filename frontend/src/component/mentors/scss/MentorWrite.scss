@@ -86,6 +86,10 @@
     font-size: 15px;
     border: none;
 
+    .close-btn-a{
+      height: 42px;
+    }
+
     .close-btn,
     .submit-btn {
       border: none;
@@ -97,6 +101,7 @@
 
     .close-btn {
       width: 160px;
+      margin-right: 10px;
     }
 
     .submit-btn {

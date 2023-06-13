@@ -1,0 +1,116 @@
+@mixin content-center {
+  display: flex;
+  justify-content: center;
+}
+
+.qna-view-wrapper {
+  padding: 160px 370px 0;
+
+  .main-title {
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+    font-family: 'IBM Plex Mono', sans-serif !important;
+    font-size: 43.2px;
+    font-weight: 500;
+    letter-spacing: -1.5px;
+  }
+
+  .main-sub-title {
+    font-size: 16px;
+    margin-top: 10px;
+  }
+
+  //TOP조회수 영역
+  .top-view-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+
+    //박스 wrapper 공통영역
+    .top-section-one,
+    .top-section-two,
+    .top-section-three {
+      @include content-center;
+      flex-direction: column;
+      margin-top: 40px;
+
+
+      //조회수 타이틀
+      .top-section-title {
+        font-size: 19px;
+        font-weight: 600;
+        color: #1e4fff;
+        text-align: center;
+
+      }
+
+      //개별 박스 공통영역
+      .top-section-wrapper {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 10px;
+        padding: 18px 25px 23px;
+        width: 350px;
+        height: 180px;
+        background: white;
+        border-radius: 15px;
+        border: solid 1px #d9d9d9;
+
+        .checked,
+        .not-checked {
+          width: 145px;
+          height: 28px;
+          font-weight: 600;
+          font-size: 17px;
+          @include content-center;
+          align-items: center;
+          color: white;
+          border-radius: 5px;
+          margin-bottom: 13px;
+        }
+
+        .checked {
+          background: #828282;
+        }
+
+        .not-checked {
+          background: #1e4fff;
+        }
+
+        .qna-title {
+          font-size: 20px;
+          font-weight: 600;
+          margin-bottom: 15px;
+        }
+
+        .qna-content {
+          font-size: 13px;
+          line-height: 1.2;
+          margin-bottom: 15px;
+          min-height: 30px;
+        }
+
+        //아이콘 영역
+        .icon-wrapper {
+          font-size: 14px;
+          @include content-center;
+
+          .view-count-wrapper {
+            margin-right: 10px;
+          }
+
+          .view-count-icon,
+          .speech-count-icon {
+            width: 15px;
+            margin-right: 3px;
+          }
+
+        }
+      }
+    }
+    .detail-link{
+      text-decoration: none;
+      color: #292834;
+    }
+  }
+}
