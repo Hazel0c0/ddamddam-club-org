@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -35,17 +37,31 @@ public class MentorApiController {
     // 멘토페이지 전체 목록 조회
     @GetMapping("/list")
     public ResponseEntity<?> list(
-            PageDTO pageDTO, @RequestParam(required = false) List<String> subjects
+            PageDTO pageDTO
     ){
+        log.info("/api/ddamddam/mentors/list?page{}&size={}&subjects={}", pageDTO.getPage(), pageDTO.getSize());
 
-        log.info("/api/ddamddam/mentors/list?page{}&size={}&subjects={}",pageDTO.getPage(),pageDTO.getSize());
+        MentorListResponseDTO dto = mentorService.getList(pageDTO);
 
-        // 키워드가 여러 개인 경우 (&subjects={})를 더해서 보내주기
-        // log.info("/api/ddamddam/mentors/list?page{}&size={}&subjects={}&subjects={}");
-
-        MentorListResponseDTO dto = mentorService.getList(pageDTO,subjects);
+        log.info("!!!!!!!!!!!!: {}",dto);
         return ResponseEntity.ok().body(dto);
     }
+
+    // 멘토페이지 주제검색 목록 조회
+    @GetMapping("/sublist")
+    public ResponseEntity<?> list(
+            PageDTO pageDTO, @RequestParam(required = false) String[] subjects
+    ){
+        log.info("/api/ddamddam/mentors/list?page{}&size={}&subjects={}", pageDTO.getPage(), pageDTO.getSize(),subjects);
+
+        List<String> subjectList = subjects != null ? Arrays.asList(subjects) : Collections.emptyList();
+
+        MentorListResponseDTO dto = mentorService.getdetailList(pageDTO, subjectList);
+
+        log.info("!!!!!!!!!!!!: {}",dto);
+        return ResponseEntity.ok().body(dto);
+    }
+
 
     // 게시물 상세 페이지 조회
     @GetMapping("/detail")
@@ -108,7 +124,7 @@ public class MentorApiController {
         log.info("/api/ddamddam/mentors/{} DELETE!!",mentorIdx);
         try {
             mentorService.delete(mentorIdx);
-            MentorListResponseDTO list = mentorService.getList(new PageDTO(), new ArrayList<>());
+            MentorListResponseDTO list = mentorService.getList(new PageDTO());
             return ResponseEntity.ok().body(list);
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body("해당 게시판은 존재하지 않습니다");
