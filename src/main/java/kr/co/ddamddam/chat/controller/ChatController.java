@@ -9,6 +9,7 @@ import kr.co.ddamddam.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/ddamddam/chat")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 @Slf4j
 public class ChatController {
 
@@ -23,9 +25,12 @@ public class ChatController {
 
     // 채팅방 생성
     @PostMapping("/rooms")
-    public ResponseEntity<ChatRoomResponseDTO> createChatRoom(@RequestBody ChatRoomRequestDTO requestDTO) {
-        ChatRoomResponseDTO responseDTO = chatService.createChatRoom(requestDTO);
-        log.info("requestDTO 들어옴: {}",requestDTO);
+    public ResponseEntity<?> createChatRoom(
+            @RequestBody ChatRoomRequestDTO dto
+    ) {
+        Long userId = 1L;
+        ChatRoomResponseDTO responseDTO = chatService.createChatRoom(dto,userId);
+        log.info("requestDTO 들어옴: {}",dto);
         return ResponseEntity.ok(responseDTO);
     }
 
@@ -55,7 +60,7 @@ public class ChatController {
     public ResponseEntity<?> detail(
             @PathVariable Long mentorIdx
     ){
-        Long senderIdx = 2L;
+        Long senderIdx = 1L;
 
         List<ChatMessageResponseDTO> list = chatService.getDetail(mentorIdx,senderIdx);
 

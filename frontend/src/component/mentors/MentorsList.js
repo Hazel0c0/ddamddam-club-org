@@ -4,7 +4,7 @@ import Common from "../common/Common";
 import Modal from 'react-bootstrap/Modal';
 import {TfiClose} from 'react-icons/tfi';
 import './scss/MentorsList.scss';
-import {MENTOR} from "../common/config/HostConfig";
+import {MENTOR,CHAT} from "../common/config/HostConfig";
 import less from "../../src_assets/less.png";
 import than from "../../src_assets/than.png";
 import {Link} from "react-router-dom";
@@ -80,6 +80,23 @@ const MentorsList = ({selectedSubjects}) => {
                 // console.log(result.idx);
             });
     };
+    const createChatRoom = e => {
+        const data = {
+            senderId: 1,
+            receiverId: 2,
+            mentorIdx: chatPageIdx
+        };
+
+        fetch(CHAT+'/rooms', {
+            method: 'POST',
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(json => {
+                alert('채팅방 생성 완료! 멘토와 즐거운 채팅~');
+            })
+    }
 
     const {title, content, subject, current, nickName, date, mentee, career, idx} = detailMember;
 
@@ -184,7 +201,7 @@ const MentorsList = ({selectedSubjects}) => {
                 </section>
 
                 <div className={'btn-wrapper'}>
-                    <Link to={`/mentors/detail/chat/${chatPageIdx}`}>
+                    <Link to={`/mentors/detail/chat/${chatPageIdx}`} onClick={createChatRoom}>
                         <button className={'application-btn'}>신청하기</button>
                     </Link>
                 </div>

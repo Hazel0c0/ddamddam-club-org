@@ -2,7 +2,6 @@ package kr.co.ddamddam.chat.service;
 
 import kr.co.ddamddam.chat.dto.request.ChatMessageRequestDTO;
 import kr.co.ddamddam.chat.dto.request.ChatRoomRequestDTO;
-import kr.co.ddamddam.chat.dto.response.ChatAllListResponseDTO;
 import kr.co.ddamddam.chat.dto.response.ChatMessageResponseDTO;
 import kr.co.ddamddam.chat.dto.response.ChatRoomResponseDTO;
 import kr.co.ddamddam.chat.dto.response.UserResponseDTO;
@@ -18,9 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,22 +30,31 @@ public class ChatService {
     private final MentorRepository mentorRepository;
 
 
-    public ChatRoomResponseDTO createChatRoom(ChatRoomRequestDTO requestDTO) {
-        User sender = userRepository.findById(requestDTO.getSenderId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid senderId"));
+    public ChatRoomResponseDTO createChatRoom(ChatRoomRequestDTO dto, Long userId) {
 
-        User receiver = userRepository.findById(requestDTO.getReceiverId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid receiverId"));
+        ChatRoom findByChatRoomUser = chatRoomRepository.findByMentorMentorIdxAndSenderUserIdx(dto.getMentorIdx(), userId);
+        if (findByChatRoomUser == null) {
+            User sender = userRepository.findById(userId)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid senderId"));
 
-        Mentor mentor = mentorRepository.findById(requestDTO.getMentorIdx()).orElseThrow();
-        ChatRoom chatRoom = new ChatRoom();
-        chatRoom.setSender(sender);
-        chatRoom.setReceiver(receiver);
-        chatRoom.setMentor(mentor);
+            Mentor findMentor = mentorRepository.findById(dto.getMentorIdx()).orElseThrow();
+            User receiver = findMentor.getUser();
 
-        ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
+//        User receiver = userRepository.findById(requestDTO.getReceiverId())
+//                .orElseThrow(() -> new IllegalArgumentException("Invalid receiverId"));
 
-        return convertToChatRoomResponseDTO(savedChatRoom);
+            ChatRoom chatRoom = new ChatRoom();
+            chatRoom.setSender(sender);
+            chatRoom.setReceiver(receiver);
+            chatRoom.setMentor(findMentor);
+
+            ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
+
+            return convertToChatRoomResponseDTO(savedChatRoom);
+        }
+        else{
+            return null;
+        }
     }
 
     public ChatMessageResponseDTO sendMessage(Long roomId, ChatMessageRequestDTO requestDTO) {
