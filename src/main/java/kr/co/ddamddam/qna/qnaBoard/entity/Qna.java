@@ -1,6 +1,6 @@
 package kr.co.ddamddam.qna.qnaBoard.entity;
 
-import kr.co.ddamddam.qna.qnaHashtag.entity.HashtagMapping;
+import kr.co.ddamddam.qna.qnaHashtag.entity.Hashtag;
 import kr.co.ddamddam.qna.qnaReply.entity.QnaReply;
 import kr.co.ddamddam.user.entity.User;
 import lombok.*;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Setter
 @Getter
-@ToString(exclude = {"qnaReplyList", "hashtagMappingList", "user"})
+@ToString(exclude = {"qnaReplyList", "hashtagList", "user"})
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -49,16 +49,20 @@ public class Qna {
     @Builder.Default
     private QnaAdoption qnaAdoption = QnaAdoption.N; // 기본값: 채택되지 않은 상태인 N
 
-    @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @Builder.Default
-    private List<HashtagMapping> hashtagMappingList = new ArrayList<>();
+    private List<Hashtag> hashtagList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<QnaReply> qnaReplyList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx") // FK
     private User user;
+
+    public void clearHashtagList() {
+        hashtagList.clear();
+    }
 
 }
