@@ -33,10 +33,11 @@ class ReviewRepositoryTest {
                             .reviewTitle("여기 완전 좋지렁"+ i)
                             .reviewContent("여기서 일하면 과자 많이 먹을 수 있어요, 커피도 맛있음" + i)
                             .reviewTenure(i)
-                            .reviewRating(3F)
+                            .reviewRating((float) (0+0.5*i))
                             .reviewJob("백엔드"+i)
                             .company(companyOptional.get())
                             .user(userOptional.get())
+                            .reviewView(i)
                             .build()
             );
 
