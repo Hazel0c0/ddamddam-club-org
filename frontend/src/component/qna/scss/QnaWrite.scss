@@ -20,18 +20,29 @@
     flex-direction: column;
 
     .title-input-wrapper {
+      width: 100%;
       display: flex;
+      justify-content: space-between;
       align-items: center;
+      margin-bottom: 10px;
 
       .title-text-input {
         height: 40px;
-        padding: 5px 10px;
-        width: 96%;
+        //padding: 5px 10px;
+        width: 94%;
         border-radius: 8px;
-        border: solid 1px #e6e6e6;;
+        border: solid 1px #e6e6e6;
+        padding: 10px 10px;
+
+        //width: 100%;
       }
     }
-
+    .hashtag-wrapper{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
   }
 
   //input 공통영역
@@ -42,20 +53,14 @@
   }
 
   .title-text-input {
-    width: fit-content;
-    height: 40px;
-    padding: 10px 10px;
-    //width: 100%;
-    border-radius: 8px;
-    border: solid 1px #e6e6e6;
+
   }
 
-  .content {
+  .content{
     margin-top: 16px;
     width: 100%;
     min-height: 600px;
     padding: 20px;
-    width: 100%;
     border-radius: 8px;
     border: solid 1px #e6e6e6;
     resize: none;
@@ -92,4 +97,42 @@
     }
   }
 
+}
+@import "@yaireo/tagify/dist/tagify.css";
+.tags-input{
+  background-color: white;
+  width: 94%;
+  border-radius: 8px;
+  border: solid 1px #e6e6e6;
+  padding: 2px 0px;
+
+  .tagify{
+    border: none;
+    padding: 0 3px;
+    --tag-bg: #1e4fff;
+    --tag-text-color: white;
+    --tag-text-color--edit: var(--tag-bg);
+    --tag-hover: #1e4fff;
+    --tag-remove-btn-color: white;
+    --tag-remove-bg: #b7b7b7;
+
+    .tagify__tag{
+      --tag-border-radius : 50px;
+      padding-right: 7px;
+      padding-left: 7px;
+    }
+
+    .tagify__tag__removeBtn{
+      background-color: #292834;
+    }
+
+    .tagify__tag__removeBtn:hover{
+      //--tag-hover: #75cb1e !important;
+    }
+
+
+  }
+}
+.--tag-hover	{
+  //background-color: #292834 !important;
 }

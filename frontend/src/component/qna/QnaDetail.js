@@ -1,26 +1,27 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './scss/QnaDetail.scss';
 import Common from "../common/Common";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const QnaDetail = () => {
-    const {boardIdx} = useParams();
-    // const {detailQna, setDetailQna} = useState([]);
-    useEffect(()=>{
+    const { boardIdx } = useParams();
+    const [detailQna, setDetailQna] = useState(null);
+
+    useEffect(() => {
         console.log(boardIdx);
         fetch(`//localhost:8181/api/ddamddam/qna/${boardIdx}`)
-            .then(res =>{
-                if (res.status ===500){
+            .then((res) => {
+                if (res.status === 500) {
                     alert('잠시 후 다시 접속해주세요.[서버오류]');
                     return;
                 }
                 return res.json();
             })
-            .then(result =>{
-                // setDetailQna(result);
-                console.log(result);
-            })
-    },[]);
+            .then((result) => {
+                setDetailQna(result.payload);
+                console.log(result.payload);
+            });
+    }, []);
 
     // /api/ddamddam/mentors/detail?mentorIdx={}
     ///api/ddamddam/qna/{boardId}
@@ -32,55 +33,40 @@ const QnaDetail = () => {
             </div>
 
             <section className={'main-text-wrapper'}>
-                <h1 className={'qna-title'}>
-                    질문이요질문이요질문이요질문이요질문이요
-                </h1>
-                <section className={'info-detail-container'}>
-                    <div className={'info-wrapper'}>
-                        <div className={'category'}>
-                            <span className={'sub-title'}>직무</span>
-                            <span className={'sub-content'}>백엔드 개발자</span>
+                {detailQna && (
+                    <>
+                        <h1 className={'qna-title'}>
+                            {detailQna.boardTitle}
+                        </h1>
+                        <div className={'hashTag-wrapper'}>
+                            {detailQna.hashtagList.map((hashTag, index) => (
+                                <div key={index} className={'hashTag'}>#{hashTag}</div>
+                            ))}
                         </div>
-                        <div className={'category'}>
-                            <span className={'sub-title'}>근속연수</span>
-                            <span className={'sub-content'}>3년</span>
-                        </div>
-                        <div className={'category'}>
-                            <span className={'sub-title'}>위치</span>
-                            <span className={'sub-content'}>강남</span>
-                        </div>
-                    </div>
-                    <div className={'detail-wrapper'}>
-                        <div className={'category'}>
-                            <span className={'sub-title'}>작성일자</span>
-                            <span className={'sub-content'}>2023.06.23</span>
-                        </div>
-                        <div className={'category'}>
-                            <span className={'sub-title'}>조회수</span>
-                            <span className={'sub-content'}>299</span>
-                        </div>
-                    </div>
-                </section>
-                <section className={'main-content'}>
-                    잡플래닛에 후기가 없다는건.. 규모가 작아서 회사의 채용규모 또한 작을 수 밖에 없는 것 입니다.
-                    또한, 이와 같은 회사의 후기가 다른 사이트에 있더라도 후기의 숫자가 적을 수 밖에 없을 거구요.
-                    이정도 수준이면 회사에 대한 판단은 충분할 듯 하며, 참고로 잡플래닛 후기는 회사에 대한 전반적인
-                    평이외에는 큰 의미가 없습니다. 어떤 직무에서 어떤 상사와 사수를 만나느냐에 따라 회사는 천국이 되기도
-                    하고 지옥이 되기도 하니.. 운이 사실 훨씬 중요합니다. 지원자가 알 수 있는 영역이 아니에요..
-
-                    잡플래닛에 후기가 없다는건.. 규모가 작아서 회사의 채용규모 또한 작을 수 밖에 없는 것 입니다.
-                    또한, 이와 같은 회사의 후기가 다른 사이트에 있더라도 후기의 숫자가 적을 수 밖에 없을 거구요.
-                    이정도 수준이면 회사에 대한 판단은 충분할 듯 하며, 참고로 잡플래닛 후기는 회사에 대한 전반적인
-                    평이외에는 큰 의미가 없습니다. 어떤 직무에서 어떤 상사와 사수를 만나느냐에 따라 회사는 천국이 되기도
-                    하고 지옥이 되기도 하니.. 운이 사실 훨씬 중요합니다. 지원자가 알 수 있는 영역이 아니에요..
-                </section>
-
-                <section className={'checked-wrapper'}>
-                    <span className={'check-title'}>도움이 되었다면?</span>
-                    <button className={'check-btn'}>
-                        <span className={'check'}>채택하기</span>
-                    </button>
-                </section>
+                        <section className={'info-detail-container'}>
+                            <div className={'detail-wrapper'}>
+                                <div className={'category'}>
+                                    <span className={'sub-title'}>작성자</span>
+                                    <span className={'sub-content'}>{detailQna.boardWriter}</span>
+                                </div>
+                                <div className={'category'}>
+                                    <span className={'sub-title'}>작성일자</span>
+                                    <span className={'sub-content'}>2023.06.23</span>
+                                </div>
+                            </div>
+                        </section>
+                        <section className={'main-content'}>
+                            {detailQna.boardContent}
+                        </section>
+                        <section className={'checked-wrapper'}>
+                            {detailQna.boardAdoption === 'Y' ? (
+                                <span className={'checked'}>채택완료</span>
+                            ) : (
+                                <span className={'not-checked'}>미채택</span>
+                            )}
+                        </section>
+                    </>
+                )}
             </section>
         </Common>
     );
