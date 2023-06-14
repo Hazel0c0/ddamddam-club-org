@@ -2,8 +2,8 @@ package kr.co.ddamddam.qna.qnaReply.service;
 
 import kr.co.ddamddam.common.response.ResponseMessage;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
-import kr.co.ddamddam.qna.qnaBoard.exception.custom.NotFoundQnaBoardException;
-import kr.co.ddamddam.qna.qnaBoard.exception.custom.NotFoundQnaReplyException;
+import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
+import kr.co.ddamddam.common.exception.custom.NotFoundReplyException;
 import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
 import kr.co.ddamddam.qna.qnaReply.dto.request.QnaReplyInsertRequestDTO;
 import kr.co.ddamddam.qna.qnaReply.dto.request.QnaReplyModifyRequestDTO;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 import static kr.co.ddamddam.common.response.ResponseMessage.*;
 import static kr.co.ddamddam.qna.qnaBoard.entity.QnaAdoption.*;
-import static kr.co.ddamddam.qna.qnaBoard.exception.custom.QnaErrorCode.*;
+import static kr.co.ddamddam.common.exception.custom.ErrorCode.*;
 
 @SuppressWarnings("unchecked")
 @Service
@@ -57,11 +57,11 @@ public class QnaReplyService {
         log.info("[QnaReply/Service] QNA 댓글 작성, index - {}, payload - {}", dto.getBoardIdx(), dto.getReplyContent());
 
         User user = userRepository.findById(userIdx).orElseThrow(() -> {
-            throw new NotFoundQnaBoardException(NOT_FOUND_USER, userIdx);
+            throw new NotFoundBoardException(NOT_FOUND_USER, userIdx);
         });
 
         Qna qna = qnaRepository.findById(dto.getBoardIdx()).orElseThrow(() -> {
-            throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, dto.getBoardIdx());
+            throw new NotFoundBoardException(NOT_FOUND_BOARD, dto.getBoardIdx());
         });
 
         if (qna.getQnaAdoption() == Y) {
@@ -86,7 +86,7 @@ public class QnaReplyService {
         log.info("[Qna/Service] QNA 댓글 삭제, index - {}", replyIdx);
 
         QnaReply qnaReply = qnaReplyRepository.findById(replyIdx).orElseThrow(() -> {
-            throw new NotFoundQnaReplyException(NOT_FOUND_REPLY, replyIdx);
+            throw new NotFoundReplyException(NOT_FOUND_REPLY, replyIdx);
         });
 
         if (qnaReply.getQnaReplyAdoption() == Y) {
@@ -109,7 +109,7 @@ public class QnaReplyService {
         log.info("[Qna/Service] QNA 댓글 수정, index - {}, payload - {}", dto.getReplyIdx(), dto.getReplyContent());
 
         QnaReply qnaReply = qnaReplyRepository.findById(dto.getReplyIdx()).orElseThrow(() -> {
-            throw new NotFoundQnaReplyException(NOT_FOUND_REPLY, dto.getReplyIdx());
+            throw new NotFoundReplyException(NOT_FOUND_REPLY, dto.getReplyIdx());
         });
 
         if (qnaReply.getQna().getQnaAdoption() == Y) {
@@ -128,7 +128,7 @@ public class QnaReplyService {
         log.info("[Qna/Service] QNA 댓글 채택, index - {}", replyIdx);
 
         QnaReply qnaReply = qnaReplyRepository.findById(replyIdx).orElseThrow(() -> {
-            throw new NotFoundQnaReplyException(NOT_FOUND_REPLY, replyIdx);
+            throw new NotFoundReplyException(NOT_FOUND_REPLY, replyIdx);
         });
 
         Qna qna = qnaReply.getQna();

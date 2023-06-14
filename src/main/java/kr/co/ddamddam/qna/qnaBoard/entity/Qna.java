@@ -53,11 +53,11 @@ public class Qna {
     @Builder.Default
     private QnaAdoption qnaAdoption = QnaAdoption.N; // 기본값: 채택되지 않은 상태인 N
 
-    @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "qna", cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<Hashtag> hashtagList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "qna", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "qna", cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<QnaReply> qnaReplyList = new ArrayList<>();
 

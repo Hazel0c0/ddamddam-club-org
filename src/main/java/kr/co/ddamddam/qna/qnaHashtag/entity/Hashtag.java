@@ -27,7 +27,7 @@ public class Hashtag {
     private String hashtagContent; // 해시태그 내용
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "qna_idx") // FK
+    @JoinColumn(name = "qna_idx", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)) // FK
     private Qna qna; // 연결된 게시글
 
 }

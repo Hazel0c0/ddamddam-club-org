@@ -1,4 +1,4 @@
-package kr.co.ddamddam.qna.qnaBoard.exception.custom;
+package kr.co.ddamddam.common.exception.custom;
 
 import lombok.Getter;
 

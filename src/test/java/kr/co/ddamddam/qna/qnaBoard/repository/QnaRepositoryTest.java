@@ -1,17 +1,19 @@
 package kr.co.ddamddam.qna.qnaBoard.repository;
 
+import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.qna.qnaBoard.entity.QnaAdoption;
-import kr.co.ddamddam.qna.qnaBoard.exception.custom.NotFoundQnaBoardException;
-import kr.co.ddamddam.qna.qnaBoard.exception.custom.NotFoundUserException;
-import kr.co.ddamddam.qna.qnaBoard.exception.custom.QnaErrorCode;
+import kr.co.ddamddam.common.exception.custom.NotFoundUserException;
+import kr.co.ddamddam.common.exception.custom.ErrorCode;
+import kr.co.ddamddam.qna.qnaHashtag.entity.Hashtag;
+import kr.co.ddamddam.qna.qnaHashtag.repository.HashtagRepository;
+import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Rollback(false)
@@ -23,27 +25,14 @@ class QnaRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private HashtagRepository hashtagRepository;
+
     @Test
     @DisplayName("QNA 게시글 더미데이터 50개 생성")
-    void InsertBulk() {
+    void InsertBulk1() {
 
-        for (int i = 11; i <= 50; i++) {
-
-            Qna qna = Qna.builder()
-                    .qnaTitle("Qna Title " + i)
-                    .qnaContent("Qna Content " + i)
-                    .qnaWriter("Writer " + i)
-                    .build();
-
-            qnaRepository.save(qna);
-        }
-    }
-
-    @Test
-    @DisplayName("QNA 게시글 더미데이터 10개 생성")
-    void InsertBulk2() {
-
-        for (int i = 1; i <= 50; i++) {
+        for (int i = 1; i <= 43; i++) {
 
             String[] randomTitle = {
                     "위에 이런 이름과, 시인의 까닭입니다.",
@@ -66,20 +55,56 @@ class QnaRepositoryTest {
             int index1 = (int) (Math.random() * 5); // 0 ~ 4
             int index2 = (int) (Math.random() * 5); // 0 ~ 4
             int index3 = (int) (Math.random() * 2); // 0 ~ 1
-            Long index4 = (long) (Math.random() * 14 + 1); // 1 ~ 14
+            Long index4 = (long) (Math.random() * 20 + 1); // 1 ~ 20
+
+            if (index4 == 4L) index4 = 1L;
+            if (index4 == 19L) index4 = 1L;
+
+            Long finalIndex = index4;
+            User user = userRepository.findById(index4).orElseThrow(() -> {
+                throw new NotFoundUserException(ErrorCode.NOT_FOUND_USER, finalIndex);
+            });
 
             Qna qna = Qna.builder()
                     .qnaTitle(randomTitle[index1])
                     .qnaContent(randomContent[index2])
-                    .qnaWriter("큐앤에이작성자" + i)
+                    .qnaWriter(user.getUserNickname())
                     .qnaAdoption(randomAdoption[index3])
-                    .user(userRepository.findById(index4).orElseThrow(() -> {
-                        throw new NotFoundUserException(QnaErrorCode.NOT_FOUND_USER, index4);
-                    }))
+                    .user(user)
                     .build();
 
             qnaRepository.save(qna);
         }
+    }
+    
+    @Test
+    @DisplayName("1~50번 게시글에 해시태그 더미 데이터 생성")
+    void insertBulk2() {
+        //given
+        
+        String[] randomHashtag = {"자바", "질문", "취업", "진로고민", "프론트엔드_고민", "백엔드_고민", "신입_개발자", "회사_문화", "퇴사_상담", "알고리즘", "C++", "파이썬", "학습서추천", "인텔리제이", "이클립스"};
+
+        for (int i = 1; i <= 50; i++) {
+            Long qnaIdx = (long) i;
+            int index3 = (int) (Math.random() * 10); // 0 ~ 9 사이의 랜덤 정수
+
+            Qna qna = qnaRepository.findById(qnaIdx).orElseThrow(() -> {
+                throw new NotFoundBoardException(ErrorCode.NOT_FOUND_BOARD, qnaIdx);
+            });
+
+            //when
+            for (int j = 0; j <= index3; j++) {
+
+                int index1 = (int) (Math.random() * 15); // 0 ~ 14 사이의 랜덤 정수
+
+                Hashtag newHashtag = Hashtag.builder()
+                        .hashtagContent(randomHashtag[index1])
+                        .qna(qna)
+                        .build();
+                Hashtag saved = hashtagRepository.save(newHashtag);
+            }
+        }
+        //then
     }
 
 }

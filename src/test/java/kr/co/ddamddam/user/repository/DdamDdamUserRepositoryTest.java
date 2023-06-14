@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
+import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,43 +23,46 @@ class DdamDdamUserRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
-    @BeforeEach
-    void insertUser() {
-        User user = User.builder()
-                .userEmail("test@test.com")
-                .userPw("1234")
-                .userName("테스트")
-                .userNickname("테스트")
-                .userBirth(LocalDate.of(1990, 5, 15))
-                .userPosition(UserPosition.BACKEND)
-                .userCareer(3)
-                .userRole(UserRole.COMMON)
-                .build();
-
-        userRepository.save(user);
-    }
+//    @BeforeEach
+//    void insertUser() {
+//        User user = User.builder()
+//                .userEmail("test@test.com")
+//                .userPassword("1234")
+//                .userName("테스트")
+//                .userNickname("테스트")
+//                .userBirth(LocalDate.of(1990, 5, 15))
+//                .userPosition(UserPosition.BACKEND)
+//                .userCareer(3)
+//                .userRole(UserRole.COMMON)
+//                .build();
+//
+//        userRepository.save(user);
+//    }
 
     @Test
-    @DisplayName("유저 더미데이터 50명 생성")
+    @DisplayName("유저 더미데이터 20명 생성")
     void insertBulk() {
         //given
 
-        for (int i = 1; i <= 50; i++) {
+        for (int i = 1; i <= 20; i++) {
 
-            int index = (int) (Math.random() * 1); // 0 또는 1
+            int index1 = (int) (Math.random() + 1); // 0 또는 1
+            int index2 = (int) (Math.random() * 4); // 0 ~ 4
             int year = (int) (Math.random() * 31 + 1970); // 1970 ~ 2000 사이의 랜덤 정수
             int month = (int) (Math.random() * 12 + 1); // 1 ~ 12 사이의 랜덤 정수
             int day = (int) (Math.random() * 30 + 1); // 1 ~ 30 사이의 랜덤 정수
+            int career = (int) (Math.random() * 10 + 1); // 1 ~ 10 사이의 랜덤 정수
             UserPosition[] userPosition = {UserPosition.BACKEND, UserPosition.FRONTEND};
+            String[] name = {"조예원", "김태근", "최예진", "채지원", "조경훈"};
 
             User user = User.builder()
-                    .userPw("1234")
+                    .userPassword("qwer1234!")
                     .userEmail("test" + i + "@test.com")
-                    .userName("테스트" + i)
-                    .userNickname("테스트" + i)
+                    .userName(name[index2])
+                    .userNickname("닉네임" + i)
                     .userBirth(LocalDate.of(year, month, day))
-                    .userPosition(userPosition[index])
-                    .userCareer(3)
+                    .userPosition(userPosition[index1])
+                    .userCareer(career)
                     .userRole(UserRole.COMMON)
                     .build();
             userRepository.save(user);
@@ -74,5 +79,17 @@ class DdamDdamUserRepositoryTest {
         User user = userRepository.findById(1L).orElseThrow();
         //then
         assertEquals("test@test.com", user.getUserEmail());
+    }
+    
+    @Test
+    @DisplayName("토큰 서명 해시값 생성하기")
+    void makeSecretKey() {
+        SecureRandom random = new SecureRandom();
+        byte[] key = new byte[64]; // 64 bytes = 512 bits
+        random.nextBytes(key);
+        String encodedKey = Base64.getEncoder().encodeToString(key);
+        System.out.println("\n\n\n");
+        System.out.println(encodedKey);
+        System.out.println("\n\n\n");
     }
 }
