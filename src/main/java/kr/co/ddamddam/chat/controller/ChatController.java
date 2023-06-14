@@ -29,9 +29,14 @@ public class ChatController {
             @RequestBody ChatRoomRequestDTO dto
     ) {
         Long userId = 1L;
-        ChatRoomResponseDTO responseDTO = chatService.createChatRoom(dto,userId);
         log.info("requestDTO 들어옴: {}",dto);
-        return ResponseEntity.ok(responseDTO);
+        ChatRoomResponseDTO responseDTO = null;
+        try {
+            responseDTO = chatService.createChatRoom(dto,userId);
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            return ResponseEntity.ok().body(e.getMessage());
+        }
     }
 
     // 채팅 주고받기

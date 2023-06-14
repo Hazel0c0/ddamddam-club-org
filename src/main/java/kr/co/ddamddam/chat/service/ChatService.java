@@ -14,6 +14,8 @@ import kr.co.ddamddam.mentor.repository.MentorRepository;
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChatService {
 
     private final ChatRoomRepository chatRoomRepository;
@@ -33,7 +36,10 @@ public class ChatService {
     public ChatRoomResponseDTO createChatRoom(ChatRoomRequestDTO dto, Long userId) {
 
         ChatRoom findByChatRoomUser = chatRoomRepository.findByMentorMentorIdxAndSenderUserIdx(dto.getMentorIdx(), userId);
+//        log.info("해당 게시글에 채팅방 생성 이력이 있는지 : {}",findByChatRoomUser.toString());
+
         if (findByChatRoomUser == null) {
+            log.info("채팅방 이력 없음: ");
             User sender = userRepository.findById(userId)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid senderId"));
 
@@ -53,7 +59,7 @@ public class ChatService {
             return convertToChatRoomResponseDTO(savedChatRoom);
         }
         else{
-            return null;
+            throw new RuntimeException("이미 생성된 채팅방이 있습니다"+findByChatRoomUser);
         }
     }
 
