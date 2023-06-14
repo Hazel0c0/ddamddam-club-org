@@ -48,7 +48,7 @@ public class ProjectApiController {
   @GetMapping
   private ApplicationResponse<ProjectListPageResponseDTO> getList(
       PageDTO pageDTO,
-      @Validated @RequestBody ProjectSearchRequestDto searchRequestDto
+      ProjectSearchRequestDto searchRequestDto
   ) {
     log.info("/api/ddamddam/page={}$size={}", pageDTO.getPage(), pageDTO.getSize());
 

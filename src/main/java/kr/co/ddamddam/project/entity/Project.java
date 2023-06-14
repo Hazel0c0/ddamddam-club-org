@@ -72,6 +72,7 @@ public class Project {
       joinColumns = @JoinColumn(name = "user_idx"),
       inverseJoinColumns = @JoinColumn(name = "project_idx")
   )
+  @Builder.Default
   private List<ProjectLike> likedProjects = new ArrayList<>();
 
   // 모집 된 인원 정보

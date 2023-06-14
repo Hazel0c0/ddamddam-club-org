@@ -3,13 +3,13 @@ import React, {useEffect, useState} from 'react';
 import Common from "../common/Common";
 import './scss/ProjectsList.scss'
 
-const ProjectsList = () => {
+const ProjectsLikeList = () => {
 
     const [project, setProjects] = useState([]);
     const [pageNation, setPageNation] = useState([]);
 
     useEffect(() => {
-        fetch('//localhost:8181/api/ddamddam/project', {
+        fetch('//localhost:8181/api/ddamddam/project?sort=like', {
             method: 'GET',
             headers: {'content-type': 'application/json'}
           }
@@ -38,8 +38,7 @@ const ProjectsList = () => {
     );
     return (
       <Common className={'project-list-wrapper'}>
-        <hr/>
-        <h2 className={'sort-title'}>프로젝트</h2>
+        <h2 className={'like-sort-title'}>인기 프로젝트 TOP 10</h2>
         {project.map(p => {
           // 현재 날짜와 게시글 작성일 간의 차이를 계산합니다
           const currentDate = new Date();
@@ -71,4 +70,4 @@ const ProjectsList = () => {
   }
 ;
 
-export default ProjectsList;
+export default ProjectsLikeList;
