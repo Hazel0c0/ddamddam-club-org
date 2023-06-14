@@ -1,17 +1,16 @@
+
 package kr.co.ddamddam.project.service;
 
-import kr.co.ddamddam.project.User.repository.DdamDdamUserRepository;
+import kr.co.ddamddam.project.dto.response.ProjectDetailResponseDTO;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfFront;
-//import kr.co.ddamddam.project.entity.applicant.Apply;
-import kr.co.ddamddam.project.User.UserProject;
-//import kr.co.ddamddam.project.repository.ApplicantRepository;
-import kr.co.ddamddam.project.repository.ApplicantRepository;
 import kr.co.ddamddam.project.repository.BackRepository;
 import kr.co.ddamddam.project.repository.FrontRepository;
 import kr.co.ddamddam.project.repository.ProjectRepository;
+import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.entity.UserPosition;
+import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,63 +22,81 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ApplicantService {
 
-  private final ApplicantRepository applicantRepository;
+  private final ProjectRepository projectRepository;
+  private final UserRepository userRepository;
 
-  private final DdamDdamUserRepository ddamDdamUserRepository;
   private final BackRepository backRepository;
   private final FrontRepository frontRepository;
-  private final ProjectRepository projectRepository;
+
   private final ProjectService projectService;
 
-  public void apply(Long userIdx, Long projectIdx) {
+  public ProjectDetailResponseDTO apply(Long userIdx, Long projectIdx) {
     log.info("apply service");
     // 게시글 정보 가져오기
     Project currProject = projectService.getProject(projectIdx);
 
-    applicantRepository.save(
-        Project.builder()
-            .build()
-    );
-
-    log.info("프로젝트만 담은 apply : {}");
-
     // 유저 객체
-    UserProject foundUser = ddamDdamUserRepository.getById(userIdx);
-    log.info("foundUser : {}", foundUser);
+    User foundUser = getUser(userIdx);
 
     //유저 포지션별 분류
     if (foundUser.getUserPosition() == UserPosition.BACKEND) {
       System.out.println("이 유저는 backend 다");
-      ApplicantOfBack back = backRepository.save(
-          ApplicantOfBack.builder()
-              .userIdx(userIdx)
-              .build()
-      );
-//      apply.addBack(back);
+      if (currProject.getApplicantOfBacks().size() < currProject.getMaxBack()) {
+        currProject.addBack(backRepository.save(
+            ApplicantOfBack.builder()
+                .userIdx(userIdx)
+                .project(currProject)
+                .build()
+        ));
+      }else {
+        // 최대 백엔드 지원자 수를 초과한 경우 예외 처리
+        throw new IllegalStateException("백엔드 지원자 정원 마감");
+      }
     } else {
       System.out.println("이 유저는 front 다");
-
-      ApplicantOfFront front = frontRepository.save(
-          ApplicantOfFront.builder()
-              .userIdx(userIdx)
-              .build()
-      );
-//      apply.addFront(front);
+      if (currProject.getApplicantOfFronts().size() < currProject.getMaxFront()) {
+        currProject.addFront(frontRepository.save(
+            ApplicantOfFront.builder()
+                .userIdx(userIdx)
+                .project(currProject)
+                .build()
+        ));
+      } else {
+        throw new IllegalStateException("프론트 지원자 정원 마감");
+      }
     }
 
-//    log.info("백/프론트 apply : {}", apply);
+    log.info("백/프론트 currProject : {}", currProject);
 
-//    return apply;
+    return new ProjectDetailResponseDTO(currProject);
+  }
+
+  private User getUser(Long userIdx) {
+    User foundUser = userRepository.findById(userIdx)
+        .orElseThrow(
+            () -> new RuntimeException(
+                userIdx + "번 유저 없음!"
+            )
+        );
+    log.info("foundUser : {}", foundUser);
+    return foundUser;
   }
 
 
-  // 신청자 방 개별 조회
+  public void cancel(Long userIdx, Long projectIdx) {
+    Project currProject = projectService.getProject(projectIdx);
 
+    User foundUser = getUser(userIdx);
 
-  public void cancel(UserProject user, Long projectIdx) {
-
-
+    //유저 포지션별 분류
+    if (foundUser.getUserPosition() == UserPosition.BACKEND) {
+      System.out.println("이 유저는 backend 다");
+      backRepository.deleteById(userIdx);
+    } else {
+      frontRepository.deleteById(userIdx);
+    }
   }
 
 
 }
+

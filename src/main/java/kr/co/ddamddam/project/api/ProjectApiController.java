@@ -3,25 +3,25 @@ package kr.co.ddamddam.project.api;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import kr.co.ddamddam.common.response.ApplicationResponse;
-import kr.co.ddamddam.project.dto.request.PageDTO;
+import kr.co.ddamddam.project.dto.page.PageDTO;
 import kr.co.ddamddam.project.dto.request.ProjectModifyRequestDTO;
+import kr.co.ddamddam.project.dto.request.ProjectSearchRequestDto;
 import kr.co.ddamddam.project.dto.request.ProjectWriteDTO;
 import kr.co.ddamddam.project.dto.response.ProjectDetailResponseDTO;
 import kr.co.ddamddam.project.dto.response.ProjectListPageResponseDTO;
 import kr.co.ddamddam.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam/project")
 @Slf4j
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProjectApiController {
   /*
     전체 게시글 조회 :  [GET] findAll()    -/project
@@ -34,23 +34,36 @@ public class ProjectApiController {
 
   private final ProjectService projectService;
 
-  // 게시글 전체 조회
+
+  /**
+   * 게시글 전체 조회
+   *
+   * @param pageDTO : 페이지 정보
+   * @return : 페이징 처리 된 프로젝트 리스트 정보
+   * <p>
+   * 기본 조회 (조회순) - keyword 입력 없음
+   * 좋아요 순 조회 - keyword : like
+   * 프론트 / 백 조회 : keyword : front/back
+   */
   @GetMapping
-  private ApplicationResponse<ProjectListPageResponseDTO> getList(PageDTO pageDTO) {
+  private ApplicationResponse<ProjectListPageResponseDTO> getList(
+      PageDTO pageDTO,
+      @Validated @RequestBody ProjectSearchRequestDto searchRequestDto
+  ) {
     log.info("/api/ddamddam/page={}$size={}", pageDTO.getPage(), pageDTO.getSize());
 
-    ProjectListPageResponseDTO dto = projectService.getList(pageDTO);
+    ProjectListPageResponseDTO dto = projectService.getList(pageDTO, searchRequestDto);
 
     return ApplicationResponse.ok(dto);
   }
 
   // 게시글 상세 보기
   @GetMapping("/{idx}")
-  public ApplicationResponse<?> getDetail(@PathVariable Long idx) {
-    log.info("/api/ddamddam/{} GET", idx);
+  public ApplicationResponse<?> getDetail(@PathVariable Long projectIdx) {
+    log.info("/api/ddamddam/{} GET", projectIdx);
 
     try {
-      ProjectDetailResponseDTO dto = projectService.getDetail(idx);
+      ProjectDetailResponseDTO dto = projectService.getDetail(projectIdx);
 
       return ApplicationResponse.ok(dto);
 
@@ -118,5 +131,19 @@ public class ProjectApiController {
     }
   }
 
+
+  /*
+   * 퀵 매칭
+   * select : 내 포지션 / 오래된 순 / 남은자리가 작은것 부터
+   */
+  @GetMapping("/quick")
+  private ApplicationResponse<?> quickMatchingList(
+      PageDTO dto, ProjectSearchRequestDto searchDto){
+    log.info("/api/ddamddam/quick");
+
+    ProjectListPageResponseDTO quickList = projectService.quickMatching(dto, searchDto);
+
+    return ApplicationResponse.ok(quickList);
+  }
 
 }

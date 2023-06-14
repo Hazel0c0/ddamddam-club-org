@@ -3,9 +3,6 @@ package kr.co.ddamddam.project.dto.response;
 import kr.co.ddamddam.project.entity.Project;
 import lombok.*;
 
-import java.time.LocalDateTime;
-import java.util.stream.Collectors;
-
 @Setter @Getter @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
@@ -13,8 +10,9 @@ import java.util.stream.Collectors;
 @Builder
 public class ProjectListResponseDTO {
 
-  private String title;
-  private String content;
+  private Long boardIdx;
+  private String boardTitle;
+  private String boardContent;
   private String projectType;
 
   /**
@@ -23,14 +21,15 @@ public class ProjectListResponseDTO {
    */
   private boolean completion;
 
-  private String applicantionPeriod; //모집기간
+  private String offerPeriod; //모집기간
 
 
   public ProjectListResponseDTO(Project project){
-    this.title=project.getProjectTitle();
-    this.content=project.getProjectContent();
+    this.boardIdx =project.getProjectIdx();
+    this.boardTitle =project.getProjectTitle();
+    this.boardContent =project.getProjectContent();
     this.projectType = project.getProjectType();
-    this.completion=false;
-    this.applicantionPeriod=project.getOfferPeriod();
+    this.completion = (project.getMaxFront() - project.getApplicantOfFronts().size()) == 0;
+    this.offerPeriod =project.getOfferPeriod();
   }
 }

@@ -1,4 +1,4 @@
-package kr.co.ddamddam.project.dto.request;
+package kr.co.ddamddam.project.dto.page;
 
 import lombok.*;
 

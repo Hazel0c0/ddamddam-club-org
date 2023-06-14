@@ -1,12 +1,13 @@
 package kr.co.ddamddam.project.entity;
 
+import kr.co.ddamddam.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
 
 @Setter
 @Getter
-@ToString
+@ToString(exclude = {"user","project"})
 @EqualsAndHashCode(of = {"projectLikeIdx"})
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,9 +19,11 @@ public class ProjectLike {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long projectLikeIdx;
 
-  @Column(nullable = false)
-  private Long project_idx;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_idx", nullable = false)
+  private User user;
 
-  @Column(nullable = false)
-  private Long memberIdx;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "project_idx", nullable = false)
+  private Project project;
 }
