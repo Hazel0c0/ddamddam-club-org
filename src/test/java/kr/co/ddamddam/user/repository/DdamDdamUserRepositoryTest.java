@@ -21,21 +21,21 @@ class DdamDdamUserRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
-    @BeforeEach
-    void insertUser() {
-        User user = User.builder()
-                .userEmail("test@test.com")
-                .userPw("1234")
-                .userName("테스트")
-                .userNickname("테스트")
-                .userBirth(LocalDate.of(1990, 5, 15))
-                .userPosition(UserPosition.BACKEND)
-                .userCareer(3)
-                .userRole(UserRole.COMMON)
-                .build();
-
-        userRepository.save(user);
-    }
+//    @BeforeEach
+//    void insertUser() {
+//        User user = User.builder()
+//                .userEmail("test@test.com")
+//                .userPw("1234")
+//                .userName("테스트")
+//                .userNickname("테스트")
+//                .userBirth(LocalDate.of(1990, 5, 15))
+//                .userPosition(UserPosition.BACKEND)
+//                .userCareer(3)
+//                .userRole(UserRole.COMMON)
+//                .build();
+//
+//        userRepository.save(user);
+//    }
 
     @Test
     @DisplayName("유저 더미데이터 50명 생성")
