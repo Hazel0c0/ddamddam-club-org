@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 public class ProjectListResponseDTO {
 
+  private Long boardIdx;
   private String boardTitle;
   private String boardContent;
   private String projectType;
@@ -24,6 +25,7 @@ public class ProjectListResponseDTO {
 
 
   public ProjectListResponseDTO(Project project){
+    this.boardIdx =project.getProjectIdx();
     this.boardTitle =project.getProjectTitle();
     this.boardContent =project.getProjectContent();
     this.projectType = project.getProjectType();
