@@ -43,8 +43,24 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
 
-	// json
-	implementation group: 'org'
+	// XML to JSON
+	implementation 'org.json:json:20211205';
+
+	// 스프링 시큐리티 모듈
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	// json web token 라이브러리
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+
+	//이메일인증
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	// Thymeleaf 관련 의존성(이메일인증)
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 }
 
 tasks.named('test') {
