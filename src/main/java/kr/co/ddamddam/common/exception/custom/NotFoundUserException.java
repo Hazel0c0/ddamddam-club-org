@@ -1,18 +1,18 @@
-package kr.co.ddamddam.qna.qnaBoard.exception.custom;
+package kr.co.ddamddam.common.exception.custom;
 
 import lombok.Getter;
 
 public class NotFoundUserException extends CustomException {
 
     @Getter
-    private final QnaErrorCode errorCode;
+    private final ErrorCode errorCode;
 
     @Getter
     private final Long userIdx;
 
-    public NotFoundUserException(QnaErrorCode e, Long idx) {
+    public NotFoundUserException(ErrorCode e, Long userIdx) {
         super(e);
         this.errorCode = e;
-        this.userIdx = idx;
+        this.userIdx = userIdx;
     }
 }

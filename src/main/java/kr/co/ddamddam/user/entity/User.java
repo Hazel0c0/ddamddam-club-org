@@ -5,6 +5,7 @@ import kr.co.ddamddam.mentor.entity.Mentor;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.review.entity.Review;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -12,8 +13,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 
 @Setter
@@ -36,7 +35,7 @@ public class User {
     private String userEmail;
 
     @Column(name = "user_password", nullable = false, length = 30)
-    private String userPw;
+    private String userPassword;
 
     @Column(name = "user_name", nullable = false, length = 30)
     private String userName;
@@ -67,6 +66,7 @@ public class User {
 
     @Column(name = "user_role", nullable = false)
     @Enumerated(EnumType.STRING)
+    @ColumnDefault("'COMMON'")
     private UserRole userRole;
 
     @OneToMany(mappedBy = "user")
