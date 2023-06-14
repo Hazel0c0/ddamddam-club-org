@@ -1,8 +1,9 @@
 package kr.co.ddamddam.qna.qnaBoard.service;
 
+import kr.co.ddamddam.common.common.TruncateString;
 import kr.co.ddamddam.common.response.ResponseMessage;
-import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.page.PageDTO;
+import kr.co.ddamddam.qna.qnaBoard.dto.page.PageResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.request.QnaInsertRequestDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.request.QnaModifyRequestDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaDetailResponseDTO;
@@ -10,10 +11,13 @@ import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaListResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaListPageResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaTopListResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
-import kr.co.ddamddam.qna.qnaHashtag.entity.QnaHashtag;
 import kr.co.ddamddam.qna.qnaBoard.exception.custom.NotFoundQnaBoardException;
 import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
+import kr.co.ddamddam.qna.qnaHashtag.entity.Hashtag;
+import kr.co.ddamddam.qna.qnaHashtag.repository.HashtagRepository;
+import kr.co.ddamddam.qna.qnaReply.dto.response.QnaReplyListResponseDTO;
 import kr.co.ddamddam.qna.qnaReply.repository.QnaReplyRepository;
+import kr.co.ddamddam.qna.qnaReply.service.QnaReplyService;
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +27,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +44,8 @@ public class QnaService {
     private final QnaRepository qnaRepository;
     private final UserRepository userRepository;
     private final QnaReplyRepository qnaReplyRepository;
+    private final HashtagRepository hashtagRepository;
+    private final QnaReplyService qnaReplyService;
 
     public QnaListPageResponseDTO getList(PageDTO pageDTO) {
 
@@ -51,8 +58,7 @@ public class QnaService {
         // 데이터베이스에서 조회한 정보를 JSON 형태에 맞는 DTO 로 변환
         return QnaListPageResponseDTO.builder()
                 .count(qnaList.size())
-                .count(qnaList.size())
-                .pageInfo(new PageResponseDTO<Qna>(qnas)) // TODO : mentors 꺼 갖다썼음. 공용이니까 나중에 리팩터링할때 common 으로 옮길게요.
+                .pageInfo(new PageResponseDTO(qnas))
                 .qnas(qnaList)
                 .build();
     }
@@ -61,39 +67,49 @@ public class QnaService {
 
         log.info("[Qna/Service] QNA 게시글 조회순 TOP3 정렬");
 
-        List<Qna> qnaListTop3 = qnaRepository.findTop3ByOrderByQnaViewDesc();
+        List<Qna> qnaListTop3 = qnaRepository.findTop3ByOrderByViewCountDesc();
 
         return qnaListTop3.stream()
                 .map(qna -> QnaTopListResponseDTO.builder()
                         .boardIdx(qna.getQnaIdx())
-                        .boardTitle(qna.getQnaTitle())
-                        .boardWriter(qna.getQnaWriter())
-                        .boardView(qna.getQnaView())
-                        // TODO : 댓글과 연관관계 매핑할 때 에러나네요... 댓글 구현 후 다시 테스트 필요합니다.
-//                        .replyCount(qna.getQnaReply().size())
+                        .boardTitle(TruncateString.truncate(qna.getQnaTitle(), 15))
+                        .boardContent(TruncateString.truncate(qna.getQnaContent(), 40))
+                        .boardAdoption(qna.getQnaAdoption())
+                        .boardViewCount(qna.getViewCount())
+                        .boardReplyCount(qna.getReplyCount())
                         .build()
                 ).collect(Collectors.toList());
     }
 
-    public QnaDetailResponseDTO getDetail(Long boardId) {
+    public QnaDetailResponseDTO getDetail(Long boardIdx) {
 
-        log.info("[Qna/Service] QNA 게시글 상세보기 boardId - {}", boardId);
+        log.info("[Qna/Service] QNA 게시글 상세보기 boardIdx - {}", boardIdx);
 
-        if (boardId == null) {
-            throw new NotFoundQnaBoardException(INVALID_PARAMETER, boardId);
+        if (boardIdx == null) {
+            throw new NotFoundQnaBoardException(INVALID_PARAMETER, boardIdx);
         }
 
-        Qna qna = qnaRepository.findById(boardId).orElseThrow(() -> {
-            throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, boardId);
+        Qna qna = qnaRepository.findById(boardIdx).orElseThrow(() -> {
+            throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, boardIdx);
         });
+
         User user = userRepository.findById(qna.getUser().getUserIdx()).orElseThrow(() -> {
             throw new NotFoundQnaBoardException(NOT_FOUND_USER, qna.getUser().getUserIdx());
         });
 
-        return new QnaDetailResponseDTO(qna, user);
+        List<QnaReplyListResponseDTO> replyList = qnaReplyService.getList(qna.getQnaIdx());
+
+        QnaDetailResponseDTO qnaDetailResponseDTO = new QnaDetailResponseDTO(
+                qna,
+                user,
+                hashtagToString(qna.getHashtagList()),
+                replyList
+        );
+
+        return qnaDetailResponseDTO;
     }
 
-    public QnaDetailResponseDTO writeBoard(Long userIdx, QnaInsertRequestDTO dto) {
+    public Long writeBoard(Long userIdx, QnaInsertRequestDTO dto) {
 
         log.info("[Qna/Service] QNA 게시글 작성 - {}", dto);
 
@@ -101,15 +117,24 @@ public class QnaService {
             throw new NotFoundQnaBoardException(NOT_FOUND_USER, userIdx);
         });
 
-        Qna saved = qnaRepository.save(dto.toEntity(user));
+        Qna savedQna = qnaRepository.save(
+                dto.toEntity(user)
+        );
 
-        QnaDetailResponseDTO qnaDetail = getDetail(saved.getQnaIdx());
+        if (dto.getHashtagList().size() > 0) {
 
-        if (qnaDetail == null) {
-            throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, saved.getQnaIdx());
+            // 해시태그 저장
+            for (String tag : dto.getHashtagList()) {
+                Hashtag newHashtag = Hashtag.builder()
+                        .hashtagContent(tag)
+                        .qna(savedQna)
+                        .build();
+                Hashtag saved = hashtagRepository.save(newHashtag);
+                savedQna.getHashtagList().add(saved);
+            }
         }
 
-        return qnaDetail;
+        return savedQna.getQnaIdx();
     }
 
     public ResponseMessage deleteBoard(Long boardIdx) {
@@ -141,8 +166,11 @@ public class QnaService {
             return FAIL;
         }
 
+        qna.clearHashtagList();
+
         qna.setQnaTitle(dto.getBoardTitle());
         qna.setQnaContent(dto.getBoardContent());
+        qna.setHashtagList(stringToHashtag(dto.getHashtagList()));
 
         qnaRepository.save(qna);
 
@@ -157,7 +185,7 @@ public class QnaService {
             throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, boardIdx);
         });
 
-        qna.setQnaView(qna.getQnaView() + VIEW_COUNT_UP);
+        qna.setViewCount(qna.getViewCount() + VIEW_COUNT_UP);
 
         qnaRepository.save(qna);
 
@@ -190,7 +218,7 @@ public class QnaService {
 
         return QnaListPageResponseDTO.builder()
                 .count(qnaList.size())
-                .pageInfo(new PageResponseDTO<Qna>(qnas)) // TODO : mentors 꺼 갖다썼음. 공용이니까 나중에 리팩터링할때 common 으로 옮길게요.
+                .pageInfo(new PageResponseDTO(qnas))
                 .qnas(qnaList)
                 .build();
     }
@@ -205,7 +233,7 @@ public class QnaService {
 
         return QnaListPageResponseDTO.builder()
                 .count(qnaList.size())
-                .pageInfo(new PageResponseDTO<Qna>(qnas)) // TODO : mentors 꺼 갖다썼음. 공용이니까 나중에 리팩터링할때 common 으로 옮길게요.
+                .pageInfo(new PageResponseDTO(qnas))
                 .qnas(qnaList)
                 .build();
     }
@@ -222,7 +250,11 @@ public class QnaService {
     private List<QnaListResponseDTO> getQnaDtoList(Page<Qna> qnas) {
 
         return qnas.getContent().stream()
-                .map(QnaListResponseDTO::new)
+                .map(qna ->
+                    new QnaListResponseDTO(qna,
+                            hashtagToString(qna.getHashtagList())
+                    )
+                )
                 .collect(Collectors.toList());
     }
 
@@ -230,7 +262,11 @@ public class QnaService {
 
         return qnas.getContent().stream()
                 .filter(qna -> qna.getQnaAdoption() == Y)
-                .map(QnaListResponseDTO::new)
+                .map(qna ->
+                        new QnaListResponseDTO(qna,
+                                hashtagToString(qna.getHashtagList())
+                        )
+                )
                 .collect(Collectors.toList());
     }
 
@@ -238,8 +274,32 @@ public class QnaService {
 
         return qnas.getContent().stream()
                 .filter(qna -> qna.getQnaAdoption() == N)
-                .map(QnaListResponseDTO::new)
+                .map(qna ->
+                        new QnaListResponseDTO(qna,
+                                hashtagToString(qna.getHashtagList())
+                        )
+                )
                 .collect(Collectors.toList());
+    }
+
+    public List<String> hashtagToString(List<Hashtag> hashtagList) {
+        List<String> StringList = new ArrayList<>();
+        for (Hashtag foundHashtag : hashtagList) {
+            StringList.add(foundHashtag.getHashtagContent());
+        }
+        return StringList;
+    }
+
+    public List<Hashtag> stringToHashtag(List<String> strHashtagList) {
+        List<Hashtag> hashtagList = new ArrayList<>();
+        for (String tag : strHashtagList) {
+            hashtagList.add(
+                    Hashtag.builder()
+                            .hashtagContent(tag)
+                            .build()
+            );
+        }
+        return hashtagList;
     }
 
 }

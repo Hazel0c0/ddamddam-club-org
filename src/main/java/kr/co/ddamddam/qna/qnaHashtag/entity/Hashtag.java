@@ -4,27 +4,30 @@ import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
-@ToString
+@ToString(exclude = "qna")
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "tbl_qna_hashtag")
-public class QnaHashtag {
+@Table(name = "tbl_hashtag")
+public class Hashtag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "qna_hashtag_idx")
-    private Long qnaHashtagIdx;
+    @Column(name = "hashtag_idx")
+    private Long hashtagIdx; // 식별번호
 
-    @Column(name = "qna_hashtag_name", nullable = false, length = 10)
-    private String qnaHashtagName;
+    @Column(name = "hashtag_content", length = 10)
+    private String hashtagContent; // 해시태그 내용
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "qna_idx") // FK
-    private Qna qna;
+    private Qna qna; // 연결된 게시글
+
 }

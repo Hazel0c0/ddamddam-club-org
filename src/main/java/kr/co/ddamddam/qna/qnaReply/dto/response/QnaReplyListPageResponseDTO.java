@@ -18,6 +18,6 @@ public class QnaReplyListPageResponseDTO {
 
     private int count;
     private PageResponseDTO pageInfo;
-    private List<QnaReplyListResponseDTO> qnaReplyList;
+    private List<QnaReplyListResponseDTO> replyList;
 
 }
