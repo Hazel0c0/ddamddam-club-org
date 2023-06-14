@@ -13,6 +13,7 @@ const MentorsChat = () => {
   const [input, setInput] = useState(''); // 입력된 메시지
   const [message, setMessage] = useState([]); // 저장된 채팅 메세지 목록
   const ws = useRef(null); // WebSocket 객체
+  const chatScroll = useRef(null); // 채팅 스크롤 Ref
  
 
   useEffect(() => {
@@ -60,6 +61,11 @@ const MentorsChat = () => {
     };
   }, []);
 
+  useEffect(() => {
+    chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
+  }, [messages, message]);
+
+
   const handleInputChange = (event) => {
     setInput(event.target.value);
   };
@@ -92,9 +98,9 @@ const MentorsChat = () => {
       .then((res) => res.json())
       .then((result) => {
         // console.log(result);
+        chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
       });
   };
-
   const { career, content, current, date, idx, mentee, nickName, profile, subject, title } = detailMember;
 
   return (
@@ -147,7 +153,7 @@ const MentorsChat = () => {
       </div>
 
       <div className={'mentor-chat-room'}>
-        <section className={'chating-list'}>
+        <section className={'chating-list'} ref={chatScroll}>
         {message.map((msg, index) => (
             <React.Fragment key={index}>
                 <div className={'sender-wrapper'}>
@@ -159,7 +165,7 @@ const MentorsChat = () => {
                     <span className={'receiver-content'}>안녕하세요 수신자</span>
                 </div>
             </React.Fragment>
-        ))}
+            ))}
 
           {messages.map((message, index) => (
             <div className={'sender-wrapper'} key={index}>
