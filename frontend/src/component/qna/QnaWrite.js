@@ -1,0 +1,140 @@
+import React, {useRef, useState} from 'react';
+import Common from "../common/Common";
+import './scss/QnaWrite.scss';
+import {MENTOR, QNA} from "../common/config/HostConfig";
+import {Link} from "react-router-dom";
+import Tags from '@yaireo/tagify/dist/react.tagify';
+
+const MentorsWrite = () => {
+    const [textInput, setTextInput] = useState(
+        {
+            boardTitle: '',
+            boardContent: '',
+            hashtaglist: []
+        }
+    )
+
+    const handleSelect = (e) => {
+        const {name, value} = e.target;
+        let parseValue = value;
+
+        if (name === 'mentorMentee') {
+            parseValue = parseInt(value);
+        }
+
+        setTextInput((prevTextInput) => ({
+            ...prevTextInput,
+            [name]: parseValue
+        }));
+    };
+
+
+    const handleSubmit = async () => {
+        // 수집한 값들을 이용하여 비동기 POST 요청 수행
+        const {
+            boardTitle,
+            boardContent,
+            hashtaglist
+        } = textInput;
+
+        if (boardTitle.length === 0 || boardContent.length === 0 || hashtaglist.length === 0) {
+            alert('공백 없이 입력해주세요.');
+        } else {
+            const data = {
+                boardTitle: boardTitle,
+                boardContent: boardContent,
+                hashtaglist: hashtaglist
+            };
+            // 비동기 POST 요청 처리 로직 작성
+            console.log(data); // 확인을 위해 콘솔에 출력
+
+            const res = await fetch(QNA+'/write',{
+                method: 'POST',
+                headers: {'content-type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+
+            if (res.status === 400){
+                const text = await res;
+                console.log(`오류시 알람 : ${text}`);
+                return;
+            }else {
+                alert('작성이 완료되었습니다.')
+            }
+            // fetch(QNA, {
+            //     method: 'POST',
+            //     headers: {'content-type': 'application/json'},
+            //     body: JSON.stringify(data)
+            // })
+            //     .then(res => res.json())
+            //     .then(json => {
+            //         console.log(`json값 어떻게 쓸지? : ${json}`);
+            //         alert('작성이 완료되었습니다.');
+            //         window.location.href = 'http://localhost:3000/mentors';
+            //     })
+        };
+    };
+
+    //해쉬태그 핸들러
+    const tagifyRef1 = useRef();
+
+    const baseTagifySettings = {
+        // blacklist: ["xxx", "yyy", "zzz"],
+        maxTags: 10,
+        //backspace: "edit",
+        placeholder: "해쉬태그를 입력해주세요.",
+        dropdown: {
+            enabled: 0 // a;ways show suggestions dropdown
+        }
+    }
+
+
+    return (
+        <Common className={'qna-write-wrapper'}>
+            <div className={'title-wrapper'}>
+                <p className={'main-title'}>Q&A</p>
+                <p className={'main-sub-title'}>땀땀클럽 회원들과 개발 지식을 공유할 수 있는 공간입니다.</p>
+            </div>
+
+            <section className={'write-form-wrapper'}>
+                <div className={'title-input-wrapper'}>
+                    <h1 className={'sub-title'}>제목</h1>
+                    <input
+                        type={"text"}
+                        placeholder={'제목을 입력하세요'}
+                        className={'title-text-input'}
+                        name={'boardTitle'}
+                        value={textInput.boardTitle}
+                        onChange={handleSelect}
+                    />
+                </div>
+                <div className={'hashtag-wrapper'}>
+                    <Tags
+                        tagifyRef={tagifyRef1}
+                        settings={settings}
+                        defaultValue="a,b,c"
+                        autoFocus={true}
+                        {...tagifyProps}
+                    />
+                </div>
+            </section>
+
+            <section>
+                <textarea type="text"
+                          placeholder={"내용을 입력해주세요"}
+                          className={'content'}
+                          value={textInput.mentorContent}
+                          name="boardContent"
+                          onChange={handleSelect}
+                />
+            </section>
+
+            <div className={'btn-wrapper'}>
+                <Link to={'/qna'} className={'close-btn-a'}><button className={'close-btn'}>취소하기</button></Link>
+                <button className={'submit-btn'} onClick={handleSubmit}>작성완료</button>
+            </div>
+        </Common>
+    );
+};
+
+export default MentorsWrite;
