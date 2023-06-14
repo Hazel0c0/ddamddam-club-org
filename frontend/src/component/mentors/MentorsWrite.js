@@ -12,7 +12,7 @@ const MentorsWrite = () => {
             mentorSubject: '프론트엔드',
             mentorCurrent: '',
             mentorCareer: '신입',
-            mentorMentee: ''
+            mentorMentee: '1'
         }
     )
 
@@ -121,7 +121,19 @@ const MentorsWrite = () => {
                             <option value="5년">5년 이상</option>
                         </select>
                     </div>
-
+                    <div className={'mentee'}>
+                        <h1 className={'sub-title'}>모집인원</h1>
+                        <select className="mentee-text-input"
+                                onChange={handleSelect}
+                                value={textInput.mentorMentee}
+                                name="mentorMentee"
+                        >
+                            <option value="1">1명</option>
+                            <option value="2">2명</option>
+                            <option value="3">3명</option>
+                            <option value="4">4명</option>
+                        </select>
+                    </div>
                     <div className={'current'}>
                         <h1 className={'sub-title'}>현직</h1>
                         <input type={"text"}
@@ -133,16 +145,7 @@ const MentorsWrite = () => {
                         />
                     </div>
 
-                    <div className={'mentee'}>
-                        <h1 className={'sub-title'}>모집인원</h1>
-                        <input type={"text"}
-                               placeholder={'1~4명 인원을 입력해주세요'}
-                               name="mentorMentee"
-                               className={'mentee-text-input'}
-                               value={textInput.mentorMentee}
-                               onChange={handleSelect}
-                        />
-                    </div>
+
                 </div>
             </section>
 
@@ -157,7 +160,7 @@ const MentorsWrite = () => {
             </section>
 
             <div className={'btn-wrapper'}>
-                <Link to={'/mentors'}><button className={'close-btn'}>취소하기</button></Link>
+                <Link to={'/mentors'} className={'close-btn-a'}><button className={'close-btn'}>취소하기</button></Link>
                 <button className={'submit-btn'} onClick={handleSubmit}>작성완료</button>
             </div>
         </Common>
