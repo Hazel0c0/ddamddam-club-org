@@ -51,8 +51,8 @@ class QnaServiceTest {
         //given
         List<QnaTopListResponseDTO> qnasListTop3ByView = qnaService.getListTop3ByView();
         //when
-        boolean flag1 = qnasListTop3ByView.get(0).getBoardView() > qnasListTop3ByView.get(1).getBoardView();
-        boolean flag2 = qnasListTop3ByView.get(1).getBoardView() > qnasListTop3ByView.get(2).getBoardView();
+        boolean flag1 = qnasListTop3ByView.get(0).getBoardViewCount() > qnasListTop3ByView.get(1).getBoardViewCount();
+        boolean flag2 = qnasListTop3ByView.get(1).getBoardViewCount() > qnasListTop3ByView.get(2).getBoardViewCount();
         //then
         assertTrue(flag1);
         assertTrue(flag2);

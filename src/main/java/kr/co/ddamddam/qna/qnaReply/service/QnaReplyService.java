@@ -29,6 +29,8 @@ import static kr.co.ddamddam.qna.qnaBoard.exception.custom.QnaErrorCode.*;
 @RequiredArgsConstructor
 public class QnaReplyService {
 
+    private final int REPLY_COUNT_UP = 1;
+    private final int REPLY_COUNT_DOWN = -1;
     private final QnaReplyRepository qnaReplyRepository;
     private final QnaRepository qnaRepository;
     private final UserRepository userRepository;
@@ -54,25 +56,27 @@ public class QnaReplyService {
 
         log.info("[QnaReply/Service] QNA 댓글 작성, index - {}, payload - {}", dto.getBoardIdx(), dto.getReplyContent());
 
-        try {
-            User user = userRepository.findById(userIdx).orElseThrow(() -> {
-                throw new NotFoundQnaBoardException(NOT_FOUND_USER, userIdx);
-            });
+        User user = userRepository.findById(userIdx).orElseThrow(() -> {
+            throw new NotFoundQnaBoardException(NOT_FOUND_USER, userIdx);
+        });
 
-            Qna qna = qnaRepository.findById(dto.getBoardIdx()).orElseThrow(() -> {
-                throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, dto.getBoardIdx());
-            });
+        Qna qna = qnaRepository.findById(dto.getBoardIdx()).orElseThrow(() -> {
+            throw new NotFoundQnaBoardException(NOT_FOUND_BOARD, dto.getBoardIdx());
+        });
 
-            QnaReply newQnaReply = QnaReplyInsertRequestDTO.builder()
-                    .boardIdx(dto.getBoardIdx())
-                    .replyContent(dto.getReplyContent())
-                    .build()
-                    .toEntity(qna, user);
-
-            qnaReplyRepository.save(newQnaReply);
-        } catch (RuntimeException e) {
+        if (qna.getQnaAdoption() == Y) {
             return FAIL;
         }
+
+        QnaReply newQnaReply = QnaReplyInsertRequestDTO.builder()
+                .boardIdx(dto.getBoardIdx())
+                .replyContent(dto.getReplyContent())
+                .build()
+                .toEntity(qna, user);
+
+        qna.setReplyCount(qna.getReplyCount() + REPLY_COUNT_UP);
+        qnaRepository.save(qna);
+        qnaReplyRepository.save(newQnaReply);
 
         return SUCCESS;
     }
@@ -88,6 +92,12 @@ public class QnaReplyService {
         if (qnaReply.getQnaReplyAdoption() == Y) {
             return FAIL;
         }
+
+        Qna qna = qnaReply.getQna();
+        qna.setReplyCount(
+                qna.getReplyCount() + REPLY_COUNT_DOWN
+        );
+        qnaRepository.save(qna);
 
         qnaReplyRepository.deleteById(replyIdx);
 
