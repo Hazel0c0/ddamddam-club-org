@@ -59,12 +59,20 @@ public class ChatService {
             return convertToChatRoomResponseDTO(savedChatRoom);
         }
         else{
-            throw new RuntimeException("이미 생성된 채팅방이 있습니다"+findByChatRoomUser);
+
+            ChatRoomResponseDTO responseDTO = new ChatRoomResponseDTO();
+            responseDTO.setRoomId(findByChatRoomUser.getRoomId());
+            responseDTO.setSender(new UserResponseDTO(findByChatRoomUser.getSender()));
+            responseDTO.setReceiver(new UserResponseDTO(findByChatRoomUser.getReceiver()));
+
+            return responseDTO;
         }
     }
 
-    public ChatMessageResponseDTO sendMessage(Long roomId, ChatMessageRequestDTO requestDTO) {
-        ChatRoom chatRoom = chatRoomRepository.findById(roomId)
+    public ChatMessageResponseDTO sendMessage(Long mentorIdx, ChatMessageRequestDTO requestDTO) {
+        ChatRoom senderUserIdx = chatRoomRepository.findByMentorMentorIdxAndSenderUserIdx(mentorIdx, requestDTO.getSenderId());
+
+        ChatRoom chatRoom = chatRoomRepository.findById(senderUserIdx.getRoomId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid roomId"));
 
         User sender = userRepository.findById(requestDTO.getSenderId())

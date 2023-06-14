@@ -8,6 +8,7 @@ import kr.co.ddamddam.chat.dto.response.ChatRoomResponseDTO;
 import kr.co.ddamddam.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +31,9 @@ public class ChatController {
     ) {
         Long userId = 1L;
         log.info("requestDTO 들어옴: {}",dto);
-        ChatRoomResponseDTO responseDTO = null;
-        try {
-            responseDTO = chatService.createChatRoom(dto,userId);
+
+            ChatRoomResponseDTO responseDTO = chatService.createChatRoom(dto,userId);
             return ResponseEntity.ok(responseDTO);
-        } catch (Exception e) {
-            return ResponseEntity.ok().body(e.getMessage());
-        }
     }
 
     // 채팅 주고받기
@@ -67,9 +64,13 @@ public class ChatController {
     ){
         Long senderIdx = 1L;
 
-        List<ChatMessageResponseDTO> list = chatService.getDetail(mentorIdx,senderIdx);
-
-        return ResponseEntity.ok().body(list);
+        try {
+            List<ChatMessageResponseDTO> list = chatService.getDetail(mentorIdx, senderIdx);
+            return ResponseEntity.ok().body(list);
+        } catch (NullPointerException e) {
+            // 예외 처리를 원하는 방식으로 처리합니다.
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("채팅 기록이 없습니다");
+        }
     }
 
     // 채팅방 삭제

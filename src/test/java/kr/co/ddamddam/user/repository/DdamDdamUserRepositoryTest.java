@@ -42,7 +42,7 @@ class DdamDdamUserRepositoryTest {
     void insertBulk() {
         //given
 
-        for (int i = 1; i <= 50; i++) {
+        for (int i = 1; i <= 10; i++) {
 
             int index = (int) (Math.random() * 1); // 0 또는 1
             int year = (int) (Math.random() * 31 + 1970); // 1970 ~ 2000 사이의 랜덤 정수
