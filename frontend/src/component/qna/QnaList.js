@@ -7,42 +7,52 @@ import {IoIosArrowForward} from 'react-icons/io';
 import {QNA} from "../common/config/HostConfig";
 import {Link} from "react-router-dom";
 
-const QnaList = () => {
+const QnaList = ({searchValue}) => {
     const [qnaList, setQnaList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
 
     //상세보기 이동
     const [qnaDetailBoardIdx, setqnaDetailBoardIdx] = useState([]);
 
+    //전체 목록 렌더링 필터 async
+    const asyncQnaList = async () => {
+        let responseUrl;
+        if (searchValue === '' || searchValue === '전체') {
+            responseUrl = '?page=1&size=9'
+        } else if (searchValue === '미채택') {
+            responseUrl = '/non-adopts';
+        } else if (searchValue === '채택완료') {
+            responseUrl = '/adopts';
+        }
+        console.log(`searchValue = ${searchValue}`)
+        console.log(`responseUrl = ${responseUrl}`)
+        const res = await fetch(`${QNA}${responseUrl}`, {
+            method: 'GET',
+            headers: {'content-type': 'application/json'}
+        });
+
+        if (res.status === 500) {
+            alert('잠시 후 다시 접속해주세요.[서버오류]');
+            return;
+        }
+
+        const qnaList = await res.json();
+        console.log(`qnaList = ${qnaList.payload.qnas}`);
+        setQnaList(qnaList.payload.qnas);
+        setPageNation(qnaList.payload.pageInfo);
+    }
+
     // 전체 목록 리스트 출력
     useEffect(() => {
-        fetch('//localhost:8181/api/ddamddam/qna?page=1&size=9')
-            .then(res => {
-                if (res.status === 500) {
-                    alert('잠시 후 다시 접속해주세요.[서버오류]');
-                    return;
-                }
-                return res.json();
-            })
-            .then(
-                result => {
-                    if (!!result) {
-                        setQnaList(result.payload.qnas);
-                        setPageNation(result.payload.pageInfo);
-                        console.log(result);
-                        console.log(`result.qnas = ${result.payload.qnas[0].boardContent}`);
-                        console.log(`result.pageInfo = ${result.payload.pageInfo}`);
-                    }
-                });
-    }, [qnaDetailBoardIdx]);
+        asyncQnaList();
+    }, [qnaDetailBoardIdx, searchValue]);
+
 
 
     return (
         <Common className={'qna-list-wrapper'}>
             {qnaList.map((qna) => (
                 <section className={'qna-list'} key={qna.boardIdx}>
-
-
                     {qna.boardAdoption === 'Y'
                         ? <div className={'checked'} key={qna.boardAdoption}>
                             {qna.boardAdoption}채택완료</div>
@@ -75,7 +85,7 @@ const QnaList = () => {
 
                     <Link to={`/api/ddamddam/qna/${qna.boardIdx}`}>
                         {/*<div className={'go-detail'} onClick={() => detailHandler(qna.boardIdx)}>*/}
-                        <div className={'go-detail'} >
+                        <div className={'go-detail'}>
                             <div className={'go-detail-text'}>더보기</div>
                             <i className={'go-detail-icon'}><IoIosArrowForward/></i>
                         </div>

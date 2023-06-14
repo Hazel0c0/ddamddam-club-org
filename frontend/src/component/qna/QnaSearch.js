@@ -1,20 +1,56 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Common from "../common/Common";
 import './scss/QnaSearch.scss';
 import searchIcon from '../../src_assets/search-icon.png';
-const QnaSearch = () => {
+import {Link} from "react-router-dom";
+
+const QnaSearch = ({onSearchChange}) => {
+    const [selectedBtn, setSelectedBtn] = useState('전체');
+
+    const handleInputChange = (e) => {
+        const value = e.target.textContent;
+        // console.log(value);
+        onSearchChange(value);
+        setSelectedBtn(value);
+    }
+
+    //게시글 작성하기
+    const qnaWriteHandler = () => {
+
+    }
+
     return (
         <Common className={'qna-search-wrapper'}>
             <ul className={'sort-btn'}>
-                <li>전체</li>
-                <li>미채택</li>
-                <li>채택완료</li>
+                <li
+                    onClick={handleInputChange}
+                    className={selectedBtn === '전체' ? 'selected' : ''}
+                >
+                    전체
+                </li>
+
+                <li
+                    onClick={handleInputChange}
+                    className={selectedBtn === '미채택' ? 'selected' : ''}
+                >
+                    미채택
+                </li>
+
+                <li
+                    onClick={handleInputChange}
+                    className={selectedBtn === '채택완료' ? 'selected' : ''}
+                >
+                    채택완료
+                </li>
+
             </ul>
             <div className={'search-wrapper'}>
                 <img src={searchIcon} alt={'search-icon'} className={'search-icon'}/>
                 <input className={'input-btn'} placeholder={'검색창'} name={'search'}></input>
             </div>
-            <button className={'write-btn'}>작성하기</button>
+            <Link to={'/api/ddamddam/qna/write'}>
+                <button className={'write-btn'}>작성하기</button>
+            </Link>
         </Common>
     );
 };
