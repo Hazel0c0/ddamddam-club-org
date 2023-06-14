@@ -1,10 +1,18 @@
 import React from 'react';
-import QnaMain from "../qna/QnaMain";
+import ProjectsTitle from './ProjectsTitle';
+import ProjectsSearch from "./ProjectsSearch";
+import ProjectsList from "./ProjectsList";
+
 
 const ProjectsTemplate = () => {
-    return (
+
+
+  return (
         <div>
-          <ProjectsMain />
+          <ProjectsTitle />
+          <ProjectsSearch />
+          <ProjectsList />
+          {/* <ProjectsList projectList={projects}/> */}
         </div>
     );
 };
