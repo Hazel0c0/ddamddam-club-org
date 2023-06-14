@@ -34,6 +34,7 @@ public class ProjectLikeApiController {
       @PathVariable Long projectIdx
   ) {
     try {
+      log.info("좋아요 click : userIdx={}, projectIdx={}",userIdx,projectIdx);
       boolean isLiked = projectLikeService.checkIfLiked(userIdx, projectIdx);
       if (isLiked) {
         projectLikeService.handleLike(userIdx, projectIdx);
