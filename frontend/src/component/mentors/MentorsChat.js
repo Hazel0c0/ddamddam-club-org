@@ -11,6 +11,7 @@ const MentorsChat = () => {
   const [messages, setMessages] = useState([]); // 채팅 메시지 목록
   const [roomInfo, setRoomInfo] = useState([]); // 채팅방 정보
   const [input, setInput] = useState(''); // 입력된 메시지
+  const [message, setMessage] = useState([]); // 저장된 채팅 메세지 목록
   const ws = useRef(null); // WebSocket 객체
  
 
@@ -38,6 +39,7 @@ const MentorsChat = () => {
                 console.log('잘됨');
                 // console.log(result);
                 setRoomInfo(result);
+                setMessage(result);
                 // setCheckSender(result.sender);
             });
 
@@ -146,6 +148,19 @@ const MentorsChat = () => {
 
       <div className={'mentor-chat-room'}>
         <section className={'chating-list'}>
+        {message.map((msg, index) => (
+            <React.Fragment key={index}>
+                <div className={'sender-wrapper'}>
+                    <span className={'sender'}>{msg.sender.userNickname}</span>
+                    <span className={'sender-content'}>{msg.message}</span>
+                </div>
+                <div className={'receiver-wrapper'}>
+                    <span className={'receiver'}>홍길동</span>
+                    <span className={'receiver-content'}>안녕하세요 수신자</span>
+                </div>
+            </React.Fragment>
+        ))}
+
           {messages.map((message, index) => (
             <div className={'sender-wrapper'} key={index}>
               <span className={'sender'}>{message.sender.userNickname}</span>

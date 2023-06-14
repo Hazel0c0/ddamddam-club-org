@@ -139,6 +139,7 @@
   .mentor-chat-room{
     font-family: Pretendard, sans-serif;
     width: 500px;
+    height: 710px;
     background-color: #292834;
     color: #292834;
     border-radius: 22px;
@@ -149,12 +150,14 @@
 
 
     .chating-list{
-      padding: 0 30px;
+      padding: 15px 30px;
+      // padding-top: 15px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      margin-bottom: 15px;
+      // margin-bottom: 15px;
+      overflow: auto;
 
       .sender-wrapper{
         width: 100%;
