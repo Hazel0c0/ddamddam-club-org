@@ -4,7 +4,6 @@ import kr.co.ddamddam.common.response.ApplicationResponse;
 import kr.co.ddamddam.common.response.ResponseMessage;
 import kr.co.ddamddam.qna.qnaBoard.dto.page.PageDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.request.QnaInsertRequestDTO;
-import kr.co.ddamddam.qna.qnaBoard.dto.request.QnaModifyRequestDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaDetailResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaListPageResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaTopListResponseDTO;
@@ -12,8 +11,11 @@ import kr.co.ddamddam.qna.qnaBoard.service.QnaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+
+import static kr.co.ddamddam.common.response.ResponseMessage.FAIL;
 
 /**
  * QNA 게시판 Controller
@@ -151,7 +153,7 @@ public class QnaApiController {
         ResponseMessage result = qnaService.deleteBoard(boardIdx);
 
         if (result == ResponseMessage.FAIL) {
-            return ApplicationResponse.error(result);
+            return ApplicationResponse.bad(result);
         }
 
         return ApplicationResponse.ok(result);
@@ -168,11 +170,15 @@ public class QnaApiController {
     @PatchMapping("/modify/{boardIdx}")
     public ApplicationResponse<?> modifyBoard(
             @PathVariable Long boardIdx,
-            @RequestBody QnaModifyRequestDTO dto
+            @RequestBody QnaInsertRequestDTO dto
     ) {
         log.info("PATCH : /qna/modify/{} - 게시글 수정, payload - {}", boardIdx, dto);
 
         ResponseMessage result = qnaService.modifyBoard(boardIdx, dto);
+
+        if (result == FAIL) {
+            ApplicationResponse.bad(result);
+        }
 
         return ApplicationResponse.ok(result);
     }
@@ -190,6 +196,10 @@ public class QnaApiController {
 
         ResponseMessage result = qnaService.updateViewCount(boardIdx);
 
+        if (result == FAIL) {
+            ApplicationResponse.bad(result);
+        }
+
         return ApplicationResponse.ok(result);
     }
 
@@ -206,7 +216,22 @@ public class QnaApiController {
 
         ResponseMessage result = qnaService.adoptQnaBoard(boardIdx);
 
+        if (result == FAIL) {
+            ApplicationResponse.bad(result);
+        }
+
         return ApplicationResponse.ok(result);
+    }
+
+    @GetMapping("/search")
+    public ApplicationResponse<?> search(
+            @RequestParam("keyword") String keyword
+    ){
+        log.info("GET : /qna/search/{} - 게시글 제목, 본문, 해시태그로 검색", keyword);
+
+        QnaListPageResponseDTO qnaList = qnaService.getKeywordList(keyword);
+
+        return ApplicationResponse.ok(qnaList);
     }
 
 }
