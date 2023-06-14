@@ -1,9 +1,18 @@
 import React from 'react';
+import ProjectsTitle from './ProjectsTitle';
+import ProjectsSearch from "./ProjectsSearch";
+import ProjectsList from "./ProjectsList";
+
 
 const ProjectsTemplate = () => {
-    return (
+
+
+  return (
         <div>
-            테스트
+          <ProjectsTitle />
+          <ProjectsSearch />
+          <ProjectsList />
+          {/* <ProjectsList projectList={projects}/> */}
         </div>
     );
 };

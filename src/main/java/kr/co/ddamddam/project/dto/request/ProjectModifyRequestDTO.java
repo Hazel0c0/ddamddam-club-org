@@ -15,8 +15,8 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class ProjectModifyRequestDTO {
   @NotBlank
-  private String title;
-  private String content;
+  private String boardTitle;
+  private String boardContent;
   private String projectType;
 
   //모집인원
