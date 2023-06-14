@@ -159,10 +159,18 @@
       .sender-wrapper{
         width: 100%;
         margin-bottom: 13px;
+        font-size: 15px;
         display: flex;
+        flex-direction: column;
+
+        .sender{
+          color: white;
+          margin-bottom: 3px;
+          align-self: flex-end;
+        }
 
         .sender-content{
-          max-width: 70%;
+          max-width: 60%;
           margin-left: auto;
           width: fit-content;
           padding: 5px 12px;

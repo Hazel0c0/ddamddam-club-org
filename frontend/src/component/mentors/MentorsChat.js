@@ -11,8 +11,8 @@ const MentorsChat = () => {
     const [messages, setMessages] = useState([]); // 채팅 메시지 목록
     const [input, setInput] = useState(''); // 입력된 메시지
     const ws = useRef(null); // WebSocket 객체
-    const [message, setMessage] = useState([]);
-    const [checkSender, setCheckSender] = useState([]);
+    // const [message, setMessage] = useState([]);
+    // const [checkSender, setCheckSender] = useState([]);
     useEffect(() => {
         fetch(MENTOR + '/detail?mentorIdx=' + chatPageIdx)
             .then(res => {
@@ -40,15 +40,16 @@ const MentorsChat = () => {
     
     fetch(CHAT + '/mentee/list/' + chatPageIdx)
             .then(res => {
-                if (res.status === 500) {
-                    alert('잠시 후 다시 접속해주세요.[서버오류]');
-                    return;
-                }
+                // if (res.status === 500) {
+                //     alert('잠시 후 다시 접속해주세요.[서버오류]');
+                //     return;
+                // }
                 return res.json();
             })
             .then(result => {
                 console.log('잘됨');
                 console.log(result);
+                // console.log(result.sender);
                 setMessage(result);
                 // setCheckSender(result.sender);
             });
@@ -119,13 +120,24 @@ const MentorsChat = () => {
 
             <div className={'mentor-chat-room'}>
                 <section className={'chating-list'}>
+                {messages.map((message, index) => (
+                    <div className={'message'} key={index}>
+                        <span className={'message-sender'}>{message.user}</span>
+                        <span className={'message-content'}>{message.content}</span>
+                    </div>
+                        ))}
+                    {/* {message.map((msg, index) => (
+                        <>
                     <div className={'sender-wrapper'}>
-                        <span className={'sender-content'}>안녕하세요 발신자안녕하세요 발신자안녕하세요 발신자안녕하세요 발신자안녕하세요 발신자</span>
+                    <span className={'sender'} key={msg.sender.userNickname}>{msg.sender.userNickname}</span>
+                        <span className={'sender-content'} key={msg.message}>{msg.message}</span>
                     </div>
                     <div className={'receiver-wrapper'}>
                         <span className={'receiver'}>홍길동</span>
                         <span className={'receiver-content'}>안녕하세요 수신자</span>
                     </div>
+                    </>
+                    ))} */}
                 </section>
 
                 <section className={'input-section'}>

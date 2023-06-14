@@ -92,7 +92,7 @@ const MentorsList = ({selectedSubjects}) => {
             headers: {'content-type': 'application/json'},
             body: JSON.stringify(data)
         })
-            .then(res => res.json())
+            // .then(res => res.json())
             .then(json => {
                 alert('채팅방 생성 완료! 멘토와 즐거운 채팅~');
             })
