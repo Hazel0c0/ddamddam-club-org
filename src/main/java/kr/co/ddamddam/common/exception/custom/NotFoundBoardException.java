@@ -1,11 +1,11 @@
-package kr.co.ddamddam.qna.qnaBoard.exception.custom;
+package kr.co.ddamddam.common.exception.custom;
 
 import lombok.Getter;
 
-public class NotFoundQnaBoardException extends CustomException {
+public class NotFoundBoardException extends CustomException {
 
     @Getter
-    private final QnaErrorCode errorCode; // 상태코드와 메세지
+    private final ErrorCode errorCode; // 상태코드와 메세지
 
     @Getter
     private final Long idx;
@@ -17,7 +17,7 @@ public class NotFoundQnaBoardException extends CustomException {
      * @param e - 커스텀한 에러 코드
      * @param idx - 에러가 발생한 게시판 or 유저 or 댓글의 idx
      */
-    public NotFoundQnaBoardException(QnaErrorCode e, Long idx) {
+    public NotFoundBoardException(ErrorCode e, Long idx) {
         super(e); 
         this.errorCode = e;
         this.idx = idx;
