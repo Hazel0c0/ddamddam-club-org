@@ -5,7 +5,6 @@ import kr.co.ddamddam.common.response.ResponseMessage;
 import kr.co.ddamddam.qna.qnaBoard.dto.page.PageDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.page.PageResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.request.QnaInsertRequestDTO;
-import kr.co.ddamddam.qna.qnaBoard.dto.request.QnaModifyRequestDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaDetailResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaListResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaListPageResponseDTO;
@@ -111,6 +110,23 @@ public class QnaService {
         return qnaDetailResponseDTO;
     }
 
+    public QnaListPageResponseDTO getKeywordList(String keyword) {
+
+        log.info("[Qna/Service] QNA 게시글 검색 - {}", keyword);
+
+        PageRequest pageable = getPageable(new PageDTO());
+
+        Page<Qna> qnas = qnaRepository.findByKeyword(keyword, pageable);
+
+        List<QnaListResponseDTO> qnaList = getQnaDtoListByKeyword(qnas);
+
+        return QnaListPageResponseDTO.builder()
+                .count(qnaList.size())
+                .pageInfo(new PageResponseDTO(qnas))
+                .qnas(qnaList)
+                .build();
+    }
+
     public Long writeBoard(Long userIdx, QnaInsertRequestDTO dto) {
 
         log.info("[Qna/Service] QNA 게시글 작성 - {}", dto);
@@ -123,21 +139,12 @@ public class QnaService {
                 dto.toEntity(user)
         );
 
-        if (dto.getHashtagList().size() > 0) {
-
-            // 해시태그 저장
-            for (String tag : dto.getHashtagList()) {
-                Hashtag newHashtag = Hashtag.builder()
-                        .hashtagContent(tag)
-                        .qna(savedQna)
-                        .build();
-                Hashtag saved = hashtagRepository.save(newHashtag);
-                savedQna.getHashtagList().add(saved);
-            }
-        }
+        // 해시태그 저장
+        saveHashtag(savedQna, dto.getHashtagList(), dto);
 
         return savedQna.getQnaIdx();
     }
+
 
     public ResponseMessage deleteBoard(Long boardIdx) {
 
@@ -155,8 +162,8 @@ public class QnaService {
 
         return SUCCESS;
     }
-    
-    public ResponseMessage modifyBoard(Long boardIdx, QnaModifyRequestDTO dto) {
+
+    public ResponseMessage modifyBoard(Long boardIdx, QnaInsertRequestDTO dto) {
 
         log.info("[Qna/Service] QNA 게시글 수정 - {}, payload - {}", boardIdx, dto);
 
@@ -175,18 +182,8 @@ public class QnaService {
         qna.setQnaContent(dto.getBoardContent());
         Qna savedQna = qnaRepository.save(qna);
 
-        if (dto.getHashtagList().size() > 0) {
-
-            // 해시태그 저장
-            for (String tag : dto.getHashtagList()) {
-                Hashtag newHashtag = Hashtag.builder()
-                        .hashtagContent(tag)
-                        .qna(savedQna)
-                        .build();
-                Hashtag saved = hashtagRepository.save(newHashtag);
-                savedQna.getHashtagList().add(saved);
-            }
-        }
+        // 해시태그 저장
+        saveHashtag(savedQna, dto.getHashtagList(), dto);
 
         return SUCCESS;
     }
@@ -272,6 +269,16 @@ public class QnaService {
                 .collect(Collectors.toList());
     }
 
+    private List<QnaListResponseDTO> getQnaDtoListByKeyword(Page<Qna> qnas) {
+
+        return qnas.stream()
+                .map(qna ->
+                        new QnaListResponseDTO(qna,
+                                hashtagToString(qna.getHashtagList())
+                        )
+                ).collect(Collectors.toList());
+    }
+
     private List<QnaListResponseDTO> getQnaDtoListByAdoption(Page<Qna> qnas) {
 
         return qnas.getContent().stream()
@@ -316,4 +323,17 @@ public class QnaService {
         return hashtagList;
     }
 
+    private void saveHashtag(Qna savedQna, List<String> hashtagList, QnaInsertRequestDTO dto) {
+        if (hashtagList.size() > 0) {
+
+            for (String tag : hashtagList) {
+                Hashtag newHashtag = Hashtag.builder()
+                        .hashtagContent(tag)
+                        .qna(savedQna)
+                        .build();
+                Hashtag saved = hashtagRepository.save(newHashtag);
+                savedQna.getHashtagList().add(saved);
+            }
+        }
+    }
 }

@@ -29,6 +29,8 @@ public class QnaDetailResponseDTO {
     @JsonFormat(pattern = "yyyy년 MM월 dd일")
     private LocalDateTime boardDate;
     private QnaAdoption boardAdoption;
+    private int viewCount;
+    private int replyCount;
     private List<String> hashtagList;
     private List<QnaReplyListResponseDTO> replyList;
 
@@ -41,6 +43,8 @@ public class QnaDetailResponseDTO {
         this.boardProfile = user.getUserProfile();
         this.boardDate = qna.getQnaDate();
         this.boardAdoption = qna.getQnaAdoption();
+        this.viewCount = qna.getViewCount();
+        this.replyCount = qna.getReplyCount();
         this.hashtagList = hashtagList;
         this.replyList = replyList;
     }
