@@ -37,8 +37,7 @@ public class MentorService {
     private final UserRepository userRepository;
     private final MenteeRepository menteeRepository;
 
-    public MentorListResponseDTO getList(PageDTO pageDTO, List<String> subjects) {
-
+    public MentorListResponseDTO getList(PageDTO pageDTO) {
         // Pageable 객체생성
         Pageable pageable = PageRequest.of(
                 pageDTO.getPage() - 1,
@@ -47,12 +46,52 @@ public class MentorService {
 
         // 게시글 목록 조회
         Page<Mentor> mentors;
-    if (subjects != null && !subjects.isEmpty()) {
-        mentors = mentorRepository.findByMentorSubjectInIgnoreCase(subjects, pageable);
-    } else {
         mentors = mentorRepository.findAll(pageable);
+
+
+        List<Mentor> mentorList = mentors.getContent();
+        List<MentorDetailResponseDTO> mentorDetailResponseDTOList = mentorList.stream().map(mentor -> {
+            MentorDetailResponseDTO dto = new MentorDetailResponseDTO();
+            dto.setIdx(mentor.getMentorIdx());
+            dto.setTitle(mentor.getMentorTitle());
+            dto.setContent(mentor.getMentorContent());
+            dto.setSubject(mentor.getMentorSubject());
+            dto.setCurrent(mentor.getMentorCurrent());
+            dto.setDate(mentor.getMentorDate());
+            dto.setMentee(mentor.getMentorMentee());
+            dto.setCareer(mentor.getMentorCareer());
+
+            User user = mentor.getUser();
+            if (user != null){
+                dto.setProfile(user.getUserProfile());
+                dto.setNickName(user.getUserNickname());
+            }
+            return dto;
+        }).collect(toList());
+
+        return MentorListResponseDTO.builder()
+                .count(mentorDetailResponseDTOList.size())
+                .pageInfo(new PageResponseDTO<Mentor>(mentors))
+                .mentors(mentorDetailResponseDTOList)
+                .build();
     }
 
+    // 주제 검색
+    public MentorListResponseDTO getdetailList(PageDTO pageDTO, List<String> subjects) {
+        log.info("@@@@@@@@@ list : {}",subjects);
+        // Pageable 객체생성
+        Pageable pageable = PageRequest.of(
+                pageDTO.getPage() - 1,
+                pageDTO.getSize()
+        );
+
+        // 게시글 목록 조회
+        Page<Mentor> mentors;
+        if (subjects.isEmpty()){
+            mentors = mentorRepository.findAll(pageable);
+        }else {
+            mentors = mentorRepository.findByMentorSubjectInIgnoreCase(subjects, pageable);
+        }
 
         List<Mentor> mentorList = mentors.getContent();
         List<MentorDetailResponseDTO> mentorDetailResponseDTOList = mentorList.stream().map(mentor -> {
@@ -136,16 +175,18 @@ public class MentorService {
 
     // 게시판 삭제
 
-    public void delete(Long mentorIdx) throws RuntimeException{
+    public MentorListResponseDTO delete(Long mentorIdx) throws RuntimeException{
 
         Optional<Mentor> targetMentor = mentorRepository.findById(mentorIdx);
         if (targetMentor.isPresent()){
             mentorRepository.delete(targetMentor.get());
+
         }
         else {
             throw new RuntimeException(mentorIdx+"해당 게시판은 없습니다");
         }
 
+        return null;
     }
 
     // 멘티 테이블 저장
