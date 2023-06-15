@@ -1,11 +1,12 @@
 import React from 'react';
 import ProjectsItem from "./ProjectsItem";
 import Common from "../common/Common";
+import {PROJECT} from "../common/config/HostConfig";
 
 
 const ProjectsMain = () => {
-  const latest ='//localhost:8181/api/ddamddam/project';
-  const popularity = '//localhost:8181/api/ddamddam/project?sort=like';
+  const latest =PROJECT;
+  const popularity = PROJECT+'?sort=like';
 
   return (
       <>

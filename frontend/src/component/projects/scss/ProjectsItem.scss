@@ -23,6 +23,10 @@
   border: solid 1px #d4d4d4;
   background-color: #fff;
 
+  &:hover {
+    cursor: pointer;
+  }
+
   .text-title {
     width: 316px;
     height: 34.1px;

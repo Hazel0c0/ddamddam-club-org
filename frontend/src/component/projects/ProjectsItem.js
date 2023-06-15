@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
+import {PROJECT} from "../common/config/HostConfig";
 
 import Common from "../common/Common";
 import './scss/ProjectsItem.scss'
+import { useNavigate  } from 'react-router-dom';
 
 const ProjectsItem = ({url, sortTitle}) => {
 
@@ -31,7 +33,7 @@ const ProjectsItem = ({url, sortTitle}) => {
             // console.log(result)
             setProjects(result.payload.projects);
             setPageNation(result.payload.pageInfo);
-            console.log(result.payload.projects)
+            // console.log(result.payload)
           }
         });
   }
@@ -40,7 +42,7 @@ const ProjectsItem = ({url, sortTitle}) => {
 
     // 서버에 좋아요 처리를 위한 POST 요청을 보냅니다
     // 1-> ${userIdx} 세션에서 가져올거라 없어질 예정
-    fetch(`//localhost:8181/api/ddamddam/project/like/4/${projectId}`, {
+    fetch(PROJECT+`/like/4/${projectId}`, {
       method: 'POST',
       headers: {'content-type': 'application/json'}
     })
@@ -56,6 +58,15 @@ const ProjectsItem = ({url, sortTitle}) => {
       });
   };
 
+    const navigate = useNavigate();
+  const handleShowDetails = (projectIdx) => {
+    console.log('게시판 번호 : ');
+    console.log(projectIdx);
+
+    // 선택된 요소 처리
+    navigate(`/projects/detail?projectIdx=${projectIdx}`);
+  };
+
   return (
     <Common className={'project-list-wrapper'}>
       <h2 className={'sort-title'}>{sortTitle}</h2>
@@ -67,7 +78,8 @@ const ProjectsItem = ({url, sortTitle}) => {
         const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 
         return (
-          <section className={'project-list'} key={p.boardIdx}>
+          <section className={'project-list'} key={p.boardIdx}
+                   onClick={() => handleShowDetails(p.boardIdx)}>
             <div className={'project-wrapper'}>
               <div className={'text-title'}>{p.boardTitle}</div>
               <div className={'text-content'}>{p.boardContent}</div>
@@ -85,7 +97,7 @@ const ProjectsItem = ({url, sortTitle}) => {
                 {daysDiff <= 7 && <div className={'project-new'}>new</div>}
               </div>
             </div>
-          </section>
+          </section >
         );
       })}
     </Common>

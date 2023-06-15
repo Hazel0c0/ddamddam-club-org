@@ -9,6 +9,8 @@ import MainTemplate from "./component/common/MainTemplate";
 import UserLogin from "./component/user/UserLogin";
 import UserJoin from "./component/user/UserJoin";
 import ProjectsTemplate from "./component/projects/ProjectsTemplate";
+import ProjectsWrite from "./component/projects/ProjectsWrite";
+import ProjectsDetail from "./component/projects/ProjectsDetail";
 import QnaMain from "./component/qna/QnaMain";
 import Footer from "./component/common/Footer";
 import MentorsTemplate from "./component/mentors/MentorsTemplate";
@@ -17,8 +19,8 @@ import MentorsWrite from "./component/mentors/MentorsWrite";
 import MentorsChat from "./component/mentors/MentorsChat";
 import QnaTemplate from "./component/qna/QnaTemplate";
 import QnaDetail from "./component/qna/QnaDetail";
-import ProjectsWrite from "./component/projects/ProjectsWrite";
 import QnaWrite from "./component/qna/QnaWrite";
+
 
 function App() {
     //로그인 상태 관리(session완료 시 )
@@ -42,6 +44,7 @@ function App() {
         {/*프로젝트 모집*/}
         <Route path={'/projects'} element={<ProjectsTemplate/>}></Route>
         <Route path={'/projects/write'} element={<ProjectsWrite/>}></Route>
+        <Route path={'/projects/detail'} element={<ProjectsDetail/>}></Route>
 
         {/*취업 후기 - not yet*/}
         <Route></Route>
