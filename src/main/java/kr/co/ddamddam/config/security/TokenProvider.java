@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import kr.co.ddamddam.user.entity.User;
+import kr.co.ddamddam.user.entity.UserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -39,8 +40,8 @@ public class TokenProvider {
 
         // 추가 클레임
         Map<String, Object> claims = new HashMap<>();
-        claims.put("email", user.getUserEmail());
-        claims.put("role", user.getUserRole());
+        claims.put("userEmail", user.getUserEmail());
+        claims.put("userRole", user.getUserRole().toString());
 
         // 토큰 생성
         return Jwts.builder()
@@ -57,24 +58,31 @@ public class TokenProvider {
     }
 
     /**
-     * 클라이언트가 보낸 토큰을 디코딩 / 파싱해서 토큰 위조 여부 확인
+     * 클라이언트가 보낸 토큰을 디코딩 / 파싱해서 토큰의 위조 여부 확인
+     * 토큰을 JSON 으로 파싱해서 클레임을 리턴
      * @param token - 클라이언트가 전송한 인코딩 된 토큰
      * @return - 토큰에서 subject(userIdx, 유저 식별자) 를 꺼내서 반환
      */
-    public String validateAndGetUserIdx(String token) {
+    public TokenUserInfo validateAndGetTokenUserInfo(String token) {
         
         Claims claims = Jwts.parserBuilder()
                 // 토큰 발급자의 발급 당시 서명을 넣어줌
                 .setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
-                .build()
-                // 디코딩 서명 기록을 파싱
-                // 클라이언트 토큰의 서명과 서버 발급 당시 서명을 비교
-                // 위조 X 경우 : 'body'에 payload(Claims) 를 리턴
+                // 서명 위조 검사 - 클라이언트 토큰의 서명과 서버 발급 당시 서명을 비교
+                // 위조 X 경우 : payload(Claims) 를 리턴
                 // 위조 O 경우 : 예외 발생
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
 
-        return claims.getSubject();
+        return TokenUserInfo.builder()
+                .userIdx(claims.getSubject())
+                .userEmail(claims.get("userEmail", String.class))
+                .userRole(UserRole.valueOf(
+                        claims.get("userRole", String.class)
+                        )
+                )
+                .build();
     }
 
 }

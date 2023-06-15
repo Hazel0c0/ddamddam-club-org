@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.executable.ValidateOnExecution;
-
+/**
+ * 회원가입, 로그인 요청을 처리하는 컨트롤러
+ */
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/ddamddam/user")
+@RequestMapping("/api/ddamddam/auth")
 public class UserApiController {
 
     private final UserService userService;
