@@ -106,29 +106,28 @@ timeline
     2023-06-11: [✅]
             : [front] ...💦
             : 🔨
-            : [Back] 멘토/멘티 구현
+            : [Back] 멘토/멘티 게시판 구현
 ```
 
 ```mermaid
 timeline
     title Develop history [2023-06-12 ~ 2023-06-18]
     2023-06-12: [✅]
-            : [front] 멘토/멘티 구현
+            : [front] 멘토/멘티 게시판 구현
             : 🔨
             : [Back] ...💦
     2023-06-13: [✅]
             : [front] ...💦
             : 🔨
-            : [Back] Q&A 구현
-            : [Back] 프로젝트 모집 구현
+            : [Back] 프로젝트 모집 게시판 구현
     2023-06-14: [✅]
-            : [front] 
+            : [front] Q&A 게시판 구현
             : 🔨
-            : [Back] 
+            : [Back] Q&A 게시판 구현
     2023-06-15: [✅]
-            : [front] 
+            : [front] ...💦
             : 🔨
-            : [Back] 
+            : [Back] 멘토/멘티 채팅 구현
     2023-06-16: [✅]
             : [front]
             : 🔨
