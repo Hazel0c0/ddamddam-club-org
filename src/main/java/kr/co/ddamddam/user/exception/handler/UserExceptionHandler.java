@@ -22,8 +22,8 @@ public class UserExceptionHandler {
 
     @ExceptionHandler(LoginException.class)
     public ExceptionResponse<LoginException, String> userEmailException(LoginException e) {
-        log.error("notFoundUserException : {} {} {}", e.getErrorCode(), e.getMessage(), e.getUserEmail());
-        return new ExceptionResponse<>(e, e.getUserEmail());
+        log.error("notFoundUserException : {} {} {}", e.getErrorCode(), e.getMessage(), e.getStr());
+        return new ExceptionResponse<>(e, e.getStr());
     }
 
 }
