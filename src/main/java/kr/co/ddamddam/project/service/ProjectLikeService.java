@@ -40,9 +40,11 @@ public class ProjectLikeService {
 
       // 좋아요 수 증가
       project.setLikeCount(project.getLikeCount() + 1);
+      log.info("{}가 좋아요 누름 -> {}",userIdx,project.getLikeCount());
     } else {
       // 좋아요 취소
       projectLikeRepository.delete(projectLike);
+      log.info("{}가 좋아요 취소 -> {}",userIdx,project.getLikeCount());
 
       // 좋아요 수 감소
       project.setLikeCount(project.getLikeCount() - 1);
@@ -56,6 +58,7 @@ public class ProjectLikeService {
         = projectLikeRepository.findByUserAndProject(
         getUser(userIdx), getProject(projectIdx)
     );
+    System.out.println("좋아요 여부 = " + projectLike);
 
     // projectLike가 null이 아니라면 좋아요가 선택되어 있다고 판단합니다.
     return projectLike != null;

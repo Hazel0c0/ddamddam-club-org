@@ -59,21 +59,16 @@ public class Project {
 
   // FK
 //  @Column(nullable = false)
-  private String memberIdx;
+  private String userIdx;
 
   // 좋아요
   @Column(nullable = false)
   private int likeCount;
 
   // 좋아요를 누른 사용자 추적
-  @ManyToMany
-  @JoinTable(
-      name = "tbl_project_like",
-      joinColumns = @JoinColumn(name = "user_idx"),
-      inverseJoinColumns = @JoinColumn(name = "project_idx")
-  )
+  @OneToMany(mappedBy = "project")
   @Builder.Default
-  private List<ProjectLike> likedProjects = new ArrayList<>();
+  private List<ProjectLike> likes = new ArrayList<>();
 
   // 모집 된 인원 정보
   @OneToMany(mappedBy = "project", orphanRemoval = true)

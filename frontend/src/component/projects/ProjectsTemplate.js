@@ -1,7 +1,7 @@
 import React from 'react';
 import ProjectsTitle from './ProjectsTitle';
 import ProjectsSearch from "./ProjectsSearch";
-import ProjectMain from "./ProjectMain"
+import ProjectsMain from "./ProjectsMain"
 
 
 
@@ -11,7 +11,7 @@ const ProjectsTemplate = () => {
       <>
         <ProjectsTitle/>
         <ProjectsSearch/>
-        <ProjectMain />
+        <ProjectsMain />
       </>
   );
 };
