@@ -30,6 +30,7 @@ const UserJoin = () => {
     const [message, setMessage] = useState({
         userEmail:'',
         password: '',
+        passwordCheck:'',
         userName: '',
         nickName: '',
         userBirth:'',
@@ -41,6 +42,7 @@ const UserJoin = () => {
     const [correct, setCorrect] = useState({
         userEmail: false,
         password: false,
+        passwordCheck:false,
         userName: false,
         nickName: false,
         userBirth: false,
@@ -226,7 +228,29 @@ const UserJoin = () => {
 
     };
 
+    // 비밀번호 확인란 검증 이벤트 핸들러
+    const pwcheckHandler = e => {
+        // 검증 시작
+        let msg, flag;
+        if (!e.target.value) { // 패스워드 안적은거
+            msg = '비밀번호 확인란은 필수값입니다!';
+            flag = false;
+        } else if (userValue.password !== e.target.value) {
+            msg = '패스워드가 일치하지 않습니다.';
+            flag = false;
+        } else {
+            msg = '패스워드가 일치합니다.';
+            flag = true;
+        }
 
+        saveInputState({
+            key: 'passwordCheck',
+            inputVal: 'pass',
+            msg,
+            flag
+        });
+
+    };
 
 
 
@@ -322,6 +346,12 @@ const UserJoin = () => {
                     <span style={
                         correct.password ? {color: 'green'} :{color : 'red'} //입력값검증시에 글씨 색깔
                     }>{message.password}</span>
+                </div>
+                <div className={'input-pwcheck'}>
+                    <input type={"text"} className={'pw-check'} name={'pw-check'} placeholder={'비밀번호 확인'} onChange={pwcheckHandler}/>
+                    <span style={
+                        correct.passwordCheck ? {color: 'green'} :{color : 'red'} //입력값검증시에 글씨 색깔
+                    }>{message.passwordCheck}</span>
                 </div>
 
                 <div className={'input-email'}>
