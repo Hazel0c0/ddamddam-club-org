@@ -17,53 +17,55 @@ import MentorsWrite from "./component/mentors/MentorsWrite";
 import MentorsChat from "./component/mentors/MentorsChat";
 import QnaTemplate from "./component/qna/QnaTemplate";
 import QnaDetail from "./component/qna/QnaDetail";
+import ProjectsWrite from "./component/projects/ProjectsWrite";
 
 function App() {
-    //로그인 상태 관리(session완료 시 )
-    const [isLogin, setIsLogin] = useState(true);
-    return (
-        <>
-            <Reset />
-            <Header />
-                <Routes>
-                    {/*메인*/}
-                    <Route path={'/'} element={<MainTemplate />}></Route>
-                    {/*<Route path="/board/:idx" element={<BoardDetail/>}/>*/}
-                    {/*멘토,멘티*/}
-                    <Route path={'/mentors'} element={<MentorsTemplate />}></Route>
-                    <Route path={'/mentors/write'} element={<MentorsWrite />}></Route>
+  //로그인 상태 관리(session완료 시 )
+  const [isLogin, setIsLogin] = useState(true);
+  return (
+    <>
+      <Reset/>
+      <Header/>
+      <Routes>
+        {/*메인*/}
+        <Route path={'/'} element={<MainTemplate/>}></Route>
+        {/*<Route path="/board/:idx" element={<BoardDetail/>}/>*/}
+        {/*멘토,멘티*/}
+        <Route path={'/mentors'} element={<MentorsTemplate/>}></Route>
+        <Route path={'/mentors/write'} element={<MentorsWrite/>}></Route>
 
-                    {/*<Route path="/mentors/detail/mentorIdx/:idx" element={<MentorsDetail />} />*/}
-                    {/*멘토 멘티 채팅방*/}
-                    <Route path={'/mentors/detail/chat/:chatPageIdx'} element={<MentorsChat />}></Route>
-                    {/*프로젝트 모집*/}
-                    <Route path={'/projects'} element={<ProjectsTemplate />}></Route>
+        {/*<Route path="/mentors/detail/mentorIdx/:idx" element={<MentorsDetail />} />*/}
+        {/*멘토 멘티 채팅방*/}
+        <Route path={'/mentors/detail/chat/:chatPageIdx'} element={<MentorsChat/>}></Route>
+        {/*프로젝트 모집*/}
+        <Route path={'/projects'} element={<ProjectsTemplate/>}></Route>
+        <Route path={'/projects/write'} element={<ProjectsWrite/>}></Route>
 
-                    {/*취업 후기 - not yet*/}
-                    <Route></Route>
+        {/*취업 후기 - not yet*/}
+        <Route></Route>
 
-                    {/*채용공고 - not yet */}
-                    <Route></Route>
+        {/*채용공고 - not yet */}
+        <Route></Route>
 
-                    {/*프로젝트 공유  - not yet*/}
-                    <Route></Route>
+        {/*프로젝트 공유  - not yet*/}
+        <Route></Route>
 
-                    {/*Q&A*/}
-                    <Route path={'/qna'} element={<QnaTemplate />}></Route>
-                    {/*상세보기*/}
-                    <Route path={'/api/ddamddam/qna/:boardIdx'} element={<QnaDetail />}></Route>
+        {/*Q&A*/}
+        <Route path={'/qna'} element={<QnaTemplate/>}></Route>
+        {/*상세보기*/}
+        <Route path={'/api/ddamddam/qna/:boardIdx'} element={<QnaDetail/>}></Route>
 
 
-                    {/*로그인*/}
-                    <Route path={'/login'} element={<UserLogin />}></Route>
+        {/*로그인*/}
+        <Route path={'/login'} element={<UserLogin/>}></Route>
 
-                    {/*회원가입*/}
-                    <Route path={'/join'} element={<UserJoin />}></Route>
+        {/*회원가입*/}
+        <Route path={'/join'} element={<UserJoin/>}></Route>
 
-                </Routes>
-            <Footer />
-        </>
-    );
+      </Routes>
+      <Footer/>
+    </>
+  );
 }
 
 export default App;

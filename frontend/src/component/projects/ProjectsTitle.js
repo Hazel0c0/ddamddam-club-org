@@ -10,7 +10,7 @@ const ProjectsTitle = () => {
     <Common className={'projects-view-wrapper'}>
       <div className={'title-wrapper'}>
         <h1 className={'main-title'}>사이드 프로젝트</h1>
-        <p className={'main-sub-title'}>프로젝트 서브 타이틀</p>
+        <p className={'main-sub-title'}>나에게 맞는 프로젝트를 찾고, 믿음직한 팀원을 구해봐요.</p>
       </div>
      </Common>
   )

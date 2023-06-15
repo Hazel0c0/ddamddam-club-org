@@ -4,23 +4,26 @@
 }
 
 .projects-view-wrapper {
-  padding: 160px 370px 0;
+  padding-left: 370px;
 
   .main-title {
     @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
     font-family: 'IBM Plex Mono', sans-serif !important;
-    font-size: 43.2px;
-    font-weight: 500;
-    letter-spacing: -1.5px;
-
+    width: 1180px;
+    height: 62px;
     flex-grow: 0;
-    text-align: left;
-    color: #000;
+    font-size: 43px;
+    font-weight: 700;
+    padding-top: 160px;
   }
 
   .main-sub-title {
+    width: 1180px;
+    height: 39px;
+    flex-grow: 0;
+    margin: 62px 0 0;
     font-size: 16px;
-    margin-top: 10px;
+    font-weight: 500;
   }
 }
 
