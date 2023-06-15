@@ -11,5 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ChatRoomRequestDTO {
     private Long senderId;
-    private Long receiverId;
+//    private Long receiverId;
+    private Long mentorIdx;
 }
