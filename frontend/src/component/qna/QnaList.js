@@ -37,9 +37,11 @@ const QnaList = ({searchValue}) => {
         }
 
         const qnaList = await res.json();
-        console.log(`qnaList = ${qnaList.payload.qnas}`);
+        console.log(qnaList)
+        console.log(`qnaList = ${qnaList.payload}`);
         setQnaList(qnaList.payload.qnas);
         setPageNation(qnaList.payload.pageInfo);
+
     }
 
     // 전체 목록 리스트 출력
@@ -55,7 +57,7 @@ const QnaList = ({searchValue}) => {
                 <section className={'qna-list'} key={qna.boardIdx}>
                     {qna.boardAdoption === 'Y'
                         ? <div className={'checked'} key={qna.boardAdoption}>
-                            {qna.boardAdoption}채택완료</div>
+                            채택완료</div>
                         : <div className={'not-checked'} key={qna.boardAdoption}>
                             미채택</div>
                     }
@@ -64,20 +66,20 @@ const QnaList = ({searchValue}) => {
                         <div className={'text-title'} key={qna.boardTitle}>{qna.boardTitle}</div>
                         <div className={'text-content'} key={qna.boardContent}>{qna.boardContent}</div>
                         <ul className={'text-hashTag'}>
-                            <li>#자바</li>
-                            <li>#자바</li>
-                            <li>#자바</li>
+                            {qna.hashtagList.map((hashTag, index) => (
+                                <li key={index}>#{hashTag}</li>
+                            ))}
                         </ul>
                     </section>
                     <section className={'qna-info'}>
                         <div className={'qna-writer'} key={qna.boardWriter}>{qna.boardWriter}</div>
                         <div className={'icon-wrapper'}>
                             <div className={'view-count-wrapper'}>
-                                <img src={viewIcon} alt={'view-count'} className={'view-count-icon'}/><span>10</span>
+                                <img src={viewIcon} alt={'view-count'} className={'view-count-icon'}/><span>{qna.viewCount}</span>
                             </div>
                             <div className={'speech-count-wrapper'}>
                                 <img src={speechBubble} alt={'view-count'}
-                                     className={'speech-count-icon'}/><span>10</span>
+                                     className={'speech-count-icon'}/><span>{qna.replyCount}</span>
                             </div>
                         </div>
                         <div className={'write-date'} key={qna.boardDate}>{qna.boardDate}</div>
