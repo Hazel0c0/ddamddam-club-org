@@ -223,15 +223,24 @@
         .reply-content{
           //height: 30px;
           line-height: 30px;
-          width: 87%;
+          width: 85%;
         }
-        .adoption-btn{
+        .adoption-btn,
+        .adoption-btn-checked,
+        .adoption-btn-disabled{
           margin-left: auto;
           border: none;
           width: 100px;
           height: 30px;
           border-radius: 5px;
           background-color: #e6e6e6;
+        }
+        .adoption-btn-checked{
+          background-color: #1e4fff;
+          color: white;
+        }
+        .adoption-btn-disabled{
+          text-decoration: line-through ;
         }
         .adoption-btn:hover{
           background-color:#1e4fff;
