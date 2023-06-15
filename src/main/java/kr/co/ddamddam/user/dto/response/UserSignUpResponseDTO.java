@@ -37,7 +37,7 @@ public class UserSignUpResponseDTO {
     public UserSignUpResponseDTO(User user){
 
         this.userEmail = user.getUserEmail();
-        this.userPw = user.getUserPw();
+        this.userPw = user.getUserPassword();
         this.userName = user.getUserName();
         this.userBirth =  user.getUserBirth();
         this.userPosition = user.getUserPosition();

@@ -24,12 +24,6 @@ import kr.co.ddamddam.config.security.TokenProvider;
 import kr.co.ddamddam.common.exception.custom.LoginException;
 import kr.co.ddamddam.user.dto.request.LoginRequestDTO;
 import kr.co.ddamddam.user.dto.response.LoginResponseDTO;
-import kr.co.ddamddam.user.entity.User;
-import kr.co.ddamddam.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import static kr.co.ddamddam.common.exception.custom.ErrorCode.*;
 

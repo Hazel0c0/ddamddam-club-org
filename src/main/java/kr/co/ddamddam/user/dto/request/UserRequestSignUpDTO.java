@@ -56,7 +56,7 @@ public class UserRequestSignUpDTO {
     public User toEntity(){
         return User.builder()
                 .userEmail(this.userEmail)
-                .userPw(this.userPw)
+                .userPassword(this.userPw)
                 .userName(this.userName)
                 .userBirth(this.userBirth)
                 .userCareer(this.userCareer)
