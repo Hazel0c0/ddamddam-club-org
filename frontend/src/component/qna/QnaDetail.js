@@ -5,6 +5,7 @@ import {json, useParams} from "react-router-dom";
 import viewIcon from "../../src_assets/view-icon.png";
 import speechBubble from "../../src_assets/speech-bubble.png";
 import {QNAREPLY} from "../common/config/HostConfig";
+import qnaDetail from "./QnaDetail";
 
 const QnaDetail = () => {
     const inputRef = useRef();
@@ -13,6 +14,7 @@ const QnaDetail = () => {
     const [detailQna, setDetailQna] = useState(null);
     const $clickMore = useRef();
     const [replyList, setReplyList] = useState([]);
+    const [chekedReplyAdoption, setChekedReplyAdoption] = useState([]);
 
     useEffect(() => {
         console.log(boardIdx);
@@ -33,7 +35,19 @@ const QnaDetail = () => {
                     // console.log(reply.replyContent.length)
                     return {...reply, showMore};
                 });
+
                 setReplyList(modifiedReplyList);
+
+                //1.댓글 길이만큼 채택 버튼 배열 만들어놓기 ex) {[index : 1, replyAdoption : 'N']}
+                const modifiedCheckBtn=result.payload.replyList.map((reply,index) => {
+                    return {
+                        replyIdx : reply.replyIdx,
+                        replyAdoption : reply.replyAdoption
+                    }
+                });
+                setChekedReplyAdoption(modifiedCheckBtn);
+
+                console.log(`modifiedCheckBtn : ${JSON.stringify(modifiedCheckBtn)}`);
 
                 // console.log(modifiedReplyList);
                 console.log(result.payload);
@@ -129,17 +143,28 @@ const QnaDetail = () => {
         const replyData = await res.json();
 
         if (replyData.payload === "SUCCESS") {
-            // e.target
-            // const modifiedReplyList = replyList.map((reply)=>({
-            //     ...reply,
-            //     replyAdoption : "Y"
-            // }));
-            // setReplyList(modifiedReplyList);
-            const modifiedDetial = {
-                ...detailQna,
-                boardAdoption: "Y"
+            const replyIndex = chekedReplyAdoption.findIndex((reply) => reply.replyIdx === +replyIdxValue);
+            console.log(`replyIndex = ${replyIndex}`);
+            console.log(`chekedReplyAdoption의 값 : ${JSON.stringify(chekedReplyAdoption)}`);
+            if (replyIndex !== -1) {
+                const updatedChekedReplyAdoption = [...chekedReplyAdoption];
+                updatedChekedReplyAdoption[replyIndex] = {
+                    ...updatedChekedReplyAdoption[replyIndex],
+                    replyAdoption: 'Y'
+                };
+                setChekedReplyAdoption(updatedChekedReplyAdoption);
+                console.log(`set되고 출력 updatedChekedReplyAdoption 값 : ${JSON.stringify(updatedChekedReplyAdoption)}`);
             }
-            setDetailQna(modifiedDetial);
+
+
+            // const replyInfo = chekedReplyAdoption.find((reply) => reply.index === index);
+            setDetailQna(prevQna => {
+                return {
+                    ...prevQna,
+                    boardAdoption: 'Y'
+                };
+            });
+
         } else {
             alert("채택에 실패하였습니다.")
         }
@@ -147,19 +172,18 @@ const QnaDetail = () => {
 
     }
 
-    const test = (replyAdoption, boardAdoption) => {
-
+    // const replyAdoptionHandler = (replyAdoption, boardAdoption) => {
+    const replyAdoptionHandler = (boardAdoption) => {
         if (boardAdoption === 'Y') {
-            if (replyAdoption === 'Y') {
-                return <button className={'adoption-btn-checked'}>채택완료</button>
+            if (chekedReplyAdoption.replyAdoption === 'Y') {
+                return <button className={'adoption-btn-checked'}>채택완료</button>;
             } else {
-                return <button className={'adoption-btn-disabled'} disabled>채택불가</button>
+                return <button className={'adoption-btn-disabled'} disabled>채택불가</button>;
             }
         } else {
-            return <button className={'adoption-btn'} onClick={adoptHandler}>채택하기</button>
+            return <button className={'adoption-btn'} onClick={adoptHandler}>채택하기</button>;
         }
-
-    }
+    };
 
 
     return (
@@ -256,18 +280,18 @@ const QnaDetail = () => {
                                             </>
 
                                         }
-                                        {test(reply.replyAdoption, detailQna.boardAdoption)}
-                                        {/*
-                                            렌더링될 때 replyAdoption이 Y면 한 번 더 삼항연산자를 통해 채택완료와 채택불가를 정하고,
-                                            N이면 채택하기 버튼이 활성화되게
-                                        */}
-                                        {/*{reply.replyAdoption === 'Y' ? (*/}
-                                        {/*    <button className={'adoption-btn-checked'}>채택완료</button>*/}
-                                        {/*) : reply.replyAdoption === 'N' ? (*/}
-                                        {/*    <button className={'adoption-btn-disabled'} disabled>채택불가</button>*/}
-                                        {/*) : (*/}
-                                        {/*    <button className={'adoption-btn'} onClick={adoptHandler}>채택하기</button>*/}
-                                        {/*)}*/}
+                                        {/*{replyAdoptionHandler(detailQna.boardAdoption)}*/}
+                                        <div>
+                                            {detailQna.boardAdoption === 'Y' ? (
+                                                chekedReplyAdoption[index].replyAdoption === 'Y' ? (
+                                                    <button className="adoption-btn-checked">채택완료</button>
+                                                ) : (
+                                                    <button className="adoption-btn-disabled" disabled>채택불가</button>
+                                                )
+                                            ) : (
+                                                <button className="adoption-btn" onClick={adoptHandler}>채택하기</button>
+                                            )}
+                                        </div>
 
                                     </div>
                                 </div>
