@@ -1,6 +1,6 @@
 package kr.co.ddamddam.user.service;
 
-import kr.co.ddamddam.common.auth.TokenProvider;
+import kr.co.ddamddam.config.security.TokenProvider;
 import kr.co.ddamddam.common.exception.custom.LoginException;
 import kr.co.ddamddam.user.dto.request.LoginRequestDTO;
 import kr.co.ddamddam.user.dto.response.LoginResponseDTO;
@@ -24,6 +24,10 @@ public class UserService {
 
     public LoginResponseDTO authenticate(final LoginRequestDTO dto) {
 
+        if (dto.getUserEmail().equals("")) {
+            throw new LoginException(INVALID_PARAMETER, dto.getUserEmail());
+        }
+
         // 이메일을 통해 회원 정보 조회
         User user = userRepository.findByUserEmail(dto.getUserEmail()).orElseThrow(() -> {
             throw new LoginException(NOT_FOUND_USER_BY_EMAIL, dto.getUserEmail());
@@ -33,7 +37,7 @@ public class UserService {
         String rawUserPassword = dto.getUserPassword(); // 입력한 비밀번호
         String encodedUserPassword = user.getUserPassword(); // DB 에 저장된 비밀번호
 
-        // 비밀번호 암호화 처리 후 encoder.matches 로 변경!
+        // TODO : 비밀번호 암호화 처리 후 matches 로 변경
         // if (!encoder.matches(rawUserPassword, encodedUserPassword)) {
         if (!rawUserPassword.equals(encodedUserPassword)) {
             throw new LoginException(INVALID_PASSWORD, rawUserPassword);
