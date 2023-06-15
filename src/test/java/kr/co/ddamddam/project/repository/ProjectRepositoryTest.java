@@ -28,16 +28,16 @@ class ProjectRepositoryTest {
   @Test
   @DisplayName("bulk insert")
   void bulkInsert() {
-    for (int i = 0; i < 50; i++) {
+    for (int i = 1; i < 40; i++) {
       projectRepository.save(
           Project.builder()
               .writer("지원" + i)
-              .projectTitle("하하호호제목" + i)
+              .projectTitle("제목" + i + "이다")
               .projectContent("깔깔깔깔내용" + i)
               .projectType("웹페이지")
               .maxFront(3)
               .maxBack(2)
-              .memberIdx("1")
+              .memberIdx(""+i)
               .build()
       );
     }
