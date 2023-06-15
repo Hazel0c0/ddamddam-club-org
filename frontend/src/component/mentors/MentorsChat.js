@@ -7,14 +7,11 @@ import './scss/MentorChat.scss';
 
 const MentorsChat = () => {
   const { chatPageIdx } = useParams();
-  const [detailMember, setDetailMember] = useState([]);
-  const [messages, setMessages] = useState([]); // 채팅 메시지 목록
-  const [roomInfo, setRoomInfo] = useState([]); // 채팅방 정보
-  const [input, setInput] = useState(''); // 입력된 메시지
-  const [message, setMessage] = useState([]); // 저장된 채팅 메세지 목록
-  const ws = useRef(null); // WebSocket 객체
-  const chatScroll = useRef(null); // 채팅 스크롤 Ref
- 
+  const [detailMember, setDetailMember] = useState({});
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+  const ws = useRef(null);
+  const chatScroll = useRef(null);
 
   useEffect(() => {
     // 멘토 상세 정보 조회
@@ -28,43 +25,37 @@ const MentorsChat = () => {
       })
       .then((result) => {
         setDetailMember(result);
-        console.log(result);
-        console.log(result.idx);
       });
 
-      fetch(CHAT + '/mentee/list/' + chatPageIdx)
-            .then(res => {
-                return res.json();
-            })
-            .then(result => {
-                console.log('잘됨');
-                // console.log(result);
-                setRoomInfo(result);
-                setMessage(result);
-                // setCheckSender(result.sender);
-            });
+    fetch(CHAT + '/mentee/list/' + chatPageIdx)
+      .then((res) => res.json())
+      .then((result) => {
+        setMessages(result);
+      });
 
     // 컴포넌트가 마운트되었을 때 웹소켓 연결
     ws.current = new WebSocket('ws://localhost:8181/chat'); // 웹소켓 서버 주소
     ws.current.onopen = () => {
       console.log('WebSocket 연결 성공');
-    };
-    ws.current.onmessage = (event) => {
-      // 새로운 메시지 도착 시 처리
-      const message = JSON.parse(event.data);
-      setMessages((prevMessages) => [...prevMessages, message]);
+      ws.current.send(JSON.stringify({ type: 'SUBSCRIBE', topic: '/topic/chat' }));
     };
 
-    // 컴포넌트가 언마운트될 때 웹소켓 연결 해제
-    return () => {
-      ws.current.close();
+    ws.current.onmessage = (event) => {
+    // 새로운 메시지 도착 시 처리
+      const newMessage = JSON.parse(event.data);
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+      chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
     };
-  }, []);
+
+// 컴포넌트가 언마운트될 때 웹소켓 연결 해제
+     return () => {
+       ws.current.close();
+     };
+  }, [chatPageIdx]);
 
   useEffect(() => {
     chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
-  }, [messages, message]);
-
+  }, [messages]);
 
   const handleInputChange = (event) => {
     setInput(event.target.value);
@@ -74,33 +65,35 @@ const MentorsChat = () => {
     event.preventDefault();
     if (input.trim() === '') return;
 
-    // 메시지 전송
-    const message = {
-      user: 'User Name', // 사용자 이름
-      content: input, // 입력된 메시지 내용
+// 메시지 전송
+    const chatMessage = {
+      roomId: chatPageIdx,
+      message: input,
+      senderId: 1,
     };
-    ws.current.send(JSON.stringify(message));
+    ws.current.send(JSON.stringify(chatMessage));
     setInput('');
 
-    // 채팅 메시지 데이터베이스에 저장
-    const chatMessage = {
-      roomId: chatPageIdx, // 채팅방 ID
-      senderId: 1, // 발신자 ID
-      message: input, // 메시지 내용
+    const messageToSave = {
+      roomId: chatPageIdx,
+      senderId: 1,
+      message: input,
     };
     fetch(CHAT + '/rooms/' + chatPageIdx + '/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(chatMessage),
+      body: JSON.stringify(messageToSave),
     })
       .then((res) => res.json())
       .then((result) => {
-        // console.log(result);
         chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
       });
   };
+
+//  console.log(messages);
+
   const { career, content, current, date, idx, mentee, nickName, profile, subject, title } = detailMember;
 
   return (
@@ -154,19 +147,6 @@ const MentorsChat = () => {
 
       <div className={'mentor-chat-room'}>
         <section className={'chating-list'} ref={chatScroll}>
-        {message.map((msg, index) => (
-            <React.Fragment key={index}>
-                <div className={'sender-wrapper'}>
-                    <span className={'sender'}>{msg.sender.userNickname}</span>
-                    <span className={'sender-content'}>{msg.message}</span>
-                </div>
-                <div className={'receiver-wrapper'}>
-                    <span className={'receiver'}>홍길동</span>
-                    <span className={'receiver-content'}>안녕하세요 수신자</span>
-                </div>
-            </React.Fragment>
-            ))}
-
           {messages.map((message, index) => (
             <div className={'sender-wrapper'} key={index}>
               <span className={'sender'}>{message.sender.userNickname}</span>
