@@ -4,10 +4,11 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mariadb://oslobdb.cqd7fh7vsssg.ap-northeast-2.rds.amazonaws.com:3306/ddamddam
-#    url: jdbc:mariadb://localhost:3306/ddamddam
+#    url: jdbc:mariadb://oslobdb.cqd7fh7vsssg.ap-northeast-2.rds.amazonaws.com:3306/ddamddam
+    url: jdbc:mariadb://localhost:3306/ddamddam
+    username: root
 #    username: teamjang
-    username: taegun
+#    username: taegun
     password: 1234
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
@@ -29,4 +30,5 @@ springdoc:
   swagger-ui:
     path: /myapi.html
 
-
+jwt:
+  secret: 7lizyfII3rydJihGinqyZB2RhBsh9uMvR4P1sJVP20oAKVI1PHef5KGVzP+SiSnLXy7lFBreKYVUm23jofj5Ow==
