@@ -8,3 +8,5 @@ export const QNA = '//localhost:8181/api/ddamddam/qna'
 export const QNAREPLY = '//localhost:8181/api/ddamddam/qna-reply'
 
 export const PROJECT = '//localhost:8181/api/ddamddam/project'
+
+export const AUTH = "//localhost:8181/api/ddamddam/auth";
