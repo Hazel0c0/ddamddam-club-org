@@ -86,6 +86,7 @@ public class UserService {
         }
         String email = dto.getUserEmail();
 
+        boolean b = userRepository.existsByEmail(dto.getUserEmail());
         if (userRepository.existsByEmail(dto.getUserEmail())) {
             log.warn("이메일이 중복되었습니다. - {}", email);
             throw new DuplicatedEmailException("중복된 이메일입니다.");
