@@ -31,8 +31,8 @@ public class UserSignUpResponseDTO {
     private String userProfile;
     private UserRole userRole;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:s")
-    private LocalDateTime userRegdate;
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:s")
+//    private LocalDateTime userRegdate;
 
     public UserSignUpResponseDTO(User user){
 

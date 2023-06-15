@@ -5,7 +5,7 @@ import profile from "../../src_assets/IMG_4525.JPG";
 import './scss/UserJoin.scss';
 // 리다이렉트 사용하기
 import { useNavigate, Link } from 'react-router-dom';
-import { API_BASE_URL as BASE, USER } from '../../config/host-config';
+import { API_BASE_URL as BASE, USER } from '../../component/common/config/HostConfig';
 
 const UserJoin = () => {
 
