@@ -14,11 +14,12 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class ProjectWriteDTO {
 
-  @NotBlank
-  private String boardWriter;
+  @NotNull
+  private Long boardWriterIdx;
 
   @NotBlank
   private String boardTitle;
+  @NotBlank
   private String boardContent;
   private String projectType;
 
@@ -30,9 +31,10 @@ public class ProjectWriteDTO {
 
   private String offerPeriod; //모집기간
 
-  public Project toEntity() {
+  public Project toEntity(String userName) {
     return Project.builder()
-        .writer(this.boardWriter)
+        .userIdx(this.boardWriterIdx)
+        .writer(userName)
         .projectTitle(this.boardTitle)
         .projectContent(this.boardContent)
         .projectType(this.projectType)
