@@ -52,11 +52,11 @@ public class MentorApiController {
     public ResponseEntity<?> list(
             PageDTO pageDTO, @RequestParam(required = false) String[] subjects
     ){
-//        log.info("/api/ddamddam/mentors/list?page{}&size={}&subjects={}", pageDTO.getPage(), pageDTO.getSize(),subjects);
+//        log.info("/api/ddamddam/mentors/list?page{}&size={}&subjects={a,b}", pageDTO.getPage(), pageDTO.getSize(),subjects);
 
         List<String> subjectList = subjects != null ? Arrays.asList(subjects) : Collections.emptyList();
 
-        MentorListResponseDTO dto = mentorService.getdetailList(pageDTO, subjectList);
+        MentorListResponseDTO dto = mentorService.getSubList(pageDTO, subjectList);
 
 //        log.info("!!!!!!!!!!!!: {}",dto);
         return ResponseEntity.ok().body(dto);
