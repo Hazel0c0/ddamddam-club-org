@@ -1,20 +1,19 @@
 import React from 'react';
 import ProjectsTitle from './ProjectsTitle';
 import ProjectsSearch from "./ProjectsSearch";
-import ProjectsList from "./ProjectsList";
+import ProjectsMain from "./ProjectsMain"
+
 
 
 const ProjectsTemplate = () => {
 
-
   return (
-        <div>
-          <ProjectsTitle />
-          <ProjectsSearch />
-          <ProjectsList />
-          {/* <ProjectsList projectList={projects}/> */}
-        </div>
-    );
+      <>
+        <ProjectsTitle/>
+        <ProjectsSearch/>
+        <ProjectsMain />
+      </>
+  );
 };
 
 export default ProjectsTemplate;

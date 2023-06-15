@@ -6,3 +6,5 @@ export const QNA = '//localhost:8181/api/ddamddam/qna'
 // GET http://localhost:8181/api/mentors/list
 // http://localhost:8181/api/mentors?page=1&size=9&sort='프론트엔드'
 export const QNAREPLY = '//localhost:8181/api/ddamddam/qna-reply'
+
+export const PROJECT = '//localhost:8181/api/ddamddam/project'

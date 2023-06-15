@@ -2,6 +2,7 @@ package kr.co.ddamddam.user.entity;
 
 import kr.co.ddamddam.mentor.entity.Mentee;
 import kr.co.ddamddam.mentor.entity.Mentor;
+import kr.co.ddamddam.project.entity.ProjectLike;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.review.entity.Review;
 import lombok.*;
@@ -84,6 +85,11 @@ public class User {
     @OneToMany(mappedBy = "user")
     @Builder.Default
     private List<Review> review = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<ProjectLike> likedProjects = new ArrayList<>();
+
 
 }
 
