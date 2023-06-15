@@ -1,10 +1,11 @@
 package kr.co.ddamddam.review.service;
 
+import kr.co.ddamddam.common.exception.custom.ErrorCode;
+import kr.co.ddamddam.common.exception.custom.NotFoundUserException;
 import kr.co.ddamddam.company.dto.page.PageDTO;
 import kr.co.ddamddam.company.dto.page.PageResponseDTO;
 import kr.co.ddamddam.company.entity.Company;
 import kr.co.ddamddam.company.repository.CompanyRepository;
-import kr.co.ddamddam.qna.qnaBoard.exception.custom.NotFoundQnaBoardException;
 import kr.co.ddamddam.review.dto.request.ReviewModifyRequestDTO;
 import kr.co.ddamddam.review.dto.request.ReviewWriteRequestDTO;
 import kr.co.ddamddam.review.dto.response.ReviewDetailResponseDTO;
@@ -28,7 +29,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
-import static kr.co.ddamddam.qna.qnaBoard.exception.custom.QnaErrorCode.NOT_FOUND_USER;
 
 @Service
 @Slf4j
@@ -153,7 +153,7 @@ public class ReviewService {
     public ReviewDetailResponseDTO write(ReviewWriteRequestDTO dto, Long userIdx) throws ReviewNotFoundException {
 //        Optional<User> optionalUser = userRepository.findById(userIdx);
         User user = userRepository.findById(userIdx).orElseThrow(() -> {
-            throw new NotFoundQnaBoardException(NOT_FOUND_USER, userIdx);
+            throw new NotFoundUserException(ErrorCode.NOT_FOUND_USER, userIdx);
         });
 
         Review saved = reviewRepository.save(dto.toEntity(user));

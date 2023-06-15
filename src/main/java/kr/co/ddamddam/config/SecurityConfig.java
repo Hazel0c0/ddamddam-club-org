@@ -29,32 +29,32 @@ public class SecurityConfig {
 
         // 시큐리티 설치시 초기에 뜨는 강제 인증을 해제
         http
-//                .csrf()
-//                .disable() // csrf 토큰공격 방어기능 해제
-//                .authorizeRequests()
-//                .antMatchers("/**") // 해당하는 url 패턴은 로그인 없이도 들어갈 수 있도록
-//                .permitAll();
-
-                .cors()
-                .and()
-                .csrf().disable()
-                .httpBasic().disable()
-                // 세션 사용 X
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                .csrf()
+                .disable() // csrf 토큰공격 방어기능 해제
                 .authorizeRequests()
-                    // 어떤 요청에서 인증을 안할 것인지 설정 - 회원가입, 로그인, index 페이지
-                    .antMatchers("/api/ddamddam/auth/**", "/").permitAll()
-                    // 어떤 요청에서 인증을 할 것인지 설정 - 그 외의 모든 경로
-                    .anyRequest().authenticated();
-                ;
+                .antMatchers("/**") // 해당하는 url 패턴은 로그인 없이도 들어갈 수 있도록
+                .permitAll();
 
-        // 토큰 인증 필터 연결
-        http.addFilterAfter(
-                jwtAuthFilter
-                , CorsFilter.class
-        );
+//                .cors()
+//                .and()
+//                .csrf().disable()
+//                .httpBasic().disable()
+//                // 세션 사용 X
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .authorizeRequests()
+//                    // 어떤 요청에서 인증을 안할 것인지 설정 - 회원가입, 로그인, index 페이지
+//                    .antMatchers("/api/ddamddam/auth/**", "/").permitAll()
+//                    // 어떤 요청에서 인증을 할 것인지 설정 - 그 외의 모든 경로
+//                    .anyRequest().authenticated();
+//                ;
+//
+//        // 토큰 인증 필터 연결
+//        http.addFilterAfter(
+//                jwtAuthFilter
+//                , CorsFilter.class
+//        );
 
         return http.build();
     }
