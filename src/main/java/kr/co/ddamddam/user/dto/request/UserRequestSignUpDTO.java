@@ -43,7 +43,7 @@ public class UserRequestSignUpDTO {
     private LocalDate userBirth;
 
     @NotBlank
-    private UserPosition userPosition;
+    private String userPosition;
 
     @NotNull
     private int userCareer;
@@ -61,7 +61,7 @@ public class UserRequestSignUpDTO {
                 .userBirth(this.userBirth)
                 .userCareer(this.userCareer)
                 .userNickname(this.userNickName)
-                .userPosition(this.userPosition)
+                .userPosition(UserPosition.valueOf(this.userPosition))
                 .userProfile(this.userProfile)
                 .build();
     }

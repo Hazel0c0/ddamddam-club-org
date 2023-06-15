@@ -16,19 +16,22 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.internet.MimeMessage;
+import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
     //의존성 주입을 통해서 필요한 객체를 가져온다.
-    private final ThreadLocal<JavaMailSender> emailSender = new ThreadLocal<JavaMailSender>();
+    private final AtomicReference<JavaMailSender> emailSender = new AtomicReference<JavaMailSender>();
 
     // 타임리프를사용하기 위한 객체를 의존성 주입으로 가져온다
     private final SpringTemplateEngine templateEngine;
@@ -56,6 +59,7 @@ public class UserService {
 
         // 유저 엔터티로 변환
         User user = dto.toEntity();
+        //엔티티를 저장하고 리턴값 반환
         User saved = userRepository.save(user);
 
         log.info("회원가입 정상 수행됨! - saved user - {}", saved);
@@ -69,6 +73,9 @@ public class UserService {
     public boolean isDuplicate(String email) {
         return userRepository.existsByEmail(email);
     }
+
+
+
 
     //랜덤 인증 코드 생성
     public void createCode() {

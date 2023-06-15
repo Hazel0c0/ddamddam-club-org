@@ -21,7 +21,7 @@ import java.io.UnsupportedEncodingException;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/signup")
+@RequestMapping("/api/ddamddam/user")
 public class UserController {
 
     private final UserService userService;
