@@ -20,6 +20,7 @@ import static kr.co.ddamddam.common.response.ResponseMessage.*;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam/qna-reply")
+@CrossOrigin(origins = "http://localhost:3000")
 public class QnaReplyApiController {
 
     private final QnaReplyService qnaReplyService;
