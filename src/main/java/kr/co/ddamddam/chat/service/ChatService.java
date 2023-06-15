@@ -33,6 +33,13 @@ public class ChatService {
     private final MentorRepository mentorRepository;
 
 
+    /**
+     * 접속한 멘티가 채팅방을 만들면서 상대방은 멘토로 고정
+     * 멘토는 멘토게시글에서 user Entity를 가져와서 DB에 저장
+     * @param dto
+     * @param userId
+     * @return
+     */
     public ChatRoomResponseDTO createChatRoom(ChatRoomRequestDTO dto, Long userId) {
 
         ChatRoom findByChatRoomUser = chatRoomRepository.findByMentorMentorIdxAndSenderUserIdx(dto.getMentorIdx(), userId);
@@ -158,6 +165,24 @@ public class ChatService {
         ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow();
 
         chatRoomRepository.delete(chatRoom);
+    }
+
+    public ChatMessageResponseDTO processChatMessage(ChatMessageRequestDTO requestDTO) {
+        ChatRoom chatRoom = chatRoomRepository.findById(requestDTO.getRoomId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid roomId"));
+
+        User sender = userRepository.findById(requestDTO.getSenderId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid senderId"));
+
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setRoom(chatRoom);
+        chatMessage.setSender(sender);
+        chatMessage.setContent(requestDTO.getMessage());
+        chatMessage.setSentAt(LocalDateTime.now());
+
+        ChatMessage savedChatMessage = chatMessageRepository.save(chatMessage);
+
+        return convertToChatMessageResponseDTO(savedChatMessage);
     }
 }
 
