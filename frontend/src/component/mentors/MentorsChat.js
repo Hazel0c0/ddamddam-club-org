@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { TfiClose } from 'react-icons/tfi';
 import Common from '../common/Common';
 import { useParams } from 'react-router-dom';
@@ -10,8 +10,22 @@ const MentorsChat = () => {
   const [detailMember, setDetailMember] = useState({});
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
+  const [chkLog, setChkLog] = useState(false);
+  const [socketData, setSocketData] = useState();
+  const [chat, setChat] = useState([]);
+  const [msg, setMsg] = useState("");
+  const [name, setName] = useState("");
+
+
   const ws = useRef(null);
   const chatScroll = useRef(null);
+
+  const msgBox = chat.map((item, idx) => (
+    <div key={idx} className={item.name === name ? 'me' : 'other'}>
+      <span><b>{item.name}</b></span> [ {item.date} ]<br/>
+      <span>{item.msg}</span>
+    </div>
+  ));
 
   useEffect(() => {
     // 멘토 상세 정보 조회
@@ -34,24 +48,93 @@ const MentorsChat = () => {
       });
 
     // 컴포넌트가 마운트되었을 때 웹소켓 연결
-    ws.current = new WebSocket('ws://localhost:8181/chat'); // 웹소켓 서버 주소
-    ws.current.onopen = () => {
-      console.log('WebSocket 연결 성공');
-      ws.current.send(JSON.stringify({ type: 'SUBSCRIBE', topic: '/topic/chat' }));
-    };
+//     ws.current = new WebSocket('ws://localhost:8181/chat'); // 웹소켓 서버 주소
+//     ws.current.onopen = () => {
+//       console.log('WebSocket 연결 성공');
+//       ws.current.send(JSON.stringify({ type: 'SUBSCRIBE', topic: '/topic/chat' }));
+//     };
 
-    ws.current.onmessage = (event) => {
-    // 새로운 메시지 도착 시 처리
-      const newMessage = JSON.parse(event.data);
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-      chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
-    };
+//     ws.current.onmessage = (event) => {
+//     // 새로운 메시지 도착 시 처리
+//       const newMessage = JSON.parse(event.data);
+//       setMessages((prevMessages) => [...prevMessages, newMessage]);
+//       chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
+//     };
 
-// 컴포넌트가 언마운트될 때 웹소켓 연결 해제
-     return () => {
-       ws.current.close();
-     };
+// // 컴포넌트가 언마운트될 때 웹소켓 연결 해제
+//      return () => {
+//        ws.current.close();
+//      };
   }, [chatPageIdx]);
+
+
+
+
+
+
+
+  useEffect(() => {
+    if(socketData !== undefined) {
+        const tempData = chat.concat(socketData);
+        console.log(tempData);
+        setChat(tempData);
+    }
+}, [socketData]);
+
+const onText = event => {
+  console.log(event.target.value);
+  setMsg(event.target.value);
+}
+
+
+const webSocketLogin = useCallback(() => {
+  ws.current = new WebSocket("ws://localhost:8181/socket/chat");
+
+  ws.current.onmessage = (message) => {
+      const dataSet = JSON.parse(message.data);
+      setSocketData(dataSet);
+  }
+});
+const send = useCallback(() => {
+  if(!chkLog) {
+      if(name === "") {
+          alert("이름을 입력하세요.");
+          document.getElementById("name").focus();
+          return;
+      }
+      webSocketLogin();
+      setChkLog(true);
+  }
+
+  if(msg !== ''){
+      const data = {
+          name,
+          msg,
+          date: new Date().toLocaleString(),
+      };  //전송 데이터(JSON)
+
+      const temp = JSON.stringify(data);
+      
+      if(ws.current.readyState === 0) {   //readyState는 웹 소켓 연결 상태를 나타냄
+          ws.current.onopen = () => { //webSocket이 맺어지고 난 후, 실행
+              console.log(ws.current.readyState);
+              ws.current.send(temp);
+          }
+      }else {
+          ws.current.send(temp);
+      }
+  }else {
+      alert("메세지를 입력하세요.");
+      document.getElementById("msg").focus();
+      return;
+  }
+  setMsg("");
+});
+//webSocket
+
+
+
+
 
   useEffect(() => {
     chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
@@ -153,6 +236,7 @@ const MentorsChat = () => {
               <span className={'sender-content'}>{message.message}</span>
             </div>
           ))}
+          {msgBox}
         </section>
 
         <section className={'input-section'}>
@@ -165,6 +249,19 @@ const MentorsChat = () => {
           <button onClick={handleSubmit} className={'send-btn'}>
             Send
           </button>
+
+          <input disabled={chkLog}
+                        placeholder='이름을 입력하세요.' 
+                        type='text' 
+                        id='name' 
+                        value={name} 
+                        onChange={(event => setName(event.target.value))}/>
+                    <div id='sendZone'>
+                        <textarea id='msg' value={msg} onChange={onText}
+                            onKeyDown={(ev) => {if(ev.keyCode === 13){send();}}}></textarea>
+                        <input type='button' value='전송' id='btnSend' onClick={send}/>
+                    </div>
+
         </section>
       </div>
     </Common>
