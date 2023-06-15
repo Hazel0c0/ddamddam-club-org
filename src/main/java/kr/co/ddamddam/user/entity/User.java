@@ -14,6 +14,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 
 @Setter
@@ -45,7 +47,7 @@ public class User {
     private String userNickname;
 
     @CreationTimestamp // 데이터가 추가되는 시간을 값으로 설정합니다.
-    @Column(name = "user_regdate", nullable = false)
+    @Column(name = "user_regdate")
     private LocalDateTime userRegdate;
 
     @Column(name = "user_birth", nullable = false)
@@ -65,7 +67,7 @@ public class User {
     @Column(name = "user_profile", length = 200)
     private String userProfile;
 
-    @Column(name = "user_role", nullable = false)
+    @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'COMMON'")
     private UserRole userRole;

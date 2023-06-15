@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 // TODO : 회사취업후기 게시판
 @Setter
 @Getter
-@ToString
+@ToString(exclude = {"user", "company"})
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -52,7 +52,8 @@ public class Review {
     private Timestamp reviewDate;
 
     @Column(name = "review_view")
-    private int reviewView; //조회수
+    @Builder.Default
+    private int reviewView = 0; //조회수
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx")
