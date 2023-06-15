@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import './scss/QnaDetail.scss';
 import Common from "../common/Common";
 import {useParams} from "react-router-dom";
@@ -9,6 +9,8 @@ import {QNAREPLY} from "../common/config/HostConfig";
 const QnaDetail = () => {
     const {boardIdx} = useParams();
     const [detailQna, setDetailQna] = useState(null);
+    const $clickMore = useRef();
+    const [replyList, setReplyList] = useState([]);
 
     useEffect(() => {
         console.log(boardIdx);
@@ -22,21 +24,46 @@ const QnaDetail = () => {
             })
             .then((result) => {
                 setDetailQna(result.payload);
-                // result.payload.replyList
+                console.log(result.payload.replyList);
+                const modifiedReplyList = result.payload.replyList.map((reply) => {
+                    // const showMore = reply.replyContent.length > 120 ? false : true;
+                    const showMore = false;
+                    console.log(reply.replyContent.length)
+                    return {...reply, showMore};
+                });
+                setReplyList(modifiedReplyList);
+
+                console.log(modifiedReplyList);
                 console.log(result.payload);
             });
     }, []);
 
     //더보기 버튼 만드는 중 개같네..
+    //안된다시발비ㅓㅂ리버라ㅣㄸ라ㅣ리ㅣㅓㄷ바ㅣ디랃ㅂ
+
     const showMoreHandler = (reply, index) => {
-        // setReplyList((prevReplyList) => {
-        //     const updatedReplyList = [...prevReplyList];
-        //     const currentReply = updatedReplyList[index];
-        //     currentReply.subStr = !currentReply.subStr;
-        //     return updatedReplyList;
-        // });
-        // console.log(replyList);
+        if(replyList[index].showMore){
+            const updateReplyList = [...replyList];
+            updateReplyList[index] = {... replyList[index], showMore:!replyList[index].showMore};
+            setReplyList(updateReplyList);
+
+            console.log(`showMore : false로 변경`);
+        }else {
+            const updateReplyList = [...replyList];
+            updateReplyList[index] = {... replyList[index], showMore:!replyList[index].showMore};
+            setReplyList(updateReplyList);
+
+            console.log(`showMore : true로 변경`);
+
+        }
+
     };
+
+    //첫 랜더링 될 때 글자 잘라주기
+    const subStr = (replyContent,start,end) => {
+        const subStrResult = replyContent.substr(start, end);
+        return subStrResult;
+    }
 
     const writeReplyHandler = async () => {
         const inputContent = document.querySelector('.reply-input').value;
@@ -58,6 +85,7 @@ const QnaDetail = () => {
 
         alert("댓글이 등록 되었습니다.");
     }
+
 
     return (
         <Common className={'qna-detail-wrapper'}>
@@ -118,27 +146,44 @@ const QnaDetail = () => {
                             )}
                         </section>
 
+
+                        {/*댓글 영역*/}
                         <section className={'reply-wrapper'}>
                             <p className={'reply-title'}>
                                 <img src={speechBubble} className={'reply-icon'}/>댓글
                                 <span className={'reply-count'}>{detailQna.replyList.length}</span>
                             </p>
-                            {detailQna.replyList.map((reply, index) => (
+                            {replyList.map((reply, index) => (
                                 <div className={'reply-list'} key={index}>
                                     <div className={'reply-top-wrapper'}>
                                         <p className={'reply-writer'}>{reply.replyWriter}</p>
                                         <div className={'reply-date'}>{reply.replyDate}</div>
                                     </div>
+                                            {/*// (reply.showMore)*/}
+                                            {/*// ?*/}
+                                            {/*// <span className={'reply-content'}>{reply.replyContent}</span>*/}
+                                            {/*// :*/}
                                     <div className={'reply-content-wrapper'}>
-                                        <span className={'reply-content'} key={index}>
-                                                <span className={'reply-content'}>{reply.replyContent}</span>
+                                        {reply.replyContent.length<=120 ?
+                                                <div>{reply.replyContent}</div>
+
+                                            :
+                                            <>
+                                            <span className={'reply-content'} key={index} >
+                                                {subStr(reply.replyContent,0,120)}
                                                 <span
                                                     className={'showMore-btn'}
-                                                    onClick={() => showMoreHandler(reply, index)}
+                                                    onClick={() => showMoreHandler(reply.replyContent, index)}
+                                                    ref={$clickMore}
                                                 >
-                                                [줄이기]
+                                                    '[펼치기]'
                                             </span>
-                                        </span>
+                                            </span>
+
+                                            </>
+
+                                        }
+
 
                                         {reply.replyAdoption === 'Y' ? (
                                             <button className={'adoption-btn-checked'}>채택완료</button>
