@@ -76,15 +76,15 @@ public class ProjectApiController {
   // 게시글 작성
 
   @Parameters({
-      @Parameter(name = "title", description = "제목을 입력하세요", example = "제목을 입력하세요", required = true)
-      , @Parameter(name = "content", description = "내용을 입력하세요", example = "내용을 입력하세요", required = true)
+      @Parameter(name = "boardTitle", description = "제목을 입력하세요", example = "제목을 입력하세요", required = true)
+      , @Parameter(name = "boardContent", description = "내용을 입력하세요", example = "내용을 입력하세요", required = true)
       , @Parameter(name = "projectType", description = "프로젝트 타입을 입력하세요", example = "프로젝트 타입을 입력하세요", required = true)
   })
   @PostMapping
   public ApplicationResponse<?> write(
       @Validated @RequestBody ProjectWriteDTO dto
   ) {
-    log.info("/api/ddamddam wirte POST!! - payload: {}", dto);
+    log.info("/api/ddamddam write POST!! - payload: {}", dto);
 
     if (dto == null) {
       return ApplicationResponse.bad("게시글 정보를 전달해주세요");

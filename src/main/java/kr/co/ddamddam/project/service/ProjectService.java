@@ -10,6 +10,8 @@ import kr.co.ddamddam.project.dto.response.ProjectListPageResponseDTO;
 import kr.co.ddamddam.project.dto.response.ProjectListResponseDTO;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.repository.ProjectRepository;
+import kr.co.ddamddam.user.entity.User;
+import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -36,6 +39,7 @@ import javax.persistence.criteria.Root;
 @Transactional
 public class ProjectService {
   private final ProjectRepository projectRepository;
+  private final UserRepository userRepository;
 
   public ProjectListPageResponseDTO getList(PageDTO dto, ProjectSearchRequestDto searchDto) {
 
@@ -105,15 +109,14 @@ public class ProjectService {
 
   public Project getProject(Long projectIdx) {
     return projectRepository.findById(projectIdx)
-        .orElseThrow(
-            () -> new RuntimeException(
-                projectIdx + "번 게시물이 존재하지 않습니다!"
-            )
-        );
+        .orElseThrow(() -> new RuntimeException(projectIdx + "번 게시물이 존재하지 않습니다!"));
   }
 
   public ProjectDetailResponseDTO write(final ProjectWriteDTO dto) {
-    Project saved = projectRepository.save(dto.toEntity());
+    User user = userRepository.findById(dto.getBoardWriterIdx())
+        .orElseThrow(() -> new RuntimeException("존재하지 않습니다!"));
+
+    Project saved = projectRepository.save(dto.toEntity(user.getUserName()));
 
     return new ProjectDetailResponseDTO(saved);
   }
