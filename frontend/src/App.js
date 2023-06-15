@@ -64,7 +64,7 @@ function App() {
         <Route path={'/login'} element={<UserLogin/>}></Route>
 
         {/*회원가입*/}
-        <Route path={'/join'} element={<UserJoin/>}></Route>
+        {/* <Route path={'/join'} element={<UserJoin/>}></Route> */}
 
       </Routes>
       <Footer/>
