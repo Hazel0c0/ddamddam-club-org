@@ -59,7 +59,7 @@ public class ProjectApiController {
   }
 
   // 게시글 상세 보기
-  @GetMapping("/{idx}")
+  @GetMapping("/{projectIdx}")
   public ApplicationResponse<?> getDetail(@PathVariable Long projectIdx) {
     log.info("/api/ddamddam/{} GET", projectIdx);
 
