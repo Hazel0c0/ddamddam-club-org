@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/ddamddam/applicant")
+@RequestMapping("/api/ddamddam/project/applicant")
 @Slf4j
 @CrossOrigin(origins = "http://localhost:3000")
 public class ApplicantApiController {
