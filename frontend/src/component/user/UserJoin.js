@@ -7,14 +7,15 @@ import {LocalDate, MathUtil as Integer} from 'js-joda';
 
 // 리다이렉트 사용하기
 import { useNavigate, Link } from 'react-router-dom';
-import { BASE_URL as BASE, AUTH } from '../../component/common/config/HostConfig';
+import {BASE_URL as BASE, AUTH, JOININ} from '../../component/common/config/HostConfig';
 
 const UserJoin = () => {
 
     // 리다이렉트 사용하기
     const redirection = useNavigate();
 
-    const BASE_URL = BASE + AUTH;
+    // const BASE_URL = BASE + AUTH;
+    const BASE_URL = JOININ;
 
     // 상태변수로 회원가입 입력값 관리
     const [userValue, setUserValue] = useState({
@@ -23,9 +24,9 @@ const UserJoin = () => {
         userName: '',
         nickName: '',
         userBirth:'',
-        userPosition: '',
+        userPosition: '프론트엔드',
         userCareer: '',
-        userProfile:''
+        userProfile:'null'
     });
 
     // 검증 메세지에 대한 상태변수 관리
@@ -142,8 +143,9 @@ const UserJoin = () => {
     // 이메일 중복체크 서버 통신 함수
     const fetchDuplicateCheck = async (email) => {
 
-        const res = await fetch(`${BASE_URL}/check?userEmail=${email}`);
-
+        const res = await fetch(`${BASE_URL}/check?email=${email}`);
+        console.log(res);
+        /*
         let msg = '', flag = false;
         if (res.status === 200) {
             const json = await res.json();
@@ -162,6 +164,7 @@ const UserJoin = () => {
         setUserValue({...userValue, userEmail: email });
         setMessage({...message, userEmail: msg });
         setCorrect({...correct, userEmail: flag });
+        */
 
     };
 
@@ -181,7 +184,7 @@ const UserJoin = () => {
             flag = false;
         } else {
             // 이메일 중복체크
-            fetchDuplicateCheck(inputVal);
+            // fetchDuplicateCheck(inputVal);
             return;
         }
 
@@ -300,8 +303,8 @@ const UserJoin = () => {
 
     // 회원가입 처리 서버 요청
     const fetchSignUpPost = async () => {
-
-        const res = await fetch(BASE_URL, {
+        console.log(userValue);
+        const res = await fetch(`${BASE_URL}/signup`, {
             method: 'POST',
             headers: { 'content-type' : 'application/json' },
             body: JSON.stringify(userValue)
@@ -323,7 +326,7 @@ const UserJoin = () => {
 
         e.preventDefault();  //submit기능 중단 시키기
         // const $nameInput = document.getElementsByName('name');
-
+        console.log(userValue)
         // 회원가입 서버 요청
         if (isValid()) {
             fetchSignUpPost();
@@ -359,6 +362,11 @@ const UserJoin = () => {
                   }>{message.userEmail}</span>
                   <button className={'check-btn'}>인증하기</button>
               </div>
+                  <section className={"check-email-wrapper"}>
+                  <input type={"text"} className={"check-email"} name={"checkEmail"} placeholder={"인증코드를 입력해주세요"}/>
+                      <button className={"confirm-check-email"}>인증하기</button>
+                  </section>
+
               <div className={'input-pw'}>
                   <input type={"text"} className={'pw'} id={'password'} name={'password'} placeholder={'비밀번호'} onChange={passwordHandler}/>
                   <span style={

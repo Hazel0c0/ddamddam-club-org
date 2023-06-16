@@ -65,7 +65,8 @@ public class QnaReplyApiController {
             return ApplicationResponse.bad(result);
         }
 
-        return ApplicationResponse.ok(dto.getBoardIdx());
+        List<QnaReplyListResponseDTO> list = qnaReplyService.getList(dto.getBoardIdx());
+        return ApplicationResponse.ok(list);
     }
 
     /**

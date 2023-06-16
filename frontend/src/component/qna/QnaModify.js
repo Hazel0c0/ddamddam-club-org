@@ -2,12 +2,15 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Common from "../common/Common";
 import './scss/QnaWrite.scss';
 import {MENTOR, QNA} from "../common/config/HostConfig";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import Tags from '@yaireo/tagify/dist/react.tagify';
 import {getWhitelistFromServer, getValue} from './hashTagConfig/mockServer'
 
 const MentorsWrite = () => {
     const redirection = useNavigate();
+    const {boardIdx} = useParams();
+    const [detailQna, setDetailQna] = useState([]);
+    const [hashTag, setHashTag] = useState("");
     const [textInput, setTextInput] = useState(
         {
             boardTitle: '',
@@ -15,76 +18,44 @@ const MentorsWrite = () => {
             hashtagList: []
         }
     )
-
-    const handleSelect = (e) => {
-        const {name, value} = e.target;
-        let parseValue = value;
-
-        setTextInput((prevTextInput) => ({
-            ...prevTextInput,
-            [name]: parseValue
-        }));
-    };
-
-    const submitTest =() =>{
-        console.log(textInput)
-    }
-
-    const handleSubmit = async () => {
-        console.log(textInput);
-        // 수집한 값들을 이용하여 비동기 POST 요청 수행
-        const {
-            boardTitle,
-            boardContent,
-            hashtagList
-        } = textInput;
-
-        if (boardTitle.length === 0 || boardContent.length === 0 || hashtagList.length === 0) {
-            alert('공백 없이 입력해주세요.');
-        } else {
-            const data = {
-                boardTitle: boardTitle,
-                boardContent: boardContent,
-                hashtagList: hashtagList
-            };
-            // 비동기 POST 요청 처리 로직 작성
-            console.log(data); // 확인을 위해 콘솔에 출력
-
-            const res = await fetch(QNA + '/write', {
-                method: 'POST',
-                headers: {'content-type': 'application/json'},
-                body: JSON.stringify(data)
-            });
-
-            if (res.status === 400) {
-                const text = await res;
-                console.log(`오류시 알람 : ${text}`);
-                return;
-            } else {
-                alert('작성이 완료되었습니다.')
-                redirection('/qna')
-            }
-        }
-        ;
-    };
-
-    //해쉬태그 핸들러
-    const baseTagifySettings = {
-        // blacklist: ["xxx", "yyy", "zzz"],
-        maxTags: 10,
-        //backspace: "edit",
-        placeholder: "해쉬태그를 입력해주세요.",
-        dropdown: {
-            enabled: 0 // a;ways show suggestions dropdown
-        }
-    }
-
     const tagifyRef1 = useRef();
     const [tagifySettings, setTagifySettings] = useState([]);
     const [tagifyProps, setTagifyProps] = useState({});
 
     useEffect(() => {
-        setTagifyProps({loading: false})
+        console.log(boardIdx);
+        fetch(`//localhost:8181/api/ddamddam/qna/${boardIdx}`)
+            .then((res) => {
+                if (res.status === 500) {
+                    alert('잠시 후 다시 접속해주세요.[서버오류]');
+                    return;
+                }
+                return res.json();
+            })
+            .then((result) => {
+                setDetailQna(result.payload);
+
+                console.log(`수정할 value의 값: ${JSON.stringify(result.payload)}`);
+                // const hashTagList = result.payload.hashtagList;
+                // let hashTagToString = hashTagList.join(',');
+                // setHashTag(hashTagToString);
+
+
+                // const hashTagList = result.payload.hashtagList;
+
+                // let hashTagToString = ""
+                // for (let i = 0; i < hashTagList.length; i++) {
+                //     hashTagToString += hashTagList[i];
+                //     if (i !== hashTagList.length - 1) {
+                //         hashTagToString += ",";
+                //     }
+                // }
+                // console.log(hashTagToString);
+                // setHashTag(hashTagToString);
+            });
+
+
+        setTagifyProps({loading: false});
 
         getWhitelistFromServer(2000).then((response) => {
             setTagifyProps((lastProps) => ({
@@ -111,8 +82,55 @@ const MentorsWrite = () => {
             5000
         )
 
-
     }, [])
+
+
+    const handleSelect = (e) => {
+        const {name, value} = e.target;
+        let parseValue = value;
+
+        setTextInput((prevTextInput) => ({
+            ...prevTextInput,
+            [name]: parseValue
+        }));
+    };
+
+    //수정완료버튼
+    const modifySubmitHandler = async () => {
+        console.log(textInput);
+        const {boardTitle, boardContent, hashtagList} = textInput;
+        const res = fetch(`${QNA}/modify/${boardIdx}`, {
+            method: 'PATCH',
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify({
+                boardIdx: boardIdx,
+                boardTitle: boardTitle,
+                boardContent: boardContent,
+                hashtagList: hashtagList
+            })
+        });
+
+        const result = await res;
+        if (result.status === 200){
+            alert("게시글 수정이 완료되었습니다.");
+            redirection(`/api/ddamddam/qna/${boardIdx}`)
+
+        }
+        console.log(result)
+        console.log(JSON.stringify(result));
+
+    }
+
+    //해쉬태그 핸들러
+    const baseTagifySettings = {
+        // blacklist: ["xxx", "yyy", "zzz"],
+        maxTags: 10,
+        //backspace: "edit",
+        placeholder: "해쉬태그를 입력해주세요.",
+        dropdown: {
+            enabled: 0 // a;ways show suggestions dropdown
+        }
+    }
 
     const settings = {
         ...baseTagifySettings,
@@ -122,14 +140,15 @@ const MentorsWrite = () => {
     const onChange = useCallback(e => {
 
         const inputHashTag = e.detail.tagify.getCleanValue();
-        const hashTagArr = inputHashTag.map(hashtag=> (hashtag.value));
-        console.log("CHANGED:"+hashTagArr);
+        const hashTagArr = inputHashTag.map(hashtag => (hashtag.value));
+        console.log("CHANGED:" + hashTagArr);
 
         setTextInput((prevTextInput) => ({
             ...prevTextInput,
             hashtagList: hashTagArr
         }));
     }, [])
+
 
     return (
         <Common className={'qna-write-wrapper'}>
@@ -146,7 +165,8 @@ const MentorsWrite = () => {
                         placeholder={'제목을 입력하세요'}
                         className={'title-text-input'}
                         name={'boardTitle'}
-                        value={textInput.boardTitle}
+                        defaultValue={detailQna.boardTitle}
+                        // value={''}
                         onChange={handleSelect}
                     />
                 </div>
@@ -156,6 +176,7 @@ const MentorsWrite = () => {
                         tagifyRef={tagifyRef1}
                         settings={settings}
                         // defaultValue="a,b,c"
+                        defaultValue={hashTag}
                         autoFocus={true}
                         {...tagifyProps}
                         onChange={onChange}
@@ -167,7 +188,9 @@ const MentorsWrite = () => {
                 <textarea type="text"
                           placeholder={"내용을 입력해주세요"}
                           className={'content'}
-                          value={textInput.mentorContent}
+                    // value={textInput.mentorContent}
+                          defaultValue={detailQna.boardContent}
+                    // value={''}
                           name="boardContent"
                           onChange={handleSelect}
                 />
@@ -178,7 +201,7 @@ const MentorsWrite = () => {
                     <button className={'close-btn'}>취소하기</button>
                 </Link>
                 {/*<button className={'submit-btn'} onClick={handleSubmit}>작성완료</button>*/}
-                <button className={'submit-btn'} onClick={handleSubmit}>작성완료</button>
+                <button className={'submit-btn'} onClick={modifySubmitHandler}>수정완료</button>
             </div>
         </Common>
     );

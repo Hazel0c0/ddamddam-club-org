@@ -19,6 +19,7 @@ import QnaTemplate from "./component/qna/QnaTemplate";
 import QnaDetail from "./component/qna/QnaDetail";
 import ProjectsWrite from "./component/projects/ProjectsWrite";
 import QnaWrite from "./component/qna/QnaWrite";
+import QnaModify from "./component/qna/QnaModify";
 
 function App() {
     //로그인 상태 관리(session완료 시 )
@@ -58,6 +59,8 @@ function App() {
                     <Route path={'/api/ddamddam/qna/:boardIdx'} element={<QnaDetail />}></Route>
                     {/*Q&A/글작성*/}
                     <Route path={'/api/ddamddam/qna/write'} element={<QnaWrite />}></Route>
+                    {/*Q&A/글수정*/}
+                    <Route path={'api/ddamddam/qna/modify/:boardIdx'} element={<QnaModify />}></Route>
 
 
         {/*로그인*/}
