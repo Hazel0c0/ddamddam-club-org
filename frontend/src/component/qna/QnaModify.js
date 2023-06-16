@@ -112,7 +112,7 @@ const MentorsWrite = () => {
 
         const result = await res;
         if (result.status === 200){
-            alert("댓글 수정이 완료되었습니다.");
+            alert("게시글 수정이 완료되었습니다.");
             redirection(`/api/ddamddam/qna/${boardIdx}`)
 
         }
