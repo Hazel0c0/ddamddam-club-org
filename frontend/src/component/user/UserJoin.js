@@ -18,7 +18,7 @@ const UserJoin = () => {
 
     // 상태변수로 회원가입 입력값 관리
     const [userValue, setUserValue] = useState({
-        userEmail:'',
+        userEmail:'ert@vac.com',
         password: '',
         userName: '',
         nickName: '',
@@ -132,7 +132,7 @@ const UserJoin = () => {
         }
         console.log(msg)
         saveInputState({
-            key: 'nickname',
+            key: 'nickName',
             inputVal,
             msg,
             flag
@@ -290,7 +290,7 @@ const UserJoin = () => {
 
     //입력칸이 모두 검증에 통과했는지 여부를 검사
     const isValid = () => {
-
+        console.log(userValue)
         for (const key in correct) {
             const flag = correct[key];
             if (!flag) return false;

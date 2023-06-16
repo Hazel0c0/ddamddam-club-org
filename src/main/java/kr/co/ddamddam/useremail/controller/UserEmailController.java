@@ -11,13 +11,13 @@ import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 @RestController
-@RequestMapping("/connects/sign-up")
+@RequestMapping("/api/ddamddam/email")
 @RequiredArgsConstructor
 public class UserEmailController {
 
     private final UserEmailService emailService;
 
-    @PostMapping("/email")        // 이 부분은 각자 바꿔주시면 됩니다.
+    @PostMapping("/send")        // 이 부분은 각자 바꿔주시면 됩니다.
     public ResponseEntity<UserCodeResponseDTO> EmailCheck(@Valid @RequestBody UserEmailCheckRequestDTO emailCheckReq) throws MessagingException, UnsupportedEncodingException {
         UserCodeResponseDTO memberCodeResponseDTO = emailService.sendEmail(emailCheckReq.getEmail());
 
