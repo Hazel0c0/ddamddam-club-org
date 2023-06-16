@@ -31,3 +31,15 @@ springdoc:
 
 jwt:
   secret: 7lizyfII3rydJihGinqyZB2RhBsh9uMvR4P1sJVP20oAKVI1PHef5KGVzP+SiSnLXy7lFBreKYVUm23jofj5Ow==
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: yellowyj39@gmail.com # 앱 비밀번호 발급받은 google 계정
+    password: aeznuoptcicbqpaf # 발급받은 앱 비밀번호 (16자리 입니다.) ->
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
