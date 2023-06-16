@@ -8,7 +8,7 @@ import MentorsMain from "./component/mentors/MentorsMain";
 import MainTemplate from "./component/common/MainTemplate";
 import UserLogin from "./component/user/UserLogin";
 import UserJoin from "./component/user/UserJoin";
-import ProjectsTemplate from "./component/projects/ProjectsTemplate";
+import ProjectsTemplate from "./component/projects/mainpage/ProjectsTemplate";
 import ProjectsWrite from "./component/projects/ProjectsWrite";
 import ProjectsDetail from "./component/projects/ProjectsDetail";
 import QnaMain from "./component/qna/QnaMain";
@@ -20,6 +20,7 @@ import MentorsChat from "./component/mentors/MentorsChat";
 import QnaTemplate from "./component/qna/QnaTemplate";
 import QnaDetail from "./component/qna/QnaDetail";
 import QnaWrite from "./component/qna/QnaWrite";
+import ProjectsModify from "./component/projects/ProjectsModify";
 
 
 function App() {
@@ -41,10 +42,12 @@ function App() {
         {/*<Route path="/mentors/detail/mentorIdx/:idx" element={<MentorsDetail />} />*/}
         {/*멘토 멘티 채팅방*/}
         <Route path={'/mentors/detail/chat/:chatPageIdx'} element={<MentorsChat/>}></Route>
+
         {/*프로젝트 모집*/}
         <Route path={'/projects'} element={<ProjectsTemplate/>}></Route>
         <Route path={'/projects/write'} element={<ProjectsWrite/>}></Route>
         <Route path={'/projects/detail'} element={<ProjectsDetail/>}></Route>
+        <Route path={'/projects/modify'} element={<ProjectsModify/>}></Route>
 
         {/*취업 후기 - not yet*/}
         <Route></Route>
@@ -55,12 +58,12 @@ function App() {
         {/*프로젝트 공유  - not yet*/}
         <Route></Route>
 
-                    {/*Q&A*/}
-                    <Route path={'/qna'} element={<QnaTemplate />}></Route>
-                    {/*Q&A/상세보기*/}
-                    <Route path={'/api/ddamddam/qna/:boardIdx'} element={<QnaDetail />}></Route>
-                    {/*Q&A/글작성*/}
-                    <Route path={'/api/ddamddam/qna/write'} element={<QnaWrite />}></Route>
+            {/*Q&A*/}
+            <Route path={'/qna'} element={<QnaTemplate />}></Route>
+            {/*Q&A/상세보기*/}
+            <Route path={'/api/ddamddam/qna/:boardIdx'} element={<QnaDetail />}></Route>
+            {/*Q&A/글작성*/}
+            <Route path={'/api/ddamddam/qna/write'} element={<QnaWrite />}></Route>
 
 
         {/*로그인*/}

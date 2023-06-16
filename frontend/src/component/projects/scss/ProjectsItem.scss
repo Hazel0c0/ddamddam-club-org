@@ -12,6 +12,11 @@
   text-align: left;
   color: #000;
 }
+.project-list-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+}
 
 .project-list {
   width: 365px;
@@ -22,7 +27,6 @@
   border-radius: 13px;
   border: solid 1px #d4d4d4;
   background-color: #fff;
-
   &:hover {
     cursor: pointer;
   }
@@ -75,7 +79,7 @@
     width: 70px;
     height: 27px;
     flex-grow: 0;
-    margin: 0px 0 0 202.2px;
+    margin: -21px 0 0 202.2px;
     padding: 4px 8px 0 7px;
     border-radius: 50px;
     background-color: #446dfe;
@@ -90,12 +94,12 @@
     width: 45px;
     height: 20px;
     flex-grow: 0;
-    margin: 39.3px 9px 0 252.2px;
+    margin: -185.7px 9px 0 252.2px;
     padding: 0 8px 0 7px;
     border-radius: 50px;
     background-color: #446dfe;
 
-    //color: #fff;
+    color: #fff;
   }
 }
 

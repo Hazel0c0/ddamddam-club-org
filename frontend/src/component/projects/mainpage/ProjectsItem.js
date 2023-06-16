@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {PROJECT} from "../common/config/HostConfig";
+import {PROJECT} from "../../common/config/HostConfig";
 
-import Common from "../common/Common";
-import './scss/ProjectsItem.scss'
+import Common from "../../common/Common";
+import '../scss/ProjectsItem.scss'
 import { useNavigate  } from 'react-router-dom';
 
 const ProjectsItem = ({url, sortTitle}) => {
@@ -70,6 +70,8 @@ const ProjectsItem = ({url, sortTitle}) => {
   return (
     <Common className={'project-list-wrapper'}>
       <h2 className={'sort-title'}>{sortTitle}</h2>
+      <div className="project-list-container">
+
       {project.map(p => {
         // 현재 날짜와 게시글 작성일 간의 차이를 계산합니다
         const currentDate = new Date();
@@ -93,13 +95,14 @@ const ProjectsItem = ({url, sortTitle}) => {
               {/*  토큰 정보 = like 누른 회원 비교 -> 버튼 색상 설정   */}
                 <div className={'project-like'}>♥ {p.likeCount}</div>
               </div>
-              <div className={'project-new-box'}>
-                {daysDiff <= 7 && <div className={'project-new'}>new</div>}
-              </div>
+              {daysDiff <= 7 && <div className={'project-new-box'}>
+                <div className={'project-new'}>new</div>
+              </div>}
             </div>
           </section >
         );
       })}
+      </div>
     </Common>
   );
 };
