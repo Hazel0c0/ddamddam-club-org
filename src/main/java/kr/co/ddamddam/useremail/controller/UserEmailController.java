@@ -2,7 +2,7 @@ package kr.co.ddamddam.useremail.controller;
 
 import kr.co.ddamddam.useremail.dto.UserEmailCheckRequestDTO;
 import kr.co.ddamddam.useremail.dto.response.UserCodeCheckResponseDTO;
-import kr.co.ddamddam.useremail.dto.response.UserCodeResponseDTO;
+import kr.co.ddamddam.useremail.dto.request.UserCodeRequestDTO;
 import kr.co.ddamddam.useremail.service.UserEmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +17,14 @@ public class UserEmailController {
 
     private final UserEmailService emailService;
 
-    @PostMapping("/send")        // 이 부분은 각자 바꿔주시면 됩니다.
-    public ResponseEntity<UserCodeResponseDTO> EmailCheck(@Valid @RequestBody UserEmailCheckRequestDTO emailCheckReq) throws MessagingException, UnsupportedEncodingException {
-        UserCodeResponseDTO memberCodeResponseDTO = emailService.sendEmail(emailCheckReq.getEmail());
-
-        return ResponseEntity.ok().body/**/(memberCodeResponseDTO);
+    @PostMapping("/send")
+    public ResponseEntity<UserCodeRequestDTO> EmailCheck(@Valid @RequestBody UserEmailCheckRequestDTO emailCheckReq) throws MessagingException, UnsupportedEncodingException {
+        UserCodeRequestDTO userCodeRequestDTO = emailService.sendEmail(emailCheckReq.getEmail());
+        return ResponseEntity.ok().body/**/(userCodeRequestDTO);
     }
 
     @PostMapping("/check")
-    public ResponseEntity<UserCodeCheckResponseDTO> codeCheck(@RequestBody UserCodeResponseDTO dto) {
+    public ResponseEntity<UserCodeCheckResponseDTO> codeCheck(@RequestBody UserCodeRequestDTO dto) {
         UserCodeCheckResponseDTO memberCodeCheckResponseDTO = emailService.checkCode(dto.getCode());
 
         return ResponseEntity.ok().body(memberCodeCheckResponseDTO);
