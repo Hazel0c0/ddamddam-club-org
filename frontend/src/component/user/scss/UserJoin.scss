@@ -82,7 +82,6 @@
 
 
     .input-email{
-      margin-bottom: 35px;
 
       .email-input,
       .email-select{
@@ -96,11 +95,15 @@
       flex-direction: column;
       margin-bottom: 120px;
 
+
       .name,
       .career,
       .birth,
       .nickname{
         margin-bottom: 10px;
+      }
+      .name{
+        margin-top: 35px;
       }
     }
   }
