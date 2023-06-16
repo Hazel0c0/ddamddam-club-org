@@ -45,6 +45,8 @@ dependencies {
 
 	// XML to JSON
 	implementation 'org.json:json:20211205';
+	// Other dependencies...
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
 	// 스프링 시큐리티 모듈
 	implementation 'org.springframework.boot:spring-boot-starter-security'
