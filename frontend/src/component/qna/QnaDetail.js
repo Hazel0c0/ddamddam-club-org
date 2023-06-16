@@ -1,13 +1,14 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import './scss/QnaDetail.scss';
 import Common from "../common/Common";
-import {json, Link, useParams} from "react-router-dom";
+import {json, Link, useNavigate, useParams} from "react-router-dom";
 import viewIcon from "../../src_assets/view-icon.png";
 import speechBubble from "../../src_assets/speech-bubble.png";
 import {QNA, QNAREPLY} from "../common/config/HostConfig";
 import qnaDetail from "./QnaDetail";
 
 const QnaDetail = () => {
+    const redirection = useNavigate();
     const inputRef = useRef();
     const {boardIdx} = useParams();
     const [detailQna, setDetailQna] = useState(null);
@@ -195,6 +196,35 @@ const QnaDetail = () => {
         }
     }
 
+    //댓글 삭제
+    const deleteHandler = async () =>{
+        if (detailQna.boardAdoption === 'Y'){
+            alert('이미 채택된 글은 수정 또는 삭제하실 수 없습니다.');
+            return;
+        }
+        const res = fetch(`${QNA}/delete/${boardIdx}`, {
+            method: 'DELETE',
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify({
+                boardIdx: boardIdx
+            })
+        });
+
+        const result = await res;
+
+        console.log(`result.body : ${result.body}`)
+
+        if (result.status === 200){
+            alert("삭제가 완료되었습니다.");
+            redirection(-1);
+        }
+
+
+
+
+    }
+
+
     return (
         <Common className={'qna-detail-wrapper'}>
             <div className={'title-wrapper'}>
@@ -217,7 +247,7 @@ const QnaDetail = () => {
                             <div className={'detail-wrapper'}>
                                 <div className={'category'}>
                                     <Link to={`/api/ddamddam/qna/modify/${boardIdx}`} className={'modify-btn'} onClick={modifyHandler}>수정</Link>
-                                    <span className={'delete-btn'}>삭제</span>
+                                    <span className={'delete-btn'} onClick={deleteHandler}>삭제</span>
                                 </div>
 
 
