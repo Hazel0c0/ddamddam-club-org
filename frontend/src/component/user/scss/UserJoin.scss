@@ -60,9 +60,9 @@
     }
 
     //아이디 input
-    .input-id,
     .input-pw,
     .input-email,
+    .input-pwcheck,
     {
       display: flex;
       align-items: center;
@@ -74,10 +74,12 @@
       {
         width: 82%;
       }
-      .pw{
+      .pw,
+      .pw-check {
         width: 100%;
       }
     }
+
 
     .input-email{
       margin-bottom: 35px;
@@ -95,7 +97,9 @@
       margin-bottom: 120px;
 
       .name,
-      .birth{
+      .career,
+      .birth,
+      .nickname{
         margin-bottom: 10px;
       }
     }
@@ -122,11 +126,13 @@
 }
 
 //버튼 공통영역
-.id,
 .pw,
 .email-input,
+.pw-check,
+.nickname,
 .email-select,
 .name,
+.career,
 .birth,
 .position-select
 {

@@ -1,18 +1,20 @@
-import React, {userEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Common from "../common/Common";
 import logo from "../../src_assets/logo(white).png";
 import profile from "../../src_assets/IMG_4525.JPG";
 import './scss/UserJoin.scss';
+import {LocalDate, MathUtil as Integer} from 'js-joda';
+
 // 리다이렉트 사용하기
 import { useNavigate, Link } from 'react-router-dom';
-import { API_BASE_URL as BASE, USER } from '../../component/common/config/HostConfig';
+import { BASE_URL as BASE, AUTH } from '../../component/common/config/HostConfig';
 
 const UserJoin = () => {
 
     // 리다이렉트 사용하기
     const redirection = useNavigate();
 
-    const API_BASE_URL = BASE + USER;
+    const BASE_URL = BASE + AUTH;
 
     // 상태변수로 회원가입 입력값 관리
     const [userValue, setUserValue] = useState({
@@ -107,15 +109,17 @@ const UserJoin = () => {
     const nicknameHandler = e => {
 
         //입력한 값을 상태변수에 저장
-        // console.log(e.target.value());
+        // console.log(e.target.value);
 
-        const nameRegex = /^[가-힣a-zA-Z]{2,5}$/;
+        const nameRegex = /^[가-힣a-zA-Z]{2,8}$/;
 
         const inputVal = e.target.value;
+
+        console.log(`inputVal의 값 : ${inputVal}`)
         // 입력값 검증
         let msg; // 검증 메시지를 저장할 변수
         let flag; // 입력 검증체크 변수
-
+        console.log(nameRegex.test(inputVal));
         if (!inputVal) {
             msg = '유저 닉네임은 필수입니다.';
             flag = false;
@@ -126,7 +130,7 @@ const UserJoin = () => {
             msg = '사용 가능한 닉네임입니다.';
             flag = true;
         }
-
+        console.log(msg)
         saveInputState({
             key: 'nickname',
             inputVal,
@@ -138,7 +142,7 @@ const UserJoin = () => {
     // 이메일 중복체크 서버 통신 함수
     const fetchDuplicateCheck = async (email) => {
 
-        const res = await fetch(`${API_BASE_URL}/check?email=${email}`);
+        const res = await fetch(`${BASE_URL}/check?userEmail=${email}`);
 
         let msg = '', flag = false;
         if (res.status === 200) {
@@ -196,7 +200,7 @@ const UserJoin = () => {
     const passwordHandler = e => {
 
         // 패스워드가 변동되면 확인란을 비우기
-        document.getElementById('password-check').value = '';
+        document.getElementById('passwordCheck').value = '';
         document.getElementById('check-span').textContent = '';
 
         setMessage({...message, passwordCheck: ''});
@@ -256,9 +260,16 @@ const UserJoin = () => {
 
 // userBirth 입력값 변경 핸들러
     const birthHandler = (event) => {
+        const inputDate = event.target.value; // 입력받은 문자열
+        const year = parseInt(inputDate.substring(0, 4));
+        const month = parseInt(inputDate.substring(4, 6));
+        const day = parseInt(inputDate.substring(6, 8));
+
+        const localDate = new Date(year, month - 1, day); // JavaScript의 Date 객체 생성
+
         setUserValue(prevValue => ({
             ...prevValue,
-            userBirth: event.target.value // 문자열로 입력받음
+            userBirth: localDate // Date 객체로 입력받음
         }));
     };
 
@@ -290,7 +301,7 @@ const UserJoin = () => {
     // 회원가입 처리 서버 요청
     const fetchSignUpPost = async () => {
 
-        const res = await fetch(API_BASE_URL, {
+        const res = await fetch(BASE_URL, {
             method: 'POST',
             headers: { 'content-type' : 'application/json' },
             body: JSON.stringify(userValue)
@@ -324,72 +335,64 @@ const UserJoin = () => {
 
 
     //렌더링이 끝난 이후 실행되는 함수
-    userEffect(() => {
+    useEffect(() => {
     }, []);
     return (
-        <Common className={'join-wrapper'}>
-            <section className={'top-wrapper'}>
-                <img src={logo} alt={'logo'} className={'logo'}/>
-                <div className={'main-title'}>HI,WE ARE<br/>DDAMDDAM CLUB</div>
-            </section>
-            <div className={'background'}></div>
-            <section className={'form-wrapper'}>
-                <img src={profile} alt={'profileImg'} className={'profile-img'}></img>
-                <div className={'profile-img-text'}>프로필을 등록해주세요</div>
-                <div className={'input-id'}>
-                    <input type={"text"} className={'id'} name={'id'} placeholder={'아이디'}  />
-                    <button className={'check-btn'}>중복확인</button>
-                </div>
+      <Common className={'join-wrapper'}>
+          <section className={'top-wrapper'}>
+              <img src={logo} alt={'logo'} className={'logo'}/>
+              <div className={'main-title'}>HI,WE ARE<br/>DDAMDDAM CLUB</div>
+          </section>
+          <div className={'background'}></div>
+          <section className={'form-wrapper'}>
+              <img src={profile} alt={'profileImg'}  className={'profile-img'}></img>
+              <div className={'profile-img-text'}>프로필을 등록해주세요</div>
+              <div className={'input-email'}>
+                  <input type={"text"} className={'email-input'} id={'userEmail'}  name={'userEmail'} placeholder={'이메일'} onChange={emailHandler}/>
+                  <select className={'email-select'} value={''} >
+                      <option value={'gmail.com'}>@gmail.com</option>
+                      <option value={'gmail.com'}>@gmail.com</option>
+                      <option value={'gmail.com'}>@gmail.com</option>
+                  </select>
+                  <span style={
+                      correct.userEmail ? {color: 'green'} :{color : 'red'} //입력값검증시에 글씨 색깔
+                  }>{message.userEmail}</span>
+                  <button className={'check-btn'}>인증하기</button>
+              </div>
+              <div className={'input-pw'}>
+                  <input type={"text"} className={'pw'} id={'password'} name={'password'} placeholder={'비밀번호'} onChange={passwordHandler}/>
+                  <span style={
+                      correct.password ? {color: 'green'} :{color : 'red'} //입력값검증시에 글씨 색깔
+                  }>{message.password}</span>
+              </div>
+              <div className={'input-pwcheck'}>
+                  <input type={"text"} className={'pw-check'} id={'passwordCheck'} name={'pw-check'} placeholder={'비밀번호 확인'} onChange={pwcheckHandler}/>
+                  <span id={'check-span'} style={
+                      correct.passwordCheck ? {color: 'green'} :{color : 'red'} //입력값검증시에 글씨 색깔
+                  }>{message.passwordCheck}</span>
+              </div>
 
-                <div className={'input-pw'}>
-                    <input type={"text"} className={'pw'} name={'pw'} placeholder={'비밀번호'} onChange={passwordHandler}/>
-                    <span style={
-                        correct.password ? {color: 'green'} :{color : 'red'} //입력값검증시에 글씨 색깔
-                    }>{message.password}</span>
-                </div>
-                <div className={'input-pwcheck'}>
-                    <input type={"text"} className={'pw-check'} name={'pw-check'} placeholder={'비밀번호 확인'} onChange={pwcheckHandler}/>
-                    <span style={
-                        correct.passwordCheck ? {color: 'green'} :{color : 'red'} //입력값검증시에 글씨 색깔
-                    }>{message.passwordCheck}</span>
-                </div>
 
-                <div className={'input-email'}>
-                    <input type={"text"} className={'email-input'} name={'email'} placeholder={'이메일'} onChange={emailHandler}/>
-                        <select className={'email-select'} value={''} >
-                            <option value={'gmail.com'}>@gmail.com</option>
-                            <option value={'gmail.com'}>@gmail.com</option>
-                            <option value={'gmail.com'}>@gmail.com</option>
-                        </select>
-                    <span style={
-                        correct.userEmail ? {color: 'green'} :{color : 'red'} //입력값검증시에 글씨 색깔
-                    }>{message.userEmail}</span>
-                    <button className={'check-btn'}>인증하기</button>
-                </div>
+              <div className={'input-detail'}>
+                  <input type={"text"} className={'name'} id={'username'} name={'username'} placeholder={'이름'} onChange={nameHandler}/>
+                  <span style={
+                      correct.userName ? {color: 'green'} :{color : 'red'} //입력값검증시 글씨 색깔 빨강색
+                  }>{message.userName}</span>
+                  <input type={"text"} className={'nickname'} id={'nickname'} name={'nickname'} placeholder={'닉네임'} onChange={nicknameHandler}/>
+                  <span style={
+                      correct.nickName ? {color: 'green'} :{color : 'red'} //입력값검증시에 글씨 색깔
+                  }>{message.nickName}</span>
+                  <input type={"text"} className={'career'} name={'userCareer'} defaultValue={''} id={'userCareer'} placeholder={'경력'} onChange={careerHandler}/>
+                  <input type={"text"} className={'birth'} id={'userBirth'} name={'userBirth'} placeholder={'생년월일 8자리'} onChange={birthHandler}/>
+                  <select className={'position-select'} id={'userPosition'} value={'selectedPosition'} onChange={positionHandler}>
+                      <option value={'백엔드'}>백엔드</option>
+                      <option value={'프론트엔드'}>프론트엔드</option>
+                  </select>
+              </div>
 
-                <div className={'input-nickname'}>
-                    <input type={"text"} className={'nickname'} name={'nickname'} placeholder={'닉네임'} onChange={nicknameHandler}/>
-                    <span style={
-                        correct.nickName ? {color: 'green'} :{color : 'red'} //입력값검증시에 글씨 색깔
-                    }>{message.nickName}</span>
-                </div>
-
-                <div className={'input-detail'}>
-                    <input type={"text"} className={'name'} id={'username'} name={'name'} placeholder={'이름'} onChange={nameHandler}/>
-                    <span style={
-                        correct.userName ? {color: 'green'} :{color : 'red'} //입력값검증시 글씨 색깔 빨강색
-                    }>{message.userName}</span>
-                    <input type={"text"} className={'career'} name={'career'} placeholder={'경력'} onChange={careerHandler}/>
-                    <input type={"text"} className={'birth'} name={'birth'} placeholder={'생년월일 8자리'} onChange={birthHandler}/>
-                    <select className={'position-select'} value={'selectedPosition'} onChange={positionHandler}>
-                        <option value={'백엔드'}>백엔드</option>
-                        <option value={'프론트엔드'}>프론트엔드</option>
-                    </select>
-                </div>
-
-                <button type={'submit'} className={'submit-btn'} onClick={joinButtonClickHandler}>가입완료</button>
-            </section>
-        </Common>
+              <button type={'submit'} className={'submit-btn'} onClick={joinButtonClickHandler}>가입완료</button>
+          </section>
+      </Common>
     );
 };
 
