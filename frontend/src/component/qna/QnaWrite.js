@@ -2,16 +2,17 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Common from "../common/Common";
 import './scss/QnaWrite.scss';
 import {MENTOR, QNA} from "../common/config/HostConfig";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Tags from '@yaireo/tagify/dist/react.tagify';
 import {getWhitelistFromServer, getValue} from './hashTagConfig/mockServer'
 
 const MentorsWrite = () => {
+    const redirection = useNavigate();
     const [textInput, setTextInput] = useState(
         {
             boardTitle: '',
             boardContent: '',
-            hashtaglist: []
+            hashtagList: []
         }
     )
 
@@ -30,20 +31,21 @@ const MentorsWrite = () => {
     }
 
     const handleSubmit = async () => {
+        console.log(textInput);
         // 수집한 값들을 이용하여 비동기 POST 요청 수행
         const {
             boardTitle,
             boardContent,
-            hashtaglist
+            hashtagList
         } = textInput;
 
-        if (boardTitle.length === 0 || boardContent.length === 0 || hashtaglist.length === 0) {
+        if (boardTitle.length === 0 || boardContent.length === 0 || hashtagList.length === 0) {
             alert('공백 없이 입력해주세요.');
         } else {
             const data = {
                 boardTitle: boardTitle,
                 boardContent: boardContent,
-                hashtaglist: hashtaglist
+                hashtagList: hashtagList
             };
             // 비동기 POST 요청 처리 로직 작성
             console.log(data); // 확인을 위해 콘솔에 출력
@@ -60,18 +62,8 @@ const MentorsWrite = () => {
                 return;
             } else {
                 alert('작성이 완료되었습니다.')
+                redirection('/qna')
             }
-            // fetch(QNA, {
-            //     method: 'POST',
-            //     headers: {'content-type': 'application/json'},
-            //     body: JSON.stringify(data)
-            // })
-            //     .then(res => res.json())
-            //     .then(json => {
-            //         console.log(`json값 어떻게 쓸지? : ${json}`);
-            //         alert('작성이 완료되었습니다.');
-            //         window.location.href = 'http://localhost:3000/mentors';
-            //     })
         }
         ;
     };
@@ -135,7 +127,7 @@ const MentorsWrite = () => {
 
         setTextInput((prevTextInput) => ({
             ...prevTextInput,
-            hashtaglist: hashTagArr
+            hashtagList: hashTagArr
         }));
     }, [])
 
@@ -186,7 +178,7 @@ const MentorsWrite = () => {
                     <button className={'close-btn'}>취소하기</button>
                 </Link>
                 {/*<button className={'submit-btn'} onClick={handleSubmit}>작성완료</button>*/}
-                <button className={'submit-btn'} onClick={submitTest}>작성완료</button>
+                <button className={'submit-btn'} onClick={handleSubmit}>작성완료</button>
             </div>
         </Common>
     );
