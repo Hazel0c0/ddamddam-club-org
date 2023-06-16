@@ -24,7 +24,7 @@ import java.util.Map;
 public class TokenProvider {
     
     @Value("${jwt.secret}")
-    private static String SECRET_KEY; // 토큰 서명에 사용할 불변성을 가진 비밀 키
+    private String SECRET_KEY; // 토큰 서명에 사용할 불변성을 가진 비밀 키
 
     /**
      * JWT 토큰 생성 메서드
@@ -33,18 +33,21 @@ public class TokenProvider {
      */
     public String createToken(User user) {
 
+        log.info("CREATING TOKEN...");
+
         // 토큰 만료시간 설정 (24시간)
         Date expiryDate = Date.from(
                 Instant.now().plus(1, ChronoUnit.DAYS)
         );
+
+        System.out.println("expiryDate = " + expiryDate);
 
         // 추가 클레임
         Map<String, Object> claims = new HashMap<>();
         claims.put("userEmail", user.getUserEmail());
         claims.put("userRole", user.getUserRole().toString());
 
-        // 토큰 생성
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .signWith(
                         Keys.hmacShaKeyFor(SECRET_KEY.getBytes())
                         , SignatureAlgorithm.HS512
@@ -55,6 +58,11 @@ public class TokenProvider {
                 .setIssuedAt(new Date()) // 토큰 발급 시간
                 .setExpiration(expiryDate) // 토큰 만료 시간
                 .compact();
+
+        System.out.println("token = " + token);
+
+        // 토큰 생성
+        return token;
     }
 
     /**
