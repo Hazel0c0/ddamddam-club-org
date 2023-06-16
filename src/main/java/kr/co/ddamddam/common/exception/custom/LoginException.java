@@ -8,11 +8,11 @@ public class LoginException extends CustomException {
     private final ErrorCode errorCode;
 
     @Getter
-    private final String userEmail;
+    private final String str;
 
-    public LoginException(ErrorCode e, String userEmail) {
+    public LoginException(ErrorCode e, String str) {
         super(e);
         this.errorCode = e;
-        this.userEmail = userEmail;
+        this.str = str;
     }
 }

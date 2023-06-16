@@ -2,6 +2,7 @@ package kr.co.ddamddam.user.entity;
 
 import kr.co.ddamddam.mentor.entity.Mentee;
 import kr.co.ddamddam.mentor.entity.Mentor;
+import kr.co.ddamddam.project.entity.ProjectLike;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.review.entity.Review;
 import lombok.*;
@@ -31,10 +32,10 @@ public class User {
     @Column(name = "user_idx")
     private Long userIdx; // 식별번호
 
-    @Column(name = "user_email", unique = true, nullable = false, length = 100)
+    @Column(name = "user_email", unique = true, nullable = false, length = 500)
     private String userEmail;
 
-    @Column(name = "user_password", nullable = false, length = 30)
+    @Column(name = "user_password", nullable = false, length = 200)
     private String userPassword;
 
     @Column(name = "user_name", nullable = false, length = 30)
@@ -66,8 +67,8 @@ public class User {
 
     @Column(name = "user_role", nullable = false)
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("'COMMON'")
-    private UserRole userRole;
+    @Builder.Default
+    private UserRole userRole = UserRole.COMMON;
 
     @OneToMany(mappedBy = "user")
     @Builder.Default
@@ -84,6 +85,11 @@ public class User {
     @OneToMany(mappedBy = "user")
     @Builder.Default
     private List<Review> review = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<ProjectLike> likedProjects = new ArrayList<>();
+
 
 }
 

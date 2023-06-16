@@ -60,4 +60,5 @@ public class Company {
     @OneToMany(mappedBy = "company")
     @Builder.Default
     private List<Review> review = new ArrayList<>();
+    
 }

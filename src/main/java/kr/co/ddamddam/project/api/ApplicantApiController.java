@@ -14,18 +14,15 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam/applicant")
 @Slf4j
+@CrossOrigin(origins = "http://localhost:3000")
 public class ApplicantApiController {
 
   private final ApplicantService applicantService;
 
-    /*
-          신청하기
-          게시글에서 신청하기 버튼을 누르면
-          자동으로 내가 입력했던 포지션을 가져와서 신청
-     */
-
   /**
    * 프로젝트 참가 신청
+   * 게시글에서 신청하기 버튼을 누르면
+   * 자동으로 내가 입력했던 포지션을 가져와서 신청
    *
    * @param userIdx : 세션에서 내 (유저)정보 받아올것
    */

@@ -19,7 +19,8 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 public class ReviewModifyRequestDTO {
-    @NotBlank
+
+    @NotNull
     private Long reviewIdx;
 
     @Size(min =1, max = 30)
@@ -30,15 +31,14 @@ public class ReviewModifyRequestDTO {
     @Min(1)
     private Float reviewRating;
 
-    @NotBlank
+
     private String reviewJob;
 
-    @NotBlank
     private int reviewTenure;
 
-    private Company reviewCompany;
+    private Long reviewCompany;
 
-    private String companyaName;
+    private String companyName;
 
     private String reviewLocation;
 
@@ -48,7 +48,7 @@ public class ReviewModifyRequestDTO {
 
     public Review toEntity(){
         Company company = new Company();
-        company.setCompanyName(this.companyaName);
+        company.setCompanyName(this.companyName);
         company.setCompanyArea(this.reviewLocation);
 
         return Review.builder()
