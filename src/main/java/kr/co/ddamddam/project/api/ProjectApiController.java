@@ -9,6 +9,7 @@ import kr.co.ddamddam.project.dto.request.ProjectSearchRequestDto;
 import kr.co.ddamddam.project.dto.request.ProjectWriteDTO;
 import kr.co.ddamddam.project.dto.response.ProjectDetailResponseDTO;
 import kr.co.ddamddam.project.dto.response.ProjectListPageResponseDTO;
+import kr.co.ddamddam.project.service.ProjectLikeService;
 import kr.co.ddamddam.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -131,19 +132,5 @@ public class ProjectApiController {
     }
   }
 
-
-  /*
-   * 퀵 매칭
-   * select : 내 포지션 / 오래된 순 / 남은자리가 작은것 부터
-   */
-  @GetMapping("/quick")
-  private ApplicationResponse<?> quickMatchingList(
-      PageDTO dto, ProjectSearchRequestDto searchDto){
-    log.info("/api/ddamddam/quick");
-
-    ProjectListPageResponseDTO quickList = projectService.quickMatching(dto, searchDto);
-
-    return ApplicationResponse.ok(quickList);
-  }
 
 }

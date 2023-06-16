@@ -5,7 +5,10 @@ import kr.co.ddamddam.company.dto.page.PageDTO;
 import kr.co.ddamddam.review.dto.request.ReviewModifyRequestDTO;
 import kr.co.ddamddam.review.dto.request.ReviewWriteRequestDTO;
 import kr.co.ddamddam.review.dto.response.ReviewDetailResponseDTO;
+import kr.co.ddamddam.review.dto.response.ReviewListPageResponseDTO;
 import kr.co.ddamddam.review.dto.response.ReviewListResponseDTO;
+import kr.co.ddamddam.review.dto.response.ReviewTopListResponseDTO;
+import kr.co.ddamddam.review.service.ReviewNotFoundException;
 import kr.co.ddamddam.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,23 +30,70 @@ public class ReviewApiController {
 
     //전체 목록 조회
     @GetMapping("/list")
-    public ResponseEntity<?> list(PageDTO pageDTO, @RequestParam(required = false)List<String> keyword){
+    public ResponseEntity<?> list(PageDTO pageDTO){
         log.info("api/ddamddam/reviews/list>page{}&size={}&sort={}",pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort());
-        ReviewListResponseDTO dto = reviewService.getList(pageDTO,keyword);
+        ReviewListPageResponseDTO dto = reviewService.getList(pageDTO);
         return ResponseEntity.ok().body(dto);
     }
 
     //상세 페이지 조회
     @GetMapping("/detail")
-    public ResponseEntity<?> detail(Long reviewIdx){
+    public ResponseEntity<?> detail(@RequestParam Long reviewIdx)  {
         log.info("api/ddamddam/reviews/detail?reviewIdx={}",reviewIdx);
-        ReviewDetailResponseDTO dto = reviewService.getDetail(reviewIdx);
+        ReviewDetailResponseDTO dto = null;
+        try {
+            dto = reviewService.getDetail(reviewIdx);
+        } catch (ReviewNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         return ResponseEntity.ok().body(dto);
     }
 
+    //키워드 검색
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<?> search(@PathVariable String keyword){
+        log.info("api/ddamddam/reviews/search/{} ", keyword);
+        List<ReviewListResponseDTO> dto =  reviewService.getKeywordList(keyword);
+        return ResponseEntity.ok().body(dto);
+    }
+
+    //최신순으로 조회하기
+    @GetMapping("/latest")
+    public ResponseEntity<?> latest(){
+        log.info("api/ddamddam/reviews/latest ");
+        List<ReviewListResponseDTO> dto =  reviewService.getListDateDesc();
+        return ResponseEntity.ok().body(dto);
+    }
+
+    //TOP3 뿌려주기
+    @GetMapping("/viewTop3")
+    public ResponseEntity<?> OrderByView3(){
+        log.info("api/ddamddam/reviews/viewTop3");
+        List<ReviewTopListResponseDTO> dto =  reviewService.getListTop3();
+        return ResponseEntity.ok().body(dto);
+    }
+
+    //조회순으로 조회하기
+    @GetMapping("/view")
+    public ResponseEntity<?> OrderByView(){
+        log.info("api/ddamddam/reviews/view ");
+        List<ReviewTopListResponseDTO> dto =  reviewService.getListOrderByView();
+        return ResponseEntity.ok().body(dto);
+    }
+
+    //평점순으로 조회하기
+    @GetMapping("/rating")
+    public ResponseEntity<?> OrderByrating(){
+        log.info("api/ddamddam/reviews/rating ");
+        List<ReviewListResponseDTO> dto =  reviewService.getListOrderByRateDesc();
+        return ResponseEntity.ok().body(dto);
+    }
+
+
     //게시물 생성하기
-    @PostMapping
-    public  ResponseEntity<?> write(@Validated @RequestBody ReviewWriteRequestDTO dto){
+    @PostMapping("/write")
+    public  ResponseEntity<?> write(@Validated @RequestBody ReviewWriteRequestDTO dto) throws ReviewNotFoundException {
+        log.info("POST : /reviews/write - 게시글 생성 {}", dto);
         Long userIdx = 2L;
         ReviewDetailResponseDTO responseDTO = reviewService.write(dto,userIdx);
         return ResponseEntity.ok().body(responseDTO);
@@ -61,18 +111,18 @@ public class ReviewApiController {
             return ResponseEntity.ok().body(responseDTO);
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body("해당 게시판은 존재하지 않습니다");
+        } catch (ReviewNotFoundException e) {
+            throw new RuntimeException(e);
         }
 
     }
 
-
-
     //게시물 삭제
-    @DeleteMapping("/{reviewIdx}")
+    @DeleteMapping("/delete/{reviewIdx}")
     public ResponseEntity<?> delete(
             @PathVariable Long reviewIdx
     ){
-        log.info("/api/ddamddam/reviews/{} DELETE!!",reviewIdx);
+        log.info("/api/ddamddam/delete/reviews/{} DELETE!!",reviewIdx);
         try {
             reviewService.delete(reviewIdx);
         }catch (RuntimeException e){

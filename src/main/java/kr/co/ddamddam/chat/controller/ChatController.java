@@ -8,7 +8,9 @@ import kr.co.ddamddam.chat.dto.response.ChatRoomResponseDTO;
 import kr.co.ddamddam.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/ddamddam/chat")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 @Slf4j
 public class ChatController {
 
@@ -23,10 +26,14 @@ public class ChatController {
 
     // 채팅방 생성
     @PostMapping("/rooms")
-    public ResponseEntity<ChatRoomResponseDTO> createChatRoom(@RequestBody ChatRoomRequestDTO requestDTO) {
-        ChatRoomResponseDTO responseDTO = chatService.createChatRoom(requestDTO);
-        log.info("requestDTO 들어옴: {}",requestDTO);
-        return ResponseEntity.ok(responseDTO);
+    public ResponseEntity<?> createChatRoom(
+            @RequestBody ChatRoomRequestDTO dto
+    ) {
+        Long userId = 1L;
+        log.info("requestDTO 들어옴: {}",dto);
+
+            ChatRoomResponseDTO responseDTO = chatService.createChatRoom(dto,userId);
+            return ResponseEntity.ok(responseDTO);
     }
 
     // 채팅 주고받기
@@ -55,11 +62,15 @@ public class ChatController {
     public ResponseEntity<?> detail(
             @PathVariable Long mentorIdx
     ){
-        Long senderIdx = 2L;
+        Long senderIdx = 1L;
 
-        List<ChatMessageResponseDTO> list = chatService.getDetail(mentorIdx,senderIdx);
-
-        return ResponseEntity.ok().body(list);
+        try {
+            List<ChatMessageResponseDTO> list = chatService.getDetail(mentorIdx, senderIdx);
+            return ResponseEntity.ok().body(list);
+        } catch (NullPointerException e) {
+            // 예외 처리를 원하는 방식으로 처리합니다.
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("채팅 기록이 없습니다");
+        }
     }
 
     // 채팅방 삭제

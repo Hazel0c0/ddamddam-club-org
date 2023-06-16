@@ -186,7 +186,7 @@ public class QnaApiController {
     /**
      * 게시글 조회수 상승
      * @param boardIdx - 조회수를 상승시킬 게시글의 index
-     * @return - SUCCESS
+     * @return - 상승 성공시 SUCCESS, 실패시 FAIL
      */
     @PatchMapping("/{boardIdx}/views")
     public ApplicationResponse<?> updateViewCount(
@@ -206,7 +206,7 @@ public class QnaApiController {
     /**
      * QNA 게시글 채택 완료 처리
      * @param boardIdx - 채택 완료 처리를 할 게시글의 index
-     * @return - SUCCESS
+     * @return - 채택 성공시 SUCCESS, 실패시 FAIL
      */
     @PatchMapping("/{boardIdx}/adopts")
     public ApplicationResponse<?> adoptQnaBoard(

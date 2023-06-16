@@ -2,7 +2,6 @@ package kr.co.ddamddam.chat.service;
 
 import kr.co.ddamddam.chat.dto.request.ChatMessageRequestDTO;
 import kr.co.ddamddam.chat.dto.request.ChatRoomRequestDTO;
-import kr.co.ddamddam.chat.dto.response.ChatAllListResponseDTO;
 import kr.co.ddamddam.chat.dto.response.ChatMessageResponseDTO;
 import kr.co.ddamddam.chat.dto.response.ChatRoomResponseDTO;
 import kr.co.ddamddam.chat.dto.response.UserResponseDTO;
@@ -15,16 +14,17 @@ import kr.co.ddamddam.mentor.repository.MentorRepository;
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChatService {
 
     private final ChatRoomRepository chatRoomRepository;
@@ -33,24 +33,53 @@ public class ChatService {
     private final MentorRepository mentorRepository;
 
 
-    public ChatRoomResponseDTO createChatRoom(ChatRoomRequestDTO requestDTO) {
-        User sender = userRepository.findById(requestDTO.getSenderId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid senderId"));
+    /**
+     * 접속한 멘티가 채팅방을 만들면서 상대방은 멘토로 고정
+     * 멘토는 멘토게시글에서 user Entity를 가져와서 DB에 저장
+     * @param dto
+     * @param userId
+     * @return
+     */
+    public ChatRoomResponseDTO createChatRoom(ChatRoomRequestDTO dto, Long userId) {
 
-        User receiver = userRepository.findById(requestDTO.getReceiverId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid receiverId"));
+        ChatRoom findByChatRoomUser = chatRoomRepository.findByMentorMentorIdxAndSenderUserIdx(dto.getMentorIdx(), userId);
+//        log.info("해당 게시글에 채팅방 생성 이력이 있는지 : {}",findByChatRoomUser.toString());
 
-        ChatRoom chatRoom = new ChatRoom();
-        chatRoom.setSender(sender);
-        chatRoom.setReceiver(receiver);
+        if (findByChatRoomUser == null) {
+            log.info("채팅방 이력 없음: ");
+            User sender = userRepository.findById(userId)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid senderId"));
 
-        ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
+            Mentor findMentor = mentorRepository.findById(dto.getMentorIdx()).orElseThrow();
+            User receiver = findMentor.getUser();
 
-        return convertToChatRoomResponseDTO(savedChatRoom);
+//        User receiver = userRepository.findById(requestDTO.getReceiverId())
+//                .orElseThrow(() -> new IllegalArgumentException("Invalid receiverId"));
+
+            ChatRoom chatRoom = new ChatRoom();
+            chatRoom.setSender(sender);
+            chatRoom.setReceiver(receiver);
+            chatRoom.setMentor(findMentor);
+
+            ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
+
+            return convertToChatRoomResponseDTO(savedChatRoom);
+        }
+        else{
+
+            ChatRoomResponseDTO responseDTO = new ChatRoomResponseDTO();
+            responseDTO.setRoomId(findByChatRoomUser.getRoomId());
+            responseDTO.setSender(new UserResponseDTO(findByChatRoomUser.getSender()));
+            responseDTO.setReceiver(new UserResponseDTO(findByChatRoomUser.getReceiver()));
+
+            return responseDTO;
+        }
     }
 
-    public ChatMessageResponseDTO sendMessage(Long roomId, ChatMessageRequestDTO requestDTO) {
-        ChatRoom chatRoom = chatRoomRepository.findById(roomId)
+    public ChatMessageResponseDTO sendMessage(Long mentorIdx, ChatMessageRequestDTO requestDTO) {
+        ChatRoom senderUserIdx = chatRoomRepository.findByMentorMentorIdxAndSenderUserIdx(mentorIdx, requestDTO.getSenderId());
+
+        ChatRoom chatRoom = chatRoomRepository.findById(senderUserIdx.getRoomId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid roomId"));
 
         User sender = userRepository.findById(requestDTO.getSenderId())
@@ -136,6 +165,24 @@ public class ChatService {
         ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow();
 
         chatRoomRepository.delete(chatRoom);
+    }
+
+    public ChatMessageResponseDTO processChatMessage(ChatMessageRequestDTO requestDTO) {
+        ChatRoom chatRoom = chatRoomRepository.findById(requestDTO.getRoomId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid roomId"));
+
+        User sender = userRepository.findById(requestDTO.getSenderId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid senderId"));
+
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setRoom(chatRoom);
+        chatMessage.setSender(sender);
+        chatMessage.setContent(requestDTO.getMessage());
+        chatMessage.setSentAt(LocalDateTime.now());
+
+        ChatMessage savedChatMessage = chatMessageRepository.save(chatMessage);
+
+        return convertToChatMessageResponseDTO(savedChatMessage);
     }
 }
 
