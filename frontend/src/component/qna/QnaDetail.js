@@ -1,15 +1,14 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import './scss/QnaDetail.scss';
 import Common from "../common/Common";
-import {json, useParams} from "react-router-dom";
+import {json, Link, useParams} from "react-router-dom";
 import viewIcon from "../../src_assets/view-icon.png";
 import speechBubble from "../../src_assets/speech-bubble.png";
-import {QNAREPLY} from "../common/config/HostConfig";
+import {QNA, QNAREPLY} from "../common/config/HostConfig";
 import qnaDetail from "./QnaDetail";
 
 const QnaDetail = () => {
     const inputRef = useRef();
-    const replyIdxRef = useRef(null);
     const {boardIdx} = useParams();
     const [detailQna, setDetailQna] = useState(null);
     const $clickMore = useRef();
@@ -18,7 +17,7 @@ const QnaDetail = () => {
 
     useEffect(() => {
         console.log(boardIdx);
-        fetch(`//localhost:8181/api/ddamddam/qna/${boardIdx}`)
+        fetch(`${QNA}/${boardIdx}`)
             .then((res) => {
                 if (res.status === 500) {
                     alert('잠시 후 다시 접속해주세요.[서버오류]');
@@ -56,6 +55,10 @@ const QnaDetail = () => {
 
     //댓글 작성
     const writeReplyHandler = async () => {
+        if (detailQna.boardAdoption === 'Y'){
+            alert('이미 채택된 글은 댓글을 작성하실 수 없습니다.');
+            return;
+        }
         const inputContent = document.querySelector('.reply-input').value;
         // console.log(`inputContent의 값 ${inputContent}`);
         const res = await fetch(`${QNAREPLY}/write`, {
@@ -172,7 +175,6 @@ const QnaDetail = () => {
 
     }
 
-    // const replyAdoptionHandler = (replyAdoption, boardAdoption) => {
     const replyAdoptionHandler = (boardAdoption) => {
         if (boardAdoption === 'Y') {
             if (chekedReplyAdoption.replyAdoption === 'Y') {
@@ -185,6 +187,13 @@ const QnaDetail = () => {
         }
     };
 
+    //댓글 수정
+    const modifyHandler = (event) => {
+        if (detailQna.boardAdoption === 'Y'){
+            alert('이미 채택된 글은 수정 또는 삭제하실 수 없습니다.');
+            event.preventDefault();
+        }
+    }
 
     return (
         <Common className={'qna-detail-wrapper'}>
@@ -207,7 +216,7 @@ const QnaDetail = () => {
                         <section className={'info-detail-container'}>
                             <div className={'detail-wrapper'}>
                                 <div className={'category'}>
-                                    <span className={'modify-btn'}>수정</span>
+                                    <Link to={`/api/ddamddam/qna/modify/${boardIdx}`} className={'modify-btn'} onClick={modifyHandler}>수정</Link>
                                     <span className={'delete-btn'}>삭제</span>
                                 </div>
 
