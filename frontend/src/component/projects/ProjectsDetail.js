@@ -50,11 +50,40 @@ const ProjectsDetail = () => {
         }
         console.log('삭제됨');
         navigate('/projects');
+        setProjectDetail([response.payload]);
+
       })
       .catch(error => {
         console.error(error);
       });
   }
+
+  const handleApply = () => {
+    // 11 대신 유저 번호 넣을거
+    fetch(PROJECT + `/applicant/11/${projectIdx}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        // 요청 본문에 필요한 데이터를 추가할 수 있습니다.
+        // 예: 사용자 정보, 프로젝트 정보 등
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to apply for project');
+        }
+        console.log('신청 성공')
+        console.log(response.json())
+        // 성공적으로 요청을 보냈을 때 처리할 코드를 추가합니다.
+      })
+      .catch((error) => {
+        console.error(error);
+        // 요청이 실패했을 때 처리할 코드를 추가합니다.
+      });
+  };
+
 
   return (
     <>
@@ -104,7 +133,7 @@ const ProjectsDetail = () => {
               </section>
               <section className={'main-content'}>{de.boardContent}</section>
               <section className={'apply-wrapper'}>
-                <div className={'apply-btn'}>신청하기</div>
+                <div className={'apply-btn'} onClick={handleApply} >신청하기</div>
               </section>
             </div>
           </section>
