@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import Common from "../common/Common";
 import logo from "../../src_assets/logo(basic).png";
 import {Link, useNavigate} from "react-router-dom";
