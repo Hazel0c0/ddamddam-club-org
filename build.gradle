@@ -23,6 +23,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	testImplementation 'org.projectlombok:lombok:1.18.26'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
@@ -53,13 +54,10 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 
-	//이메일인증
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3'
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
-	// Thymeleaf 관련 의존성(이메일인증)
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+	// -------------- 메일 인증
+	implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	// -------------- 메일 인증
 }
 
 tasks.named('test') {
