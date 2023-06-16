@@ -1,23 +1,17 @@
 package kr.co.ddamddam.user.api;
 
-import kr.co.ddamddam.common.response.ApplicationResponse;
-import kr.co.ddamddam.user.dto.request.LoginRequestDTO;
 import kr.co.ddamddam.user.dto.request.UserRequestSignUpDTO;
-import kr.co.ddamddam.user.dto.response.LoginResponseDTO;
 
 import kr.co.ddamddam.user.dto.response.UserSignUpResponseDTO;
-import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.exception.DuplicatedEmailException;
 import kr.co.ddamddam.user.exception.NoRegisteredArgumentsException;
-import kr.co.ddamddam.user.service.UserSingUpService;
+import kr.co.ddamddam.user.service.UserSignUpService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 /**
  * 회원가입, 로그인 요청을 처리하는 컨트롤러
@@ -29,7 +23,7 @@ import java.util.Optional;
 public class UserApiController {
 
 //    private final UserService userService;
-    private final UserSingUpService userSingUpService;
+    private final UserSignUpService userSingUpService;
 
 //    @PostMapping("/signin")
 //    public ApplicationResponse<?> signIn(
