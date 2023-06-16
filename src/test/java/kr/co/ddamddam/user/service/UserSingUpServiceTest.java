@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 
 @Service
 @Slf4j
@@ -23,7 +21,7 @@ class UserSingUpServiceTest {
 
 
     @Autowired
-    UserSingUpService userSingUpService;
+    UserSignUpService userSingUpService;
 
     @Test
     @DisplayName("중복된 이메일로 회원가입을 시도하면 RuntimeException 발생")
