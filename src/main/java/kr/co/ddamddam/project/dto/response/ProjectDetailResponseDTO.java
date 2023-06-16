@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class ProjectDetailResponseDTO {
   private String boardWriter;
 
+  private Long boardIdx;
   private String boardTitle;
   private String boardContent;
   private String projectType;
@@ -40,6 +41,7 @@ public class ProjectDetailResponseDTO {
 
   public ProjectDetailResponseDTO(Project project){
     this.boardWriter =project.getWriter();
+    this.boardIdx =project.getProjectIdx();
     this.boardTitle =project.getProjectTitle();
     this.boardContent =project.getProjectContent();
     this.projectType = project.getProjectType();

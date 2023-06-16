@@ -27,3 +27,36 @@
   }
 }
 
+.projects-write-btn{
+  position: relative;
+  left: 88%;
+  top: 146px;
+  padding: 13px 30px;
+  background-color: #292834;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 17px;
+  border: none;
+}
+
+.sort-button-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  div {
+    margin: 0 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #eaeaea;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #ccc;
+    }
+  }
+}
