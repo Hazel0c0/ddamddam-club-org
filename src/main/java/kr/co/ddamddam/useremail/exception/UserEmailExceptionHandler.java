@@ -14,11 +14,11 @@ import java.io.UnsupportedEncodingException;
 public class UserEmailExceptionHandler {
     @ExceptionHandler({MessagingException.class, UnsupportedEncodingException.class})
     public ResponseEntity<?> memberEmailExceptionHandler() {
-        return ResponseEntity.internalServerError().body("회원가입 인증 코드 전송에 실패했습니다.");
+        return ResponseEntity.internalServerError().body("인증 코드 전송에 실패했습니다.");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class) // @Valid
     public ResponseEntity<?> methodArgumentNotValidException() {
-        return ResponseEntity.badRequest().body("회원가입 인증 코드를 받을 이메일 양식이 다릅니다.");
+        return ResponseEntity.badRequest().body("인증 코드를 받을 이메일 양식이 다릅니다.");
     }
 }
