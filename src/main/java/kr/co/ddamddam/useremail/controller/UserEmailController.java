@@ -21,7 +21,7 @@ public class UserEmailController {
     public ResponseEntity<UserCodeResponseDTO> EmailCheck(@Valid @RequestBody UserEmailCheckRequestDTO emailCheckReq) throws MessagingException, UnsupportedEncodingException {
         UserCodeResponseDTO memberCodeResponseDTO = emailService.sendEmail(emailCheckReq.getEmail());
 
-        return ResponseEntity.ok().body/**/(memberCodeResponseDTO);    // Response body에 값을 반환해줄게요~
+        return ResponseEntity.ok().body/**/(memberCodeResponseDTO);
     }
 
     @PostMapping("/check")
