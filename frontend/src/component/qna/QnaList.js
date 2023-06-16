@@ -18,7 +18,7 @@ const QnaList = ({searchValue}) => {
     const asyncQnaList = async () => {
         let responseUrl;
         if (searchValue === '' || searchValue === '전체') {
-            responseUrl = '?page=1&size=9'
+            responseUrl = '?page=4&size=10'
         } else if (searchValue === '미채택') {
             responseUrl = '/non-adopts';
         } else if (searchValue === '채택완료') {

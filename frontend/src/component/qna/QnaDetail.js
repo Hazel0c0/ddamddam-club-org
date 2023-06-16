@@ -14,7 +14,8 @@ const QnaDetail = () => {
     const [detailQna, setDetailQna] = useState(null);
     const $clickMore = useRef();
     const [replyList, setReplyList] = useState([]);
-    const [chekedReplyAdoption, setChekedReplyAdoption] = useState([]);
+    const [checkedReplyAdoption, setCheckedReplyAdoption] = useState([]);
+    const [orderIndex, setOrderIndex] = useState(-1);
 
     useEffect(() => {
         console.log(boardIdx);
@@ -45,7 +46,7 @@ const QnaDetail = () => {
                         replyAdoption : reply.replyAdoption
                     }
                 });
-                setChekedReplyAdoption(modifiedCheckBtn);
+                setCheckedReplyAdoption(modifiedCheckBtn);
 
                 console.log(`modifiedCheckBtn : ${JSON.stringify(modifiedCheckBtn)}`);
 
@@ -125,6 +126,8 @@ const QnaDetail = () => {
     const adoptHandler = async (e) => {
         const confirmBtn = window.confirm("정말 채택하시겠습니까? 채택 완료 후 수정이 불가합니다.");
         console.log(`replyIdx : ${e.target.closest('.reply-content-wrapper').querySelector('.replyIdx').value}`)
+
+        // ㅈㄱㄹㅈㄷ
         const replyIdxValue = e.target.closest('.reply-content-wrapper').querySelector('.replyIdx').value;
 
         const res = await fetch(`${QNAREPLY}/adopts/${replyIdxValue}`, {
@@ -147,21 +150,26 @@ const QnaDetail = () => {
         const replyData = await res.json();
 
         if (replyData.payload === "SUCCESS") {
-            const replyIndex = chekedReplyAdoption.findIndex((reply) => reply.replyIdx === +replyIdxValue);
+            console.log("여기까지는 넘어옴");
+            const replyIndex = checkedReplyAdoption.findIndex((reply) => {
+                console.log('after success reply: ', reply);
+                console.log('after success replyIdxVal: ', replyIdxValue);
+                return reply.replyIdx === +replyIdxValue;
+            });
             console.log(`replyIndex = ${replyIndex}`);
-            console.log(`chekedReplyAdoption의 값 : ${JSON.stringify(chekedReplyAdoption)}`);
+            console.log(`checkedReplyAdoption 값 : ${JSON.stringify(checkedReplyAdoption)}`);
             if (replyIndex !== -1) {
-                const updatedChekedReplyAdoption = [...chekedReplyAdoption];
+                const updatedChekedReplyAdoption = [...checkedReplyAdoption];
                 updatedChekedReplyAdoption[replyIndex] = {
                     ...updatedChekedReplyAdoption[replyIndex],
                     replyAdoption: 'Y'
                 };
-                setChekedReplyAdoption(updatedChekedReplyAdoption);
+                setCheckedReplyAdoption(updatedChekedReplyAdoption);
                 console.log(`set되고 출력 updatedChekedReplyAdoption 값 : ${JSON.stringify(updatedChekedReplyAdoption)}`);
             }
 
 
-            // const replyInfo = chekedReplyAdoption.find((reply) => reply.index === index);
+            // const replyInfo = checkedReplyAdoption.find((reply) => reply.index === index);
             setDetailQna(prevQna => {
                 return {
                     ...prevQna,
@@ -178,7 +186,7 @@ const QnaDetail = () => {
 
     const replyAdoptionHandler = (boardAdoption) => {
         if (boardAdoption === 'Y') {
-            if (chekedReplyAdoption.replyAdoption === 'Y') {
+            if (checkedReplyAdoption.replyAdoption === 'Y') {
                 return <button className={'adoption-btn-checked'}>채택완료</button>;
             } else {
                 return <button className={'adoption-btn-disabled'} disabled>채택불가</button>;
@@ -291,7 +299,12 @@ const QnaDetail = () => {
                                 <img src={speechBubble} className={'reply-icon'}/>댓글
                                 <span className={'reply-count'}>{detailQna.replyList.length}</span>
                             </p>
-                            {replyList.map((reply, index) => (
+                            {replyList.map((reply, index) => {
+
+                                // setOrderIndex(index);
+
+                                console.log('index in replyList: ', index);
+                                return (
                                 <div className={'reply-list'} key={index}>
                                     <div className={'reply-top-wrapper'}>
                                         <p className={'reply-writer'}>{reply.replyWriter}</p>
@@ -322,7 +335,7 @@ const QnaDetail = () => {
                                         {/*{replyAdoptionHandler(detailQna.boardAdoption)}*/}
                                         <div>
                                             {detailQna.boardAdoption === 'Y' ? (
-                                                chekedReplyAdoption[index].replyAdoption === 'Y' ? (
+                                                checkedReplyAdoption && checkedReplyAdoption[index].replyAdoption === 'Y' ? (
                                                     <button className="adoption-btn-checked">채택완료</button>
                                                 ) : (
                                                     <button className="adoption-btn-disabled" disabled>채택불가</button>
@@ -334,7 +347,7 @@ const QnaDetail = () => {
 
                                     </div>
                                 </div>
-                            ))}
+                            )})}
 
                             <div className={'reply-input-wrapper'}>
                                 <textarea type={"text"} className={'reply-input'} placeholder={'댓글을 입력해주세요.'}
