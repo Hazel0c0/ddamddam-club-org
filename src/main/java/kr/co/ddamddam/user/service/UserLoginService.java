@@ -71,7 +71,7 @@ public class UserLoginService {
         log.info("[Login/Service] 로그인 처리 및 검증 - email : {}, password : {}", userEmail, rawPassword);
 
         User originalUser = userRepository.findByUserEmail(userEmail).orElseThrow(() -> {
-            log.info("email error!!!!!!!!!!!!!!!!11");
+            log.warn("EMAIL MATCH ERROR");
             throw new LoginException(NOT_FOUND_USER_BY_EMAIL, userEmail);
         });
 
@@ -79,7 +79,7 @@ public class UserLoginService {
 
         if (!rawPassword.equals(originalUser.getUserPassword())) {
 //        if (!encoder.matches(rawPassword, originalUser.getUserPassword())) {
-            log.info("password error!!!!!!!!!!!!!!!!11");
+            log.warn("PASSWORD MATCH ERROR");
             throw new LoginException(INVALID_PASSWORD, rawPassword);
         }
 

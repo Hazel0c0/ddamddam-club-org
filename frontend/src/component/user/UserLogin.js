@@ -20,6 +20,7 @@ const UserLogin = () => {
 
   const [email, setEmail] = useState(''); // email 필드의 상태를 관리
   const [password, setPassword] = useState(''); // password 필드의 상태를 관리
+  const [isChecked, setIsChecked] = useState(false); // 자동로그인 체크 여부 상태를 관리
 
   // 로그인 핸들러
   const loginHandler = async () => {
@@ -36,17 +37,20 @@ const UserLogin = () => {
       })
     });
 
-    // 가입 실패 or 비밀번호 오류
-    if (res.status === 400) {
-      const text = await res.text();
-      alert(text);
-      return;
+    const result = await res.json();
+    const payload = result.payload;
+    const finalResult = result.result;
+
+    // 비밀번호 오류
+    if (finalResult.code !== 200) {
+      const resultMessage = await finalResult.message;
+      alert('아이디 또는 비밀번호가 틀렸습니다. 다시 확인해주세요.');
+      document.querySelector('.id-input').value = '';
+      document.querySelector('.pw-input').value = '';
     }
 
-    const result = await res.json();
-    const final = result.payload;
-    console.log(result);
-    console.log(`payload의 값 : ${JSON.stringify(final)}`)
+    console.log(`payload 의 값 : ${JSON.stringify(payload)}`);
+
     const {
       token,
       userIdx,
@@ -60,28 +64,45 @@ const UserLogin = () => {
       userPoint,
       userProfile,
       userRole
-    } = final;
-    console.log(final.token)
-    console.log(userEmail);
+    } = payload;
 
     /**
      * 브라우저가 제공하는 로컬 스토리지에 발급받은 토큰 & 회원 정보를 저장합니다.
-     * 세션스토리지(브라우저가 종료되면 사라짐) - 서버X 로컬O
+     * 자동로그인 체크 안 한 경우 : 세션스토리지에 저장 (브라우저가 종료되면 사라짐)
      */
-    sessionStorage.setItem('ACCESS_TOKEN', token);
-    sessionStorage.setItem('LOGIN_USER_IDX', userIdx);
-    sessionStorage.setItem('LOGIN_USER_EMAIL', userEmail);
-    sessionStorage.setItem('LOGIN_USER_NAME', userName);
-    sessionStorage.setItem('LOGIN_USER_NICKNAME', userNickname);
-    sessionStorage.setItem('LOGIN_USER_REGDATE', userRegdate);
-    sessionStorage.setItem('LOGIN_USER_BIRTH', userBirth);
-    sessionStorage.setItem('LOGIN_USER_POSITION', userPosition);
-    sessionStorage.setItem('LOGIN_USER_CAREER', userCareer);
-    sessionStorage.setItem('LOGIN_USER_POINT', userPoint);
-    sessionStorage.setItem('LOGIN_USER_PROFILE', userProfile);
-    sessionStorage.setItem('LOGIN_USER_ROLE', userRole);
+    if (isChecked === false) {
+      sessionStorage.setItem('ACCESS_TOKEN', token);
+      sessionStorage.setItem('LOGIN_USER_IDX', userIdx);
+      sessionStorage.setItem('LOGIN_USER_EMAIL', userEmail);
+      sessionStorage.setItem('LOGIN_USER_NAME', userName);
+      sessionStorage.setItem('LOGIN_USER_NICKNAME', userNickname);
+      sessionStorage.setItem('LOGIN_USER_REGDATE', userRegdate);
+      sessionStorage.setItem('LOGIN_USER_BIRTH', userBirth);
+      sessionStorage.setItem('LOGIN_USER_POSITION', userPosition);
+      sessionStorage.setItem('LOGIN_USER_CAREER', userCareer);
+      sessionStorage.setItem('LOGIN_USER_POINT', userPoint);
+      sessionStorage.setItem('LOGIN_USER_PROFILE', userProfile);
+      sessionStorage.setItem('LOGIN_USER_ROLE', userRole);
+    }
+    /**
+     * 자동 로그인 체크한 경우 : 로컬스토리지에 저장 (브라우저가 종료되어도 클라이언트에 보관됨)
+     */
+    if (isChecked === true) {
+      localStorage.setItem('ACCESS_TOKEN', token);
+      localStorage.setItem('LOGIN_USER_IDX', userIdx);
+      localStorage.setItem('LOGIN_USER_EMAIL', userEmail);
+      localStorage.setItem('LOGIN_USER_NAME', userName);
+      localStorage.setItem('LOGIN_USER_NICKNAME', userNickname);
+      localStorage.setItem('LOGIN_USER_REGDATE', userRegdate);
+      localStorage.setItem('LOGIN_USER_BIRTH', userBirth);
+      localStorage.setItem('LOGIN_USER_POSITION', userPosition);
+      localStorage.setItem('LOGIN_USER_CAREER', userCareer);
+      localStorage.setItem('LOGIN_USER_POINT', userPoint);
+      localStorage.setItem('LOGIN_USER_PROFILE', userProfile);
+      localStorage.setItem('LOGIN_USER_ROLE', userRole);
+    }
 
-    // redirection('/');
+    redirection('/');
   }
 
   // 비밀번호 찾기 버튼 클릭 시
@@ -116,7 +137,7 @@ const UserLogin = () => {
         <section className={'pw-input-wrapper'}>
           <div className={'pw-title'}>비밀번호</div>
           <input
-            type={"text"}
+            type={"password"}
             placeholder={"비밀번호 입력"}
             className={'pw-input'}
             name={'pw'}
@@ -126,7 +147,12 @@ const UserLogin = () => {
         </section>
 
         <div className={'auto-login-wrapper'}>
-          <input type={"checkbox"} name={'autoLogin'} className={'autoLogin'}/>
+          <input
+            type={"checkbox"}
+            name={'autoLogin'}
+            className={'autoLogin'}
+            onChange={e => setIsChecked(e.target.checked)}
+          />
           <div className={'auto-login-title'}>자동로그인</div>
         </div>
 
