@@ -6,7 +6,6 @@ import kr.co.ddamddam.mypage.service.MyPageService;
 import kr.co.ddamddam.project.service.ProjectService;
 import kr.co.ddamddam.qna.qnaBoard.service.QnaService;
 import kr.co.ddamddam.review.service.ReviewService;
-import kr.co.ddamddam.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
