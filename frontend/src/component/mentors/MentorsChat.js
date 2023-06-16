@@ -21,9 +21,10 @@ const MentorsChat = () => {
   const chatScroll = useRef(null);
 
   const msgBox = chat.map((item, idx) => (
-    <div key={idx} className={item.name === name ? 'me' : 'other'}>
-      <span><b>{item.name}</b></span> [ {item.date} ]<br/>
-      <span>{item.msg}</span>
+    <div className={item.name === name ? 'sender-wrapper' : 'receiver-wrapper'} key={idx}>
+        <span className={item.name === name ? 'sender' : 'receiver'}>{item.name}</span>
+         {/* [ {item.date} ] */}
+        <span className={item.name === name ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
     </div>
   ));
 
@@ -46,25 +47,6 @@ const MentorsChat = () => {
       .then((result) => {
         setMessages(result);
       });
-
-    // 컴포넌트가 마운트되었을 때 웹소켓 연결
-//     ws.current = new WebSocket('ws://localhost:8181/chat'); // 웹소켓 서버 주소
-//     ws.current.onopen = () => {
-//       console.log('WebSocket 연결 성공');
-//       ws.current.send(JSON.stringify({ type: 'SUBSCRIBE', topic: '/topic/chat' }));
-//     };
-
-//     ws.current.onmessage = (event) => {
-//     // 새로운 메시지 도착 시 처리
-//       const newMessage = JSON.parse(event.data);
-//       setMessages((prevMessages) => [...prevMessages, newMessage]);
-//       chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
-//     };
-
-// // 컴포넌트가 언마운트될 때 웹소켓 연결 해제
-//      return () => {
-//        ws.current.close();
-//      };
   }, [chatPageIdx]);
 
 
@@ -89,7 +71,7 @@ const onText = event => {
 
 const webSocketLogin = useCallback(() => {
   ws.current = new WebSocket("ws://localhost:8181/socket/chat");
-
+  console.log('socket');
   ws.current.onmessage = (message) => {
       const dataSet = JSON.parse(message.data);
       setSocketData(dataSet);
@@ -97,15 +79,14 @@ const webSocketLogin = useCallback(() => {
 });
 const send = useCallback(() => {
   if(!chkLog) {
-      if(name === "") {
-          alert("이름을 입력하세요.");
-          document.getElementById("name").focus();
-          return;
-      }
+      // if(name === "") {
+      //     alert("이름을 입력하세요.");
+      //     document.getElementById("name").focus();
+      //     return;
+      // }
       webSocketLogin();
       setChkLog(true);
   }
-
   if(msg !== ''){
       const data = {
           name,
@@ -139,6 +120,10 @@ const send = useCallback(() => {
   useEffect(() => {
     chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
   }, [messages]);
+
+  useEffect(() => {
+    chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
+  }, [chat]);
 
   const handleInputChange = (event) => {
     setInput(event.target.value);
@@ -240,7 +225,7 @@ const send = useCallback(() => {
         </section>
 
         <section className={'input-section'}>
-          <textarea
+          {/* <textarea
             className={'text-input'}
             value={input}
             onChange={handleInputChange}
@@ -248,19 +233,25 @@ const send = useCallback(() => {
           ></textarea>
           <button onClick={handleSubmit} className={'send-btn'}>
             Send
-          </button>
+          </button> */}
 
-          <input disabled={chkLog}
+          {/* <input disabled={chkLog}
                         placeholder='이름을 입력하세요.' 
                         type='text' 
                         id='name' 
                         value={name} 
-                        onChange={(event => setName(event.target.value))}/>
-                    <div id='sendZone'>
-                        <textarea id='msg' value={msg} onChange={onText}
-                            onKeyDown={(ev) => {if(ev.keyCode === 13){send();}}}></textarea>
-                        <input type='button' value='전송' id='btnSend' onClick={send}/>
-                    </div>
+                        onChange={(event => setName(event.target.value))}/> */}
+                    {/* <div id='sendZone'> */}
+                        <textarea 
+                          className={'text-input'} 
+                          value={msg} onChange={onText}
+                          onKeyDown={(ev) => {if(ev.keyCode === 13){send();}}}
+                            placeholder={'대화를 입력해 멘토님과 이야기를 나눠보세요!'}>
+                        </textarea>
+                        <button className={'send-btn'} onClick={send}>
+                          SEND
+                        </button>
+                    {/* </div> */}
 
         </section>
       </div>
