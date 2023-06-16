@@ -3,7 +3,7 @@ import Common from "../common/Common";
 import './scss/ProjectsWrite.scss';
 import {PROJECT} from "../common/config/HostConfig";
 import {Link} from "react-router-dom";
-import ProjectsTitle from "./ProjectsTitle";
+import ProjectsTitle from "./mainpage/ProjectsTitle";
 
 const ProjectsWrite = () => {
   const [formData
