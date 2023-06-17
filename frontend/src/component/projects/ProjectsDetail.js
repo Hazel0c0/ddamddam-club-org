@@ -12,29 +12,32 @@ const ProjectsDetail = () => {
   const [projectDetail, setProjectDetail] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch(PROJECT + `/${projectIdx}`, {
-      method: 'GET',
-      headers: {'content-type': 'application/json'}
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch project');
-        }
-        return response.json();
-      })
-      .then(data => {
-        setProjectDetail([data.payload]);
+    const fetchProjectDetail = () => {
+        fetch(PROJECT + `/${projectIdx}`, {
+            method: 'GET',
+            headers: { 'content-type': 'application/json' }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch project');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setProjectDetail([data.payload]);
+                console.log(data.payload);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    };
 
-        console.log("1-----");
-        console.log(data.payload);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, []);
+    useEffect(() => {
+        fetchProjectDetail();
+    }, []);
 
-  console.log('2-----프로젝트 디테일 : ');
+
+    console.log('2-----프로젝트 디테일 : ');
   console.log(projectDetail.boardIdx);
 
   const handleDelete = (id) => {
@@ -77,6 +80,8 @@ const ProjectsDetail = () => {
         console.log('신청 성공')
         console.log(response.json())
         // 성공적으로 요청을 보냈을 때 처리할 코드를 추가합니다.
+          fetchProjectDetail(); // 변경된 정보로 다시 가져오기
+
       })
       .catch((error) => {
         console.error(error);

@@ -42,7 +42,7 @@ const ProjectsItem = ({url, sortTitle}) => {
 
     // 서버에 좋아요 처리를 위한 POST 요청을 보냅니다
     // 1-> ${userIdx} 세션에서 가져올거라 없어질 예정
-    fetch(PROJECT+`/like/4/${projectId}`, {
+    fetch(PROJECT+`/like/9/${projectId}`, {
       method: 'POST',
       headers: {'content-type': 'application/json'}
     })
@@ -90,7 +90,10 @@ const ProjectsItem = ({url, sortTitle}) => {
                 {p.completion ? '모집완료' : '구인중'}
               </div>
               <div className={'project-like-btn'}
-                   onClick={() => handleLikeClick(p.boardIdx)}
+                   onClick={(e) => {
+                       e.stopPropagation();
+                       handleLikeClick(p.boardIdx)
+                   }}
               >
               {/*  토큰 정보 = like 누른 회원 비교 -> 버튼 색상 설정   */}
                 <div className={'project-like'}>♥ {p.likeCount}</div>
