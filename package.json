@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@yaireo/tagify": "^4.17.8",
+    "js-joda": "^1.11.0"
+  }
+}
