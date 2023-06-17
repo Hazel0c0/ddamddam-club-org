@@ -21,8 +21,9 @@ public class KakaoLoginController {
     private final KakaoLoginService kakaoLoginService;
 
     /**
-     * 클라이언트에서 보낸 카카오 인가 코드를 받고 카카오에서 토큰 정보를 받아오는 기능
-     * @return
+     * 클라이언트에서 보낸 인가코드로 카카오 액세스 토큰을 발급받고
+     * 액세스 토큰을 통해 카카오 로그인 및 우리 서비스의 회원가입을 처리합니다.
+     * @return 카카오 로그인 응답 DTO (상태코드, 우리 서비스의 토큰, 유저 이메일)
      */
     @GetMapping("/kakao")
     public ResponseEntity<?> kakaoCallBack(

@@ -12,14 +12,14 @@ import java.util.HashMap;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Builder
-public class UserKakaoSignUpRequestDTO {
+public class KakaoSignUpRequestDTO {
 
     private String userId;
     private String userNickname;
     private String userEmail;
     private String userPassword;
 
-    public UserKakaoSignUpRequestDTO(String email, String nickname, String userPassword, String id) {
+    public KakaoSignUpRequestDTO(String email, String nickname, String userPassword, String id) {
         this.userId = id;
         this.userNickname = nickname;
         if (email != null) {
@@ -28,7 +28,7 @@ public class UserKakaoSignUpRequestDTO {
         this.userPassword = userPassword;
     }
 
-    public UserKakaoSignUpRequestDTO (
+    public KakaoSignUpRequestDTO(
             HashMap<String, Object> userInfo
     ) {
         // 카카오 계정으로 회원가입 시 비밀번호 임의 지정
