@@ -39,6 +39,7 @@ public class UserSignUpResponseDTO {
         this.userEmail = user.getUserEmail();
         this.userPw = user.getUserPassword();
         this.userName = user.getUserName();
+        this.userNickName = user.getUserNickname();
         this.userBirth =  user.getUserBirth();
         this.userPosition = user.getUserPosition();
         this.userCareer = user.getUserCareer();

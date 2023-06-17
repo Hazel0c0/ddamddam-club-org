@@ -36,6 +36,7 @@ public class Project {
   private String projectContent;
 
   // 작성자 FK
+  @Column(nullable = false)
   private String writer;
 
   @Column(nullable = false, length = 10)
@@ -58,8 +59,8 @@ public class Project {
   private LocalDateTime projectDate;
 
   // FK
-//  @Column(nullable = false)
-  private String userIdx;
+  @Column(nullable = false)
+  private Long userIdx;
 
   // 좋아요
   @Column(nullable = false)

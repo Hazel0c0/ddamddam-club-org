@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Setter @Getter
-@ToString
+@ToString(exclude = {"user", "chatRooms"})
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
