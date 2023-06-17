@@ -4,8 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import kr.co.ddamddam.config.security.TokenProvider;
-import kr.co.ddamddam.kakaologin.dto.request.UserKakaoSignUpRequestDTO;
-import kr.co.ddamddam.kakaologin.dto.response.UserKakaoLoginResponseDTO;
+import kr.co.ddamddam.kakaologin.dto.request.KakaoSignUpRequestDTO;
+import kr.co.ddamddam.kakaologin.dto.response.KakaoLoginResponseDTO;
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -32,8 +31,8 @@ public class KakaoLoginService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-
     private TokenProvider tokenProvider;
+    
     @Value("${sns.kakao.app-key}")
     private String kakaoAppKey;
     @Value("${sns.kakao.redirect-uri}")
@@ -43,27 +42,26 @@ public class KakaoLoginService {
      * 카카오 로그인
      * 첫 로그인 시, 회원가입을 수행합니다.
      * @param accessToken - 카카오 액세스 토큰
-     * @return 카카오 로그인 응답 DTO (상태코드, 우리 서비스의 토큰, 유저 이메일)
+     * @return 카카오 로그인 응답 DTO
+     *          (상태코드, 우리 서비스의 토큰, 비밀번호를 제외한 회원정보)
      */
-    public UserKakaoLoginResponseDTO kakaoLogin (final String accessToken) {
+    public KakaoLoginResponseDTO kakaoLogin (final String accessToken) {
 
         log.info("[KakaoLoginService] kakaoLogin... - accessToken : {}", accessToken);
 
-        UserKakaoSignUpRequestDTO userKakaoSignUpRequestDTO
-                = new UserKakaoSignUpRequestDTO(getUserKakaoInfo(accessToken));
+        KakaoSignUpRequestDTO kakaoSignUpRequestDTO
+                = new KakaoSignUpRequestDTO(getUserKakaoInfo(accessToken));
 
         User user
-                = findByUserEmail(userKakaoSignUpRequestDTO.getUserEmail(), userKakaoSignUpRequestDTO);
+                = findByUserEmail(kakaoSignUpRequestDTO.getUserEmail(), kakaoSignUpRequestDTO);
 
         String token = tokenProvider.createToken(user);
 
-        return new UserKakaoLoginResponseDTO(
-                HttpStatus.OK, token, user.getUserEmail()
-        );
+        return new KakaoLoginResponseDTO(HttpStatus.OK, token, user);
     }
 
     /**
-     * 인가코드를 통해 Kakao Access Token 을 받아옵니다.
+     * 인가코드를 통해 카카오 액세스 토큰을 받아옵니다.
      * @return 카카오 액세스 토큰
      */
     public String getKakaoAccessToken(final String code) {
@@ -194,19 +192,19 @@ public class KakaoLoginService {
      * 이미 카카오 계정으로 가입되어 있는 지 확인하고 해당 유저의 정보를 찾아 반환합니다.
      * 가입이 되어 있지 않은 경우, 회원가입을 수행합니다.
      * @param userEmail - 회원의 이메일
-     * @param userKakaoSignUpRequestDTO - 회원가입에 사용할 카카오 회원가입 요청 dto
+     * @param kakaoSignUpRequestDTO - 회원가입에 사용할 카카오 회원가입 요청 dto
      * @return 이메일로 찾은 User Entity
      */
     public User findByUserEmail(
             final String userEmail,
-            final UserKakaoSignUpRequestDTO userKakaoSignUpRequestDTO
+            final KakaoSignUpRequestDTO kakaoSignUpRequestDTO
     ) {
         log.info("[KakaoLoginService] findByUserEmailByKakao... - userEmail : {}", userEmail);
 
         Optional<User> user = userRepository.findByUserEmailByKakaoLogin(userEmail);
 
         if (user.isEmpty()) {
-            String email = signUp(userKakaoSignUpRequestDTO);
+            String email = signUp(kakaoSignUpRequestDTO);
             user = userRepository.findByUserEmailByKakaoLogin(email);
         }
 
@@ -219,7 +217,7 @@ public class KakaoLoginService {
      * @return 회원가입 성공 한 회원의 이메일
      */
     public String signUp(
-            final UserKakaoSignUpRequestDTO requestDTO
+            final KakaoSignUpRequestDTO requestDTO
     ) {
         log.info("[KakaoLoginService] signUp- requestDTO : {}", requestDTO);
 

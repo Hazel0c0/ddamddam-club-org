@@ -13,13 +13,22 @@ export const kakaoLogin = async (navigate, code) => {
     const response = await axios.get(
       `http://localhost:8181/api/ddamddam/oauth/kakao?code=${code}`
     );
-    console.log(response); // 넘어온 토큰 확인
 
-    const ACCESS_TOKEN = response.data.token;
-    const LOGIN_USER_EMAIL = response.data.userEmail;
+    const result = response.data;
 
-    sessionStorage.setItem('ACCESS_TOKEN', ACCESS_TOKEN); // 세션스토리지에 토큰 저장
-    sessionStorage.setItem('LOGIN_USER_EMAIL', LOGIN_USER_EMAIL); // 세션스토리지에 토큰 저장
+    // 세션스토리지에 토큰 & 회원 정보를 저장 (카카오 로그인 시 자동 로그인 불가)
+    sessionStorage.setItem('ACCESS_TOKEN', result.token);
+    sessionStorage.setItem('LOGIN_USER_IDX', result.userIdx);
+    sessionStorage.setItem('LOGIN_USER_EMAIL', result.userEmail);
+    sessionStorage.setItem('LOGIN_USER_NAME', result.userName);
+    sessionStorage.setItem('LOGIN_USER_NICKNAME', result.userNickname);
+    sessionStorage.setItem('LOGIN_USER_REGDATE', result.userRegdate);
+    sessionStorage.setItem('LOGIN_USER_BIRTH', result.userBirth);
+    sessionStorage.setItem('LOGIN_USER_POSITION', result.userPosition);
+    sessionStorage.setItem('LOGIN_USER_CAREER', result.userCareer);
+    sessionStorage.setItem('LOGIN_USER_POINT', result.userPoint);
+    sessionStorage.setItem('LOGIN_USER_PROFILE', result.userProfile);
+    sessionStorage.setItem('LOGIN_USER_ROLE', result.userRole);
 
     navigate('/'); // 토큰 받고 로그인 성공했으니 메인으로 돌아가기
   } catch (err) {
