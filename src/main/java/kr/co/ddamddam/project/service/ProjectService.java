@@ -63,7 +63,9 @@ public class ProjectService {
         .build();
   }
 
-  private static Pageable getPageable(PageDTO dto, ProjectSearchRequestDto searchDto) {
+  private static Pageable getPageable(
+      PageDTO dto,
+      ProjectSearchRequestDto searchDto) {
     Pageable pageable = null;
 
     // 최신순, 인기순 정렬
