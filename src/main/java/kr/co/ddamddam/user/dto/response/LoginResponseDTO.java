@@ -1,6 +1,7 @@
 package kr.co.ddamddam.user.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import kr.co.ddamddam.common.response.ResponseMessage;
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.entity.UserPosition;
 import kr.co.ddamddam.user.entity.UserRole;
@@ -55,6 +56,7 @@ public class LoginResponseDTO {
         this.userProfile = user.getUserProfile();
         this.userRole = user.getUserRole();
         this.token = token;
+        this.message = String.valueOf(ResponseMessage.SUCCESS);
     }
 
 }

@@ -13,6 +13,6 @@ public class PageDTO {
 
   public PageDTO() {
     this.page = 1;
-    this.size = 10;
+    this.size = 9;
   }
 }
