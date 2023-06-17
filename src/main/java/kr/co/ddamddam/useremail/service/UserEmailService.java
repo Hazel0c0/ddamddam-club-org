@@ -3,6 +3,7 @@ package kr.co.ddamddam.useremail.service;
 import kr.co.ddamddam.common.exception.custom.MessageException;
 import kr.co.ddamddam.useremail.dto.response.UserCodeCheckResponseDTO;
 import kr.co.ddamddam.useremail.dto.request.UserCodeRequestDTO;
+import kr.co.ddamddam.useremail.dto.response.UserCodeResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
