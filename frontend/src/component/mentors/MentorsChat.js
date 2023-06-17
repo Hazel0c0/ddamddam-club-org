@@ -4,7 +4,9 @@ import Common from '../common/Common';
 import { useParams } from 'react-router-dom';
 import { CHAT, MENTOR } from '../common/config/HostConfig';
 import './scss/MentorChat.scss';
-
+import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
+          getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
+          getUserRole, isLogin } from '../common/util/login-util';
 const MentorsChat = () => {
   const { chatPageIdx } = useParams();
   const [detailMember, setDetailMember] = useState({});
@@ -14,19 +16,41 @@ const MentorsChat = () => {
   const [socketData, setSocketData] = useState();
   const [chat, setChat] = useState([]);
   const [msg, setMsg] = useState("");
-  const [name, setName] = useState("");
+  const name = getUserNickname();
+  const [chatRoom, setChatRoom] = useState([]);
+
+  const [selectChatRoomId, setSelectChatRoomId] = useState(1);
 
 
   const ws = useRef(null);
   const chatScroll = useRef(null);
-
-  const msgBox = chat.map((item, idx) => (
-    <div className={item.name === name ? 'sender-wrapper' : 'receiver-wrapper'} key={idx}>
-        <span className={item.name === name ? 'sender' : 'receiver'}>{item.name}</span>
-         {/* [ {item.date} ] */}
-        <span className={item.name === name ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
+  const handleSelectRoom = (e) => {
+  setSelectChatRoomId = e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value
+  };
+  const mentorsChatRoom = chatRoom.map((item, idx) => (
+  <div className={'chat-room-list'} key={`${item.name}-${idx}`} onClick={handleSelectRoom}>
+      <input type={'hidden'} value={item.roomId} className={'chatRoom-idx'}/>
+      <span className={'mentee-nick-name'}>{item.sender.userNickname}</span>
+      <span className={'mentee-msg-content'}>{item.message}</span>
     </div>
   ));
+
+  const menteeMsgBox = chat.map((item, idx) => (
+    <div className={item.name === name ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
+      <span className={item.name === name ? 'sender' : 'receiver'}>{item.name}</span>
+      {/* [ {item.date} ] */}
+      <span className={item.name === name ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
+    </div>
+  ));
+
+  const mentorMsgBox = chat.map((item, idx) => (
+    <div className={item.name === name ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
+      <span className={item.name === name ? 'sender' : 'receiver'}>{item.name}</span>
+      {/* [ {item.date} ] */}
+      <span className={item.name === name ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
+    </div>
+  ));
+  
 
   useEffect(() => {
     // 멘토 상세 정보 조회
@@ -40,21 +64,30 @@ const MentorsChat = () => {
       })
       .then((result) => {
         setDetailMember(result);
+        if(result.userIdx !== +getUserIdx()){
+          fetch(CHAT + '/mentee/list/' + chatPageIdx)
+            .then((detailRes) => detailRes.json())
+            .then((detailResult) => {
+              setMessages(detailResult);
+            });
+            }else{
+              fetch(CHAT + '/mentor/list/' + chatPageIdx)
+            .then((allRes) => allRes.json())
+            .then((allResult) => {
+              setChatRoom(allResult);
+            });
+            fetch(CHAT + '/mentee/list/' + chatPageIdx)
+            .then((detailRes) => detailRes.json())
+            .then((detailResult) => {
+              setMessages(detailResult);
+            });
+            }
       });
-
-    fetch(CHAT + '/mentee/list/' + chatPageIdx)
-      .then((res) => res.json())
-      .then((result) => {
-        setMessages(result);
-      });
+    
   }, [chatPageIdx]);
 
 
-
-
-
-
-
+ 
   useEffect(() => {
     if(socketData !== undefined) {
         const tempData = chat.concat(socketData);
@@ -68,7 +101,6 @@ const onText = event => {
   setMsg(event.target.value);
 }
 
-
 const webSocketLogin = useCallback(() => {
   ws.current = new WebSocket("ws://localhost:8181/socket/chat");
   console.log('socket');
@@ -79,16 +111,14 @@ const webSocketLogin = useCallback(() => {
 });
 const send = useCallback(() => {
   if(!chkLog) {
-      // if(name === "") {
-      //     alert("이름을 입력하세요.");
-      //     document.getElementById("name").focus();
-      //     return;
-      // }
       webSocketLogin();
       setChkLog(true);
   }
   if(msg !== ''){
       const data = {
+          mentorIdx: chatPageIdx,
+          senderId: getUserIdx(),
+          roomId: selectChatRoomId,
           name,
           msg,
           date: new Date().toLocaleString(),
@@ -137,14 +167,14 @@ const send = useCallback(() => {
     const chatMessage = {
       roomId: chatPageIdx,
       message: input,
-      senderId: 1,
+      senderId: getUserIdx(),
     };
     ws.current.send(JSON.stringify(chatMessage));
     setInput('');
 
     const messageToSave = {
       roomId: chatPageIdx,
-      senderId: 1,
+      senderId: getUserIdx(),
       message: input,
     };
     fetch(CHAT + '/rooms/' + chatPageIdx + '/messages', {
@@ -159,9 +189,7 @@ const send = useCallback(() => {
         chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
       });
   };
-
-//  console.log(messages);
-
+  
   const { career, content, current, date, idx, mentee, nickName, profile, subject, title } = detailMember;
 
   return (
@@ -172,7 +200,6 @@ const send = useCallback(() => {
             <h1 className={'top-title-text'}>멘토 소개</h1>
             <div className={'write-date'}>{date}</div>
           </div>
-
           <div className={'close-btn'}>
             <TfiClose />
           </div>
@@ -215,13 +242,15 @@ const send = useCallback(() => {
 
       <div className={'mentor-chat-room'}>
         <section className={'chating-list'} ref={chatScroll}>
-          {messages.map((message, index) => (
-            <div className={'sender-wrapper'} key={index}>
-              <span className={'sender'}>{message.sender.userNickname}</span>
-              <span className={'sender-content'}>{message.message}</span>
+          {mentorsChatRoom}
+          {messages.map((item, idx) => (
+            <div className={'sender-wrapper'} key={`${item.name}-${idx}`}>
+              <span className={'sender'}>{item.sender.userNickname}</span>
+              <span className={'sender-content'}>{item.message}</span>
             </div>
           ))}
-          {msgBox}
+          {mentorMsgBox}
+          {menteeMsgBox}
         </section>
 
         <section className={'input-section'}>

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Setter @Getter
 @ToString(exclude = {"user", "chatRooms"})
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "mentorIdx")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -52,7 +52,7 @@ public class Mentor {
     @JoinColumn(name = "user_idx")
     private User user;
 
-    @OneToMany(mappedBy = "mentor")
+    @OneToMany(mappedBy = "mentor", cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<ChatRoom> chatRooms = new ArrayList<>();
 }

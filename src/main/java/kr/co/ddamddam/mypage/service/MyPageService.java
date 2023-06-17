@@ -25,7 +25,7 @@ public class MyPageService {
     public void getList(Long enterUser) {
 
         User user = userRepository.findById(enterUser).orElseThrow();
-        List<Mentor> mentor = user.getMentor();
+//        List<Mentor> mentor = user.getMentor();
         List<Review> review = user.getReview();
         List<Qna> qna = user.getQna();
     }
