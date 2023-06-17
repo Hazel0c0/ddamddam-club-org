@@ -39,6 +39,7 @@ public class UserApiController {
     // GET: /api/auth/check?email=zzzz@xxx.com
     @GetMapping("/check")
     public ResponseEntity<?> check(String email) {
+
         if (email.trim().isEmpty()) {
             return ResponseEntity.badRequest()
                     .body("이메일이 없습니다!");
