@@ -17,7 +17,7 @@ const ProjectsWrite = () => {
     offerPeriod: '',
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e,formData, setFormData) => {
     const {name, value} = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -134,7 +134,9 @@ const ProjectsWrite = () => {
           <Link to={'/projects'} className={'close-btn-a'}>
             <button className={'close-btn'}>취소하기</button>
           </Link>
-          <button className={'submit-btn'} onClick={handleSubmit}>작성완료</button>
+          <button className={'submit-btn'}
+                  onClick={handleSubmit}
+          >작성완료</button>
         </div>
       </Common>
     </>
