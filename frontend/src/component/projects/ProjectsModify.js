@@ -4,7 +4,7 @@ import ProjectsTitle from "./mainpage/ProjectsTitle";
 import {PROJECT} from "../common/config/HostConfig";
 import {Link, useLocation} from 'react-router-dom';
 import {fetchProjectDetail} from './ProjectsDetail';
-import {handleInputChange, handleSubmit} from "./ProjectsWrite"
+import {handleInputChange} from "./ProjectsWrite"
 
 import './scss/ProjectsWrite.scss';
 
@@ -24,10 +24,37 @@ const ProjectsModify = () => {
     maxBack: '',
   });
 
-  const handleSubmit = () => {
+  const projectIdx = 12;
+  useEffect(() => {
+    fetch(PROJECT + `/${projectIdx}`, {
+      method: 'GET',
+      headers: {'content-type': 'application/json'}
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch project');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setProjectDetail(data.payload);
+        console.log(`수정 후 : ${JSON.stringify(data.payload)}`);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  console.log('프로젝트 디테일 : ');
+  console.log(projectDetail[0].boardContent);
+
+  const modifySubmitHandler = async () => {
+      console.log(updatedFormData);
+      const {boardTitle, boardContent, projectType,maxFront,maxBack} = updatedFormData;
+
     // 작성완료 버튼을 눌렀을 때 실행되는 함수
     // formData를 컨트롤러로 보내는 로직을 작성하세요.
-    fetch(PROJECT, {
+    const res= fetch(PROJECT, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -44,30 +71,6 @@ const ProjectsModify = () => {
     console.log(updatedFormData); // 예시: 콘솔에 데이터 출력
   };
 
-  const projectIdx = 12;
-  useEffect(() => {
-    fetch(PROJECT + `/${projectIdx}`, {
-      method: 'GET',
-      headers: {'content-type': 'application/json'}
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch project');
-        }
-        return response.json();
-      })
-      .then(data => {
-        setProjectDetail([data.payload]);
-        console.log(data.payload);
-
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, []);
-
-  console.log('프로젝트 디테일 : ');
-  console.log(projectDetail[0].boardContent);
 
   const handleInputChange = (e) => {
     const {name, value} = e.target;
@@ -180,9 +183,9 @@ const ProjectsModify = () => {
                 <Link to={'/projects'} className={'close-btn-a'}>
                   <button className={'close-btn'}>취소하기</button>
                 </Link>
-                {/*<button className={'submit-btn'} onClick={handleSubmit}>작성완료</button>*/}
+                {/*<button className={'submit-btn'} onClick={modifySubmitHandler}>작성완료</button>*/}
                 <button className={'submit-btn'}
-                        onClick={handleSubmit}
+                        onClick={modifySubmitHandler}
                 >작성완료</button>
 
               </div>
