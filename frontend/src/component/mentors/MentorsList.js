@@ -27,6 +27,9 @@ const MentorsList = ({selectedSubjects}) => {
     //채팅 페이지 이동
     const [chatPageIdx, setChatPageIdx] = useState("");
 
+    // 접속한 유저 idx
+    const enterUserIdx = +getUserIdx();
+
     //캐러셀
     // const [currentPage, setCurrentPage] = useState(1);
     const [carouselIndex, setCarouselIndex] = useState(1);
@@ -95,8 +98,7 @@ const MentorsList = ({selectedSubjects}) => {
     };
     const createChatRoom = e => {
         const data = {
-            // senderId: getUserIdx,
-            senderId: 1,
+            senderId: enterUserIdx,
             mentorIdx: chatPageIdx
         };
 
@@ -108,6 +110,7 @@ const MentorsList = ({selectedSubjects}) => {
             .then(res => res.json())
             .then(json => {
                 // alert('채팅방 생성 완료! 멘토와 즐거운 채팅~');
+                console.log('방 생성');
             })
     }
 

@@ -8,50 +8,82 @@ import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUs
           getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
           getUserRole, isLogin } from '../common/util/login-util';
 const MentorsChat = () => {
-  const { chatPageIdx } = useParams();
-  const [detailMember, setDetailMember] = useState({});
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
+  const { chatPageIdx } = useParams(); // 멘토 게시판 idx
+  const [detailMember, setDetailMember] = useState({}); // 멘토게시판
+  const [messages, setMessages] = useState([]); // 디비 저장된 메세지
   const [chkLog, setChkLog] = useState(false);
   const [socketData, setSocketData] = useState();
   const [chat, setChat] = useState([]);
   const [msg, setMsg] = useState("");
-  const name = getUserNickname();
+  const name = getUserNickname(); // 접속한 유저의 닉네임
   const [chatRoom, setChatRoom] = useState([]);
 
-  const [selectChatRoomId, setSelectChatRoomId] = useState(1);
+  const [selectChatRoomId, setSelectChatRoomId] = useState(); // 멘토가 선택한 채팅방 idx
+
+  const enterUserIdx = +getUserIdx(); // 접속한 유저의 idx
 
 
   const ws = useRef(null);
   const chatScroll = useRef(null);
+
+  // 멘토가 멘티들의 채팅방 선택
   const handleSelectRoom = (e) => {
-  setSelectChatRoomId = e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value
+  setSelectChatRoomId(e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value);
+  document.querySelector('.chat-room-list').style.display = 'none';
+  fetch(CHAT + `/mentor/chatroom/detail?mentorIdx=${chatPageIdx}&roomIdx=${e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value}`)
+            .then(res => {
+                if (res.status === 500) {
+                    alert('모지');
+                    return;
+                }
+                return res.json();
+            })
+            .then((detailResult) => {
+              if(detailResult !== null){
+              setMessages(detailResult);
+            }
+            return;
+            });
   };
+
+  // 멘토가 채팅방 선택 렌더링
   const mentorsChatRoom = chatRoom.map((item, idx) => (
   <div className={'chat-room-list'} key={`${item.name}-${idx}`} onClick={handleSelectRoom}>
       <input type={'hidden'} value={item.roomId} className={'chatRoom-idx'}/>
-      <span className={'mentee-nick-name'}>{item.sender.userNickname}</span>
+      <span className={'mentee-nick-name'}>{item.sender.userName}</span>
       <span className={'mentee-msg-content'}>{item.message}</span>
+      <span className={'mentee-date'}>{item.sentAt}</span>
     </div>
   ));
 
+    // 멘티 채팅방 입장 후 메세지 렌더링
   const menteeMsgBox = chat.map((item, idx) => (
-    <div className={item.name === name ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
-      <span className={item.name === name ? 'sender' : 'receiver'}>{item.name}</span>
+    <div className={item.senderId === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
+      <span className={item.senderId === enterUserIdx ? 'sender' : 'receiver'}>{item.name}</span>
       {/* [ {item.date} ] */}
-      <span className={item.name === name ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
+      <span className={item.senderId === enterUserIdx ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
     </div>
   ));
 
+    // 멘토가 채팅방 입장 후 메세지 렌더링
   const mentorMsgBox = chat.map((item, idx) => (
-    <div className={item.name === name ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
-      <span className={item.name === name ? 'sender' : 'receiver'}>{item.name}</span>
+    <div className={item.senderId === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
+      <span className={item.senderId === enterUserIdx ? 'sender' : 'receiver'}>{item.name}</span>
       {/* [ {item.date} ] */}
-      <span className={item.name === name ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
+      <span className={item.senderId === enterUserIdx ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
     </div>
   ));
-  
 
+  // 디비에 저장된 멘티 메세지 렌더링
+  const menteeMsgRender = messages.map((item, idx) => (
+    <div className={'sender-wrapper'} key={`${item.name}-${idx}`}>
+      <span className={'sender'}>{item.sender.userNickname}</span>
+      <span className={'sender-content'}>{item.message}</span>
+    </div>
+  ));
+
+  
+// 렌더링
   useEffect(() => {
     // 멘토 상세 정보 조회
     fetch(MENTOR + '/detail?mentorIdx=' + chatPageIdx)
@@ -64,7 +96,9 @@ const MentorsChat = () => {
       })
       .then((result) => {
         setDetailMember(result);
-        if(result.userIdx !== +getUserIdx()){
+        console.log(result);
+        if(result.userIdx !== enterUserIdx){
+        // if(result.userIdx !== 1){
           fetch(CHAT + '/mentee/list/' + chatPageIdx)
             .then((detailRes) => detailRes.json())
             .then((detailResult) => {
@@ -72,14 +106,19 @@ const MentorsChat = () => {
             });
             }else{
               fetch(CHAT + '/mentor/list/' + chatPageIdx)
-            .then((allRes) => allRes.json())
+            .then((allRes) => {
+              if (allRes.status === 500) {
+                  alert('참여중인 멘티가 없습니다');
+                  return;
+              }
+              return allRes.json();
+          })
             .then((allResult) => {
+              if(allResult[0].message !== null){
               setChatRoom(allResult);
-            });
-            fetch(CHAT + '/mentee/list/' + chatPageIdx)
-            .then((detailRes) => detailRes.json())
-            .then((detailResult) => {
-              setMessages(detailResult);
+              console.log(allResult);
+              }
+              return;
             });
             }
       });
@@ -87,7 +126,7 @@ const MentorsChat = () => {
   }, [chatPageIdx]);
 
 
- 
+ // 보낸 채팅 메세지 담기
   useEffect(() => {
     if(socketData !== undefined) {
         const tempData = chat.concat(socketData);
@@ -96,11 +135,14 @@ const MentorsChat = () => {
     }
 }, [socketData]);
 
+// 입력한 메세지 담기
 const onText = event => {
   console.log(event.target.value);
   setMsg(event.target.value);
 }
 
+// 소켓 연결
+// 메세지 컨트롤러 보내기
 const webSocketLogin = useCallback(() => {
   ws.current = new WebSocket("ws://localhost:8181/socket/chat");
   console.log('socket');
@@ -109,42 +151,67 @@ const webSocketLogin = useCallback(() => {
       setSocketData(dataSet);
   }
 });
-const send = useCallback(() => {
-  if(!chkLog) {
-      webSocketLogin();
-      setChkLog(true);
-  }
-  if(msg !== ''){
-      const data = {
-          mentorIdx: chatPageIdx,
-          senderId: getUserIdx(),
-          roomId: selectChatRoomId,
-          name,
-          msg,
-          date: new Date().toLocaleString(),
-      };  //전송 데이터(JSON)
 
-      const temp = JSON.stringify(data);
-      
-      if(ws.current.readyState === 0) {   //readyState는 웹 소켓 연결 상태를 나타냄
-          ws.current.onopen = () => { //webSocket이 맺어지고 난 후, 실행
-              console.log(ws.current.readyState);
-              ws.current.send(temp);
-          }
-      }else {
-          ws.current.send(temp);
-      }
-  }else {
-      alert("메세지를 입력하세요.");
-      document.getElementById("msg").focus();
-      return;
+// 메세지 전송
+const saveMessage = useCallback(() => {
+  const messageToSave = {
+    roomId: chatPageIdx,
+    senderId: enterUserIdx,
+    message: msg,
+  };
+
+  fetch(CHAT + '/rooms/' + chatPageIdx + '/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(messageToSave),
+  })
+    .then((res) => res.json())
+    .then((result) => {
+      chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
+    });
+}, [chatPageIdx, enterUserIdx, msg]);
+
+const send = useCallback(() => {
+  if (!chkLog) {
+    webSocketLogin();
+    setChkLog(true);
   }
-  setMsg("");
+  if (msg !== '') {
+    const data = {
+      mentorIdx: chatPageIdx,
+      senderId: enterUserIdx,
+      roomId: selectChatRoomId,
+      name,
+      msg,
+      date: new Date().toLocaleString('ko-KR', { hour: 'numeric', minute: 'numeric', hour12: true }),
+    };
+
+    const temp = JSON.stringify(data);
+
+    if (ws.current.readyState === 0) {
+      ws.current.onopen = () => {
+        console.log(ws.current.readyState);
+        ws.current.send(temp);
+        saveMessage(); // 메시지 저장 및 스크롤 조정
+      };
+    } else {
+      ws.current.send(temp);
+      saveMessage(); // 메시지 저장 및 스크롤 조정
+    }
+
+    setMsg('');
+  } else {
+    alert('메세지를 입력하세요.');
+    document.getElementById('msg').focus();
+  }
 });
+
 //webSocket
 
 
-
+console.log(enterUserIdx);
 
 
   useEffect(() => {
@@ -155,40 +222,6 @@ const send = useCallback(() => {
     chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
   }, [chat]);
 
-  const handleInputChange = (event) => {
-    setInput(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (input.trim() === '') return;
-
-// 메시지 전송
-    const chatMessage = {
-      roomId: chatPageIdx,
-      message: input,
-      senderId: getUserIdx(),
-    };
-    ws.current.send(JSON.stringify(chatMessage));
-    setInput('');
-
-    const messageToSave = {
-      roomId: chatPageIdx,
-      senderId: getUserIdx(),
-      message: input,
-    };
-    fetch(CHAT + '/rooms/' + chatPageIdx + '/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(messageToSave),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
-      });
-  };
   
   const { career, content, current, date, idx, mentee, nickName, profile, subject, title } = detailMember;
 
@@ -243,12 +276,7 @@ const send = useCallback(() => {
       <div className={'mentor-chat-room'}>
         <section className={'chating-list'} ref={chatScroll}>
           {mentorsChatRoom}
-          {messages.map((item, idx) => (
-            <div className={'sender-wrapper'} key={`${item.name}-${idx}`}>
-              <span className={'sender'}>{item.sender.userNickname}</span>
-              <span className={'sender-content'}>{item.message}</span>
-            </div>
-          ))}
+          {menteeMsgRender}
           {mentorMsgBox}
           {menteeMsgBox}
         </section>
