@@ -60,6 +60,11 @@ dependencies {
 	implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	// -------------- 메일 인증
+
+	// JSON 파싱에 사용할 json-simple 라이브러리
+	dependencies {
+		implementation 'com.google.code.gson:gson:2.8.7'
+	}
 }
 
 tasks.named('test') {
