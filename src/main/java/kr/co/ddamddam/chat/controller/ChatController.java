@@ -1,16 +1,17 @@
 package kr.co.ddamddam.chat.controller;
 
+import kr.co.ddamddam.chat.dto.request.ChatMentorDetailRequestDTO;
 import kr.co.ddamddam.chat.dto.request.ChatMessageRequestDTO;
 import kr.co.ddamddam.chat.dto.request.ChatRoomRequestDTO;
-import kr.co.ddamddam.chat.dto.response.ChatAllListResponseDTO;
 import kr.co.ddamddam.chat.dto.response.ChatMessageResponseDTO;
 import kr.co.ddamddam.chat.dto.response.ChatRoomResponseDTO;
 import kr.co.ddamddam.chat.service.ChatService;
+import kr.co.ddamddam.config.security.TokenUserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,7 +43,9 @@ public class ChatController {
             @PathVariable("roomId") Long roomId,
             @RequestBody ChatMessageRequestDTO requestDTO
     ) {
+        log.info("메세지 저장:{}",requestDTO);
         ChatMessageResponseDTO responseDTO = chatService.sendMessage(roomId, requestDTO);
+        log.info("메세지 출력:{}",responseDTO);
         return ResponseEntity.ok(responseDTO);
     }
 
@@ -58,14 +61,30 @@ public class ChatController {
     }
 
     // 멘티의 채팅방 개별 조회 (채팅 내용으로 바로 뿌려주기)
-    @GetMapping("/mentee/list/{mentorIdx}")
+    @GetMapping("/mentee/list/{roomIdx}")
     public ResponseEntity<?> detail(
-            @PathVariable Long mentorIdx
+            @PathVariable Long roomIdx
+//            ,@AuthenticationPrincipal TokenUserInfo userInfo
     ){
-        Long senderIdx = 1L;
-
+//        Long senderIdx = Long.valueOf(userInfo.getUserIdx());
+//        log.info("userIdx : {}",senderIdx);
+        Long senderIdx = 2L;
         try {
-            List<ChatMessageResponseDTO> list = chatService.getDetail(mentorIdx, senderIdx);
+            List<ChatMessageResponseDTO> list = chatService.getDetail(roomIdx, senderIdx);
+            return ResponseEntity.ok().body(list);
+        } catch (NullPointerException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("채팅 기록이 없습니다");
+        }
+    }
+
+    // 멘토의 채팅방 개별 조회 (채팅 내용으로 바로 뿌려주기)
+    @GetMapping("/mentor/chatroom/detail")
+    public ResponseEntity<?> chatList(
+            ChatMentorDetailRequestDTO dto
+            ){
+        log.info("respons cahhhhhh: {}");
+        try {
+            List<ChatMessageResponseDTO> list = chatService.getMentorDetail(dto);
             return ResponseEntity.ok().body(list);
         } catch (NullPointerException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("채팅 기록이 없습니다");

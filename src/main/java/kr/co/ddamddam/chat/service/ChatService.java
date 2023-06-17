@@ -1,5 +1,6 @@
 package kr.co.ddamddam.chat.service;
 
+import kr.co.ddamddam.chat.dto.request.ChatMentorDetailRequestDTO;
 import kr.co.ddamddam.chat.dto.request.ChatMessageRequestDTO;
 import kr.co.ddamddam.chat.dto.request.ChatRoomRequestDTO;
 import kr.co.ddamddam.chat.dto.response.ChatMessageResponseDTO;
@@ -14,7 +15,6 @@ import kr.co.ddamddam.mentor.repository.MentorRepository;
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -42,10 +42,10 @@ public class ChatService {
      */
     public ChatRoomResponseDTO createChatRoom(ChatRoomRequestDTO dto) {
 
+        Mentor mentor = mentorRepository.findById(dto.getMentorIdx()).orElseThrow();
         ChatRoom findByChatRoomUser = chatRoomRepository.findByMentorMentorIdxAndSenderUserIdx(dto.getMentorIdx(), dto.getSenderId());
-//        log.info("해당 게시글에 채팅방 생성 이력이 있는지 : {}",findByChatRoomUser.toString());
 
-        if (findByChatRoomUser == null) {
+        if (findByChatRoomUser == null && mentor.getUser().getUserIdx() != dto.getSenderId()) {
             log.info("채팅방 이력 없음: ");
             User sender = userRepository.findById(dto.getSenderId())
                     .orElseThrow(() -> new IllegalArgumentException("Invalid senderId"));
@@ -77,6 +77,7 @@ public class ChatService {
     }
 
     public ChatMessageResponseDTO sendMessage(Long mentorIdx, ChatMessageRequestDTO requestDTO) {
+        requestDTO.setSenderId(2L);
         ChatRoom senderUserIdx = chatRoomRepository.findByMentorMentorIdxAndSenderUserIdx(mentorIdx, requestDTO.getSenderId());
 
         ChatRoom chatRoom = chatRoomRepository.findById(senderUserIdx.getRoomId())
@@ -106,7 +107,6 @@ public class ChatService {
 
     private ChatMessageResponseDTO convertToChatMessageResponseDTO(ChatMessage chatMessage) {
         ChatMessageResponseDTO responseDTO = new ChatMessageResponseDTO();
-        responseDTO.setMessageId(chatMessage.getId());
         responseDTO.setMessage(chatMessage.getContent());
         responseDTO.setSender(convertToUserResponseDTO(chatMessage.getSender()));
         responseDTO.setSentAt(chatMessage.getSentAt());
@@ -136,26 +136,48 @@ public class ChatService {
                 if (!room.getMessages().isEmpty()) {
                     dto.setMessage(room.getMessages().get(room.getMessages().size() - 1).getContent());
                     dto.setSentAt(room.getMessages().get(room.getMessages().size() - 1).getSentAt());
-                    dto.setMessageId(room.getMessages().get(room.getMessages().size() - 1).getId());
                 }
 
                 return dto;
             }).collect(Collectors.toList());
             return collect;
-        } else {
+        } else if (chatRoomList.get(0).getMessages().isEmpty()){
+            return null;
+        }
+        else {
             return null;
         }
 
     }
 
     // 멘티 채팅방 메세지 조회
-    public List<ChatMessageResponseDTO> getDetail(Long mentorIdx, Long senderIdx) {
-        ChatRoom senderUserId = chatRoomRepository.findByMentorMentorIdxAndSenderUserIdx(mentorIdx, senderIdx);
+    public List<ChatMessageResponseDTO> getDetail(Long roomIdx, Long senderIdx) {
+        ChatRoom senderUserId = chatRoomRepository.findByMentorMentorIdxAndSenderUserIdx(roomIdx, senderIdx);
 
 
         List<ChatMessageResponseDTO> responseDTOS = senderUserId.getMessages().stream().map(msg -> {
             ChatMessageResponseDTO dto = new ChatMessageResponseDTO();
-            dto.setMessageId(msg.getId());
+            dto.setRoomId(msg.getRoom().getRoomId());
+            dto.setSentAt(msg.getSentAt());
+            dto.setSender(new UserResponseDTO(msg.getSender()));
+            dto.setMessage(msg.getContent());
+
+            return dto;
+        }).collect(Collectors.toList());
+
+        return responseDTOS;
+
+    }
+
+    // 멘토 채팅방 메세지 조회
+    public List<ChatMessageResponseDTO> getMentorDetail(ChatMentorDetailRequestDTO requestDTO) {
+
+        Mentor mentor = mentorRepository.findById(requestDTO.getMentorIdx()).orElseThrow();
+        ChatRoom chatRoom = chatRoomRepository.findByMentorMentorIdxAndReceiverUserIdx
+                (requestDTO.getMentorIdx(), mentor.getUser().getUserIdx());
+
+        List<ChatMessageResponseDTO> responseDTOS = chatRoom.getMessages().stream().map(msg -> {
+            ChatMessageResponseDTO dto = new ChatMessageResponseDTO();
             dto.setRoomId(msg.getRoom().getRoomId());
             dto.setSentAt(msg.getSentAt());
             dto.setSender(new UserResponseDTO(msg.getSender()));
