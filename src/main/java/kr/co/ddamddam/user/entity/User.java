@@ -19,7 +19,7 @@ import java.util.ArrayList;
 @Setter
 @Getter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "userIdx")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

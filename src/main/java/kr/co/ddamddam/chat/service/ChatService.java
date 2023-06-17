@@ -37,17 +37,17 @@ public class ChatService {
      * 접속한 멘티가 채팅방을 만들면서 상대방은 멘토로 고정
      * 멘토는 멘토게시글에서 user Entity를 가져와서 DB에 저장
      * @param dto
-     * @param userId
+     * @param
      * @return
      */
-    public ChatRoomResponseDTO createChatRoom(ChatRoomRequestDTO dto, Long userId) {
+    public ChatRoomResponseDTO createChatRoom(ChatRoomRequestDTO dto) {
 
-        ChatRoom findByChatRoomUser = chatRoomRepository.findByMentorMentorIdxAndSenderUserIdx(dto.getMentorIdx(), userId);
+        ChatRoom findByChatRoomUser = chatRoomRepository.findByMentorMentorIdxAndSenderUserIdx(dto.getMentorIdx(), dto.getSenderId());
 //        log.info("해당 게시글에 채팅방 생성 이력이 있는지 : {}",findByChatRoomUser.toString());
 
         if (findByChatRoomUser == null) {
             log.info("채팅방 이력 없음: ");
-            User sender = userRepository.findById(userId)
+            User sender = userRepository.findById(dto.getSenderId())
                     .orElseThrow(() -> new IllegalArgumentException("Invalid senderId"));
 
             Mentor findMentor = mentorRepository.findById(dto.getMentorIdx()).orElseThrow();
@@ -125,18 +125,27 @@ public class ChatService {
     public List<ChatMessageResponseDTO> getList(Long mentorIdx) {
 
         List<ChatRoom> chatRoomList = chatRoomRepository.findByMentorMentorIdx(mentorIdx);
+        log.info("chatRoom: {}",chatRoomList);
+        log.info("chatRoom size: {}",chatRoomList.get(chatRoomList.size()-1).getRoomId());
+        if (!chatRoomList.isEmpty()){
+            List<ChatMessageResponseDTO> collect = chatRoomList.stream().map(room -> {
+                ChatMessageResponseDTO dto = new ChatMessageResponseDTO();
+                dto.setRoomId(room.getRoomId());
+                dto.setSender(new UserResponseDTO(room.getSender()));
 
-        List<ChatMessageResponseDTO> collect = chatRoomList.stream().map(room -> {
-            ChatMessageResponseDTO dto = new ChatMessageResponseDTO();
-            dto.setRoomId(room.getRoomId());
-            dto.setSender(new UserResponseDTO(room.getSender()));
-            dto.setMessage(room.getMessages().get(room.getMessages().size() - 1).getContent());
-            dto.setSentAt(room.getMessages().get(room.getMessages().size() - 1).getSentAt());
-            dto.setMessageId(room.getMessages().get(room.getMessages().size() - 1).getId());
+                if (!room.getMessages().isEmpty()) {
+                    dto.setMessage(room.getMessages().get(room.getMessages().size() - 1).getContent());
+                    dto.setSentAt(room.getMessages().get(room.getMessages().size() - 1).getSentAt());
+                    dto.setMessageId(room.getMessages().get(room.getMessages().size() - 1).getId());
+                }
 
-            return dto;
-        }).collect(Collectors.toList());
-        return collect;
+                return dto;
+            }).collect(Collectors.toList());
+            return collect;
+        } else {
+            return null;
+        }
+
     }
 
     // 멘티 채팅방 메세지 조회

@@ -30,7 +30,7 @@ public class MentorWriteRequestDTO {
     @NotBlank
     private String mentorCareer;
 
-    @NotBlank
+//    @NotBlank
     private int mentorMentee;
 
 

@@ -29,10 +29,10 @@ public class ChatController {
     public ResponseEntity<?> createChatRoom(
             @RequestBody ChatRoomRequestDTO dto
     ) {
-        Long userId = 1L;
+//        Long userId = 1L;
         log.info("requestDTO 들어옴: {}",dto);
 
-            ChatRoomResponseDTO responseDTO = chatService.createChatRoom(dto,userId);
+            ChatRoomResponseDTO responseDTO = chatService.createChatRoom(dto);
             return ResponseEntity.ok(responseDTO);
     }
 
@@ -68,7 +68,6 @@ public class ChatController {
             List<ChatMessageResponseDTO> list = chatService.getDetail(mentorIdx, senderIdx);
             return ResponseEntity.ok().body(list);
         } catch (NullPointerException e) {
-            // 예외 처리를 원하는 방식으로 처리합니다.
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("채팅 기록이 없습니다");
         }
     }
