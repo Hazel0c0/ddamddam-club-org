@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 // TODO: 취업후기 작성하기
 @Getter @Setter
@@ -46,7 +47,7 @@ public class ReviewWriteRequestDTO {
     private String reviewLocation;
 
     @NotNull
-    private Timestamp reviewDate;
+    private LocalDateTime reviewDate;
 
 
     public Review toEntity(User user){

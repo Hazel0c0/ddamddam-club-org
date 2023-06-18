@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 // TODO: 작성폼 수정 게시판
 @Getter
@@ -43,7 +44,7 @@ public class ReviewModifyRequestDTO {
     private String reviewLocation;
 
     @NotNull
-    private Timestamp reviewDate;
+    private LocalDateTime reviewDate;
 
 
     public Review toEntity(){

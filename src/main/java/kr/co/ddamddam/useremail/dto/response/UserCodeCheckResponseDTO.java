@@ -8,5 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UserCodeCheckResponseDTO {
+
     private Boolean checkResult;
 }

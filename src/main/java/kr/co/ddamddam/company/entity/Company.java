@@ -31,31 +31,32 @@ public class Company {
     @Column(name = "company_name",nullable = false, length = 30)
     private String companyName;
 
-    @Column(name = "company_img",length = 100)
-    private String companyImg;
-
     @Column(name = "company_title",nullable = false, length = 100)
     private String companyTitle;
 
-    @Column(name = "company_content",nullable = false, length = 100)
-    private String companyContent;
+//    @Column(name = "company_content",nullable = false, length = 100)
+//    private String companyContent;
 
     @Column(name = "company_career",nullable = false, length = 10 )
     private String companyCareer;
 
     @Column(name = "company_area",nullable = false, length = 10 )
     private String companyArea; //위치
+//    @Column(name = "company_detailadder", length = 10 )
+//    private String companyDetailAdder; //상세위치
 
     @Column(name = "company_url",updatable = false, length = 100)
     private  String companyUrl; // 회사URL
 
+    @Column(name = "company_sal", length = 30)
+    private String companySal; //  급여
 
     @CreationTimestamp
     @Column(name = "company_date",updatable = false)
     private Timestamp companyDate; //작성날짜(채용시작날짜)
 
     @Column(name = "comapany_enddate",nullable = false)
-    private LocalDate companyEnddate; //마감날짜
+    private String companyEnddate; //마감날짜 -> api에서 String타입으로 되어있음
 
     @OneToMany(mappedBy = "company")
     @Builder.Default
