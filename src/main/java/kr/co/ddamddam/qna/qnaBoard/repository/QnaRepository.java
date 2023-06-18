@@ -24,4 +24,6 @@ public interface QnaRepository extends JpaRepository<Qna, Long> {
             "OR q.qnaContent LIKE %:keyword% " +
             "OR h.hashtagContent LIKE %:keyword%")
     Page<Qna> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
+    Page<Qna> findByUserIdx(@Param("userIdx") Long UserIdx, Pageable pageable);
 }
