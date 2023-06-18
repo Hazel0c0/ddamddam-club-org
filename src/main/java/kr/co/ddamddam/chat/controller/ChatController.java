@@ -78,9 +78,8 @@ public class ChatController {
             @PathVariable Long roomIdx
             ,@AuthenticationPrincipal TokenUserInfo userInfo
     ){
-//        Long senderIdx = Long.valueOf(userInfo.getUserIdx());
-//        log.info("userIdx : {}",senderIdx);
-        Long senderIdx = 2L;
+        Long senderIdx = Long.valueOf(userInfo.getUserIdx());
+        log.info("userIdx : {}",senderIdx);
         try {
             List<ChatMessageResponseDTO> list = chatService.getDetail(roomIdx, senderIdx);
             return ResponseEntity.ok().body(list);

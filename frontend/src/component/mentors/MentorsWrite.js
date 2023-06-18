@@ -3,8 +3,20 @@ import Common from "../common/Common";
 import './scss/MentorWrite.scss';
 import {MENTOR} from "../common/config/HostConfig";
 import {Link} from "react-router-dom";
+import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
+    getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
+    getUserRole, isLogin } from '../common/util/login-util';
 
 const MentorsWrite = () => {
+
+    const ACCESS_TOKEN = getToken(); // 토큰
+
+    // headers
+      const headerInfo = {
+      'content-type': 'application/json',
+      'Authorization': 'Bearer ' + ACCESS_TOKEN
+  }
+
     const [textInput, setTextInput] = useState(
         {
             mentorTitle: '',
@@ -60,7 +72,7 @@ const MentorsWrite = () => {
 
             fetch(MENTOR, {
                 method: 'POST',
-                headers: {'content-type': 'application/json'},
+                headers: headerInfo,
                 body: JSON.stringify(data)
             })
                 .then(res => res.json())
