@@ -110,3 +110,30 @@
   }
 
 }
+
+// file
+$img-w: 100px;
+$img-h: 100px;
+
+.thumbnail-box {
+  width: $img-w;
+  height: $img-h;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 30px auto 10px;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+.signup-img-label {
+  font-weight: 700;
+  font-size: 17px;
+  color: #0095f6;
+  cursor: pointer;
+  display: block;
+  text-align: center;
+  margin-bottom: 20px;
+}

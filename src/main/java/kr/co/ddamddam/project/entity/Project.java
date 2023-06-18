@@ -32,6 +32,9 @@ public class Project {
   @Column(nullable = false, length = 100)
   private String projectTitle;
 
+  @Column(nullable = true)
+  private String projectImg;
+
   @Column(nullable = false, length = 3000)
   private String projectContent;
 

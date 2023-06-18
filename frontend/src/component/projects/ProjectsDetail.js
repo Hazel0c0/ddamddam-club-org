@@ -6,151 +6,166 @@ import {Link, useLocation, useNavigate} from 'react-router-dom';
 import './scss/ProjectDetail.scss';
 
 const ProjectsDetail = () => {
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const projectIdx = searchParams.get('projectIdx');
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const projectIdx = searchParams.get('projectIdx');
 
-    const [projectDetail, setProjectDetail] = useState([]);
-    const navigate = useNavigate();
+  const [projectDetail, setProjectDetail] = useState([]);
+  const [projectImgUrl, setProjectImgUrl] = useState(''); // 새로운 상태 추가
+  const navigate = useNavigate();
 
-    const fetchProjectDetail = () => {
-        fetch(PROJECT + `/${projectIdx}`, {
-            method: 'GET',
-            headers: {'content-type': 'application/json'}
+  const fetchProjectDetail = () => {
+    fetch(PROJECT + `/${projectIdx}`, {
+      method: 'GET',
+      headers: {'content-type': 'application/json'}
+    })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch project');
+          }
+          return response.json();
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch project');
-                }
-                return response.json();
-            })
-            .then(data => {
-                setProjectDetail([data.payload]);
-                console.log(data.payload);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    };
+        .then(data => {
+          setProjectDetail([data.payload]);
+          console.log(data.payload);
 
-
-    useEffect(() => {
-        fetchProjectDetail();
-    }, []);
-
-
-    console.log('2-----프로젝트 디테일 : ');
-    console.log(projectDetail.boardIdx);
-
-    const handleDelete = (id) => {
-        console.log("delete id : " + id);
-
-        fetch(PROJECT + `/${projectIdx}`, {
-            method: 'DELETE',
-            headers: {'content-type': 'application/json'}
+          // 추가: 프로젝트 이미지 가져오기
+          const projectImg = data.payload.projectImg;
+          if (projectImg) {
+            fetch(projectImg)
+                .then(response => response.blob())
+                .then(blob => {
+                  const imgUrl = URL.createObjectURL(blob);
+                  setProjectImgUrl(imgUrl);
+                })
+                .catch(error => {
+                  console.error(error);
+                });
+          }
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to delete project');
-                }
-                console.log('삭제됨');
-                navigate('/projects');
-                setProjectDetail([response.payload]);
+        .catch(error => {
+          console.error(error);
+        });
+  };
 
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }
 
-    const handleApply = () => {
-        // 11 대신 유저 번호 넣을거
-        fetch(PROJECT + `/applicant/11/${projectIdx}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                // 요청 본문에 필요한 데이터를 추가할 수 있습니다.
-                // 예: 사용자 정보, 프로젝트 정보 등
-            }),
+  useEffect(() => {
+    fetchProjectDetail();
+  }, []);
+
+
+  console.log('2-----프로젝트 디테일 : ');
+  console.log(projectDetail.boardIdx);
+
+  const handleDelete = (id) => {
+    console.log("delete id : " + id);
+
+    fetch(PROJECT + `/${projectIdx}`, {
+      method: 'DELETE',
+      headers: {'content-type': 'application/json'}
+    })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to delete project');
+          }
+          console.log('삭제됨');
+          navigate('/projects');
+          setProjectDetail([response.payload]);
+
         })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Failed to apply for project');
-                }
-                console.log('신청 성공')
-                console.log(response.json())
-                // 성공적으로 요청을 보냈을 때 처리할 코드를 추가합니다.
-                fetchProjectDetail(); // 변경된 정보로 다시 가져오기
+        .catch(error => {
+          console.error(error);
+        });
+  }
 
-            })
-            .catch((error) => {
-                console.error(error);
-                // 요청이 실패했을 때 처리할 코드를 추가합니다.
-            });
-    };
+  const handleApply = () => {
+    // 11 대신 유저 번호 넣을거
+    fetch(PROJECT + `/applicant/11/${projectIdx}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        // 요청 본문에 필요한 데이터를 추가할 수 있습니다.
+        // 예: 사용자 정보, 프로젝트 정보 등
+      }),
+    })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Failed to apply for project');
+          }
+          console.log('신청 성공')
+          console.log(response.json())
+          // 성공적으로 요청을 보냈을 때 처리할 코드를 추가합니다.
+          fetchProjectDetail(); // 변경된 정보로 다시 가져오기
+
+        })
+        .catch((error) => {
+          console.error(error);
+          // 요청이 실패했을 때 처리할 코드를 추가합니다.
+        });
+  };
 
 
-    return (
-        <>
-            <ProjectsTitle/>
-            <Common className={'qna-detail-wrapper'}>
-                {projectDetail.map(de => {
-                    return (
-                        <section className={'main-text-wrapper'}>
-                            <div key={de.boardIdx}>
-                                <div className={'qna-title'}>{de.boardTitle}</div>
-                                <div className={'hashTag-wrapper'}></div>
-                                <section className={'info-detail-container'}>
-                                    <div className={'detail-wrapper'}>
-                                        <div className={'category'}>
-                                            <Link to={`/projects/modify?projectIdx=${projectIdx}`}
-                                                  className={'modify-btn'}>
-                                                수정
-                                            </Link>
-                                            <span className={'delete-btn'}
-                                                  onClick={() => handleDelete(projectIdx)}>삭제</span>
-                                        </div>
-                                        <div className={'category'}>
-                                            <span className={'p-sub-title'}>작성자</span>
-                                            <span className={'sub-content'}>{de.boardWriter}</span>
-                                        </div>
-                                        <div className={'category'}>
-                                            <span className={'p-sub-title'}>프로젝트 타입 : </span>
-                                            <span className={'sub-content'}>{de.projectType}</span>
-                                        </div>
-                                        <div>
-                                            <div className={'category'}>
-                                                <span className={'p-sub-title'}>FRONT</span>
-                                                <span className={'sub-content'}>{de.applicantOfFront}</span>
-                                                /
-                                                <span className={'sub-content'}>{de.maxFront}</span>
-                                            </div>
-                                            <div className={'category'}>
-                                                <span className={'p-sub-title'}>BACK</span>
-                                                <span className={'sub-content'}>{de.applicantOfBack}</span>
-                                                /
-                                                <span className={'sub-content'}>{de.maxBack}</span>
-                                            </div>
-                                        </div>
-                                        <div className={'category'}>
-                                            <span className={'p-sub-title'}>작성일자</span>
-                                            <span className={'sub-content'}>{de.projectDate}</span>
-                                        </div>
-                                    </div>
-                                </section>
-                                <section className={'main-content'}>{de.boardContent}</section>
-                                <section className={'apply-wrapper'}>
-                                    <div className={'apply-btn'} onClick={handleApply}>신청하기</div>
-                                </section>
-                            </div>
-                        </section>
-                    )
-                })}
-            </Common>
-        </>
-    );
+  return (
+      <>
+        <ProjectsTitle/>
+        <Common className={'qna-detail-wrapper'}>
+          {projectDetail.map(de => {
+            return (
+                <section className={'main-text-wrapper'}>
+                  <div key={de.boardIdx}>
+                    <div className={'qna-title'}>{de.boardTitle}</div>
+                    <img src={de.projectImg} alt="Project Image" className={'project-img'}/>
+                    <section className={'info-detail-container'}>
+                      <div className={'detail-wrapper'}>
+                        <div className={'category'}>
+                          <Link to={`/projects/modify?projectIdx=${projectIdx}`}
+                                className={'modify-btn'}>
+                            수정
+                          </Link>
+                          <span className={'delete-btn'}
+                                onClick={() => handleDelete(projectIdx)}>삭제</span>
+                        </div>
+                        <div className={'category'}>
+                          <span className={'p-sub-title'}>작성자</span>
+                          <span className={'sub-content'}>{de.boardWriter}</span>
+                        </div>
+                        <div className={'category'}>
+                          <span className={'p-sub-title'}>프로젝트 타입 : </span>
+                          <span className={'sub-content'}>{de.projectType}</span>
+                        </div>
+                        <div>
+                          <div className={'category'}>
+                            <span className={'p-sub-title'}>FRONT</span>
+                            <span className={'sub-content'}>{de.applicantOfFront}</span>
+                            /
+                            <span className={'sub-content'}>{de.maxFront}</span>
+                          </div>
+                          <div className={'category'}>
+                            <span className={'p-sub-title'}>BACK</span>
+                            <span className={'sub-content'}>{de.applicantOfBack}</span>
+                            /
+                            <span className={'sub-content'}>{de.maxBack}</span>
+                          </div>
+                        </div>
+                        <div className={'category'}>
+                          <span className={'p-sub-title'}>작성일자</span>
+                          <span className={'sub-content'}>{de.projectDate}</span>
+                        </div>
+                      </div>
+                    </section>
+                    <section className={'main-content'}>{de.boardContent}</section>
+                    <section className={'apply-wrapper'}>
+                      <div className={'apply-btn'} onClick={handleApply}>신청하기</div>
+                    </section>
+                  </div>
+                </section>
+            )
+          })}
+        </Common>
+      </>
+  );
 
 }
 

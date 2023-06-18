@@ -42,7 +42,7 @@ const ProjectsItem = ({url, sortTitle}) => {
 
     // 서버에 좋아요 처리를 위한 POST 요청을 보냅니다
     // 1-> ${userIdx} 세션에서 가져올거라 없어질 예정
-    fetch(PROJECT+`/like/9/${projectId}`, {
+    fetch(PROJECT+`/like/1/${projectId}`, {
       method: 'POST',
       headers: {'content-type': 'application/json'}
     })
@@ -83,6 +83,9 @@ const ProjectsItem = ({url, sortTitle}) => {
           <section className={'project-list'} key={p.boardIdx}
                    onClick={() => handleShowDetails(p.boardIdx)}>
             <div className={'project-wrapper'}>
+
+
+
               <div className={'text-title'}>{p.boardTitle}</div>
               <div className={'text-content'}>{p.boardContent}</div>
               <div className={'project-type'}>{p.projectType}</div>
