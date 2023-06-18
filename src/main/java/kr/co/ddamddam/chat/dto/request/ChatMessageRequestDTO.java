@@ -13,5 +13,5 @@ public class ChatMessageRequestDTO {
 
     private Long roomId;
     private String message;
-    private Long senderId = 1L;
+    private Long senderId;
 }

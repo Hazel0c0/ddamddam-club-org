@@ -77,7 +77,7 @@ public class ChatService {
     }
 
     public ChatMessageResponseDTO sendMessage(Long mentorIdx, ChatMessageRequestDTO requestDTO) {
-        requestDTO.setSenderId(2L);
+//        requestDTO.setSenderId(2L);
         ChatRoom senderUserIdx = chatRoomRepository.findByMentorMentorIdxAndSenderUserIdx(mentorIdx, requestDTO.getSenderId());
 
         ChatRoom chatRoom = chatRoomRepository.findById(senderUserIdx.getRoomId())
@@ -214,6 +214,25 @@ public class ChatService {
         ChatMessage savedChatMessage = chatMessageRepository.save(chatMessage);
 
         return convertToChatMessageResponseDTO(savedChatMessage);
+    }
+
+    public ChatMessageResponseDTO saveMentorMessage(Long roomId, ChatMessageRequestDTO requestDTO) {
+
+        ChatRoom findChatRoom = chatRoomRepository.findById(roomId).orElseThrow();
+
+        User sender = userRepository.findById(requestDTO.getSenderId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid senderId"));
+
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setRoom(findChatRoom);
+        chatMessage.setSender(sender);
+        chatMessage.setContent(requestDTO.getMessage());
+        chatMessage.setSentAt(LocalDateTime.now());
+
+        ChatMessage savedChatMessage = chatMessageRepository.save(chatMessage);
+
+        return convertToChatMessageResponseDTO(savedChatMessage);
+
     }
 }
 

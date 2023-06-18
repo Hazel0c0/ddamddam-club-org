@@ -37,14 +37,26 @@ public class ChatController {
             return ResponseEntity.ok(responseDTO);
     }
 
-    // 채팅 주고받기
-    @PostMapping("/rooms/{roomId}/messages")
+    //멘티 채팅 저장
+    @PostMapping("/mentee/{mentorIdx}/messages")
     public ResponseEntity<ChatMessageResponseDTO> sendMessage(
-            @PathVariable("roomId") Long roomId,
+            @PathVariable("mentorIdx") Long mentorId,
             @RequestBody ChatMessageRequestDTO requestDTO
     ) {
-        log.info("메세지 저장:{}",requestDTO);
-        ChatMessageResponseDTO responseDTO = chatService.sendMessage(roomId, requestDTO);
+        log.info("메세지 저장:{}",requestDTO.getSenderId());
+        ChatMessageResponseDTO responseDTO = chatService.sendMessage(mentorId, requestDTO);
+        log.info("메세지 출력:{}",responseDTO);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    //멘토 채팅 저장
+    @PostMapping("/mentor/{roomIdx}/messages")
+    public ResponseEntity<ChatMessageResponseDTO> saveMentorMsg(
+            @PathVariable("roomIdx") Long roomId,
+            @RequestBody ChatMessageRequestDTO requestDTO
+    ) {
+        log.info("메세지 저장:{}",requestDTO.getSenderId());
+        ChatMessageResponseDTO responseDTO = chatService.saveMentorMessage(roomId, requestDTO);
         log.info("메세지 출력:{}",responseDTO);
         return ResponseEntity.ok(responseDTO);
     }
@@ -64,7 +76,7 @@ public class ChatController {
     @GetMapping("/mentee/list/{roomIdx}")
     public ResponseEntity<?> detail(
             @PathVariable Long roomIdx
-//            ,@AuthenticationPrincipal TokenUserInfo userInfo
+            ,@AuthenticationPrincipal TokenUserInfo userInfo
     ){
 //        Long senderIdx = Long.valueOf(userInfo.getUserIdx());
 //        log.info("userIdx : {}",senderIdx);
