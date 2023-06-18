@@ -77,7 +77,7 @@ const Header = () => {
                         <li><Link to={'/projects'}>프로젝트 모집</Link></li>
                     </ul>
                     <ul>
-                        <li><Link to={'/api/ddamddam/reviews/list'}>취업 후기</Link></li>
+                        <li><Link to={'/review'}>취업 후기</Link></li>
                         <li><Link to={'/'}>채용공고</Link></li>
                     </ul>
                     <ul>

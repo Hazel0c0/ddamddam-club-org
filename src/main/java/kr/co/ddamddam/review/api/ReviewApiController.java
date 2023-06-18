@@ -1,6 +1,4 @@
 package kr.co.ddamddam.review.api;
-
-
 import kr.co.ddamddam.company.dto.page.PageDTO;
 import kr.co.ddamddam.review.dto.request.ReviewModifyRequestDTO;
 import kr.co.ddamddam.review.dto.request.ReviewWriteRequestDTO;

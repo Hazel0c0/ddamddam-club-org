@@ -52,7 +52,7 @@ function App() {
                 <Route path={'/projects/modify'} element={<ProjectsModify/>}></Route>
 
                 {/*취업 후기 - not yet*/}
-                <Route path={'/api/ddamddam/reviews/list'} element={<ReviewList/>}></Route>
+                <Route path={'/review'} element={<ReviewList/>}></Route>
 
                 {/*채용공고 - not yet */}
                 <Route></Route>
