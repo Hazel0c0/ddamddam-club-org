@@ -7,6 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 // TODO : 회사취업후기 게시판
 @Setter
@@ -49,7 +51,7 @@ public class Review {
 
     @CreationTimestamp
     @Column(updatable = false)
-    private Timestamp reviewDate;
+    private LocalDateTime reviewDate;
 
     @Column(name = "review_view")
     @Builder.Default

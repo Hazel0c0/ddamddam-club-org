@@ -47,7 +47,7 @@ public class CompanyService {
             CompanyDetailResponseDTO dto = new CompanyDetailResponseDTO();
 
             dto.setCompanyTitle(company.getCompanyTitle());
-            dto.setCompanyContent(company.getCompanyContent());
+//            dto.setCompanyContent(company.getCompanyContent());
             dto.setCompanyName(company.getCompanyName());
             dto.setCompanyCareer(company.getCompanyCareer());
             dto.setCompanyArea(company.getCompanyArea());
@@ -71,7 +71,7 @@ public class CompanyService {
         Company company = mentorOptional.get();
         CompanyDetailResponseDTO dto = new CompanyDetailResponseDTO();
         dto.setCompanyTitle(company.getCompanyTitle());
-        dto.setCompanyContent(company.getCompanyContent());
+//        dto.setCompanyContent(company.getCompanyContent());
         dto.setCompanyName(company.getCompanyName());
         dto.setCompanyCareer(company.getCompanyCareer());
         dto.setCompanyArea(company.getCompanyArea());

@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -27,7 +28,7 @@ public class ReviewListResponseDTO {
     private String reviewLocation; //회사위치
     private int reviewTenure; //경력
     @JsonFormat(pattern = "yyyy/MM/dd")
-    private Timestamp reviewDate;
+    private LocalDateTime reviewDate;
     private int reviewView; //조회수
 
     @JsonIgnore
