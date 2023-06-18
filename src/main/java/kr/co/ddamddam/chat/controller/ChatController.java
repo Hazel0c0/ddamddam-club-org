@@ -93,7 +93,7 @@ public class ChatController {
     public ResponseEntity<?> chatList(
             ChatMentorDetailRequestDTO dto
             ){
-        log.info("respons cahhhhhh: {}");
+        log.info("respons cahhhhhh: {}",dto);
         try {
             List<ChatMessageResponseDTO> list = chatService.getMentorDetail(dto);
             return ResponseEntity.ok().body(list);

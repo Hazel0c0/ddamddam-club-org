@@ -44,10 +44,13 @@ const MentorsChat = () => {
   // 멘토가 멘티들의 채팅방 선택
   const handleSelectRoom = (e) => {
   setSelectChatRoomId(e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value);
-  document.querySelector('.chat-room-list').style.display = 'none';
+  const elements = document.querySelectorAll('.chat-room-list');
+  elements.forEach(element => {
+    element.style.display = 'none';
+  });
   document.querySelector('.input-section').style.display = 'block';
   document.querySelector('.mentor-back-room').style.display = 'block';
-  fetch(CHAT + `/mentor/chatroom/detail?mentorIdx=${chatPageIdx}&roomIdx=${e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value}`)
+  fetch(CHAT + `/mentor/chatroom/detail?mentorIdx=${chatPageIdx}&roomIdx=${e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value}&senderIdx=${e.target.closest('.chat-room-list').querySelector('.sender-idx').value}`)
             .then(res => {
                 if (res.status === 500) {
                     return;
@@ -55,7 +58,7 @@ const MentorsChat = () => {
                 return res.json();
             })
             .then((detailResult) => {
-              if(detailResult !== null){
+              if(detailResult !== undefined){
               setMessages(detailResult);
             }
             return;
@@ -66,6 +69,7 @@ const MentorsChat = () => {
   const mentorsChatRoom = 
     chatRoom.map((item, idx) => (
       <div className={'chat-room-list'} key={`${item.name}-${idx}`} onClick={handleSelectRoom}>
+        <input type={'hidden'} value={item.sender.userIdx} className={'sender-idx'}/>
         <input type={'hidden'} value={item.roomId} className={'chatRoom-idx'}/>
         <span className={'mentee-nick-name'}>{item.sender.userName}</span>
         <span className={'mentee-msg-content'}>{item.message}</span>
@@ -93,7 +97,7 @@ const MentorsChat = () => {
   ));
 
   // 디비에 저장된 멘티 메세지 렌더링
-  const menteeMsgRender = messages.length > 0 &&messages.map((item, idx) => (
+  const menteeMsgRender = messages != undefined &&messages.map((item, idx) => (
     <div className={item.sender.userIdx === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'}  key={`${item.name}-${idx}`}>
       <span className={item.sender.userIdx === enterUserIdx ? 'sender' : 'receiver'}>{item.sender.userNickname}</span>
       <span className={item.sender.userIdx === enterUserIdx ? 'sender-content' : 'receiver-content'}>{item.message}</span>
@@ -123,6 +127,9 @@ const MentorsChat = () => {
             .then((detailRes) => detailRes.json())
             .then((detailResult) => {
               setMessages(detailResult);
+              if(detailResult[0] !== undefined){
+              setSelectChatRoomId(detailResult[0].roomId);
+              }
             });
             }else{
               document.querySelector('.input-section').style.display = 'none';
@@ -166,12 +173,21 @@ const onText = event => {
 // 메세지 컨트롤러 보내기
 useEffect(() => {
   const webSocketLogin = () => {
-    ws.current = new WebSocket("ws://localhost:8181/socket/chat/" + selectChatRoomId);
+    console.log(selectChatRoomId);
+    ws.current = new WebSocket("ws://localhost:8181/socket/chat");
     console.log('socket');
     ws.current.onmessage = (message) => {
-      const dataSet = JSON.parse(message.data);
-      setSocketData(dataSet);
-    }
+      try {
+        const dataSet = JSON.parse(message.data);
+        const filteredData = Array.isArray(dataSet) ? dataSet.filter((item) => +item.roomId === selectChatRoomId) : [dataSet];
+        setSocketData(filteredData);
+      } catch (error) {
+        console.error("Error parsing WebSocket message:", error);
+      }
+    };
+    
+    
+    
   };
 
   webSocketLogin();
