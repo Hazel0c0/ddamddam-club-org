@@ -30,27 +30,46 @@ const ProjectsDetail = () => {
           console.log(data.payload);
 
           // 추가: 프로젝트 이미지 가져오기
-          const projectImg = data.payload.projectImg;
-          if (projectImg) {
-            fetch(projectImg)
-                .then(response => response.blob())
-                .then(blob => {
-                  const imgUrl = URL.createObjectURL(blob);
-                  setProjectImgUrl(imgUrl);
-                })
-                .catch(error => {
-                  console.error(error);
-                });
-          }
+          // const projectImg = data.payload.projectImg;
+          // if (projectImg) {
+          //   fetch(projectImg)
+          //       .then(response => response.blob())
+          //       .then(blob => {
+          //         const imgUrl = URL.createObjectURL(blob);
+          //         setProjectImgUrl(imgUrl);
+          //       })
+          //       .catch(error => {
+          //         console.error(error);
+          //       });
+          // }
         })
         .catch(error => {
           console.error(error);
         });
   };
 
+  const file_URL = '//localhost:8181/api/ddamddam/load-file'
+
+  const fetchFileImage = async () => {
+    // const res = await fetch(`${file_URL}?projectIdx=${projectIdx}&boardType=project`,{
+    const res = await fetch(`${file_URL}?projectIdx=92&boardType=project`, {
+      method: 'GET',
+      // headers: { 'Authorization': 'Bearer ' + getLoginUserInfo().token }
+    });
+    if (res.status === 200) {
+      const fileBlob = await res.blob();
+      const imgUrl = window.URL.createObjectURL(fileBlob);
+      setProjectImgUrl(imgUrl);
+    } else {
+      const err = await res.text();
+      setProjectImgUrl(null);
+    }
+  };
+
 
   useEffect(() => {
     fetchProjectDetail();
+    fetchFileImage();
   }, []);
 
 
@@ -116,8 +135,14 @@ const ProjectsDetail = () => {
                 <section className={'main-text-wrapper'}>
                   <div key={de.boardIdx}>
                     <div className={'qna-title'}>{de.boardTitle}</div>
-                    <img src={de.projectImg} alt="Project Image" className={'project-img'}/>
-                    <section className={'info-detail-container'}>
+                    <img
+                        src={projectImgUrl ? projectImgUrl : require('../../assets/img/anonymous.jpg')}
+                        alt="Project Image" className={'project-img'}
+                        style={{
+                          height: 350
+                        }}
+                          />
+                          <section className={'info-detail-container'}>
                       <div className={'detail-wrapper'}>
                         <div className={'category'}>
                           <Link to={`/projects/modify?projectIdx=${projectIdx}`}
@@ -154,14 +179,14 @@ const ProjectsDetail = () => {
                           <span className={'sub-content'}>{de.projectDate}</span>
                         </div>
                       </div>
-                    </section>
-                    <section className={'main-content'}>{de.boardContent}</section>
-                    <section className={'apply-wrapper'}>
-                      <div className={'apply-btn'} onClick={handleApply}>신청하기</div>
-                    </section>
-                  </div>
                 </section>
-            )
+            <section className={'main-content'}>{de.boardContent}</section>
+            <section className={'apply-wrapper'}>
+              <div className={'apply-btn'} onClick={handleApply}>신청하기</div>
+            </section>
+          </div>
+          </section>
+          )
           })}
         </Common>
       </>

@@ -61,6 +61,9 @@ dependencies {
 	implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	// -------------- 메일 인증
+
+	//파일업로드 라이브러리
+	implementation 'commons-io:commons-io:2.8.0'
 }
 
 tasks.named('test') {
