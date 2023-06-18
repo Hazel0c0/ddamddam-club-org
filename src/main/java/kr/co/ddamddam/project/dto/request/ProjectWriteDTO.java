@@ -7,7 +7,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Setter @Getter @ToString
+@Getter @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,11 +31,12 @@ public class ProjectWriteDTO {
 
   private String offerPeriod; //모집기간
 
-  public Project toEntity(String userName) {
+  public Project toEntity(String userName, String uploadedFilePath) {
     return Project.builder()
         .userIdx(this.boardWriterIdx)
         .writer(userName)
         .projectTitle(this.boardTitle)
+        .projectImg(uploadedFilePath)
         .projectContent(this.boardContent)
         .projectType(this.projectType)
         .maxFront(this.maxFront)

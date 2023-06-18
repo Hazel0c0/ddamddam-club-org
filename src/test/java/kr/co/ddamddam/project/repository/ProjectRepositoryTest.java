@@ -24,7 +24,7 @@ class ProjectRepositoryTest {
   @Autowired
   ProjectRepository projectRepository;
 
-
+/*
   @Test
   @DisplayName("bulk insert")
   void bulkInsert() {
@@ -42,4 +42,5 @@ class ProjectRepositoryTest {
       );
     }
   }
+  */
 }

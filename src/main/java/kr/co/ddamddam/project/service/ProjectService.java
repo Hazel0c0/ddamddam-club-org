@@ -21,17 +21,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Root;
 
 @Service
 @Slf4j
@@ -114,11 +106,11 @@ public class ProjectService {
         .orElseThrow(() -> new RuntimeException(projectIdx + "번 게시물이 존재하지 않습니다!"));
   }
 
-  public ProjectDetailResponseDTO write(final ProjectWriteDTO dto) {
+  public ProjectDetailResponseDTO write(final ProjectWriteDTO dto, final String uploadedFilePath) {
     User user = userRepository.findById(dto.getBoardWriterIdx())
         .orElseThrow(() -> new RuntimeException("존재하지 않습니다!"));
 
-    Project saved = projectRepository.save(dto.toEntity(user.getUserName()));
+    Project saved = projectRepository.save(dto.toEntity(user.getUserName(),uploadedFilePath));
 
     return new ProjectDetailResponseDTO(saved);
   }
