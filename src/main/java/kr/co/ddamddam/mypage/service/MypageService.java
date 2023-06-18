@@ -5,7 +5,7 @@ import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.mentor.entity.Mentor;
 import kr.co.ddamddam.mentor.repository.MentorRepository;
 import kr.co.ddamddam.mypage.dto.page.PageDTO;
-import kr.co.ddamddam.mypage.dto.page.PageResponseDTO;
+import kr.co.ddamddam.mypage.dto.page.PageMaker;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardResponseDTO;
 import kr.co.ddamddam.project.repository.ProjectRepository;
@@ -14,8 +14,6 @@ import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
 import kr.co.ddamddam.review.repository.ReviewRepository;
 import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -36,54 +34,62 @@ public class MypageService {
 
     // 레포지토리
     private final UserRepository userRepository;
-    @Autowired
     private final QnaRepository qnaRepository;
-    @Autowired
     private final ProjectRepository projectRepository;
-    @Autowired
     private final ReviewRepository reviewRepository;
-    @Autowired
     private final MentorRepository mentorRepository;
 
     // 토큰 유효성 검사 클래스
-    @Autowired
     private final ValidateToken validateToken;
 
     public MypageBoardPageResponseDTO getBoardList(
-            TokenUserInfo tokenUserInfo,
+//            TokenUserInfo tokenUserInfo,
             PageDTO pageDTO
     ) {
         // 토큰 유효성 검사
-        validateToken.validateToken(tokenUserInfo);
+//        validateToken.validateToken(tokenUserInfo);
 
         // 유효성 검사 통과 시 서비스 기능 수행
-        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
+//        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
+        Long userIdx = 1L;
 
         PageRequest pageable = getPageable(pageDTO);
 
-        Page<Qna> qnaList = qnaRepository.findByUserIdx(userIdx, pageable);
-        Page<Mentor> mentorList = mentorRepository.findByUserIdx(userIdx, pageable);
-        
-        List<MypageBoardResponseDTO> mypageBoardList 
+        List<Qna> qnaList = qnaRepository.findByUserUserIdx(userIdx);
+        List<Mentor> mentorList = mentorRepository.findByUserUserIdx(userIdx);
+
+        List<MypageBoardResponseDTO> mypageBoardList
                 = getMypageDtoList(qnaList, mentorList);
 
-        PageResponseDTO<MypageBoardResponseDTO> pageInfo
-                = new PageResponseDTO<>(
-                        mypageBoardList,
-                        qnaList.getPageable(),
-                    qnaList.getTotalElements() + mentorList.getTotalElements()
-        );
+        System.out.println("mypageBoardList = " + mypageBoardList);
+
+        PageMaker maker = new PageMaker(pageDTO, mypageBoardList.size());
+        int pageStart = getPageStart(pageDTO);
+        int pageEnd = getPageEnd(pageStart, pageDTO.getSize(), mypageBoardList.size());
+
+        System.out.println("!!!!!!!!!!!!pageStart = " + pageStart);
+        System.out.println("!!!!!!!!!!!!pageEnd = " + pageEnd);
+
+        List<MypageBoardResponseDTO> slicedMypageBoardList = mypageBoardList.subList(pageStart, pageEnd);
 
         return MypageBoardPageResponseDTO.builder()
-                .count(mypageBoardList.size())
-                .pageInfo(pageInfo)
-                .boardList(mypageBoardList)
+                .count(slicedMypageBoardList.size())
+                .pageInfo(maker)
+                .boardList(slicedMypageBoardList)
                 .build();
     }
 
+    private int getPageStart(PageDTO pageDTO) {
+        return (pageDTO.getPage() - 1) * pageDTO.getSize();
+    }
+
+    private int getPageEnd(int pageStart, int pageSize, int totalCount) {
+        return Math.min(pageStart + pageSize, totalCount);
+    }
+
     private List<MypageBoardResponseDTO> getMypageDtoList(
-            Page<Qna> qnaList,
-            Page<Mentor> mentorList
+            List<Qna> qnaList,
+            List<Mentor> mentorList
     ) {
         List<MypageBoardResponseDTO> mypageBoardList = new ArrayList<>();
 
@@ -135,9 +141,7 @@ public class MypageService {
                 .build();
     }
 
-
     private PageRequest getPageable(PageDTO pageDTO) {
-
         return PageRequest.of(
                 pageDTO.getPage() - 1,
                 pageDTO.getSize()
