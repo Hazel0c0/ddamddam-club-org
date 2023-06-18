@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class CompanyRequestDTO {
+    private List<String> wanted;
     private String company;
     private String title;
     private String career;
