@@ -51,8 +51,7 @@ const ProjectsDetail = () => {
   const file_URL = '//localhost:8181/api/ddamddam/load-file'
 
   const fetchFileImage = async () => {
-    // const res = await fetch(`${file_URL}?projectIdx=${projectIdx}&boardType=project`,{
-    const res = await fetch(`${file_URL}?projectIdx=92&boardType=project`, {
+    const res = await fetch(`${file_URL}?projectIdx=${projectIdx}&boardType=project`,{
       method: 'GET',
       // headers: { 'Authorization': 'Bearer ' + getLoginUserInfo().token }
     });
@@ -135,13 +134,13 @@ const ProjectsDetail = () => {
                 <section className={'main-text-wrapper'}>
                   <div key={de.boardIdx}>
                     <div className={'qna-title'}>{de.boardTitle}</div>
-                    <img
-                        src={projectImgUrl ? projectImgUrl : require('../../assets/img/anonymous.jpg')}
+                    {projectImgUrl && <img
+                        src={projectImgUrl}
                         alt="Project Image" className={'project-img'}
                         style={{
                           height: 350
                         }}
-                          />
+                          />}
                           <section className={'info-detail-container'}>
                       <div className={'detail-wrapper'}>
                         <div className={'category'}>
