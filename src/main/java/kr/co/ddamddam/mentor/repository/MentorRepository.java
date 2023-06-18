@@ -15,5 +15,5 @@ public interface MentorRepository extends JpaRepository<Mentor, Long> {
     @Query("SELECT m FROM Mentor m WHERE LOWER(m.mentorSubject) IN :subjects")
     Page<Mentor> findByMentorSubjectInIgnoreCase(List<String> subjects, Pageable pageable);
 
-    Page<Mentor> findByUserIdx(Long userIdx, PageRequest pageable);
+    List<Mentor> findByUserUserIdx(Long userIdx);
 }

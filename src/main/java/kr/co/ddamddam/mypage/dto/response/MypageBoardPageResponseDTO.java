@@ -1,6 +1,6 @@
 package kr.co.ddamddam.mypage.dto.response;
 
-import kr.co.ddamddam.mypage.dto.page.PageResponseDTO;
+import kr.co.ddamddam.mypage.dto.page.PageMaker;
 import lombok.*;
 
 import java.util.List;
@@ -17,6 +17,6 @@ import java.util.List;
 public class MypageBoardPageResponseDTO {
 
     private int count;
-    private PageResponseDTO pageInfo;
+    private PageMaker pageInfo;
     private List<MypageBoardResponseDTO> boardList;
 }

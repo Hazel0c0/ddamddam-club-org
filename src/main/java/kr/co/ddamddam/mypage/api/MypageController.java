@@ -3,6 +3,7 @@ package kr.co.ddamddam.mypage.api;
 import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.mypage.dto.page.PageDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardPageResponseDTO;
+import kr.co.ddamddam.mypage.dto.response.MypageBoardResponseDTO;
 import kr.co.ddamddam.mypage.service.MypageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +23,13 @@ public class MypageController {
 
     @GetMapping("/board-list")
     public ResponseEntity<?> getBoardList(
-            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
+//            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             PageDTO pageDTO
     ){
-        log.info("GET : MypageController/getBoardList - tokenUserInfo : {}", tokenUserInfo);
+//        log.info("GET : MypageController/getBoardList - tokenUserInfo : {}", tokenUserInfo);
 
-        MypageBoardPageResponseDTO boardList = myPageService.getBoardList(tokenUserInfo, pageDTO);
+//        MypageBoardPageResponseDTO boardList = myPageService.getBoardList(tokenUserInfo, pageDTO);
+        MypageBoardPageResponseDTO boardList = myPageService.getBoardList(pageDTO);
 
         return ResponseEntity.ok().body(boardList);
     }
