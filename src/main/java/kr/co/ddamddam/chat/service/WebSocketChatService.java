@@ -2,34 +2,24 @@ package kr.co.ddamddam.chat.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.ddamddam.chat.dto.request.ChatValidateRequestDTO;
-import kr.co.ddamddam.chat.entity.ChatRoom;
-import kr.co.ddamddam.chat.repository.ChatRoomRepository;
-import kr.co.ddamddam.mentor.entity.Mentor;
-import kr.co.ddamddam.mentor.repository.MentorRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-@Service
+@Component
 @ServerEndpoint("/socket/chat/{roomId}")
 @Slf4j
 public class WebSocketChatService {
     private static Set<Session> clients = Collections.synchronizedSet(new HashSet<>());
 
-
     @OnOpen
-    public void onOpen(Session session) {
+    public void onOpen(Session session, EndpointConfig config) {
         log.info("open session: {}, clients={}", session.getId(), clients);
 
         if (!clients.contains(session)) {
@@ -45,14 +35,13 @@ public class WebSocketChatService {
         log.info("receive message: {}", message);
         ObjectMapper objectMapper = new ObjectMapper();
         ChatValidateRequestDTO dto = objectMapper.readValue(message, ChatValidateRequestDTO.class);
-        log.info("hahaha: {} ",dto.getMentorIdx());
+        log.info("hahaha: {} ", dto.getMentorIdx());
         // 필드 값 추출 예시
         Long mentorIdx = dto.getMentorIdx();
         Long senderId = dto.getSenderId();
         String name = dto.getName();
         String msg = dto.getMsg();
         String date = dto.getDate();
-
 
         // 추출한 필드 값 사용 예시
         log.info("roomId: {}", dto.getRoomId());
@@ -61,6 +50,7 @@ public class WebSocketChatService {
         log.info("name: {}", name);
         log.info("msg: {}", msg);
         log.info("date: {}", date);
+
         for (Session s : clients) {
             log.info(s.getId());
             s.getBasicRemote().sendText(message);
@@ -68,8 +58,8 @@ public class WebSocketChatService {
     }
 
     @OnClose
-    public void onClose(Session session) {
-        log.info("session close: {}", session.getId());
+    public void onClose(Session session, CloseReason reason) {
+        log.info("session close: {}, reason: {}", session.getId(), reason.getReasonPhrase());
         clients.remove(session);
     }
 }

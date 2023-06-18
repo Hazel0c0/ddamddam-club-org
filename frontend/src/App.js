@@ -15,6 +15,7 @@ import QnaMain from "./component/qna/QnaMain";
 import Footer from "./component/common/Footer";
 import MentorsTemplate from "./component/mentors/MentorsTemplate";
 import MentorsWrite from "./component/mentors/MentorsWrite";
+import MentorsModify from "./component/mentors/MentorsModify";
 // import MentorsDetail from "./component/mentors/MentorsDetail";
 import MentorsChat from "./component/mentors/MentorsChat";
 import QnaTemplate from "./component/qna/QnaTemplate";
@@ -39,7 +40,8 @@ function App() {
                     {/*멘토,멘티*/}
                     <Route path={'/mentors'} element={<MentorsTemplate />}></Route>
                     <Route path={'/mentors/write'} element={<MentorsWrite />}></Route>
-
+                    <Route path={'/mentors/modify/:idx'} element={<MentorsModify />}></Route>
+                    
         {/*<Route path="/mentors/detail/mentorIdx/:idx" element={<MentorsDetail />} />*/}
         {/*멘토 멘티 채팅방*/}
         <Route path={'/mentors/detail/chat/:chatPageIdx'} element={<MentorsChat/>}></Route>
