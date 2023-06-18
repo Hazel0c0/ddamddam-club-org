@@ -2,6 +2,7 @@ package kr.co.ddamddam.company.service;
 
 import kr.co.ddamddam.company.dto.page.PageDTO;
 import kr.co.ddamddam.company.dto.page.PageResponseDTO;
+import kr.co.ddamddam.company.dto.request.CompanyRequestDTO;
 import kr.co.ddamddam.company.dto.response.CompanyDetailResponseDTO;
 import kr.co.ddamddam.company.dto.response.CompanyListResponseDTO;
 import kr.co.ddamddam.company.entity.Company;
@@ -43,13 +44,13 @@ public class CompanyService {
         Page<Company> companies= companyRepository.findAll(pageable);
 
         List<Company> companyList = companies.getContent();
-        List<CompanyDetailResponseDTO> companyDetailResponseDTOList = companyList.stream().map(company -> {
-            CompanyDetailResponseDTO dto = new CompanyDetailResponseDTO();
+        List<CompanyRequestDTO> companyRequestDTOS = companyList.stream().map(company -> {
+            CompanyRequestDTO dto = new CompanyRequestDTO();
 
-            dto.setCompanyTitle(company.getCompanyTitle());
+            dto.setCompany(company.getCompanyName());
 //            dto.setCompanyContent(company.getCompanyContent());
-            dto.setCompanyName(company.getCompanyName());
-            dto.setCompanyCareer(company.getCompanyCareer());
+            dto.setTitle(company.getCompanyTitle());
+            dto.setCareer(company.getCompanyCareer());
             dto.setCompanyArea(company.getCompanyArea());
             dto.setCompanyDate(company.getCompanyDate());
             dto.setCompanyEnddate(company.getCompanyEnddate());
