@@ -30,6 +30,8 @@ public class UploadController {
       @RequestParam("boardType") String boardType
   ) {
 
+    log.info("/load-file?projectIdx = {} & boardType = {} ", projectIdx,boardType);
+
     try {
       String filePath
           = uploadService.getFilePath(projectIdx,boardType);
