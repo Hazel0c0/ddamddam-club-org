@@ -77,24 +77,31 @@ const MentorsChat = () => {
       </div>
     ));
   
-
     // 멘티 채팅방 입장 후 메세지 렌더링
-  const menteeMsgBox = chat.map((item, idx) => (
-    <div className={item.senderId === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
-      <span className={item.senderId === enterUserIdx ? 'sender' : 'receiver'}>{item.name}</span>
-      {/* [ {item.date} ] */}
-      <span className={item.senderId === enterUserIdx ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
-    </div>
-  ));
+const menteeMsgBox = chat.map((item, idx) => {
+  if (+item.roomId === +selectChatRoomId) {
+    return (
+      <div className={item.senderId === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
+        <span className={item.senderId === enterUserIdx ? 'sender' : 'receiver'}>{item.name}</span>
+        <span className={item.senderId === enterUserIdx ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
+      </div>
+    );
+  }
+  return null;
+});
 
-    // 멘토가 채팅방 입장 후 메세지 렌더링
-  const mentorMsgBox = chat.map((item, idx) => (
-    <div className={item.senderId === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
-      <span className={item.senderId === enterUserIdx ? 'sender' : 'receiver'}>{item.name}</span>
-      {/* [ {item.date} ] */}
-      <span className={item.senderId === enterUserIdx ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
-    </div>
-  ));
+// 멘토가 채팅방 입장 후 메세지 렌더링
+const mentorMsgBox = chat.map((item, idx) => {
+  if (+item.roomId === +selectChatRoomId) {
+    return (
+      <div className={item.senderId === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
+        <span className={item.senderId === enterUserIdx ? 'sender' : 'receiver'}>{item.name}</span>
+        <span className={item.senderId === enterUserIdx ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
+      </div>
+    );
+  }
+  return null;
+});
 
   // 디비에 저장된 멘티 메세지 렌더링
   const menteeMsgRender = messages != undefined &&messages.map((item, idx) => (
@@ -173,7 +180,6 @@ const onText = event => {
 // 메세지 컨트롤러 보내기
 useEffect(() => {
   const webSocketLogin = () => {
-    console.log(selectChatRoomId);
     ws.current = new WebSocket("ws://localhost:8181/socket/chat");
     console.log('socket');
     ws.current.onmessage = (message) => {
@@ -268,7 +274,7 @@ const send = () => {
 //webSocket
 
 
-console.log(enterUserIdx);
+console.log('접속한 userIdx: '+enterUserIdx);
 
 
   useEffect(() => {
