@@ -40,9 +40,6 @@ dependencies {
 	// swagger api 문서화
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
 
-	// 실시간 채팅 웹소켓
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-
 	// XML to JSON
 	implementation 'org.json:json:20211205';
 	// Other dependencies...

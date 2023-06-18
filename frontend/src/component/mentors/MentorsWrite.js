@@ -17,16 +17,15 @@ const MentorsWrite = () => {
       'Authorization': 'Bearer ' + ACCESS_TOKEN
   }
 
-    const [textInput, setTextInput] = useState(
-        {
-            mentorTitle: '',
-            mentorContent: '',
-            mentorSubject: '프론트엔드',
-            mentorCurrent: '',
-            mentorCareer: '신입',
-            mentorMentee: 1
-        }
-    )
+  const [textInput, setTextInput] = useState({
+    mentorTitle: '',
+    mentorContent: '',
+    mentorSubject: '프론트엔드',
+    mentorMentee: '1',
+    mentorCurrent: '',
+    mentorCareer: '신입'
+  });
+  
 
     const handleSelect = (e) => {
         const {name, value} = e.target;

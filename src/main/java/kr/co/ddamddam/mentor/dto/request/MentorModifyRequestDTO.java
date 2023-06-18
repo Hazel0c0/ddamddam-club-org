@@ -35,7 +35,7 @@ public class MentorModifyRequestDTO {
     @NotBlank
     private String mentorCareer;
 
-    @NotBlank
+//    @NotBlank
     private int mentorMentee;
 
 
