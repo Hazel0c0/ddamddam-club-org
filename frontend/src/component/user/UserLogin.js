@@ -4,12 +4,17 @@ import logo from "../../src_assets/logo(basic).png";
 import {Link, useNavigate} from "react-router-dom";
 import './scss/UserLogin.scss';
 import {BASE_URL, AUTH} from "../common/config/HostConfig";
+import {KAKAO_AUTH_URL} from "../common/OAuth";
 
 const UserLogin = () => {
 
   const REQUEST_URL = BASE_URL + AUTH + '/signin';
-
   const redirection = useNavigate();
+
+  // 카카오로 계속하기 버튼 클릭 시 동작하는 핸들러
+  const kakaoLoginHandler = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  }
 
   // 엔터 키 눌렀을 때 동작하는 핸들러
   const onKeyPress = (e) => {
@@ -164,7 +169,12 @@ const UserLogin = () => {
             아이디로 계속하기
           </button>
           <div className={'line'}></div>
-          <button className={'kakao-login'}>카카오로 계속하기</button>
+          <button
+            className={'kakao-login'}
+            onClick={kakaoLoginHandler}
+          >
+            카카오로 계속하기
+          </button>
         </section>
 
         <section className={'join-wrapper'}>
