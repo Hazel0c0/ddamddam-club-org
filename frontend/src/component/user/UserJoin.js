@@ -206,7 +206,7 @@ const UserJoin = () => {
         const code = emailCode.current.value;
         console.log(`입력 code value : ${code}`);
 
-        const res = fetch(`${EMAIL}/check`, {
+        const res = await fetch(`${EMAIL}/check`, {
             method: 'POST',
             headers: {'content-type': 'application/json'},
             body: JSON.stringify({
@@ -214,18 +214,25 @@ const UserJoin = () => {
             })
         })
 
-        const result = await res;
-        console.log(JSON.stringify(result))
-        console.log(`코드 입력 후 result : ${result}`)
-        // if (result.ok) {
-        //     alert("인증이 완료되었습니다.");
-        //     setEmailCodeResult(true);
-        //     correct.userCode(true);
-        //     // emailCodeCheck.current.textContent = '제출완료';
-        // } else {
-        //     alert("인증에 실패하였습니다. 다시 확인해주세요.");
-        //     setEmailCodeResult(false);
-        // }
+        const result = await res.json();
+
+        console.log(`result = ${JSON.stringify(result)}`);
+        console.log(`result.checkResult = ${result.checkResult}`);
+        // console.log(JSON.stringify(result))
+        // console.log(`코드 입력 후 result : ${result}`)
+
+        if (result.checkResult) {
+            alert("인증이 완료되었습니다.");
+            setEmailCodeResult(true);
+            setCorrect(prevState => ({
+                ...prevState,
+                userCode: true
+            }));
+            // emailCodeCheck.current.textContent = '제출완료';
+        } else {
+            alert("인증에 실패하였습니다. 다시 확인해주세요.");
+            setEmailCodeResult(false);
+        }
     }
 
     // 이메일 입력창 체인지 이벤트 핸들러

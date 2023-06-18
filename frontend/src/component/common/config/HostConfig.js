@@ -25,3 +25,4 @@ export const BASE_URL = backendHost;
 export const AUTH = "/auth";
 export const JOININ = "//localhost:8181/api/ddamddam/auth"
 export const EMAIL = "//localhost:8181/api/ddamddam/email"
+export const REVIEW = "//localhost:8181/api/ddamddam/reviews"

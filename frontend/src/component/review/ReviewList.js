@@ -15,7 +15,7 @@ const QnaList = ({searchValue}) => {
     const [qnaDetailBoardIdx, setqnaDetailBoardIdx] = useState([]);
 
     //전체 목록 렌더링 필터 async
-    const asyncQnaList = async () => {
+    const asyncReviewList = async () => {
         let responseUrl;
         if (searchValue === '' || searchValue === '전체') {
             responseUrl = '?page=4&size=10'
