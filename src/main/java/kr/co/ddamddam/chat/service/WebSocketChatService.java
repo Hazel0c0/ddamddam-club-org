@@ -1,8 +1,16 @@
 package kr.co.ddamddam.chat.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.co.ddamddam.chat.dto.request.ChatValidateRequestDTO;
+import kr.co.ddamddam.chat.entity.ChatRoom;
+import kr.co.ddamddam.chat.repository.ChatRoomRepository;
+import kr.co.ddamddam.mentor.entity.Mentor;
+import kr.co.ddamddam.mentor.repository.MentorRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
@@ -14,10 +22,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-@ServerEndpoint("/socket/chat")
+@ServerEndpoint("/socket/chat/{roomId}")
 @Slf4j
 public class WebSocketChatService {
     private static Set<Session> clients = Collections.synchronizedSet(new HashSet<>());
+
 
     @OnOpen
     public void onOpen(Session session) {
@@ -34,9 +43,26 @@ public class WebSocketChatService {
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
         log.info("receive message: {}", message);
+        ObjectMapper objectMapper = new ObjectMapper();
+        ChatValidateRequestDTO dto = objectMapper.readValue(message, ChatValidateRequestDTO.class);
+        log.info("hahaha: {} ",dto.getMentorIdx());
+        // 필드 값 추출 예시
+        Long mentorIdx = dto.getMentorIdx();
+        Long senderId = dto.getSenderId();
+        String name = dto.getName();
+        String msg = dto.getMsg();
+        String date = dto.getDate();
 
+
+        // 추출한 필드 값 사용 예시
+        log.info("roomId: {}", dto.getRoomId());
+        log.info("mentorIdx: {}", mentorIdx);
+        log.info("senderId: {}", senderId);
+        log.info("name: {}", name);
+        log.info("msg: {}", msg);
+        log.info("date: {}", date);
         for (Session s : clients) {
-            log.info("send data: {}", message);
+            log.info(s.getId());
             s.getBasicRemote().sendText(message);
         }
     }
