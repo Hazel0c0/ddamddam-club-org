@@ -12,4 +12,5 @@ import lombok.Setter;
 public class ChatMentorDetailRequestDTO {
     private Long mentorIdx;
     private Long roomIdx;
+    private Long senderIdx;
 }

@@ -12,5 +12,5 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     List<ChatRoom> findByMentorMentorIdx(Long mentorIdx);
     // 멘티의 아이디로 채팅방 찾기
     ChatRoom findByMentorMentorIdxAndSenderUserIdx(Long mentorIdx, Long senderIdx);
-    ChatRoom findByMentorMentorIdxAndReceiverUserIdx(Long mentorIdx, Long receiverIdx);
+    ChatRoom findByMentorMentorIdxAndReceiverUserIdxAndSenderUserIdx(Long mentorIdx, Long receiverIdx, Long senderIdx);
 }
