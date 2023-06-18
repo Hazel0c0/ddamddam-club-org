@@ -7,6 +7,7 @@ import './scss/MentorChat.scss';
 import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
           getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
           getUserRole, isLogin } from '../common/util/login-util';
+import { Window } from '@mui/icons-material';
 const MentorsChat = () => {
   const { chatPageIdx } = useParams(); // 멘토 게시판 idx
   const [detailMember, setDetailMember] = useState({}); // 멘토게시판
@@ -21,21 +22,34 @@ const MentorsChat = () => {
   const [selectChatRoomId, setSelectChatRoomId] = useState(); // 멘토가 선택한 채팅방 idx
 
   const enterUserIdx = +getUserIdx(); // 접속한 유저의 idx
+  
+  const ACCESS_TOKEN = getToken(); // 토큰
+
+  // headers
+	const headerInfo = {
+    'content-type': 'application/json',
+    'Authorization': 'Bearer ' + ACCESS_TOKEN
+}
 
 
   const ws = useRef(null);
   const chatScroll = useRef(null);
 
+  // 멘토한정 채팅방으로 돌아가기
+  const backChatRoomList = () => {
+    window.location.href = 'http://localhost:3000/mentors/detail/chat/'+chatPageIdx;
+    document.querySelector('.mentor-back-room').style.display = 'none';
+  };
 
   // 멘토가 멘티들의 채팅방 선택
   const handleSelectRoom = (e) => {
   setSelectChatRoomId(e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value);
   document.querySelector('.chat-room-list').style.display = 'none';
   document.querySelector('.input-section').style.display = 'block';
+  document.querySelector('.mentor-back-room').style.display = 'block';
   fetch(CHAT + `/mentor/chatroom/detail?mentorIdx=${chatPageIdx}&roomIdx=${e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value}`)
             .then(res => {
                 if (res.status === 500) {
-                    alert('모지');
                     return;
                 }
                 return res.json();
@@ -61,7 +75,7 @@ const MentorsChat = () => {
   
 
     // 멘티 채팅방 입장 후 메세지 렌더링
-  const menteeMsgBox = chat.length > 0 && chat.map((item, idx) => (
+  const menteeMsgBox = chat.map((item, idx) => (
     <div className={item.senderId === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
       <span className={item.senderId === enterUserIdx ? 'sender' : 'receiver'}>{item.name}</span>
       {/* [ {item.date} ] */}
@@ -70,7 +84,7 @@ const MentorsChat = () => {
   ));
 
     // 멘토가 채팅방 입장 후 메세지 렌더링
-  const mentorMsgBox = chat.length > 0 && chat.map((item, idx) => (
+  const mentorMsgBox = chat.map((item, idx) => (
     <div className={item.senderId === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
       <span className={item.senderId === enterUserIdx ? 'sender' : 'receiver'}>{item.name}</span>
       {/* [ {item.date} ] */}
@@ -90,8 +104,7 @@ const MentorsChat = () => {
 // 렌더링
   useEffect(() => {
     // 멘토 상세 정보 조회
-    fetch(MENTOR + '/detail?mentorIdx=' + chatPageIdx)
-      .then((res) => {
+    fetch(MENTOR + '/detail?mentorIdx=' + chatPageIdx).then((res) => {
         if (res.status === 500) {
           alert('잠시 후 다시 접속해주세요.[서버오류]');
           return;
@@ -102,8 +115,11 @@ const MentorsChat = () => {
         setDetailMember(result);
         console.log(result);
         if(result.userIdx !== enterUserIdx){
-        // if(result.userIdx !== 1){
-          fetch(CHAT + '/mentee/list/' + chatPageIdx)
+          fetch(CHAT + '/mentee/list/' + chatPageIdx
+          ,{
+            method: 'GET',
+            headers: headerInfo
+          })
             .then((detailRes) => detailRes.json())
             .then((detailResult) => {
               setMessages(detailResult);
@@ -119,7 +135,7 @@ const MentorsChat = () => {
                 return allRes.json();
                 })
                   .then((allResult) => {
-                    if (allResult.length > 0) {
+                    if (allResult != undefined) {
                       setChatRoom(allResult);
                       console.log(allResult);
                     }
@@ -294,12 +310,13 @@ console.log(enterUserIdx);
         </section>
 
         <div className={'btn-wrapper'}>
-          <button className={'application-btn'}>멘토링중</button>
+          <button className={'application-btn'} >{detailMember.userIdx === enterUserIdx ? '멘티 확정' : '멘토링중'}</button>
+          <button className={'mentor-back-room'} onClick={backChatRoomList}>채팅방 돌아가기</button>
         </div>
       </div>
 
       <div className={'mentor-chat-room'}>
-        {/* <button onClick={backChatRoomList}>채팅방 돌아가기</button> */}
+        
         <section className={'chating-list'} ref={chatScroll}>
           {mentorsChatRoom}
           {menteeMsgRender}
