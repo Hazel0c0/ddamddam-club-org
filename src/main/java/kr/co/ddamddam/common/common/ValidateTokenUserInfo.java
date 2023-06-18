@@ -18,7 +18,23 @@ public class ValidateTokenUserInfo {
 
     private final UserRepository userRepository;
 
-    public void validate(Long userIdx, TokenUserInfo tokenUserInfo) {
+    /**
+     * 클라이언트에서 보낸 토큰만 검사하는 메서드
+     * @param tokenUserInfo - 유저 정보 (유저 식별번호, 유저 이메일, 토큰)
+     */
+    public void validateToken(TokenUserInfo tokenUserInfo) {
+        // 토큰 인증 실패
+        if (tokenUserInfo == null) {
+            throw new UnauthorizationException(UNAUTHENTICATED_USER, "❌ 인증되지 않은 사용자이거나, 위조된 토큰입니다.");
+        }
+    }
+
+    /**
+     * 클라이언트에서 보낸 dto 내의 userIdx 와 토큰을 검사하는 메서드
+     * @param userIdx - dto 에 들어있던 유저 식별번호
+     * @param tokenUserInfo - 유저 정보 (유저 식별번호, 유저 이메일, 토큰)
+     */
+    public void validateDtoAndToken(Long userIdx, TokenUserInfo tokenUserInfo) {
         // 토큰 인증 실패
         if (tokenUserInfo == null) {
             throw new UnauthorizationException(UNAUTHENTICATED_USER, "❌ 인증되지 않은 사용자이거나, 위조된 토큰입니다.");
