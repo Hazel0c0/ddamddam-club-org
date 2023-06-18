@@ -26,10 +26,12 @@ const MentorsChat = () => {
   const ws = useRef(null);
   const chatScroll = useRef(null);
 
+
   // 멘토가 멘티들의 채팅방 선택
   const handleSelectRoom = (e) => {
   setSelectChatRoomId(e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value);
   document.querySelector('.chat-room-list').style.display = 'none';
+  document.querySelector('.input-section').style.display = 'block';
   fetch(CHAT + `/mentor/chatroom/detail?mentorIdx=${chatPageIdx}&roomIdx=${e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value}`)
             .then(res => {
                 if (res.status === 500) {
@@ -47,17 +49,19 @@ const MentorsChat = () => {
   };
 
   // 멘토가 채팅방 선택 렌더링
-  const mentorsChatRoom = chatRoom.map((item, idx) => (
-  <div className={'chat-room-list'} key={`${item.name}-${idx}`} onClick={handleSelectRoom}>
-      <input type={'hidden'} value={item.roomId} className={'chatRoom-idx'}/>
-      <span className={'mentee-nick-name'}>{item.sender.userName}</span>
-      <span className={'mentee-msg-content'}>{item.message}</span>
-      <span className={'mentee-date'}>{item.sentAt}</span>
-    </div>
-  ));
+  const mentorsChatRoom = 
+    chatRoom.map((item, idx) => (
+      <div className={'chat-room-list'} key={`${item.name}-${idx}`} onClick={handleSelectRoom}>
+        <input type={'hidden'} value={item.roomId} className={'chatRoom-idx'}/>
+        <span className={'mentee-nick-name'}>{item.sender.userName}</span>
+        <span className={'mentee-msg-content'}>{item.message}</span>
+        <span className={'mentee-date'}>{item.sentAt}</span>
+      </div>
+    ));
+  
 
     // 멘티 채팅방 입장 후 메세지 렌더링
-  const menteeMsgBox = chat.map((item, idx) => (
+  const menteeMsgBox = chat.length > 0 && chat.map((item, idx) => (
     <div className={item.senderId === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
       <span className={item.senderId === enterUserIdx ? 'sender' : 'receiver'}>{item.name}</span>
       {/* [ {item.date} ] */}
@@ -66,7 +70,7 @@ const MentorsChat = () => {
   ));
 
     // 멘토가 채팅방 입장 후 메세지 렌더링
-  const mentorMsgBox = chat.map((item, idx) => (
+  const mentorMsgBox = chat.length > 0 && chat.map((item, idx) => (
     <div className={item.senderId === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
       <span className={item.senderId === enterUserIdx ? 'sender' : 'receiver'}>{item.name}</span>
       {/* [ {item.date} ] */}
@@ -75,10 +79,10 @@ const MentorsChat = () => {
   ));
 
   // 디비에 저장된 멘티 메세지 렌더링
-  const menteeMsgRender = messages.map((item, idx) => (
-    <div className={'sender-wrapper'} key={`${item.name}-${idx}`}>
-      <span className={'sender'}>{item.sender.userNickname}</span>
-      <span className={'sender-content'}>{item.message}</span>
+  const menteeMsgRender = messages.length > 0 &&messages.map((item, idx) => (
+    <div className={item.sender.userIdx === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'}  key={`${item.name}-${idx}`}>
+      <span className={item.sender.userIdx === enterUserIdx ? 'sender' : 'receiver'}>{item.sender.userNickname}</span>
+      <span className={item.sender.userIdx === enterUserIdx ? 'sender-content' : 'receiver-content'}>{item.message}</span>
     </div>
   ));
 
@@ -105,21 +109,22 @@ const MentorsChat = () => {
               setMessages(detailResult);
             });
             }else{
+              document.querySelector('.input-section').style.display = 'none';
               fetch(CHAT + '/mentor/list/' + chatPageIdx)
-            .then((allRes) => {
-              if (allRes.status === 500) {
-                  alert('참여중인 멘티가 없습니다');
+                .then((allRes) => {
+                  if (!allRes.ok) {
+                    alert('참여중인 멘티가 없습니다');
                   return;
-              }
-              return allRes.json();
-          })
-            .then((allResult) => {
-              if(allResult[0].message !== null){
-              setChatRoom(allResult);
-              console.log(allResult);
-              }
-              return;
-            });
+                  }
+                return allRes.json();
+                })
+                  .then((allResult) => {
+                    if (allResult.length > 0) {
+                      setChatRoom(allResult);
+                      console.log(allResult);
+                    }
+                      return;
+                });
             }
       });
     
@@ -143,24 +148,33 @@ const onText = event => {
 
 // 소켓 연결
 // 메세지 컨트롤러 보내기
-const webSocketLogin = useCallback(() => {
-  ws.current = new WebSocket("ws://localhost:8181/socket/chat");
-  console.log('socket');
-  ws.current.onmessage = (message) => {
+useEffect(() => {
+  const webSocketLogin = () => {
+    ws.current = new WebSocket("ws://localhost:8181/socket/chat/" + selectChatRoomId);
+    console.log('socket');
+    ws.current.onmessage = (message) => {
       const dataSet = JSON.parse(message.data);
       setSocketData(dataSet);
-  }
-});
+    }
+  };
 
-// 메세지 전송
+  webSocketLogin();
+
+  return () => {
+    // 컴포넌트가 언마운트될 때 WebSocket 연결을 정리합니다.
+    ws.current.close();
+  };
+}, []);
+
+// 메세지 
 const saveMessage = useCallback(() => {
   const messageToSave = {
     roomId: chatPageIdx,
     senderId: enterUserIdx,
     message: msg,
   };
-
-  fetch(CHAT + '/rooms/' + chatPageIdx + '/messages', {
+  if(detailMember.userIdx === enterUserIdx){
+  fetch(CHAT + '/mentor/' + selectChatRoomId + '/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -171,13 +185,27 @@ const saveMessage = useCallback(() => {
     .then((result) => {
       chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
     });
+  }
+  else{
+    fetch(CHAT + '/mentee/' + chatPageIdx + '/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(messageToSave),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
+      });
+  }
 }, [chatPageIdx, enterUserIdx, msg]);
 
-const send = useCallback(() => {
+const send = () => {
   if (!chkLog) {
-    webSocketLogin();
     setChkLog(true);
   }
+
   if (msg !== '') {
     const data = {
       mentorIdx: chatPageIdx,
@@ -190,23 +218,20 @@ const send = useCallback(() => {
 
     const temp = JSON.stringify(data);
 
-    if (ws.current.readyState === 0) {
-      ws.current.onopen = () => {
-        console.log(ws.current.readyState);
-        ws.current.send(temp);
-        saveMessage(); // 메시지 저장 및 스크롤 조정
-      };
-    } else {
+    if (ws.current.readyState === WebSocket.OPEN) {
       ws.current.send(temp);
       saveMessage(); // 메시지 저장 및 스크롤 조정
+    } else {
+      alert('WebSocket 연결이 열려 있지 않습니다.');
     }
 
     setMsg('');
   } else {
-    alert('메세지를 입력하세요.');
+    alert('메시지를 입력해주세요.');
     document.getElementById('msg').focus();
   }
-});
+};
+
 
 //webSocket
 
@@ -274,6 +299,7 @@ console.log(enterUserIdx);
       </div>
 
       <div className={'mentor-chat-room'}>
+        {/* <button onClick={backChatRoomList}>채팅방 돌아가기</button> */}
         <section className={'chating-list'} ref={chatScroll}>
           {mentorsChatRoom}
           {menteeMsgRender}
@@ -282,23 +308,6 @@ console.log(enterUserIdx);
         </section>
 
         <section className={'input-section'}>
-          {/* <textarea
-            className={'text-input'}
-            value={input}
-            onChange={handleInputChange}
-            placeholder={'대화를 입력해 멘토님과 이야기를 나눠보세요!'}
-          ></textarea>
-          <button onClick={handleSubmit} className={'send-btn'}>
-            Send
-          </button> */}
-
-          {/* <input disabled={chkLog}
-                        placeholder='이름을 입력하세요.' 
-                        type='text' 
-                        id='name' 
-                        value={name} 
-                        onChange={(event => setName(event.target.value))}/> */}
-                    {/* <div id='sendZone'> */}
                         <textarea 
                           className={'text-input'} 
                           value={msg} onChange={onText}
