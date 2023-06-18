@@ -23,6 +23,9 @@ import QnaWrite from "./component/qna/QnaWrite";
 import QnaModify from "./component/qna/QnaModify";
 import ProjectsModify from "./component/projects/ProjectsModify";
 import ReviewList from "./component/review/ReviewList";
+import ReviewTemplate from "./component/review/ReviewTemplate";
+import ReviewDetail from "./component/review/ReviewDetail";
+import ReviewWrite from "./component/review/ReviewWrite";
 
 
 function App() {
@@ -51,9 +54,6 @@ function App() {
                 <Route path={'/projects/detail'} element={<ProjectsDetail/>}></Route>
                 <Route path={'/projects/modify'} element={<ProjectsModify/>}></Route>
 
-                {/*취업 후기 - not yet*/}
-                <Route path={'/review'} element={<ReviewList/>}></Route>
-
                 {/*채용공고 - not yet */}
                 <Route></Route>
 
@@ -68,6 +68,13 @@ function App() {
                 <Route path={'/api/ddamddam/qna/write'} element={<QnaWrite/>}></Route>
                 {/*Q&A/글수정*/}
                 <Route path={'api/ddamddam/qna/modify/:boardIdx'} element={<QnaModify/>}></Route>
+
+                {/*REVIEW*/}
+                <Route path={'/reviews'} element={<ReviewTemplate/>}></Route>
+                {/*Reiview/상세보기*/}
+                <Route path={'/reviews/detail/:reviewIdx'} element={<ReviewDetail/>}></Route>
+                {/*Review/글작성*/}
+                <Route path={'/reviews/write'} element={<ReviewWrite/>}></Route>
 
 
                 {/*로그인*/}
