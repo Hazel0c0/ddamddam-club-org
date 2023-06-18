@@ -22,7 +22,7 @@ import QnaDetail from "./component/qna/QnaDetail";
 import QnaWrite from "./component/qna/QnaWrite";
 import QnaModify from "./component/qna/QnaModify";
 import ProjectsModify from "./component/projects/ProjectsModify";
-
+import OAuth2RedirectHandler from "./component/snslogin/OAuth2RedirectHandler";
 
 function App() {
     //로그인 상태 관리(session완료 시 )
@@ -74,6 +74,9 @@ function App() {
 
         {/*회원가입*/}
         <Route path={'/join'} element={<UserJoin/>}></Route>
+
+        {/*카카오 로그인*/}
+        <Route path={'/oauth/callback/kakao'} element={<OAuth2RedirectHandler/>}></Route>
 
       </Routes>
       <Footer/>
