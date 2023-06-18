@@ -139,6 +139,7 @@ public class MentorService {
         if (user != null){
             dto.setProfile(user.getUserProfile());
             dto.setNickName(user.getUserNickname());
+            dto.setUserIdx(user.getUserIdx());
         }
         return dto;
     }

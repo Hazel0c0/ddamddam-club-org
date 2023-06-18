@@ -29,6 +29,7 @@ public class MentorDetailResponseDTO {
     @JsonFormat(pattern = "yyyy/MM/dd")
     private LocalDateTime date;
     private String career;
+    private Long userIdx;
 
     public MentorDetailResponseDTO(Mentor mentor){
         this.title = mentor.getMentorTitle();

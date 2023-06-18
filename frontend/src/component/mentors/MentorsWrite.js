@@ -12,7 +12,7 @@ const MentorsWrite = () => {
             mentorSubject: '프론트엔드',
             mentorCurrent: '',
             mentorCareer: '신입',
-            mentorMentee: '1'
+            mentorMentee: 1
         }
     )
 
@@ -53,7 +53,7 @@ const MentorsWrite = () => {
                 mentorSubject: mentorSubject,
                 mentorCurrent: mentorCurrent,
                 mentorCareer: mentorCareer,
-                mentorMentee: mentorMentee
+                mentorMentee: +mentorMentee
             };
             // 비동기 POST 요청 처리 로직 작성
             console.log(data); // 확인을 위해 콘솔에 출력
