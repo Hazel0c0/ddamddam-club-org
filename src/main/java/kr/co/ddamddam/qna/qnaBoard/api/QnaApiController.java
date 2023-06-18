@@ -50,7 +50,7 @@ public class QnaApiController {
     /**
      * QNA 게시글 상세조회
      * [GET] /api/ddamddam/qna/{boardId}
-     * @param boardId - 게시글의 인덱스번호
+     * @param boardIdx - 게시글의 인덱스번호
      * @return 게시글의 상세정보를 담은 DTO
      */
     @GetMapping("/{boardIdx}")

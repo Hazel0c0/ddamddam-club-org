@@ -1,6 +1,7 @@
 package kr.co.ddamddam.mentor.api;
 
 
+import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.mentor.dto.page.PageDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorModifyRequestDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorWriteRequestDTO;
@@ -10,6 +11,7 @@ import kr.co.ddamddam.mentor.service.MentorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -39,11 +41,11 @@ public class MentorApiController {
     public ResponseEntity<?> list(
             PageDTO pageDTO
     ){
-        log.info("/api/ddamddam/mentors/list?page{}&size={}", pageDTO.getPage(), pageDTO.getSize());
+//        log.info("/api/ddamddam/mentors/list?page{}&size={}", pageDTO.getPage(), pageDTO.getSize());
 
         MentorListResponseDTO dto = mentorService.getList(pageDTO);
 
-        log.info("!!!!!!!!!!!!: {}",dto);
+//        log.info("!!!!!!!!!!!!: {}",dto);
         return ResponseEntity.ok().body(dto);
     }
 
@@ -66,15 +68,19 @@ public class MentorApiController {
     // 게시물 상세 페이지 조회
     @GetMapping("/detail")
     public ResponseEntity<?> detail(Long mentorIdx){
-        log.info("/api/ddamddam/mentors/detail?mentorIdx={}",mentorIdx);
+//        log.info("/api/ddamddam/mentors/detail?mentorIdx={}",mentorIdx);
         MentorDetailResponseDTO dto = mentorService.getDetail(mentorIdx);
+        log.info("!!!!!!!! : {}", dto);
 
         return ResponseEntity.ok().body(dto);
     }
 
     // 게시물 생성
     @PostMapping
-    public ResponseEntity<?> write(@Validated @RequestBody MentorWriteRequestDTO dto) {
+    public ResponseEntity<?> write(
+            @Validated @RequestBody MentorWriteRequestDTO dto
+//            ,@AuthenticationPrincipal TokenUserInfo userInfo
+    ) {
         // 요청 URL(POST) /api/mentors
         // payload{
         //  "mentorTitle": "게시글 제목",
@@ -85,7 +91,7 @@ public class MentorApiController {
         //}
         log.info("/api/ddamddam/mentors POST!! - payload {}",dto);
         // 로그인한 토큰방식으로 user_idx값 받아와 서비스 파라미터에 넣기
-        Long userIdx = 2L;
+        Long userIdx = 1L;
         MentorDetailResponseDTO responseDTO = mentorService.write(dto,userIdx);
 
         return ResponseEntity.ok().body(responseDTO);
@@ -124,7 +130,8 @@ public class MentorApiController {
         log.info("/api/ddamddam/mentors/{} DELETE!!",mentorIdx);
         try {
             mentorService.delete(mentorIdx);
-            MentorListResponseDTO list = mentorService.getList(new PageDTO());
+            List<String> subjects = new ArrayList<>();
+                MentorListResponseDTO list = mentorService.getSubList(new PageDTO(),subjects);
             return ResponseEntity.ok().body(list);
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body("해당 게시판은 존재하지 않습니다");

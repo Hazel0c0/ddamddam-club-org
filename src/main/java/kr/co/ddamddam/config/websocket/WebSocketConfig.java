@@ -1,4 +1,4 @@
-package kr.co.ddamddam.config;
+package kr.co.ddamddam.config.websocket;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
