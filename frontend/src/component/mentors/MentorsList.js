@@ -8,6 +8,9 @@ import {MENTOR,CHAT} from "../common/config/HostConfig";
 import less from "../../src_assets/less.png";
 import than from "../../src_assets/than.png";
 import {Link} from "react-router-dom";
+import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
+    getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
+    getUserRole, isLogin } from '../common/util/login-util';
 
 
 const MentorsList = ({selectedSubjects}) => {
@@ -23,6 +26,9 @@ const MentorsList = ({selectedSubjects}) => {
 
     //채팅 페이지 이동
     const [chatPageIdx, setChatPageIdx] = useState("");
+
+    // 접속한 유저 idx
+    const enterUserIdx = +getUserIdx();
 
     //캐러셀
     // const [currentPage, setCurrentPage] = useState(1);
@@ -92,8 +98,7 @@ const MentorsList = ({selectedSubjects}) => {
     };
     const createChatRoom = e => {
         const data = {
-            senderId: 1,
-            receiverId: 2,
+            senderId: enterUserIdx,
             mentorIdx: chatPageIdx
         };
 
@@ -104,7 +109,8 @@ const MentorsList = ({selectedSubjects}) => {
         })
             .then(res => res.json())
             .then(json => {
-                alert('채팅방 생성 완료! 멘토와 즐거운 채팅~');
+                // alert('채팅방 생성 완료! 멘토와 즐거운 채팅~');
+                console.log('방 생성');
             })
     }
 
@@ -161,11 +167,9 @@ const MentorsList = ({selectedSubjects}) => {
                 <img src={than} alt={"than-icon"} className={'than-icon'} onClick={handleNext}/>
             }
             {mentorsList.map((mentor, index) => (
-                // <div className={'mentors-list'} key={mentor.idx} onClick={handleShow}>
-                <div className={`mentors-list ${index === carouselIndex ? 'active' : ''}`} key={mentor.idx}
+                <div className={`mentors-list ${index === carouselIndex ? 'active' : ''}`} key={`${mentor.idx}-${index}`}
                      onClick={handleShow}>
                     <input type={'hidden'} value={mentor.idx} className={'member-idx'}/>
-
                     <div className={'speech-bubble'} key={mentor.title}>
                         {mentor.title}
                     </div>
@@ -173,17 +177,17 @@ const MentorsList = ({selectedSubjects}) => {
                     <div className={'profile-img'}></div>
 
                     <div className={'list-text-wrapper'}>
-                        <div className={'writer'} key={mentor.nickName}>
+                        <div className={'writer'}>
                             {mentor.nickName}
                         </div>
-                        <div className={'text'} key={mentor.content}>
+                        <div className={'text'}>
                             {subStringContent(mentor.content, 55)}
                             {/*{mentor.content}*/}
                         </div>
-                        <ul className={'category'} key={mentor.subject}>
+                        <ul className={'category'}>
                             <li>{mentor.subject}</li>
                         </ul>
-                        <div className={'career'} key={mentor.current}>경력 : {mentor.career}</div>
+                        <div className={'career'} >경력 : {mentor.career}</div>
                     </div>
                     {/*</Link>*/}
                 </div>

@@ -159,6 +159,42 @@
       // margin-bottom: 15px;
       overflow: auto;
 
+      .chat-room-list{
+        width: 100%;
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: row;
+        background: #e6e6e6;
+        border-radius: 5px;
+        justify-content: space-between;
+
+        .mentee-nick-name{
+          max-width: 60%;
+          width: fit-content;
+          padding: 5px 12px;
+          font-size: 13px;
+          background-color: #ffe06b;
+          border-radius: 5px;
+
+        }
+        .mentee-msg-content{
+          max-width: 60%;
+          width: fit-content;
+          padding: 5px 12px;
+          font-size: 13px;
+          background-color: #ffe06b;
+          border-radius: 5px;
+        }
+        .mentee-date{
+          max-width: 60%;
+          width: fit-content;
+          padding: 5px 12px;
+          font-size: 10px;
+          background-color: #ffe06b;
+          border-radius: 5px;
+        }
+      }
+
       .sender-wrapper{
         width: 100%;
         margin-bottom: 13px;
