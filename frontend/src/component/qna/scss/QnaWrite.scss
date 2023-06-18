@@ -1,4 +1,4 @@
-.qna-write-wrapper {
+.review-write-wrapper {
   padding: 160px 370px 0;
 
   .main-title {
@@ -14,49 +14,108 @@
     margin-top: 10px;
   }
 
+  //display: flex;
+  //justify-content: space-between;
+  //align-items: center;
+  //margin-bottom: 10px;
   .write-form-wrapper {
     margin-top: 30px;
+    margin-bottom: 10px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    //flex-direction: row;
+    width: 100%;
 
-    .title-input-wrapper {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
+    .sub-title {
+      width: 41.5px;
+    }
+
+    .title-text-input {
+      height: 40px;
+      width: 95.6%;
+      border-radius: 8px;
+      border: solid 1px #e6e6e6;
+      padding: 10px 10px;
+
+      //width: 100%;
+    }
+  }
+
+  //회사 상세정보
+  .review-company-detail {
+    display: flex;
+    //justify-content: start;
+    width: 100%;
+
+    //상세정보 공통 영역
+    .input-company-name,
+    .input-company-job,
+    .input-company-tenure,
+    .input-company-location {
       align-items: center;
-      margin-bottom: 10px;
+      //justify-content: start;
+      display: flex;
+      //width: 20%;
+      margin-right: 20px;
 
-      .title-text-input {
+      .detail-text-input {
         height: 40px;
         //padding: 5px 10px;
-        width: 94%;
+        width: 200px;
         border-radius: 8px;
         border: solid 1px #e6e6e6;
         padding: 10px 10px;
-
-        //width: 100%;
       }
     }
-    .hashtag-wrapper{
+
+
+  }
+
+  //내용 작성 영역
+  .content-wrapper {
+    position: relative;
+    .star-rating-wrapper{
+      position: absolute;
+      bottom: 7%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 0.5px solid #dcdcdc;
+      padding: 10px 15px 5px;
+      border-radius: 5px;
+      justify-content: center;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
+      flex-direction: column;
+
+
+      .css-70qvj9{
+        justify-content: center;
+      }
+
+      .star-rating-title{
+        font-size: 14px;
+        text-align: center;
+      }
+
+      .css-iljtu2-MuiRating-root {
+        align-items: center;
+        justify-content: center;
+        font-size: 35px;
+        margin-top: 5px;
+      }
     }
+
   }
 
   //input 공통영역
   .sub-title {
+    //width: 55px;
     font-size: 16px;
     margin-right: 10px;
     width: fit-content;
   }
 
-  .title-text-input {
 
-  }
-
-  .content{
+  .content {
     margin-top: 16px;
     width: 100%;
     min-height: 600px;
@@ -73,7 +132,7 @@
     font-size: 15px;
     border: none;
 
-    .close-btn-a{
+    .close-btn-a {
       height: 42px;
     }
 
@@ -97,42 +156,5 @@
     }
   }
 
-}
-@import "@yaireo/tagify/dist/tagify.css";
-.tags-input{
-  background-color: white;
-  width: 94%;
-  border-radius: 8px;
-  border: solid 1px #e6e6e6;
-  padding: 2px 0px;
 
-  .tagify{
-    border: none;
-    padding: 0 3px;
-    --tag-bg: #1e4fff;
-    --tag-text-color: white;
-    --tag-text-color--edit: var(--tag-bg);
-    --tag-hover: #1e4fff;
-    --tag-remove-btn-color: white;
-    --tag-remove-bg: #b7b7b7;
-
-    .tagify__tag{
-      --tag-border-radius : 50px;
-      padding-right: 7px;
-      padding-left: 7px;
-    }
-
-    .tagify__tag__removeBtn{
-      background-color: #292834;
-    }
-
-    .tagify__tag__removeBtn:hover{
-      //--tag-hover: #75cb1e !important;
-    }
-
-
-  }
-}
-.--tag-hover	{
-  //background-color: #292834 !important;
 }
