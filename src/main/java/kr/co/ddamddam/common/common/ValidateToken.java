@@ -14,7 +14,7 @@ import static kr.co.ddamddam.common.exception.custom.ErrorCode.*;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ValidateTokenUserInfo {
+public class ValidateToken {
 
     private final UserRepository userRepository;
 
