@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Common from "../common/Common";
 import logo from "../../src_assets/logo(basic).png";
 import {Link, useNavigate} from "react-router-dom";
 import './scss/UserLogin.scss';
 import {BASE_URL, AUTH} from "../common/config/HostConfig";
 import {KAKAO_AUTH_URL} from "../common/OAuth";
+import {isLogin} from "../common/util/login-util";
 
 const UserLogin = () => {
 
@@ -26,6 +27,7 @@ const UserLogin = () => {
   const [email, setEmail] = useState(''); // email 필드의 상태를 관리
   const [password, setPassword] = useState(''); // password 필드의 상태를 관리
   const [isChecked, setIsChecked] = useState(false); // 자동로그인 체크 여부 상태를 관리
+
 
   // 로그인 핸들러
   const loginHandler = async () => {
@@ -50,8 +52,9 @@ const UserLogin = () => {
     if (finalResult.code !== 200) {
       const resultMessage = await finalResult.message;
       alert('아이디 또는 비밀번호가 틀렸습니다. 다시 확인해주세요.');
-      document.querySelector('.id-input').value = '';
+      // document.querySelector('.id-input').value = '';
       document.querySelector('.pw-input').value = '';
+      return;
     }
 
     console.log(`payload 의 값 : ${JSON.stringify(payload)}`);

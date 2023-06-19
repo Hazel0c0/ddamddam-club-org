@@ -32,7 +32,7 @@ class QnaRepositoryTest {
     @DisplayName("QNA 게시글 더미데이터 50개 생성")
     void InsertBulk1() {
 
-        for (int i = 1; i <= 43; i++) {
+        for (int i = 1; i <= 120; i++) {
 
             String[] randomTitle = {
                     "위에 이런 이름과, 시인의 까닭입니다.",

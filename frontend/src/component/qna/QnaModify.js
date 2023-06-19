@@ -99,7 +99,7 @@ const MentorsWrite = () => {
     const modifySubmitHandler = async () => {
         console.log(textInput);
         const {boardTitle, boardContent, hashtagList} = textInput;
-        const res = fetch(`${QNA}/modify/${boardIdx}`, {
+        const res = fetch(`${QNA}/modify`, {
             method: 'PATCH',
             headers: {'content-type': 'application/json'},
             body: JSON.stringify({
