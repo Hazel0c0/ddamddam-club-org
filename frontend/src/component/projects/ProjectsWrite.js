@@ -2,10 +2,11 @@ import React, {useRef, useState} from 'react';
 import Common from "../common/Common";
 import './scss/ProjectsWrite.scss';
 import {PROJECT} from "../common/config/HostConfig";
-import {Link} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // useHistory 대신 useNavigate 추가
 import ProjectsTitle from "./mainpage/ProjectsTitle";
 import {Grid} from "@mui/material";
 import * as PropTypes from "prop-types";
+
 
 
 const ProjectsWrite = () => {
@@ -14,11 +15,12 @@ const ProjectsWrite = () => {
     boardWriterIdx: '1',
     boardTitle: '',
     boardContent: '',
-    projectType: '',
-    maxFront: '',
-    maxBack: '',
-    offerPeriod: '',
+    projectType: '웹페이지',
+    maxFront: '1',
+    maxBack: '1',
+    offerPeriod: '2023-07-19',
   });
+
 
   const handleInputChange = (e) => {
     const {name, value} = e.target;
@@ -28,6 +30,8 @@ const ProjectsWrite = () => {
     }));
     console.log(name+" : "+value);
   }
+
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   const handleSubmit = () => {
 
@@ -40,20 +44,15 @@ const ProjectsWrite = () => {
     projectFormData.append('project', projectJsonBlob);
     projectFormData.append('projectImage', $fileTag.current.files[0]);
 
-    // const res = await fetch(PROJECT, {
-    //   method: 'POST',
-    //   body: userFormData
-    // })
-
-    // 작성완료 버튼을 눌렀을 때 실행되는 함수
-    // formData를 컨트롤러로 보내는 로직을 작성하세요.
     fetch(PROJECT, {
       method: 'POST',
       body: projectFormData,
     }).then(response => response.json())
       .then(data => {
         // setFormData(data.formData);
+        console.log("write post")
         console.log(data); // Handle the response data
+        navigate('/projects')
       })
       .catch(error => {
         console.error(error); // Handle errors
@@ -76,6 +75,7 @@ const ProjectsWrite = () => {
       setImgFile(reader.result);
     }
   };
+
 
 
   return (
@@ -122,8 +122,6 @@ const ProjectsWrite = () => {
                       value={formData.projectType}
                       onChange={handleInputChange}
               >
-                <option value="웹페이지">웹페이지</option>
-                <option value="웹페이지">웹페이지</option>
                 <option value="웹페이지">웹페이지</option>
                 <option value="기타">기타</option>
               </select>
