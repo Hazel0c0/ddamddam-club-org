@@ -17,7 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class CompanyRequestDTO {
-    private List<String> wanted;
     private String company;
     private String title;
     private String career;
@@ -31,6 +30,7 @@ public class CompanyRequestDTO {
 
     //엔티티로 변환
     public Company toEntity (){
+
         return Company.builder()
                 .companyName(this.company)
                 .companyTitle(this.title)
@@ -38,7 +38,7 @@ public class CompanyRequestDTO {
                 .companyArea(this.basicAddr +" "+ this.detailAddr)
                 .companyUrl(this.wantedInfoUrl)
                 .companySal(this.sal)
-                .companyDate(Timestamp.valueOf(this.regDt))
+                .companyDate(LocalDate.parse(this.regDt))
                 .companyEnddate(this.closeDt)
                 .build();
     }

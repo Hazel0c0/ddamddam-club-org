@@ -53,7 +53,7 @@ public class Company {
 
     @CreationTimestamp
     @Column(name = "company_date",updatable = false)
-    private Timestamp companyDate; //작성날짜(채용시작날짜)
+    private LocalDate companyDate; //작성날짜(채용시작날짜)
 
     @Column(name = "comapany_enddate",nullable = false)
     private String companyEnddate; //마감날짜 -> api에서 String타입으로 되어있음

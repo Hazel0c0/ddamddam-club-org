@@ -25,10 +25,11 @@ class CompanyRepositoryTest {
                     Company.builder()
                             .companyName("감귤회사"+i)
                             .companyTitle("감귤컴퍼니로 입사하세요!"+i)
+                            .companyCareer("신입")
                             .companyArea("서울특별시"+i)
-                            .companyContent("Springboot를 이용한 web개발 경험이 있으신분"+i)
-                            .companyCareer("3")
-                            .companyEnddate(LocalDate.parse("2023-08-0"+i))
+                            .companyUrl("http://vist.com")
+                            .companySal("3000만원"+i)
+                            .companyEnddate("2023-08-0"+i)
                             .build()
             );
 

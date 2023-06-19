@@ -50,11 +50,27 @@ public class ReviewApiController {
     }
 
     //키워드 검색
-    @GetMapping("/search/{keyword}")
-    public ResponseEntity<?> search(@PathVariable String keyword){
-        log.info("api/ddamddam/reviews/search/{} ", keyword);
-        List<ReviewListResponseDTO> dto =  reviewService.getKeywordList(keyword);
-        return ResponseEntity.ok().body(dto);
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam("keyword") String keyword){
+        log.info("api/ddamddam/reviews/search?keyword={} ", keyword);
+        ReviewListPageResponseDTO reviewList = reviewService.getKeywordList(keyword);
+        return ResponseEntity.ok().body(reviewList);
+    }
+
+    //조회순으로 조회하기
+    @GetMapping("/view")
+    public ResponseEntity<?> OrderByView(){
+        log.info("api/ddamddam/reviews/view ");
+        ReviewListPageResponseDTO reviewList = reviewService.getListOrderByView();
+        return ResponseEntity.ok().body(reviewList);
+    }
+
+    //평점순으로 조회하기
+    @GetMapping("/rating")
+    public ResponseEntity<?> OrderByrating(){
+        log.info("api/ddamddam/reviews/rating ");
+        ReviewListPageResponseDTO reviewList = reviewService.getListOrderByRateDesc();
+        return ResponseEntity.ok().body(reviewList);
     }
 
     //최신순으로 조회하기
@@ -65,6 +81,7 @@ public class ReviewApiController {
         return ResponseEntity.ok().body(dto);
     }
 
+
     //TOP3 뿌려주기
     @GetMapping("/viewTop3")
     public ResponseEntity<?> OrderByView3(){
@@ -73,21 +90,6 @@ public class ReviewApiController {
         return ResponseEntity.ok().body(dto);
     }
 
-    //조회순으로 조회하기
-    @GetMapping("/view")
-    public ResponseEntity<?> OrderByView(){
-        log.info("api/ddamddam/reviews/view ");
-        List<ReviewTopListResponseDTO> dto =  reviewService.getListOrderByView();
-        return ResponseEntity.ok().body(dto);
-    }
-
-    //평점순으로 조회하기
-    @GetMapping("/rating")
-    public ResponseEntity<?> OrderByrating(){
-        log.info("api/ddamddam/reviews/rating ");
-        List<ReviewListResponseDTO> dto =  reviewService.getListOrderByRateDesc();
-        return ResponseEntity.ok().body(dto);
-    }
 
 
     //게시물 생성하기
