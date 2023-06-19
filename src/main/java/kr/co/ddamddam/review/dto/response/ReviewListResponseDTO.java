@@ -31,7 +31,7 @@ public class ReviewListResponseDTO {
     private int reviewView; //조회수
 
     @JsonIgnore
-    private final int MAX_CONTENT = 5; //최대 글자 수 제한
+    private final int MAX_CONTENT = 50; //최대 글자 수 제한
 
     //content 글자수 제한하기
     public String getLimitedContent(String reviewContent) {

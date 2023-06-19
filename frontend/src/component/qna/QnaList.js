@@ -6,23 +6,44 @@ import './scss/QnaList.scss'
 import {IoIosArrowForward} from 'react-icons/io';
 import {QNA} from "../common/config/HostConfig";
 import {Link} from "react-router-dom";
+import PageNation from "../common/pageNation/PageNation";
 
 const QnaList = ({searchValue}) => {
     const [qnaList, setQnaList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
-
+    const [clickCurrentPage, setClickCurrentPage] = useState(1);
+    const [test, setTest] = useState(true);
     //상세보기 이동
     const [qnaDetailBoardIdx, setqnaDetailBoardIdx] = useState([]);
 
     //전체 목록 렌더링 필터 async
+    // const asyncQnaList = async () => {
+    //     const res = await fetch(`${QNA}?page=${clickCurrentPage}&size=10`, {
+    //         method: 'GET',
+    //         headers: {'content-type': 'application/json'}
+    //     });
+    //
+    //     if (res.status === 500) {
+    //         alert('잠시 후 다시 접속해주세요.[서버오류]');
+    //         return;
+    //     }
+    //
+    //     const qnaList = await res.json();
+    //     console.log(qnaList)
+    //     console.log(`qnaList = ${qnaList.payload}`);
+    //     setQnaList(qnaList.payload.qnas);
+    //     setPageNation(qnaList.payload.pageInfo);
+    // }
+
     const asyncQnaList = async () => {
         let responseUrl;
         if (searchValue === '' || searchValue === '전체') {
-            responseUrl = '?page=4&size=10'
+
+            responseUrl = `?page=${clickCurrentPage}&size=10`
         } else if (searchValue === '미채택') {
-            responseUrl = '/non-adopts';
+            responseUrl = `/non-adopts?page=${clickCurrentPage}&size=10`;
         } else if (searchValue === '채택완료') {
-            responseUrl = '/adopts';
+            responseUrl = `/adopts?page=${clickCurrentPage}&size=10`;
         }
         console.log(`searchValue = ${searchValue}`)
         console.log(`responseUrl = ${responseUrl}`)
@@ -47,8 +68,13 @@ const QnaList = ({searchValue}) => {
     // 전체 목록 리스트 출력
     useEffect(() => {
         asyncQnaList();
-    }, [qnaDetailBoardIdx, searchValue]);
+    }, [qnaDetailBoardIdx, searchValue, clickCurrentPage]);
 
+    //현재 페이지 설정
+    const currentPageHandler = (clickPageNum) =>{
+        console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
+        setClickCurrentPage(clickPageNum);
+    }
 
 
     return (
@@ -95,6 +121,12 @@ const QnaList = ({searchValue}) => {
                 </section>
             ))}
 
+            <ul>
+                <PageNation
+                    pageNation={pageNation}
+                    currentPageHandler={currentPageHandler}
+                    clickCurrentPage={clickCurrentPage} />
+            </ul>
         </Common>
     );
 };
