@@ -1,5 +1,6 @@
 package kr.co.ddamddam.chat.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,6 @@ public class ChatMessageResponseDTO {
     private String message;
     private UserResponseDTO sender;
     private UserResponseDTO receiver;
+    @JsonFormat(pattern = "a hh:mm")
     private LocalDateTime sentAt;
 }

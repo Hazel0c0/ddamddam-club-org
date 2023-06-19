@@ -100,6 +100,7 @@ public class MentorApiController {
     @RequestMapping(value = "/modify",method = {RequestMethod.PUT,RequestMethod.PATCH})
     public ResponseEntity<?> modify(
             @Validated @RequestBody MentorModifyRequestDTO dto
+            ,@AuthenticationPrincipal TokenUserInfo userInfo
             ){
         // 요청 URL(PUT, PATCH) /api/mentors
         // payload{
@@ -112,8 +113,10 @@ public class MentorApiController {
         //}
         log.info("/api/ddamddam/mentors PUT!! - payload {}",dto);
 
+        Long userIdx = Long.valueOf(userInfo.getUserIdx());
+
         try {
-            MentorDetailResponseDTO responseDTO = mentorService.modify(dto);
+            MentorDetailResponseDTO responseDTO = mentorService.modify(dto,userIdx);
             return ResponseEntity.ok().body(responseDTO);
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body("해당 게시판은 존재하지 않습니다");
@@ -125,10 +128,12 @@ public class MentorApiController {
     @DeleteMapping("/{mentorIdx}")
     public ResponseEntity<?> delete(
             @PathVariable Long mentorIdx
+            ,@AuthenticationPrincipal TokenUserInfo userInfo
     ){
         log.info("/api/ddamddam/mentors/{} DELETE!!",mentorIdx);
+        Long userIdx = Long.valueOf(userInfo.getUserIdx());
         try {
-            mentorService.delete(mentorIdx);
+            mentorService.delete(mentorIdx,userIdx);
             List<String> subjects = new ArrayList<>();
                 MentorListResponseDTO list = mentorService.getSubList(new PageDTO(),subjects);
             return ResponseEntity.ok().body(list);

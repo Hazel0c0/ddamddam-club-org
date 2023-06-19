@@ -155,18 +155,21 @@ public class MentorService {
     }
 
     // 게시글 수정
-    public MentorDetailResponseDTO modify(MentorModifyRequestDTO dto) throws RuntimeException{
-        Optional<Mentor> targetMentor = mentorRepository.findById(dto.getMentorIdx());
+    public MentorDetailResponseDTO modify(MentorModifyRequestDTO dto, Long userIdx) throws RuntimeException{
 
-        if (targetMentor.isPresent()){
-            Mentor mentor = targetMentor.get();
-            mentor.setMentorTitle(dto.getMentorTitle());
-            mentor.setMentorContent(dto.getMentorContent());
-            mentor.setMentorSubject(dto.getMentorSubject());
-            mentor.setMentorCurrent(dto.getMentorCurrent());
-            mentor.setMentorMentee(dto.getMentorMentee());
 
-            mentorRepository.save(mentor);
+        Mentor findByMentor = mentorRepository.findByMentorIdxAndUserUserIdx(dto.getMentorIdx(), userIdx);
+
+
+
+        if (findByMentor != null){
+            findByMentor.setMentorTitle(dto.getMentorTitle());
+            findByMentor.setMentorContent(dto.getMentorContent());
+            findByMentor.setMentorSubject(dto.getMentorSubject());
+            findByMentor.setMentorCurrent(dto.getMentorCurrent());
+            findByMentor.setMentorMentee(dto.getMentorMentee());
+
+            mentorRepository.save(findByMentor);
         }else {
             throw new RuntimeException("해당 게시판은 없습니다");
         }
@@ -176,12 +179,11 @@ public class MentorService {
 
     // 게시판 삭제
 
-    public MentorListResponseDTO delete(Long mentorIdx) throws RuntimeException{
+    public MentorListResponseDTO delete(Long mentorIdx, Long userIdx) throws RuntimeException{
 
-        Optional<Mentor> targetMentor = mentorRepository.findById(mentorIdx);
-        if (targetMentor.isPresent()){
-            mentorRepository.delete(targetMentor.get());
-
+        Mentor targetMentor = mentorRepository.findByMentorIdxAndUserUserIdx(mentorIdx,userIdx);
+        if (targetMentor != null){
+            mentorRepository.delete(targetMentor);
         }
         else {
             throw new RuntimeException(mentorIdx+"해당 게시판은 없습니다");
