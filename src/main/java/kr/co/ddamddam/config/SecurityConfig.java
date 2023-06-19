@@ -44,11 +44,12 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                    // 어떤 요청에서 인증을 안할 것인지 설정 - 회원가입, 로그인, index 페이지
-                    .antMatchers("/api/ddamddam/**", "/").permitAll()
-                    // 어떤 요청에서 인증을 할 것인지 설정 - 그 외의 모든 경로
-                    .anyRequest().authenticated();
-                ;
+                // 어떤 요청에서 인증을 안할 것인지 설정 - 회원가입, 로그인, index 페이지
+                .antMatchers("/api/ddamddam/**", "/").permitAll()
+                .antMatchers("/socket/chat/**", "/").permitAll()
+                // 어떤 요청에서 인증을 할 것인지 설정 - 그 외의 모든 경로
+                .anyRequest().authenticated();
+        ;
 
         // 토큰 인증 필터 연결
         http.addFilterAfter(

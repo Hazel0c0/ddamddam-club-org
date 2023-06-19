@@ -48,7 +48,7 @@ function App() {
 
         {/*<Route path="/mentors/detail/mentorIdx/:idx" element={<MentorsDetail />} />*/}
         {/*멘토 멘티 채팅방*/}
-        <Route path={'/mentors/detail/chat/:chatPageIdx'} element={<MentorsChat/>}></Route>
+        <Route path={'/mentors/detail/chat/:chatPageIdx/:roomId'} element={<MentorsChat/>}></Route>
 
                 {/*프로젝트 모집*/}
                 <Route path={'/projects'} element={<ProjectsTemplate/>}></Route>
