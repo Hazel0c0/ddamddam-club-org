@@ -164,7 +164,7 @@ public class MypageService {
         return MypageBoardResponseDTO.builder()
                 .boardType(REVIEW)
                 .boardIdx(review.getReviewIdx())
-                .boardDate(review.getReviewDate().toLocalDateTime())
+                .boardDate(review.getReviewDate())
                 .build();
     }
 
