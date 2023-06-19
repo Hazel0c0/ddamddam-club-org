@@ -110,14 +110,13 @@ public class QnaService {
         return qnaDetailResponseDTO;
     }
 
-    public QnaListPageResponseDTO getKeywordList(String keyword) {
+    public QnaListPageResponseDTO getKeywordList(String keyword, PageDTO pageDTO) {
 
         log.info("[Qna/Service] QNA 게시글 검색 - {}", keyword);
 
-        PageRequest pageable = getPageable(new PageDTO());
+        PageRequest pageable = getPageable(pageDTO);
 
         Page<Qna> qnas = qnaRepository.findByKeyword(keyword, pageable);
-
         List<QnaListResponseDTO> qnaList = getQnaDtoListByKeyword(qnas);
 
         return QnaListPageResponseDTO.builder()

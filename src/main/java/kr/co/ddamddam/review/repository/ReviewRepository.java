@@ -29,5 +29,7 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
     @Query("SELECT r FROM Review r ORDER BY r.reviewRating DESC ")
     List<Review> findByRate();
 
+    List<Review> findByUserUserIdx(Long userIdx);
+
 //    List<Review> findTop3ByOrderByReviewRatingDesc(); 탑3는 프론트에서 거르
 }

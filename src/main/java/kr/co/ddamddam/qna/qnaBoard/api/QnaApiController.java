@@ -224,11 +224,12 @@ public class QnaApiController {
 
     @GetMapping("/search")
     public ApplicationResponse<?> search(
-            @RequestParam("keyword") String keyword
+            @RequestParam("keyword") String keyword,
+            PageDTO pageDTO
     ){
         log.info("GET : /qna/search/{} - 게시글 제목, 본문, 해시태그로 검색", keyword);
 
-        QnaListPageResponseDTO qnaList = qnaService.getKeywordList(keyword);
+        QnaListPageResponseDTO qnaList = qnaService.getKeywordList(keyword, pageDTO);
 
         return ApplicationResponse.ok(qnaList);
     }
