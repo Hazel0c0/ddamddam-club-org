@@ -24,9 +24,9 @@ public class UserEmailController {
     }
 
     @PostMapping("/check")
-    public ResponseEntity<UserCodeCheckResponseDTO> codeCheck(@RequestBody UserCodeRequestDTO dto) {
+    public ResponseEntity<?> codeCheck(@RequestBody UserCodeRequestDTO dto) {
         UserCodeCheckResponseDTO memberCodeCheckResponseDTO = emailService.checkCode(dto.getCode());
-
+        System.out.println("memberCodeCheckResponseDTO = " + memberCodeCheckResponseDTO);
         return ResponseEntity.ok().body(memberCodeCheckResponseDTO);
     }
 }

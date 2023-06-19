@@ -1,6 +1,4 @@
 package kr.co.ddamddam.review.api;
-
-
 import kr.co.ddamddam.company.dto.page.PageDTO;
 import kr.co.ddamddam.review.dto.request.ReviewModifyRequestDTO;
 import kr.co.ddamddam.review.dto.request.ReviewWriteRequestDTO;
@@ -24,6 +22,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam/reviews")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ReviewApiController {
 
     private final ReviewService reviewService;
@@ -58,18 +57,19 @@ public class ReviewApiController {
     }
 
     //최신순으로 조회하기
-    @GetMapping("/latest")
-    public ResponseEntity<?> latest(){
-        log.info("api/ddamddam/reviews/latest ");
-        List<ReviewListResponseDTO> dto =  reviewService.getListDateDesc();
-        return ResponseEntity.ok().body(dto);
-    }
+//    @GetMapping("/latest")
+//    public ResponseEntity<?> latest(){
+//        log.info("api/ddamddam/reviews/latest ");
+//        List<ReviewListResponseDTO> dto =  reviewService.getListDateDesc();
+//        return ResponseEntity.ok().body(dto);
+//    }
 
     //TOP3 뿌려주기
     @GetMapping("/viewTop3")
     public ResponseEntity<?> OrderByView3(){
         log.info("api/ddamddam/reviews/viewTop3");
         List<ReviewTopListResponseDTO> dto =  reviewService.getListTop3();
+
         return ResponseEntity.ok().body(dto);
     }
 
@@ -94,7 +94,7 @@ public class ReviewApiController {
     @PostMapping("/write")
     public  ResponseEntity<?> write(@Validated @RequestBody ReviewWriteRequestDTO dto) throws ReviewNotFoundException {
         log.info("POST : /reviews/write - 게시글 생성 {}", dto);
-        Long userIdx = 2L;
+        Long userIdx = 1L;
         ReviewDetailResponseDTO responseDTO = reviewService.write(dto,userIdx);
         return ResponseEntity.ok().body(responseDTO);
     }

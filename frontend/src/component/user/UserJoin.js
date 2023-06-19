@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Common from "../common/Common";
 import logo from "../../src_assets/logo(white).png";
 import profile from "../../src_assets/IMG_4525.JPG";
 import './scss/UserJoin.scss';
 import {LocalDate, MathUtil as Integer} from 'js-joda';
-
+import {BsCheckLg} from "react-icons/bs"
 // 리다이렉트 사용하기
-import { useNavigate, Link } from 'react-router-dom';
-import {BASE_URL as BASE, AUTH, JOININ} from '../../component/common/config/HostConfig';
+import {useNavigate, Link} from 'react-router-dom';
+import {BASE_URL as BASE, AUTH, JOININ, EMAIL} from '../../component/common/config/HostConfig';
 
 const UserJoin = () => {
 
@@ -17,26 +17,39 @@ const UserJoin = () => {
     // const BASE_URL = BASE + AUTH;
     const BASE_URL = JOININ;
 
+    //이메일 주소 선택 값
+    // const [emailValue,setEmailValue]
+    const emailValue = useRef();
+
+    const [certification, setCertification] = useState(false);
+    const [showCertificationBtn, setShowCertificationBtn] = useState(false);
+
+    //이메일 인증코드
+    const emailCode = useRef();
+    const emailCodeCheck = useRef();
+    const [emailCodeResult, setEmailCodeResult] = useState(false);
+
+
     // 상태변수로 회원가입 입력값 관리
     const [userValue, setUserValue] = useState({
-        userEmail:'ert@vac.com',
-        password: '',
+        userEmail: '',
+        userPw: '',
         userName: '',
-        nickName: '',
-        userBirth:'',
-        userPosition: '프론트엔드',
+        userNickName: '',
+        userBirth: '',
+        userPosition: 'FRONTEND',
         userCareer: '',
-        userProfile:'null'
+        userProfile: '0'
     });
 
     // 검증 메세지에 대한 상태변수 관리
     const [message, setMessage] = useState({
-        userEmail:'',
-        password: '',
-        passwordCheck:'',
+        userEmail: '',
+        userPw: '',
+        passwordCheck: '',
         userName: '',
-        nickName: '',
-        userBirth:'',
+        userNickName: '',
+        userBirth: '',
         userPosition: '',
         userCareer: ''
     });
@@ -44,13 +57,14 @@ const UserJoin = () => {
     // 검증 완료 체크에 대한 상태변수 관리
     const [correct, setCorrect] = useState({
         userEmail: false,
-        password: false,
-        passwordCheck:false,
+        userCode : false,
+        userPw: false,
+        passwordCheck: false,
         userName: false,
-        nickName: false,
-        userBirth: false,
-        userPosition: false,
-        userCareer: false
+        userNickName: false,
+        userBirth: true,
+        userPosition: true,
+        userCareer: true
     });
 
     // 검증데이터를 상태변수에 저장하는 함수
@@ -116,7 +130,7 @@ const UserJoin = () => {
 
         const inputVal = e.target.value;
 
-        console.log(`inputVal의 값 : ${inputVal}`)
+        // console.log(`inputVal의 값 : ${inputVal}`)
         // 입력값 검증
         let msg; // 검증 메시지를 저장할 변수
         let flag; // 입력 검증체크 변수
@@ -125,7 +139,7 @@ const UserJoin = () => {
             msg = '유저 닉네임은 필수입니다.';
             flag = false;
         } else if (!nameRegex.test(inputVal)) {
-            msg = '닉네임은 한글 또는 영어로 2~5자여야 합니다.';
+            msg = '닉네임은 한글 또는 영어로 2~8자여야 합니다.';
             flag = false;
         } else {
             msg = '사용 가능한 닉네임입니다.';
@@ -133,7 +147,7 @@ const UserJoin = () => {
         }
         console.log(msg)
         saveInputState({
-            key: 'nickName',
+            key: 'userNickName',
             inputVal,
             msg,
             flag
@@ -141,52 +155,102 @@ const UserJoin = () => {
     };
 
     // 이메일 중복체크 서버 통신 함수
-    const fetchDuplicateCheck = async (email) => {
+    const fetchDuplicateCheck = async (e) => {
 
-        const res = await fetch(`${BASE_URL}/check?email=${email}`);
-        console.log(res);
-        /*
+        const inputEmail = userValue.userEmail;
+        console.log(`inputEmail : ${inputEmail}`)
+        const res = await fetch(`${JOININ}/check?email=${inputEmail}`);
+
         let msg = '', flag = false;
         if (res.status === 200) {
             const json = await res.json();
-            console.log(json);
+            // console.log(json);
             if (json) {
                 msg = '이메일이 중복되었습니다!';
                 flag = false;
             } else {
                 msg = '사용 가능한 이메일입니다.';
                 flag = true;
+                alert("사용 가능한 이메일입니다.");
+                setShowCertificationBtn(true);
             }
         } else {
             alert('서버 통신이 원활하지 않습니다!');
         }
 
-        setUserValue({...userValue, userEmail: email });
-        setMessage({...message, userEmail: msg });
-        setCorrect({...correct, userEmail: flag });
-        */
-
+        setUserValue({...userValue, userEmail: inputEmail});
+        setMessage({...message, userEmail: msg});
+        setCorrect({...correct, userEmail: flag});
     };
+
+    //인증하기 클릭
+    const certificationHandler = async () => {
+        alert("해당 이메일로 코드를 보냈습니다. 확인 후 인증코드를 입력해주세요.")
+        setCertification(true);
+
+        const inputEmail = userValue.userEmail;
+        console.log(`인증하기 메일 보내기 inputEmail주소 : ${inputEmail}`)
+        const res = fetch(`${EMAIL}/send`, {
+            method: 'POST',
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify({
+                email: inputEmail
+            })
+        })
+        setShowCertificationBtn(false);
+        console.log(res)
+    }
+
+    //코드 입력 완료
+    const submitCodeHander = async () => {
+        const code = emailCode.current.value;
+        console.log(`입력 code value : ${code}`);
+
+        const res = await fetch(`${EMAIL}/check`, {
+            method: 'POST',
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify({
+                code: code
+            })
+        })
+
+        const result = await res.json();
+
+        console.log(`result = ${JSON.stringify(result)}`);
+        console.log(`result.checkResult = ${result.checkResult}`);
+        // console.log(JSON.stringify(result))
+        // console.log(`코드 입력 후 result : ${result}`)
+
+        if (result.checkResult) {
+            alert("인증이 완료되었습니다.");
+            setEmailCodeResult(true);
+            setCorrect(prevState => ({
+                ...prevState,
+                userCode: true
+            }));
+            // emailCodeCheck.current.textContent = '제출완료';
+        } else {
+            alert("인증에 실패하였습니다. 다시 확인해주세요.");
+            setEmailCodeResult(false);
+        }
+    }
 
     // 이메일 입력창 체인지 이벤트 핸들러
     const emailHandler = e => {
 
-        const inputVal = e.target.value;
+        //이메일 입력
+        const inputEmail = e.target.value;
 
-        const emailRegex = /^[a-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/;
+        //이메일 주소 선택
+        const emailDomainValue = emailValue.current.value;
+        console.log(emailDomainValue);
 
-        let msg, flag;
-        if (!inputVal) {
-            msg = '이메일은 필수값입니다!';
-            flag = false;
-        } else if (!emailRegex.test(inputVal)) {
-            msg = '이메일 형식이 아닙니다!';
-            flag = false;
-        } else {
-            // 이메일 중복체크
-            // fetchDuplicateCheck(inputVal);
-            return;
-        }
+        const inputVal = `${inputEmail}@${emailDomainValue}`;
+        console.log(`emailResult Value : ${inputVal}`);
+        // const emailRegex = /^[a-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/;
+        const emailRegex = /^[a-z0-9\.\-_]+/;
+
+        let msg = '', flag = true;
 
         saveInputState({
             key: 'userEmail',
@@ -198,13 +262,12 @@ const UserJoin = () => {
     };
 
 
-
 // 패스워드 입력창 체인지 이벤트 핸들러
     const passwordHandler = e => {
 
         // 패스워드가 변동되면 확인란을 비우기
         document.getElementById('passwordCheck').value = '';
-        document.getElementById('check-span').textContent = '';
+        // document.getElementById('check-span').textContent = '';
 
         setMessage({...message, passwordCheck: ''});
         setCorrect({...correct, passwordCheck: false});
@@ -227,7 +290,7 @@ const UserJoin = () => {
         }
 
         saveInputState({
-            key: 'password',
+            key: 'userPw',
             inputVal,
             msg,
             flag
@@ -242,7 +305,7 @@ const UserJoin = () => {
         if (!e.target.value) { // 패스워드 안적은거
             msg = '비밀번호 확인란은 필수값입니다!';
             flag = false;
-        } else if (userValue.password !== e.target.value) {
+        } else if (userValue.userPw !== e.target.value) {
             msg = '패스워드가 일치하지 않습니다.';
             flag = false;
         } else {
@@ -260,20 +323,24 @@ const UserJoin = () => {
     };
 
 
-
 // userBirth 입력값 변경 핸들러
     const birthHandler = (event) => {
         const inputDate = event.target.value; // 입력받은 문자열
+        console.log(inputDate)
+        /*
         const year = parseInt(inputDate.substring(0, 4));
         const month = parseInt(inputDate.substring(4, 6));
         const day = parseInt(inputDate.substring(6, 8));
 
         const localDate = new Date(year, month - 1, day); // JavaScript의 Date 객체 생성
+ */
+
 
         setUserValue(prevValue => ({
             ...prevValue,
-            userBirth: localDate // Date 객체로 입력받음
+            userBirth: inputDate // Date 객체로 입력받음
         }));
+
     };
 
     // userCareer 입력값 변경 핸들러
@@ -293,7 +360,6 @@ const UserJoin = () => {
 
     //입력칸이 모두 검증에 통과했는지 여부를 검사
     const isValid = () => {
-        console.log(userValue)
         for (const key in correct) {
             const flag = correct[key];
             if (!flag) return false;
@@ -303,10 +369,11 @@ const UserJoin = () => {
 
     // 회원가입 처리 서버 요청
     const fetchSignUpPost = async () => {
-        console.log(userValue);
+        console.log(`fetchSignUpPost의 userValue : ${userValue}`);
+
         const res = await fetch(`${BASE_URL}/signup`, {
             method: 'POST',
-            headers: { 'content-type' : 'application/json' },
+            headers: {'content-type': 'application/json'},
             body: JSON.stringify(userValue)
         });
 
@@ -323,10 +390,11 @@ const UserJoin = () => {
 
     //회원가입 버튼 클릭 이벤트 핸들러
     const joinButtonClickHandler = e => {
-
+        console.log(correct);
         e.preventDefault();  //submit기능 중단 시키기
         // const $nameInput = document.getElementsByName('name');
         console.log(userValue)
+        console.log(isValid)
         // 회원가입 서버 요청
         if (isValid()) {
             fetchSignUpPost();
@@ -340,67 +408,133 @@ const UserJoin = () => {
     //렌더링이 끝난 이후 실행되는 함수
     useEffect(() => {
     }, []);
+
     return (
-      <Common className={'join-wrapper'}>
-          <section className={'top-wrapper'}>
-              <img src={logo} alt={'logo'} className={'logo'}/>
-              <div className={'main-title'}>HI,WE ARE<br/>DDAMDDAM CLUB</div>
-          </section>
-          <div className={'background'}></div>
-          <section className={'form-wrapper'}>
-              <img src={profile} alt={'profileImg'}  className={'profile-img'}></img>
-              <div className={'profile-img-text'}>프로필을 등록해주세요</div>
-              <div className={'input-email'}>
-                  <input type={"text"} className={'email-input'} id={'userEmail'}  name={'userEmail'} placeholder={'이메일'} onChange={emailHandler}/>
-                  <select className={'email-select'} value={''} >
-                      <option value={'gmail.com'}>@gmail.com</option>
-                      <option value={'gmail.com'}>@gmail.com</option>
-                      <option value={'gmail.com'}>@gmail.com</option>
-                  </select>
-                  <span style={
-                      correct.userEmail ? {color: 'green'} :{color : 'red'} //입력값검증시에 글씨 색깔
-                  }>{message.userEmail}</span>
-                  <button className={'check-btn'}>인증하기</button>
-              </div>
-                  <section className={"check-email-wrapper"}>
-                  <input type={"text"} className={"check-email"} name={"checkEmail"} placeholder={"인증코드를 입력해주세요"}/>
-                      <button className={"confirm-check-email"}>인증하기</button>
-                  </section>
+        <Common className={'join-wrapper'}>
+            <section className={'top-wrapper'}>
+                <img src={logo} alt={'logo'} className={'logo'}/>
+                <div className={'main-title'}>HI,WE ARE<br/>DDAMDDAM CLUB</div>
+            </section>
+            <div className={'background'}></div>
+            <section className={'form-wrapper'}>
+                <img src={profile} alt={'profileImg'} className={'profile-img'}></img>
+                <div className={'profile-img-text'}>프로필을 등록해주세요</div>
+                <div className={'input-email'}>
+                    <input type={"text"} className={'email-input'} id={'userEmail'} name={'userEmail'}
+                           placeholder={'이메일'} onChange={emailHandler}/>
+                    <select className={'email-select'} defaultValue={''} ref={emailValue}>
+                        <option value={'gmail.com'}>@gmail.com</option>
+                        <option value={'naver.com'}>@naver.com</option>
+                    </select>
+                    {/*<span style={*/}
+                    {/*    correct.userEmail ? {color: 'green'} : {color: 'red'} //입력값검증시에 글씨 색깔*/}
+                    {/*}>{message.userEmail}</span>*/}
+                    {showCertificationBtn
+                        ?
+                        <button className={'check-btn endCheck-btn'} onClick={fetchDuplicateCheck}>
+                            <div className={'endCheck-email'}>중복완료</div>
+                        </button>
+                        :
+                        <button className={'check-btn'} onClick={fetchDuplicateCheck}>
+                            <div className={''}>중복확인</div>
+                        </button>
+                    }
 
-              <div className={'input-pw'}>
-                  <input type={"text"} className={'pw'} id={'password'} name={'password'} placeholder={'비밀번호'} onChange={passwordHandler}/>
-                  <span style={
-                      correct.password ? {color: 'green'} :{color : 'red'} //입력값검증시에 글씨 색깔
-                  }>{message.password}</span>
-              </div>
-              <div className={'input-pwcheck'}>
-                  <input type={"text"} className={'pw-check'} id={'passwordCheck'} name={'pw-check'} placeholder={'비밀번호 확인'} onChange={pwcheckHandler}/>
-                  <span id={'check-span'} style={
-                      correct.passwordCheck ? {color: 'green'} :{color : 'red'} //입력값검증시에 글씨 색깔
-                  }>{message.passwordCheck}</span>
-              </div>
+                </div>
 
 
-              <div className={'input-detail'}>
-                  <input type={"text"} className={'name'} id={'username'} name={'username'} placeholder={'이름'} onChange={nameHandler}/>
-                  <span style={
-                      correct.userName ? {color: 'green'} :{color : 'red'} //입력값검증시 글씨 색깔 빨강색
-                  }>{message.userName}</span>
-                  <input type={"text"} className={'nickname'} id={'nickname'} name={'nickname'} placeholder={'닉네임'} onChange={nicknameHandler}/>
-                  <span style={
-                      correct.nickName ? {color: 'green'} :{color : 'red'} //입력값검증시에 글씨 색깔
-                  }>{message.nickName}</span>
-                  <input type={"text"} className={'career'} name={'userCareer'} defaultValue={''} id={'userCareer'} placeholder={'경력'} onChange={careerHandler}/>
-                  <input type={"text"} className={'birth'} id={'userBirth'} name={'userBirth'} placeholder={'생년월일 8자리'} onChange={birthHandler}/>
-                  <select className={'position-select'} id={'userPosition'} value={'selectedPosition'} onChange={positionHandler}>
-                      <option value={'백엔드'}>백엔드</option>
-                      <option value={'프론트엔드'}>프론트엔드</option>
-                  </select>
-              </div>
+                <section className={'email-certification-wrapper'}>
+                    {showCertificationBtn &&
+                        <>
+                            <button className={'email-check-btn'} onClick={certificationHandler} disabled={emailCodeResult} ref={emailCodeCheck}>인증하기</button>
+                        </>
+                    }
+                    {/* 인증하기 버튼 누르면 나오게 */}
+                    {certification &&
+                        <section className={"check-email-wrapper"}>
+                            <div>
+                                <input type={"text"} className={"check-email-input"} name={"code"} placeholder={""}
+                                       ref={emailCode}/>
 
-              <button type={'submit'} className={'submit-btn'} onClick={joinButtonClickHandler}>가입완료</button>
-          </section>
-      </Common>
+                                {emailCodeResult ?
+                                <button className={"confirm-check-email"} disabled={emailCodeResult}>인증완료</button>
+                                : <button className={"confirm-check-email"} onClick={submitCodeHander}>인증하기</button>
+                            }
+
+                            </div>
+                        </section>
+                    }
+                </section>
+
+                <div className={'input-pw'}>
+                    <input type={"text"} className={'pw'} id={'userPw'} name={'userPw'} placeholder={'비밀번호'}
+                           onChange={passwordHandler}/>
+                    <span className={correct.userPw ? 'correct' : 'not-correct'}>{message.userPw}</span>
+                    {correct.userPw &&
+                        <BsCheckLg className={'check'}/>
+                    }
+                </div>
+                <div className={'input-pwcheck'}>
+                    <input type={"text"} className={'pw-check'} id={'passwordCheck'} name={'pw-check'}
+                           placeholder={'비밀번호 확인'} onChange={pwcheckHandler}/>
+
+                    <span className={correct.passwordCheck ? 'correct' : 'not-correct'}>{message.passwordCheck}</span>
+
+                    {correct.passwordCheck &&
+                        <BsCheckLg className={'check'}/>
+                    }
+                </div>
+
+
+                <div className={'input-detail'}>
+
+                    {/*이름*/}
+                    <div className={'input-name'}>
+                        <input type={"text"} className={'name'} id={'username'} name={'username'} placeholder={'이름'}
+                               onChange={nameHandler}/>
+                        <span className={correct.userName ? 'correct' : 'not-correct'}>{message.userName}</span>
+                        {correct.userName &&
+                            <BsCheckLg className={'check'}/>
+                        }
+                    </div>
+
+                    {/*닉네임*/}
+                    <div className={'input-nickname'}>
+                        <input type={"text"} className={'nickname'} id={'nickname'} name={'nickname'}
+                               placeholder={'닉네임'}
+                               onChange={nicknameHandler}/>
+                        <span className={correct.userNickName ? 'correct' : 'not-correct'}>{message.userNickName}</span>
+
+                        {correct.userNickName &&
+                            <BsCheckLg className={'check'}/>
+                        }
+                    </div>
+
+                    {/*<input type={"text"} className={'career'} name={'userCareer'} defaultValue={''} id={'userCareer'}*/}
+                    {/*       placeholder={'경력 (ex.1년 이상)'} onChange={careerHandler}/>*/}
+
+
+                    <input type={"date"} className={'birth'} id={'userBirth'} name={'userBirth'}
+                           placeholder={'생년월일 8자리 (ex.19960214)'} onChange={birthHandler}/>
+
+                    <select className={'career'} id={'userCareer'} name={'userCareer'} defaultValue={'0'}
+                            onChange={careerHandler}>
+                        <option value={'0'}>신입</option>
+                        <option value={'1'}>1년 이상</option>
+                        <option value={'3'}>3년 이상</option>
+                        <option value={'5'}>5년 이상</option>
+                    </select>
+
+                    <select className={'position-select'} id={'userPosition'} defaultValue={'selectedPosition'}
+                            onChange={positionHandler}>
+                        <option value={'FRONTEND'}>프론트엔드</option>
+                        <option value={'BACKEND'}>백엔드</option>
+                    </select>
+                </div>
+
+                <button type={'submit'} className={'submit-btn'} onClick={joinButtonClickHandler}>가입완료</button>
+            </section>
+        </Common>
     );
 };
 

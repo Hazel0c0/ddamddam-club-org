@@ -13,8 +13,11 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
 
 
     // review 게시글 조회순 TOP3
-    @Query(value = "SELECT r FROM Review r ORDER BY r.reviewView DESC LIMIT 3", nativeQuery = true)
+    @Query(value = "SELECT * FROM tbl_review ORDER BY review_view DESC LIMIT 3", nativeQuery = true)
     List<Review> findTop3Desc();
+
+//    @Query(value = "SELECT r FROM Review r ORDER BY r.reviewView DESC LIMIT 3", nativeQuery = true)
+//    List<Review> findTop3Desc();
 
     @Query("SELECT r FROM Review r ORDER BY r.reviewView DESC")
     List<Review> findByDesc();
