@@ -22,7 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-@ServerEndpoint("/socket/chat/{roomId}")
+@ServerEndpoint("/socket/chat")
 @Slf4j
 public class WebSocketChatService {
     private static Set<Session> clients = Collections.synchronizedSet(new HashSet<>());

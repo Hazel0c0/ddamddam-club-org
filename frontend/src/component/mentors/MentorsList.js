@@ -20,6 +20,9 @@ const MentorsList = ({selectedSubjects}) => {
     const [prevBtn, setPrevBtn] = useState(false);
     const [nextBtn, setNextBtn] = useState(false);
 
+    //로그인 판별
+    const [checkLogin, setCheckLogin] = useState(false);
+
     // 모달 useState
     const [detailMember, setDetailMember] = useState([]);
     const [show, setShow] = useState(false);
@@ -30,9 +33,18 @@ const MentorsList = ({selectedSubjects}) => {
     // 접속한 유저 idx
     const enterUserIdx = +getUserIdx();
 
+
     //캐러셀
     // const [currentPage, setCurrentPage] = useState(1);
     const [carouselIndex, setCarouselIndex] = useState(1);
+
+    const ACCESS_TOKEN = getToken(); // 토큰
+
+    // headers
+      const headerInfo = {
+      'content-type': 'application/json',
+      'Authorization': 'Bearer ' + ACCESS_TOKEN
+  }
 
     const handlePrevious = () => {
         if (pageNation.prev === true){
@@ -60,7 +72,8 @@ const MentorsList = ({selectedSubjects}) => {
     const handleDelete = e => {
         if (window.confirm('삭제하시겠습니까?')) {
             fetch(`${MENTOR}/${idx}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: headerInfo
             })
                 .then(res => res.json())
                 .then(json => {
@@ -91,6 +104,10 @@ const MentorsList = ({selectedSubjects}) => {
             })
             .then(result => {
                 setDetailMember(result);
+                 //로그인 판별
+            if(result.userIdx === +getUserIdx()){
+                setCheckLogin(true)
+            }
                 // console.log(result);
                 setChatPageIdx(result.idx);
                 // console.log(result.idx);
@@ -114,7 +131,7 @@ const MentorsList = ({selectedSubjects}) => {
             })
     }
 
-    const {title, content, subject, current, nickName, date, mentee, career, idx} = detailMember;
+    const {title, content, subject, current, nickName, date, mentee, career, idx, userIdx} = detailMember;
 
 
     // 첫 렌더링 시 출력
@@ -139,25 +156,24 @@ const MentorsList = ({selectedSubjects}) => {
                     setMentorsList(result.mentors);
                     setPageNation(result.pageInfo);
 
-                    // if (pageNation.currentPage === pageNation.endPage){
-                    //     setNextBtn(false);
-                    // }else {
-                    //     setCarouselIndex(prevIndex => prevIndex + 1);
-                    //     setNextBtn(true);
-                    // }
                     console.log(`result.pageInfo : ${result.pageInfo.prev}`);
                 }
             });
+
+           
+            
+
     }, [selectedSubjects, carouselIndex]);
+
     const subStringContent = (str, n) => {
         return str?.length > n
             ? str.substr(0, n - 1) + "..."
             : str;
     }
 
-
     return (
         <div className={'mentors-list-wrapper'}>
+            
             {/*{prevBtn &&*/}
             {pageNation.prev &&
                 <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
@@ -195,16 +211,24 @@ const MentorsList = ({selectedSubjects}) => {
 
             {/*모달창 띄워주기*/}
             <Modal show={show} onHide={handleClose} id={'modal-container'}>
+            
+            
                 <section className={'top-section'}>
                     <div className={'top-title'}>
                         <h1 className={'top-title-text'}>멘토 소개</h1>
                         <div className={'write-date'}>{date}</div>
 
-                        {/* 조건문 작성 필요 */}
-                        <div className={'writer-wrapper'}>
-                            <div className={'modify-btn'}>수정</div>
-                            <div className={'delete-btn'} onClick={handleDelete}>삭제</div>
-                        </div>
+                        {detailMember.userIdx === enterUserIdx &&
+                                <>
+                                 <div className={'writer-wrapper'}>
+                                    <Link to={`/mentors/modify/${idx}`} className={'modify-btn'}>
+                                    수정
+                                    </Link>
+                                    <div className={'delete-btn'} onClick={handleDelete}>삭제</div>
+                                </div>
+                                </>
+                        }
+                        
                     </div>
 
                     <div className={'close-btn'} onClick={handleClose}><TfiClose/></div>

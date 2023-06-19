@@ -173,8 +173,8 @@ public class ChatService {
     public List<ChatMessageResponseDTO> getMentorDetail(ChatMentorDetailRequestDTO requestDTO) {
 
         Mentor mentor = mentorRepository.findById(requestDTO.getMentorIdx()).orElseThrow();
-        ChatRoom chatRoom = chatRoomRepository.findByMentorMentorIdxAndReceiverUserIdx
-                (requestDTO.getMentorIdx(), mentor.getUser().getUserIdx());
+        ChatRoom chatRoom = chatRoomRepository.findByMentorMentorIdxAndReceiverUserIdxAndSenderUserIdx
+                (requestDTO.getMentorIdx(), mentor.getUser().getUserIdx(), requestDTO.getSenderIdx());
 
         List<ChatMessageResponseDTO> responseDTOS = chatRoom.getMessages().stream().map(msg -> {
             ChatMessageResponseDTO dto = new ChatMessageResponseDTO();
