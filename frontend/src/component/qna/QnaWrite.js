@@ -5,6 +5,7 @@ import {MENTOR, QNA} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import Tags from '@yaireo/tagify/dist/react.tagify';
 import {getWhitelistFromServer, getValue} from './hashTagConfig/mockServer'
+import {getToken} from "../common/util/login-util";
 
 const MentorsWrite = () => {
     const redirection = useNavigate();
@@ -15,6 +16,11 @@ const MentorsWrite = () => {
             hashtagList: []
         }
     )
+    const ACCESS_TOKEN = getToken();
+    const requestHeader = {
+        'content-type': 'application/json',
+        'Authorization': 'Bearer ' + ACCESS_TOKEN
+    };
 
     const handleSelect = (e) => {
         const {name, value} = e.target;
@@ -52,7 +58,7 @@ const MentorsWrite = () => {
 
             const res = await fetch(QNA + '/write', {
                 method: 'POST',
-                headers: {'content-type': 'application/json'},
+                headers: requestHeader,
                 body: JSON.stringify(data)
             });
 

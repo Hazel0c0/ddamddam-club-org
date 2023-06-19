@@ -41,14 +41,14 @@ function App() {
                 <Route path={'/'} element={<MainTemplate/>}></Route>
                 {/*<Route path="/board/:idx" element={<BoardDetail/>}/>*/}
 
-                    {/*멘토,멘티*/}
-                    <Route path={'/mentors'} element={<MentorsTemplate />}></Route>
-                    <Route path={'/mentors/write'} element={<MentorsWrite />}></Route>
-                    <Route path={'/mentors/modify/:idx'} element={<MentorsModify />}></Route>
+                {/*멘토,멘티*/}
+                <Route path={'/mentors'} element={<MentorsTemplate/>}></Route>
+                <Route path={'/mentors/write'} element={<MentorsWrite/>}></Route>
+                <Route path={'/mentors/modify/:idx'} element={<MentorsModify/>}></Route>
 
-        {/*<Route path="/mentors/detail/mentorIdx/:idx" element={<MentorsDetail />} />*/}
-        {/*멘토 멘티 채팅방*/}
-        <Route path={'/mentors/detail/chat/:chatPageIdx/:roomId'} element={<MentorsChat/>}></Route>
+                {/*<Route path="/mentors/detail/mentorIdx/:idx" element={<MentorsDetail />} />*/}
+                {/*멘토 멘티 채팅방*/}
+                <Route path={'/mentors/detail/chat/:chatPageIdx/:roomId'} element={<MentorsChat/>}></Route>
 
                 {/*프로젝트 모집*/}
                 <Route path={'/projects'} element={<ProjectsTemplate/>}></Route>

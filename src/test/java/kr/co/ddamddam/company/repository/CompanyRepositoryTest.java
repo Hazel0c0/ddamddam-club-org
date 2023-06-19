@@ -18,9 +18,9 @@ class CompanyRepositoryTest {
     @Autowired
     private CompanyRepository companyRepository;
     @Test
-    @DisplayName("채용공고 게시판 9개 생성")
+    @DisplayName("채용공고 게시판 100개 생성")
     void builkInsert() {
-        for (int i = 1; i <10 ; i++) {
+        for (int i = 1; i <100 ; i++) {
             companyRepository.save(
                     Company.builder()
                             .companyName("감귤회사"+i)

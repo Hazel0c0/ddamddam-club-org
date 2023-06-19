@@ -39,7 +39,7 @@ const QnaMain = () => {
         <Common className={'review-top-wrapper'}>
             <div className={'title-wrapper'}>
                 <p className={'main-title'}>취업 후기</p>
-                <p className={'main-sub-title'}>다녔던 기업에 대한 정보를 공유해보세요.</p>
+                <p className={'main-sub-title'}>근무했던 기업에 대한 정보를 공유해보세요.</p>
             </div>
 
             <section className={'top-view-wrapper'}>
