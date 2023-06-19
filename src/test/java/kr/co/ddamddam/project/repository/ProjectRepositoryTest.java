@@ -24,23 +24,30 @@ class ProjectRepositoryTest {
   @Autowired
   ProjectRepository projectRepository;
 
-/*
+  @Autowired
+  UserRepository userRepository;
+
+
   @Test
   @DisplayName("bulk insert")
   void bulkInsert() {
-    for (int i = 1; i < 40; i++) {
+    for (int i = 1; i < 20; i++) {
+      int index = (int) (Math.random() * 4); // 0 ~ 5
+      Long ran = (long) (Math.random() * 20 + 1);
+
       projectRepository.save(
           Project.builder()
-              .writer("지원" + i)
+              .userIdx(
+                  userRepository.findById(ran)
+                      .orElseThrow()
+              )
               .projectTitle("제목" + i + "이다")
-              .projectContent("깔깔깔깔내용" + i)
+              .projectContent("내용" + i)
               .projectType("웹페이지")
-              .maxFront(3)
-              .maxBack(2)
-              .memberIdx(""+i)
+              .maxFront(index)
+              .maxBack(index)
               .build()
       );
     }
   }
-  */
 }
