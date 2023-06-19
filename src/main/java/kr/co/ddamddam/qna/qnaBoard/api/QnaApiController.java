@@ -171,32 +171,12 @@ public class QnaApiController {
      */
     @PatchMapping("/modify/{boardIdx}")
     public ApplicationResponse<?> modifyBoard(
-            @PathVariable Long boardIdx,
+            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             @RequestBody QnaInsertRequestDTO dto
     ) {
-        log.info("PATCH : /qna/modify/{} - 게시글 수정, payload - {}", boardIdx, dto);
+        log.info("PATCH : /qna/modify - 게시글 수정, payload - {}", dto);
 
-        ResponseMessage result = qnaService.modifyBoard(boardIdx, dto);
-
-        if (result == FAIL) {
-            ApplicationResponse.bad(result);
-        }
-
-        return ApplicationResponse.ok(result);
-    }
-
-    /**
-     * 게시글 조회수 상승
-     * @param boardIdx - 조회수를 상승시킬 게시글의 index
-     * @return - 상승 성공시 SUCCESS, 실패시 FAIL
-     */
-    @PatchMapping("/{boardIdx}/views")
-    public ApplicationResponse<?> updateViewCount(
-            @PathVariable Long boardIdx
-    ) {
-        log.info("PATCH : /qna/{}/views - 조회수 상승", boardIdx);
-
-        ResponseMessage result = qnaService.updateViewCount(boardIdx);
+        ResponseMessage result = qnaService.modifyBoard(tokenUserInfo, dto);
 
         if (result == FAIL) {
             ApplicationResponse.bad(result);
@@ -204,6 +184,27 @@ public class QnaApiController {
 
         return ApplicationResponse.ok(result);
     }
+
+    // TODO : 조회수 상승은 게시글 상세보기 서비스에서 처리하도록 변경했음
+//    *
+//     * 게시글 조회수 상승
+//     * @param boardIdx - 조회수를 상승시킬 게시글의 index
+//     * @return - 상승 성공시 SUCCESS, 실패시 FAIL
+//
+//    @PatchMapping("/{boardIdx}/views")
+//    public ApplicationResponse<?> updateViewCount(
+//            @PathVariable Long boardIdx
+//    ) {
+//        log.info("PATCH : /qna/{}/views - 조회수 상승", boardIdx);
+//
+//        ResponseMessage result = qnaService.updateViewCount(boardIdx);
+//
+//        if (result == FAIL) {
+//            ApplicationResponse.bad(result);
+//        }
+//
+//        return ApplicationResponse.ok(result);
+//    }
 
     /**
      * QNA 게시글 채택 완료 처리
@@ -212,11 +213,12 @@ public class QnaApiController {
      */
     @PatchMapping("/{boardIdx}/adopts")
     public ApplicationResponse<?> adoptQnaBoard(
+            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             @PathVariable Long boardIdx
     ) {
         log.info("PATCH : /qna/{}/adopts - 게시글 채택 완료 상태로 변경", boardIdx);
 
-        ResponseMessage result = qnaService.adoptQnaBoard(boardIdx);
+        ResponseMessage result = qnaService.adoptQnaBoard(tokenUserInfo, boardIdx);
 
         if (result == FAIL) {
             ApplicationResponse.bad(result);
