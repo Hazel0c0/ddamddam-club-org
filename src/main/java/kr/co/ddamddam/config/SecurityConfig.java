@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                     // 어떤 요청에서 인증을 안할 것인지 설정 - 회원가입, 로그인, index 페이지
-                    .antMatchers("/api/ddamddam/auth/**", "/").permitAll()
+                    .antMatchers("/api/ddamddam/**", "/").permitAll()
                     // 어떤 요청에서 인증을 할 것인지 설정 - 그 외의 모든 경로
                     .anyRequest().authenticated();
                 ;
