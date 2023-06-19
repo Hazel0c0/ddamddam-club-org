@@ -76,7 +76,6 @@ const MentorsWrite = () => {
             })
                 .then(res => res.json())
                 .then(json => {
-                    console.log(`json값 어떻게 쓸지? : ${json}`);
                     alert('작성이 완료되었습니다.');
                     window.location.href = 'http://localhost:3000/mentors';
                 })

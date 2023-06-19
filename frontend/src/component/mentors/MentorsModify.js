@@ -3,8 +3,21 @@ import Common from '../common/Common';
 import './scss/MentorWrite.scss';
 import { MENTOR } from '../common/config/HostConfig';
 import { Link, useParams } from 'react-router-dom';
+import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
+  getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
+  getUserRole, isLogin } from '../common/util/login-util';
+
 
 const MentorsModify = () => {
+
+  const ACCESS_TOKEN = getToken(); // 토큰
+
+    // headers
+      const headerInfo = {
+      'content-type': 'application/json',
+      'Authorization': 'Bearer ' + ACCESS_TOKEN
+  }
+
   const Idx = useParams();
   const boardIdx = +Idx.idx;
 
@@ -84,12 +97,11 @@ const MentorsModify = () => {
 
       fetch(`${MENTOR}/modify`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: headerInfo,
         body: JSON.stringify(data),
       })
         .then((res) => res.json())
         .then((json) => {
-          console.log(`json값 어떻게 쓸지? : ${json}`);
           alert('수정이 완료되었습니다.');
           window.location.href = 'http://localhost:3000/mentors';
         });

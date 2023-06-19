@@ -38,6 +38,14 @@ const MentorsList = ({selectedSubjects}) => {
     // const [currentPage, setCurrentPage] = useState(1);
     const [carouselIndex, setCarouselIndex] = useState(1);
 
+    const ACCESS_TOKEN = getToken(); // 토큰
+
+    // headers
+      const headerInfo = {
+      'content-type': 'application/json',
+      'Authorization': 'Bearer ' + ACCESS_TOKEN
+  }
+
     const handlePrevious = () => {
         if (pageNation.prev === true){
             setCarouselIndex(prevIndex => prevIndex - 1);
@@ -64,7 +72,8 @@ const MentorsList = ({selectedSubjects}) => {
     const handleDelete = e => {
         if (window.confirm('삭제하시겠습니까?')) {
             fetch(`${MENTOR}/${idx}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: headerInfo
             })
                 .then(res => res.json())
                 .then(json => {
@@ -209,7 +218,7 @@ const MentorsList = ({selectedSubjects}) => {
                         <h1 className={'top-title-text'}>멘토 소개</h1>
                         <div className={'write-date'}>{date}</div>
 
-                        {checkLogin &&
+                        {detailMember.userIdx === enterUserIdx &&
                                 <>
                                  <div className={'writer-wrapper'}>
                                     <Link to={`/mentors/modify/${idx}`} className={'modify-btn'}>

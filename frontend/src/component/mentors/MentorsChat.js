@@ -161,41 +161,20 @@ const mentorMsgBox = chat.map((item, idx) => {
   }, [chatPageIdx]);
 
 
- // 보낸 채팅 메세지 담기
-  useEffect(() => {
-    if(socketData !== undefined) {
-        const tempData = chat.concat(socketData);
-        console.log(tempData);
-        setChat(tempData);
-    }
-}, [socketData]);
-
-// 입력한 메세지 담기
-const onText = event => {
-  console.log(event.target.value);
-  setMsg(event.target.value);
-}
+ 
 
 // 소켓 연결
 // 메세지 컨트롤러 보내기
 useEffect(() => {
   const webSocketLogin = () => {
     ws.current = new WebSocket("ws://localhost:8181/socket/chat");
-    console.log('socket');
-    ws.current.onmessage = (message) => {
-      try {
-        const dataSet = JSON.parse(message.data);
-        const filteredData = Array.isArray(dataSet) ? dataSet.filter((item) => +item.roomId === selectChatRoomId) : [dataSet];
-        setSocketData(filteredData);
-      } catch (error) {
-        console.error("Error parsing WebSocket message:", error);
-      }
+
+    ws.current.onopen = () => {
+      console.log("WebSocket 연결 성공");
     };
     
     
-    
   };
-
   webSocketLogin();
 
   return () => {
@@ -203,6 +182,21 @@ useEffect(() => {
     ws.current.close();
   };
 }, []);
+
+// 보낸 채팅 메세지 담기
+useEffect(() => {
+  if(socketData !== undefined) {
+      const tempData = chat.concat(socketData);
+      console.log(tempData);
+      setChat(tempData);
+  }
+}, [socketData]);
+
+// 입력한 메세지 담기
+const onText = event => {
+console.log(event.target.value);
+setMsg(event.target.value);
+}
 
 // 메세지 
 const saveMessage = useCallback(() => {
@@ -259,6 +253,15 @@ const send = () => {
     if (ws.current.readyState === WebSocket.OPEN) {
       ws.current.send(temp);
       saveMessage(); // 메시지 저장 및 스크롤 조정
+      ws.current.onmessage = (message) => {
+        try {
+          const dataSet = JSON.parse(message.data);
+          const filteredData = Array.isArray(dataSet) ? dataSet.filter((item) => +item.roomId === selectChatRoomId) : [dataSet];
+          setSocketData(filteredData);
+        } catch (error) {
+          console.error("Error parsing WebSocket message:", error);
+        }
+      };
     } else {
       alert('WebSocket 연결이 열려 있지 않습니다.');
     }
