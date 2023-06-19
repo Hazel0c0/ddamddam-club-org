@@ -25,7 +25,7 @@ public class ValidateToken {
     public void validateToken(TokenUserInfo tokenUserInfo) {
         // 토큰 인증 실패
         if (tokenUserInfo == null) {
-            throw new UnauthorizationException(UNAUTHENTICATED_USER, "❌ 인증되지 않은 사용자이거나, 위조된 토큰입니다.");
+            throw new UnauthorizationException(UNAUTHENTICATED_USER, "로그인 후 이용 가능합니다.");
         }
     }
 
@@ -37,7 +37,7 @@ public class ValidateToken {
     public void validateDtoAndToken(Long userIdx, TokenUserInfo tokenUserInfo) {
         // 토큰 인증 실패
         if (tokenUserInfo == null) {
-            throw new UnauthorizationException(UNAUTHENTICATED_USER, "❌ 인증되지 않은 사용자이거나, 위조된 토큰입니다.");
+            throw new UnauthorizationException(UNAUTHENTICATED_USER, "로그인 후 이용 가능합니다.");
         }
         // 회원 조회 실패
         User user = userRepository.findById(userIdx).orElseThrow(() -> {
