@@ -1,7 +1,11 @@
 package kr.co.ddamddam.qna.qnaBoard.service;
 
 import kr.co.ddamddam.common.common.TruncateString;
+import kr.co.ddamddam.common.common.ValidateToken;
+import kr.co.ddamddam.common.exception.custom.NotFoundUserException;
+import kr.co.ddamddam.common.exception.custom.UnauthorizationException;
 import kr.co.ddamddam.common.response.ResponseMessage;
+import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.qna.qnaBoard.dto.page.PageDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.page.PageResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.request.QnaInsertRequestDTO;
@@ -48,6 +52,8 @@ public class QnaService {
     private final HashtagRepository hashtagRepository;
     private final QnaReplyService qnaReplyService;
 
+    private final ValidateToken validateToken;
+
     public QnaListPageResponseDTO getList(PageDTO pageDTO) {
 
         PageRequest pageable = getPageable(pageDTO);
@@ -82,9 +88,11 @@ public class QnaService {
                 ).collect(Collectors.toList());
     }
 
-    public QnaDetailResponseDTO getDetail(Long boardIdx) {
+    public QnaDetailResponseDTO getDetail(TokenUserInfo tokenUserInfo,Long boardIdx) {
 
         log.info("[Qna/Service] QNA 게시글 상세보기 boardIdx - {}", boardIdx);
+
+        validateToken.validateToken(tokenUserInfo); // 로그인 안한 경우를 걸러냄
 
         if (boardIdx == null) {
             throw new NotFoundBoardException(INVALID_PARAMETER, boardIdx);
@@ -95,7 +103,7 @@ public class QnaService {
         });
 
         User user = userRepository.findById(qna.getUser().getUserIdx()).orElseThrow(() -> {
-            throw new NotFoundBoardException(NOT_FOUND_USER, qna.getUser().getUserIdx());
+            throw new NotFoundUserException(NOT_FOUND_USER, qna.getUser().getUserIdx());
         });
 
         List<QnaReplyListResponseDTO> replyList = qnaReplyService.getList(qna.getQnaIdx());
@@ -126,9 +134,13 @@ public class QnaService {
                 .build();
     }
 
-    public Long writeBoard(Long userIdx, QnaInsertRequestDTO dto) {
+    public Long writeBoard(TokenUserInfo tokenUserInfo, QnaInsertRequestDTO dto) {
 
         log.info("[Qna/Service] QNA 게시글 작성 - {}", dto);
+
+        validateToken.validateToken(tokenUserInfo); // 로그인 안 한 경우를 걸러냄
+
+        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
         User user = userRepository.findById(userIdx).orElseThrow(() -> {
             throw new NotFoundBoardException(NOT_FOUND_USER, userIdx);
@@ -145,7 +157,7 @@ public class QnaService {
     }
 
 
-    public ResponseMessage deleteBoard(Long boardIdx) {
+    public ResponseMessage deleteBoard(TokenUserInfo tokenUserInfo, Long boardIdx) {
 
         log.info("[Qna/Service] QNA 게시글 삭제 - {}", boardIdx);
 
@@ -160,6 +172,22 @@ public class QnaService {
         qnaRepository.deleteById(boardIdx);
 
         return SUCCESS;
+    }
+
+    private void validate(TokenUserInfo tokenUserInfo, Long boardIdx) {
+        // 토큰 인증 실패
+        if (tokenUserInfo == null) {
+            throw new UnauthorizationException(UNAUTHENTICATED_USER, "로그인 후 이용 가능합니다.");
+        }
+
+        Qna qna = qnaRepository.findById(boardIdx).orElseThrow(() -> {
+            throw new NotFoundBoardException(NOT_FOUND_BOARD, boardIdx);
+        });
+
+        // 토큰 내 회원 이메일과 작성자의 이메일이 일치하지 않음 -> 작성자가 아님 -> 수정 및 삭제 불가
+        if (!qna.getUser().getUserEmail().equals(tokenUserInfo.getUserEmail())) {
+            throw new UnauthorizationException(ACCESS_FORBIDDEN, tokenUserInfo.getUserEmail());
+        }
     }
 
     public ResponseMessage modifyBoard(Long boardIdx, QnaInsertRequestDTO dto) {
