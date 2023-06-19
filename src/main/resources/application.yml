@@ -1,0 +1,53 @@
+server:
+  port: 8181
+
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:mariadb://oslobdb.cqd7fh7vsssg.ap-northeast-2.rds.amazonaws.com:3306/ddamddam
+    #    url: jdbc:mariadb://localhost:3306/ddamddam
+    username: taegun
+    #    username: root
+    password: 1234
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    # show-sql: true  # ?? ??? ??? ???? ??
+    # ??? ?? ? ?? ??? ?? ???? ??
+    database-platform: org.hibernate.dialect.MariaDB106Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true # sql? ????? ??? ??
+    database: mysql # ?? ?? ??
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: yellowyj39@gmail.com # 앱 비밀번호 발급받은 google 계정
+    password: aeznuoptcicbqpaf # 발급받은 앱 비밀번호 (16자리 입니다.) ->
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+
+logging.level:
+  org.hibernate.SQL: debug
+
+# swagger setting
+springdoc:
+  swagger-ui:
+    path: /myapi.html
+
+# Json Web Token setting
+jwt:
+  secret: 7lizyfII3rydJihGinqyZB2RhBsh9uMvR4P1sJVP20oAKVI1PHef5KGVzP+SiSnLXy7lFBreKYVUm23jofj5Ow==
+
+# sns login data
+sns:
+  kakao:
+    app-key: d16ee03edff29a44b1760307dcd1d15d
+    redirect-uri: http://localhost:3000/oauth/callback/kakao
