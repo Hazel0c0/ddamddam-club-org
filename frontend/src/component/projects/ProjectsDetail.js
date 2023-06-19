@@ -29,19 +29,6 @@ const ProjectsDetail = () => {
           setProjectDetail([data.payload]);
           console.log(data.payload);
 
-          // 추가: 프로젝트 이미지 가져오기
-          // const projectImg = data.payload.projectImg;
-          // if (projectImg) {
-          //   fetch(projectImg)
-          //       .then(response => response.blob())
-          //       .then(blob => {
-          //         const imgUrl = URL.createObjectURL(blob);
-          //         setProjectImgUrl(imgUrl);
-          //       })
-          //       .catch(error => {
-          //         console.error(error);
-          //       });
-          // }
         })
         .catch(error => {
           console.error(error);
@@ -51,9 +38,9 @@ const ProjectsDetail = () => {
   const file_URL = '//localhost:8181/api/ddamddam/load-file'
 
   const fetchFileImage = async () => {
-    const res = await fetch(`${file_URL}?projectIdx=${projectIdx}&boardType=project`,{
+    const res = await fetch(
+      `${file_URL}?projectIdx=${projectIdx}&boardType=project`,{
       method: 'GET',
-      // headers: { 'Authorization': 'Bearer ' + getLoginUserInfo().token }
     });
     if (res.status === 200) {
       const fileBlob = await res.blob();
