@@ -120,7 +120,19 @@
     .btn-wrapper {
       width: 100%;
       display: flex;
-      justify-content: center;
+      justify-content:space-evenly;
+      align-items: start;
+    }
+
+    .mentor-back-room{
+      border: none;
+      font-size: 17px;
+      color: white;
+      width: 135px;
+      height: 35px;
+      border-radius: 5px;
+      background-color: #292834;
+      display: none;
     }
 
     .application-btn {
@@ -158,6 +170,8 @@
       align-items: center;
       // margin-bottom: 15px;
       overflow: auto;
+
+      
 
       .chat-room-list{
         width: 100%;
