@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import kr.co.ddamddam.company.entity.Company;
 import lombok.*;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Setter
@@ -21,10 +20,10 @@ public class CompanyDetailResponseDTO {
     private String companyTitle;
     private String companyCareer;
     private String companyArea;
-    private String companyUrl;
+    private String companyUrl;;
     private String companySal;
     @JsonFormat(pattern = "yyyy-mm-dd")
-    private Timestamp companyDate;
+    private LocalDate companyDate;
     private String companyEnddate;
 
     public CompanyDetailResponseDTO(Company company){
@@ -38,10 +37,5 @@ public class CompanyDetailResponseDTO {
         this.companyDate = company.getCompanyDate();
         this.companyEnddate = company.getCompanyEnddate();
     }
-
-
-
-
-
 
 }
