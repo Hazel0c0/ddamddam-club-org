@@ -43,7 +43,7 @@ public class ReviewService {
     public ReviewListPageResponseDTO getList(PageDTO pageDTO){
         PageRequest pageable = getPageable(pageDTO);
 
-        // 데이터베이스에서 QNA 게시글 목록 조회 후 DTO 리스트로 꺼내기
+        // 데이터베이스에서 게시글 목록 조회 후 DTO 리스트로 꺼내기
         Page<Review> reviews = reviewRepository.findAll(pageable);
         List<ReviewListResponseDTO> reviewListResponseDTOList = getReviewDTOList(reviews);
 
@@ -107,10 +107,65 @@ public class ReviewService {
 
 
 
+    // 조회순으로 조회하기
+    public ReviewListPageResponseDTO getListOrderByView(){
+
+        PageRequest pageable = getPageable(new PageDTO());
+        Page<Review> reviews = reviewRepository.findByDesc(pageable);
+
+        List<ReviewListResponseDTO> reviewListResponseDTOS = getReviewListView(reviews);
+
+        return ReviewListPageResponseDTO.builder()
+                .count(reviewListResponseDTOS.size())
+                .pageInfo(new PageResponseDTO(reviews))
+                .responseList(reviewListResponseDTOS)
+                .build();
+    }
+
+    private List<ReviewListResponseDTO> getReviewListView(Page<Review> reviews) {
+        return reviews.stream()
+                .map(ReviewListResponseDTO::new)
+                .collect(toList());
+    }
+
+
+    // 평점순으로 조회하기
+    public ReviewListPageResponseDTO getListOrderByRateDesc(){
+
+        PageRequest pageable = getPageable(new PageDTO());
+        Page<Review> reviews = reviewRepository.findByRate(pageable);
+
+        List<ReviewListResponseDTO> reviewListResponseDTOS = getReviewListRate(reviews);
+
+        return ReviewListPageResponseDTO.builder()
+                .count(reviewListResponseDTOS.size())
+                .pageInfo(new PageResponseDTO(reviews))
+                .responseList(reviewListResponseDTOS)
+                .build();
+    }
+
+    private List<ReviewListResponseDTO> getReviewListRate(Page<Review> reviews) {
+        return reviews.stream()
+                .map(ReviewListResponseDTO::new)
+                .collect(toList());
+    }
+
     //키워드 검색기능 구현하기
-    public List<ReviewListResponseDTO> getKeywordList(String keyword){
-        List<Review> reviewList  = reviewRepository.findByKeyword(keyword);
-        return reviewList.stream()
+    public ReviewListPageResponseDTO getKeywordList(String keyword){
+
+        PageRequest pageable = getPageable(new PageDTO());
+        Page<Review> reviews = reviewRepository.findByKeyword(keyword,pageable);
+        List<ReviewListResponseDTO> reviewListResponseDTOS = getReviewListKeyword(reviews);
+
+        return ReviewListPageResponseDTO.builder()
+                .count(reviewListResponseDTOS.size())
+                .pageInfo(new PageResponseDTO(reviews))
+                .responseList(reviewListResponseDTOS)
+                .build();
+    }
+
+    private List<ReviewListResponseDTO> getReviewListKeyword(Page<Review> reviews) {
+        return reviews.stream()
                 .map(ReviewListResponseDTO::new)
                 .collect(toList());
     }
@@ -123,30 +178,6 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
-    // 조회순으로 조회하기
-    public List<ReviewTopListResponseDTO> getListOrderByView(){
-        List<Review> reviewTopList = reviewRepository.findByDesc();
-//        List<Review> reviewTop3List = reviewRepository.findTop3ByOrderByReviewRatingDesc();
-
-        return reviewTopList.stream().map(review -> ReviewTopListResponseDTO.builder()
-                .boardIdx(review.getReviewIdx())
-                .boardTitle(review.getReviewTitle())
-                .boardJob(review.getReviewJob())
-                .boardRating(review.getReviewRating())
-                .boardTenure(review.getReviewTenure())
-                .boardView(review.getReviewView())
-                .build()
-        ).collect(Collectors.toList());
-    }
-
-
-    // 평점순으로 조회하기
-    public List<ReviewListResponseDTO> getListOrderByRateDesc(){
-        List<Review> reviewList  = reviewRepository.findByRate();
-        return reviewList.stream()
-                .map(ReviewListResponseDTO::new)
-                .collect(Collectors.toList());
-    }
 
 
     //게시글 작성
@@ -174,7 +205,6 @@ public class ReviewService {
             review.setReviewTitle(dto.getReviewTitle());
             review.setReviewContent(dto.getReviewContent());
             review.setReviewJob(dto.getReviewJob());
-            review.setReviewDate(dto.getReviewDate());
             review.setReviewRating(dto.getReviewRating());
             review.setCompany(company);
 
