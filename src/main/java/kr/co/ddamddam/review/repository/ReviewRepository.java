@@ -1,6 +1,8 @@
 package kr.co.ddamddam.review.repository;
 
 import kr.co.ddamddam.review.entity.Review;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,17 +22,18 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
 //    List<Review> findTop3Desc();
 
     @Query("SELECT r FROM Review r ORDER BY r.reviewView DESC")
-    List<Review> findByDesc();
+    Page<Review> findByDesc(Pageable pageable);
 
     @Query("SELECT r FROM Review r WHERE r.reviewTitle LIKE %:keyword% " +
             "OR r.reviewContent LIKE %:keyword% OR r.reviewJob LIKE %:keyword%")
-    List<Review> findByKeyword(@Param("keyword") String keyword);
+    Page<Review> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
 
     @Query("SELECT r from Review r ORDER BY r.reviewDate DESC")
     List<Review> findByDate();
 
     @Query("SELECT r FROM Review r ORDER BY r.reviewRating DESC ")
-    List<Review> findByRate();
+    Page<Review> findByRate(Pageable pageable);
 
     List<Review> findByUserUserIdx(Long userIdx);
 
