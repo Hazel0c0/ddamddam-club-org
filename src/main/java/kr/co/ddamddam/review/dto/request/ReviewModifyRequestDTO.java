@@ -43,8 +43,6 @@ public class ReviewModifyRequestDTO {
 
     private String reviewLocation;
 
-    @NotNull
-    private LocalDateTime reviewDate;
 
 
     public Review toEntity(){
@@ -59,7 +57,6 @@ public class ReviewModifyRequestDTO {
                 .reviewJob(this.reviewJob)
                 .reviewTenure(this.reviewTenure)
                 .company(company)
-                .reviewDate(this.reviewDate)
                 .build();
     }
 
