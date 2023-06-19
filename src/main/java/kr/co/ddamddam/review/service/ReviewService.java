@@ -205,7 +205,6 @@ public class ReviewService {
             review.setReviewTitle(dto.getReviewTitle());
             review.setReviewContent(dto.getReviewContent());
             review.setReviewJob(dto.getReviewJob());
-            review.setReviewDate(dto.getReviewDate());
             review.setReviewRating(dto.getReviewRating());
             review.setCompany(company);
 
