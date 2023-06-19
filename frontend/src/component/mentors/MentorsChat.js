@@ -9,7 +9,7 @@ import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUs
           getUserRole, isLogin } from '../common/util/login-util';
 import { Window } from '@mui/icons-material';
 const MentorsChat = () => {
-  const { chatPageIdx } = useParams(); // 멘토 게시판 idx
+  const { chatPageIdx,roomId } = useParams(); // 멘토 게시판 idx
   const [detailMember, setDetailMember] = useState({}); // 멘토게시판
   const [messages, setMessages] = useState([]); // 디비 저장된 메세지
   const [chkLog, setChkLog] = useState(false);
@@ -293,6 +293,7 @@ console.log('접속한 userIdx: '+enterUserIdx);
 
   return (
     <Common className={'mentors-chat-wrapper'}>
+      {roomId}의 값
       <div className={'mentor-detail-wrapper'}>
         <section className={'top-section'}>
           <div className={'top-title'}>
