@@ -44,12 +44,27 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                // 어떤 요청에서 인증을 안할 것인지 설정 - 회원가입, 로그인, index 페이지
-                .antMatchers("/api/ddamddam/**", "/").permitAll()
-                .antMatchers("/socket/chat/**", "/").permitAll()
-                // 어떤 요청에서 인증을 할 것인지 설정 - 그 외의 모든 경로
-                .anyRequest().authenticated();
-        ;
+                    // 어떤 요청에서 인증을 안할 것인지 설정
+                    // - 회원가입, 로그인, index 페이지, 각 게시판 첫 페이지
+                    .antMatchers("/api/ddamddam/auth/**", "/").permitAll()
+                    .antMatchers("/api/ddamddam/oauth/**").permitAll()
+                    .antMatchers("/api/ddamddam/companies/list").permitAll()
+                    .antMatchers("/api/ddamddam/mentors/list").permitAll()
+                    .antMatchers("/api/ddamddam/mentors/sublist").permitAll()
+                    .antMatchers("/api/ddamddam/project").permitAll()
+                    .antMatchers("/api/ddamddam/qna").permitAll()
+                    .antMatchers("/api/ddamddam/qna/top").permitAll()
+                    .antMatchers("/api/ddamddam/qna/adopts").permitAll()
+                    .antMatchers("/api/ddamddam/qna/non-adopts").permitAll()
+                    .antMatchers("/api/ddamddam/qna/search").permitAll()
+                    .antMatchers("/api/ddamddam/reviews/list").permitAll()
+                    .antMatchers("/api/ddamddam/reviews/search/**").permitAll()
+                    .antMatchers("/api/ddamddam/reviews/viewTop3").permitAll()
+                    .antMatchers("/api/ddamddam/reviews/view").permitAll()
+                    .antMatchers("/api/ddamddam/reviews/rating").permitAll()
+                    // 어떤 요청에서 인증을 할 것인지 설정 - 그 외의 모든 경로
+                    .anyRequest().authenticated();
+                ;
 
         // 토큰 인증 필터 연결
         http.addFilterAfter(
