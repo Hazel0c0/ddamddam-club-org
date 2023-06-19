@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -39,6 +40,7 @@ import static kr.co.ddamddam.common.response.ResponseMessage.*;
 import static kr.co.ddamddam.qna.qnaBoard.entity.QnaAdoption.*;
 import static kr.co.ddamddam.common.exception.custom.ErrorCode.*;
 
+@SuppressWarnings("unchecked")
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -88,7 +90,7 @@ public class QnaService {
                 ).collect(Collectors.toList());
     }
 
-    public QnaDetailResponseDTO getDetail(TokenUserInfo tokenUserInfo,Long boardIdx) {
+    public QnaDetailResponseDTO getDetail(TokenUserInfo tokenUserInfo, Long boardIdx) {
 
         log.info("[Qna/Service] QNA 게시글 상세보기 boardIdx - {}", boardIdx);
 
@@ -102,6 +104,8 @@ public class QnaService {
             throw new NotFoundBoardException(NOT_FOUND_BOARD, boardIdx);
         });
 
+        updateViewCount(boardIdx); // 조회수 상승 처리
+        
         User user = userRepository.findById(qna.getUser().getUserIdx()).orElseThrow(() -> {
             throw new NotFoundUserException(NOT_FOUND_USER, qna.getUser().getUserIdx());
         });
@@ -161,9 +165,7 @@ public class QnaService {
 
         log.info("[Qna/Service] QNA 게시글 삭제 - {}", boardIdx);
 
-        Qna qna = qnaRepository.findById(boardIdx).orElseThrow(() -> {
-            throw new NotFoundBoardException(NOT_FOUND_BOARD, boardIdx);
-        });
+        Qna qna = validateDTO(tokenUserInfo, boardIdx);
 
         if (qna.getQnaAdoption() == Y) {
             return FAIL;
@@ -174,39 +176,46 @@ public class QnaService {
         return SUCCESS;
     }
 
-    private void validate(TokenUserInfo tokenUserInfo, Long boardIdx) {
+    /**
+     * 게시글의 작성자와 토큰의 유저가 동일한지 검사하는 기능
+     * @param tokenUserInfo - 로그인 중인 유저의 정보
+     * @param boardIdx - 클라이언트에서 요청한 게시글 번호
+     */
+    private Qna validateDTO(TokenUserInfo tokenUserInfo, Long boardIdx) {
         // 토큰 인증 실패
         if (tokenUserInfo == null) {
             throw new UnauthorizationException(UNAUTHENTICATED_USER, "로그인 후 이용 가능합니다.");
         }
 
+        // 게시글 존재 여부 확인
         Qna qna = qnaRepository.findById(boardIdx).orElseThrow(() -> {
             throw new NotFoundBoardException(NOT_FOUND_BOARD, boardIdx);
         });
 
-        // 토큰 내 회원 이메일과 작성자의 이메일이 일치하지 않음 -> 작성자가 아님 -> 수정 및 삭제 불가
+        // 토큰 내 회원 이메일과 게시글 작성자의 이메일이 일치하지 않음 -> 작성자가 아님 -> 수정 및 삭제 불가
         if (!qna.getUser().getUserEmail().equals(tokenUserInfo.getUserEmail())) {
             throw new UnauthorizationException(ACCESS_FORBIDDEN, tokenUserInfo.getUserEmail());
         }
+
+        return qna;
     }
 
-    public ResponseMessage modifyBoard(Long boardIdx, QnaInsertRequestDTO dto) {
+    public ResponseMessage modifyBoard(TokenUserInfo tokenUserInfo, QnaInsertRequestDTO dto) {
 
-        log.info("[Qna/Service] QNA 게시글 수정 - {}, payload - {}", boardIdx, dto);
+        log.info("[Qna/Service] QNA {}번 게시글 수정, payload - {}", dto.getBoardIdx(), dto);
 
-        Qna qna = qnaRepository.findById(boardIdx).orElseThrow(() -> {
-            throw new NotFoundBoardException(NOT_FOUND_BOARD, boardIdx);
-        });
+        Qna qna = validateDTO(tokenUserInfo, dto.getBoardIdx());
 
         if (qna.getQnaAdoption() == Y) {
             return FAIL;
         }
 
         qna.clearHashtagList();
-        hashtagRepository.deleteByQnaQnaIdx(boardIdx);
+        hashtagRepository.deleteByQnaQnaIdx(qna.getQnaIdx());
 
         qna.setQnaTitle(dto.getBoardTitle());
         qna.setQnaContent(dto.getBoardContent());
+
         Qna savedQna = qnaRepository.save(qna);
 
         // 해시태그 저장
@@ -230,13 +239,11 @@ public class QnaService {
         return SUCCESS;
     }
 
-    public ResponseMessage adoptQnaBoard(Long boardIdx) {
+    public ResponseMessage adoptQnaBoard(TokenUserInfo tokenUserInfo,  Long boardIdx) {
 
         log.info("[Qna/Service] QNA 게시글 채택 완료 상태로 변경 - {}", boardIdx);
 
-        Qna qna = qnaRepository.findById(boardIdx).orElseThrow(() -> {
-            throw new NotFoundBoardException(NOT_FOUND_BOARD, boardIdx);
-        });
+        Qna qna = validateDTO(tokenUserInfo, boardIdx);
 
         qna.setQnaAdoption(Y);
 
