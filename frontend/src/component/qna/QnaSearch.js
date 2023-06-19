@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 
 const QnaSearch = ({onSearchChange}) => {
     const [selectedBtn, setSelectedBtn] = useState('전체');
-
+    const [valueChange, setValueChange] = useState(false);
     const handleInputChange = (e) => {
         const value = e.target.textContent;
         // console.log(value);

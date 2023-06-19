@@ -20,7 +20,7 @@ const QnaSearch = ({onSearchChange}) => {
     }
 
     return (
-        <Common className={'qna-search-wrapper'}>
+        <Common className={'review-search-wrapper'}>
             <ul className={'sort-btn'}>
                 <li
                     onClick={handleInputChange}

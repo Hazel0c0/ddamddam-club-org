@@ -7,28 +7,26 @@ import {QNA, REVIEW} from "../common/config/HostConfig";
 import {Link} from "react-router-dom";
 import ReviewStarRating from "./StartRating/ReviewStarRating";
 import ReviewStar from "./StartRating/ReviewStar";
+import PageNation from "../common/pageNation/PageNation";
 
 const QnaList = ({searchValue}) => {
     const [reviewList, setReviewList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
-
-    //상세보기 이동
-    const [qnaDetailBoardIdx, setqnaDetailBoardIdx] = useState([]);
-
+    const [clickCurrentPage, setClickCurrentPage] = useState([1]);
 
     //조회순, 평점순 처리중
     const asyncReviewList = async () => {
         let responseUrl;
         if (searchValue === '' || searchValue === '전체') {
-            responseUrl = '/list?page=1&size=10'
+            responseUrl = `/list?page=${clickCurrentPage}&size=10`
         } else if (searchValue === '평점순') {
             responseUrl = '/rating';
         } else if (searchValue === '조회순') {
             responseUrl = '/view';
         }
 
-        console.log(`searchValue = ${searchValue}`)
-        console.log(`responseUrl = ${responseUrl}`)
+
+        // console.log(`responseUrl = ${responseUrl}`)
         const res = await fetch(`${REVIEW}${responseUrl}`, {
             method: 'GET',
             headers: {'content-type': 'application/json'}
@@ -47,8 +45,16 @@ const QnaList = ({searchValue}) => {
     // 전체 목록 리스트 출력
     useEffect(() => {
         asyncReviewList();
-    }, [searchValue]);
 
+    }, [searchValue,clickCurrentPage]);
+
+    //현재 페이지 설정
+    const currentPageHandler = (clickPageNum) =>{
+        console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
+        setClickCurrentPage(clickPageNum);
+    }
+
+    //페이지 수 설정
 
     return (
         <Common className={'review-list-wrapper'}>
@@ -95,7 +101,13 @@ const QnaList = ({searchValue}) => {
                     </div>
                 </section>
             ))}
-
+            {/*{clickCurrentPage}*/}
+            <ul>
+                <PageNation
+                    pageNation={pageNation}
+                    currentPageHandler={currentPageHandler}
+                    clickCurrentPage={clickCurrentPage} />
+            </ul>
         </Common>
     );
 };
