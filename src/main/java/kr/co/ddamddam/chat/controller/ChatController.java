@@ -34,6 +34,7 @@ public class ChatController {
         log.info("requestDTO 들어옴: {}",dto);
 
             ChatRoomResponseDTO responseDTO = chatService.createChatRoom(dto);
+            log.info("responseDTO 보냄 : {}", responseDTO.getRoomId());
             return ResponseEntity.ok(responseDTO);
     }
 

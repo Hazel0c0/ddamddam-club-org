@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { TfiClose } from 'react-icons/tfi';
 import Common from '../common/Common';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { CHAT, MENTOR } from '../common/config/HostConfig';
 import './scss/MentorChat.scss';
 import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
@@ -14,8 +14,8 @@ const MentorsChat = () => {
   const [messages, setMessages] = useState([]); // 디비 저장된 메세지
   const [chkLog, setChkLog] = useState(false);
   const [socketData, setSocketData] = useState();
-  const [chat, setChat] = useState([]);
-  const [msg, setMsg] = useState("");
+  const [chat, setChat] = useState([]); // th
+  const [msg, setMsg] = useState(""); // 입력한 메세지(input)
   const name = getUserNickname(); // 접속한 유저의 닉네임
   const [chatRoom, setChatRoom] = useState([]);
 
@@ -35,9 +35,12 @@ const MentorsChat = () => {
   const ws = useRef(null);
   const chatScroll = useRef(null);
 
+  const test = useNavigate();
+
   // 멘토한정 채팅방으로 돌아가기
   const backChatRoomList = () => {
-    window.location.href = 'http://localhost:3000/mentors/detail/chat/'+chatPageIdx;
+    test(-1)
+    //window.location.href = 'http://localhost:3000/mentors/detail/chat/'+chatPageIdx;
     document.querySelector('.mentor-back-room').style.display = 'none';
   };
 
@@ -65,6 +68,12 @@ const MentorsChat = () => {
             });
   };
 
+  // 멘티 확정 시 렌더링
+  const menteeCountUp = e => {
+    
+  };
+
+
   // 멘토가 채팅방 선택 렌더링
   const mentorsChatRoom = 
     chatRoom.map((item, idx) => (
@@ -79,15 +88,15 @@ const MentorsChat = () => {
   
     // 멘티 채팅방 입장 후 메세지 렌더링
 const menteeMsgBox = chat.map((item, idx) => {
-  if (+item.roomId === +selectChatRoomId) {
+  // if (+item.roomId === +selectChatRoomId) {
     return (
       <div className={item.senderId === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
         <span className={item.senderId === enterUserIdx ? 'sender' : 'receiver'}>{item.name}</span>
         <span className={item.senderId === enterUserIdx ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
       </div>
     );
-  }
-  return null;
+  // }
+  // return null;
 });
 
 // 멘토가 채팅방 입장 후 메세지 렌더링
@@ -134,8 +143,10 @@ const mentorMsgBox = chat.map((item, idx) => {
             .then((detailRes) => detailRes.json())
             .then((detailResult) => {
               setMessages(detailResult);
-              if(detailResult[0] !== undefined){
-              setSelectChatRoomId(detailResult[0].roomId);
+              if (detailResult[0] !== undefined) {
+                detailResult.forEach((detail) => {
+                  setSelectChatRoomId(detail.roomId);
+                });
               }
             });
             }else{
@@ -169,8 +180,17 @@ useEffect(() => {
   const webSocketLogin = () => {
     ws.current = new WebSocket("ws://localhost:8181/socket/chat");
 
-    ws.current.onopen = () => {
-      console.log("WebSocket 연결 성공");
+    // ws.current.onopen = () => {
+    //   console.log("WebSocket 연결 성공");
+    // };
+    ws.current.onmessage = (message) => {
+      try {
+        const dataSet = JSON.parse(message.data);
+        const filteredData = Array.isArray(dataSet) ? dataSet.filter((item) => +item.roomId === selectChatRoomId) : [dataSet];
+        setSocketData(filteredData);
+      } catch (error) {
+        console.error("Error parsing WebSocket message:", error);
+      }
     };
     
     
@@ -253,15 +273,7 @@ const send = () => {
     if (ws.current.readyState === WebSocket.OPEN) {
       ws.current.send(temp);
       saveMessage(); // 메시지 저장 및 스크롤 조정
-      ws.current.onmessage = (message) => {
-        try {
-          const dataSet = JSON.parse(message.data);
-          const filteredData = Array.isArray(dataSet) ? dataSet.filter((item) => +item.roomId === selectChatRoomId) : [dataSet];
-          setSocketData(filteredData);
-        } catch (error) {
-          console.error("Error parsing WebSocket message:", error);
-        }
-      };
+      
     } else {
       alert('WebSocket 연결이 열려 있지 않습니다.');
     }
@@ -335,7 +347,7 @@ console.log('접속한 userIdx: '+enterUserIdx);
         </section>
 
         <div className={'btn-wrapper'}>
-          <button className={'application-btn'} >{detailMember.userIdx === enterUserIdx ? '멘티 확정' : '멘토링중'}</button>
+          <button className={'application-btn'} onClick={menteeCountUp}>{detailMember.userIdx === enterUserIdx ? '멘티 확정' : '멘토링중'}</button>
           <button className={'mentor-back-room'} onClick={backChatRoomList}>채팅방 돌아가기</button>
         </div>
       </div>

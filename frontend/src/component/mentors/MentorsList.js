@@ -128,6 +128,7 @@ const MentorsList = ({selectedSubjects}) => {
             .then(json => {
                 // alert('채팅방 생성 완료! 멘토와 즐거운 채팅~');
                 console.log('방 생성');
+                console.log(json.roomId);
             })
     }
 
