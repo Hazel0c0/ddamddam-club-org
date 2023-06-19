@@ -2,6 +2,7 @@ package kr.co.ddamddam.qna.qnaBoard.api;
 
 import kr.co.ddamddam.common.response.ApplicationResponse;
 import kr.co.ddamddam.common.response.ResponseMessage;
+import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.qna.qnaBoard.dto.page.PageDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.request.QnaInsertRequestDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaDetailResponseDTO;
@@ -10,6 +11,7 @@ import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaTopListResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.service.QnaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -50,16 +52,18 @@ public class QnaApiController {
     /**
      * QNA 게시글 상세조회
      * [GET] /api/ddamddam/qna/{boardId}
+     * @param tokenUserInfo - 로그인 중인 유저 정보
      * @param boardIdx - 게시글의 인덱스번호
      * @return 게시글의 상세정보를 담은 DTO
      */
     @GetMapping("/{boardIdx}")
     public ApplicationResponse<?> getDatail(
+            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             @PathVariable("boardIdx") Long boardIdx
     ) {
         log.info("GET : /qna/{} - 게시글 상세조회", boardIdx);
 
-        QnaDetailResponseDTO qnaDetail = qnaService.getDetail(boardIdx);
+        QnaDetailResponseDTO qnaDetail = qnaService.getDetail(tokenUserInfo, boardIdx);
 
         return ApplicationResponse.ok(qnaDetail);
     }
@@ -117,20 +121,18 @@ public class QnaApiController {
      * QNA 게시글 생성
      * [POST] /api/ddamddam/qna/write
      * ❗ dto 의 hashtagList 는 빈 배열로라도 받아야 합니다.
+     * @param tokenUserInfo - 로그인 중인 유저 정보
      * @param dto - 게시글 제목, 게시글 내용
      * @return 작성된 게시글의 index (index 를 통해 작성 게시글의 상세 페이지로 이동)
      */
     @PostMapping("/write")
     public ApplicationResponse<?> writeBoard(
-//            Long userIdx,
+            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             @RequestBody QnaInsertRequestDTO dto
     ) {
         log.info("POST : /qna/write - 게시글 생성 {}", dto);
 
-        // TODO : 토큰 방식으로 로그인한 회원의 idx 를 가져와서 Service 파라미터로 넣는 처리 필요
-        Long userIdx = 1L;
-
-        Long boardIdx = qnaService.writeBoard(userIdx, dto);
+        Long boardIdx = qnaService.writeBoard(tokenUserInfo, dto);
 
         return ApplicationResponse.ok(boardIdx);
     }
@@ -145,11 +147,12 @@ public class QnaApiController {
      */
     @DeleteMapping("/delete/{boardIdx}")
     public ApplicationResponse<?> deleteBoard(
+            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             @PathVariable Long boardIdx
     ) {
         log.info("DELETE : /qna/delete/{} - 게시글 삭제", boardIdx);
 
-        ResponseMessage result = qnaService.deleteBoard(boardIdx);
+        ResponseMessage result = qnaService.deleteBoard(tokenUserInfo, boardIdx);
 
         if (result == ResponseMessage.FAIL) {
             return ApplicationResponse.bad(result);
