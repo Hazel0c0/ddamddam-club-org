@@ -40,6 +40,7 @@ import static kr.co.ddamddam.common.response.ResponseMessage.*;
 import static kr.co.ddamddam.qna.qnaBoard.entity.QnaAdoption.*;
 import static kr.co.ddamddam.common.exception.custom.ErrorCode.*;
 
+@SuppressWarnings("unchecked")
 @Service
 @Slf4j
 @RequiredArgsConstructor
