@@ -70,7 +70,6 @@ public class MentorApiController {
     public ResponseEntity<?> detail(Long mentorIdx){
 //        log.info("/api/ddamddam/mentors/detail?mentorIdx={}",mentorIdx);
         MentorDetailResponseDTO dto = mentorService.getDetail(mentorIdx);
-        log.info("!!!!!!!! : {}", dto);
 
         return ResponseEntity.ok().body(dto);
     }
@@ -79,7 +78,7 @@ public class MentorApiController {
     @PostMapping
     public ResponseEntity<?> write(
             @Validated @RequestBody MentorWriteRequestDTO dto
-//            ,@AuthenticationPrincipal TokenUserInfo userInfo
+            ,@AuthenticationPrincipal TokenUserInfo userInfo
     ) {
         // 요청 URL(POST) /api/mentors
         // payload{
@@ -91,7 +90,7 @@ public class MentorApiController {
         //}
         log.info("/api/ddamddam/mentors POST!! - payload {}",dto);
         // 로그인한 토큰방식으로 user_idx값 받아와 서비스 파라미터에 넣기
-        Long userIdx = 1L;
+        Long userIdx = Long.valueOf(userInfo.getUserIdx());
         MentorDetailResponseDTO responseDTO = mentorService.write(dto,userIdx);
 
         return ResponseEntity.ok().body(responseDTO);
@@ -101,6 +100,7 @@ public class MentorApiController {
     @RequestMapping(value = "/modify",method = {RequestMethod.PUT,RequestMethod.PATCH})
     public ResponseEntity<?> modify(
             @Validated @RequestBody MentorModifyRequestDTO dto
+            ,@AuthenticationPrincipal TokenUserInfo userInfo
             ){
         // 요청 URL(PUT, PATCH) /api/mentors
         // payload{
@@ -113,8 +113,10 @@ public class MentorApiController {
         //}
         log.info("/api/ddamddam/mentors PUT!! - payload {}",dto);
 
+        Long userIdx = Long.valueOf(userInfo.getUserIdx());
+
         try {
-            MentorDetailResponseDTO responseDTO = mentorService.modify(dto);
+            MentorDetailResponseDTO responseDTO = mentorService.modify(dto,userIdx);
             return ResponseEntity.ok().body(responseDTO);
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body("해당 게시판은 존재하지 않습니다");
@@ -126,10 +128,12 @@ public class MentorApiController {
     @DeleteMapping("/{mentorIdx}")
     public ResponseEntity<?> delete(
             @PathVariable Long mentorIdx
+            ,@AuthenticationPrincipal TokenUserInfo userInfo
     ){
         log.info("/api/ddamddam/mentors/{} DELETE!!",mentorIdx);
+        Long userIdx = Long.valueOf(userInfo.getUserIdx());
         try {
-            mentorService.delete(mentorIdx);
+            mentorService.delete(mentorIdx,userIdx);
             List<String> subjects = new ArrayList<>();
                 MentorListResponseDTO list = mentorService.getSubList(new PageDTO(),subjects);
             return ResponseEntity.ok().body(list);
@@ -142,8 +146,9 @@ public class MentorApiController {
     @RequestMapping(value = "/mentee/{mentorIdx}",method = {RequestMethod.PUT,RequestMethod.PATCH})
     public ResponseEntity<?> menteeSave(
             @PathVariable Long mentorIdx
+            ,@AuthenticationPrincipal TokenUserInfo userInfo
     ){
-        Long userIdx = 2L;
+        Long userIdx = Long.valueOf(userInfo.getUserIdx());
         mentorService.menteeSave(mentorIdx,userIdx);
 
         return null;

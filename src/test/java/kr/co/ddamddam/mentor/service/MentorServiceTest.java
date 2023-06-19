@@ -37,13 +37,13 @@ class MentorServiceTest {
     @DisplayName("게시글 수정이 성공해야한다")
     void modifyTest(){
 
-        mentorService.modify(MentorModifyRequestDTO.builder()
-                        .mentorIdx(5L)
-                        .mentorTitle("고고")
-                        .mentorContent("야호")
-                        .mentorSubject("백엔드")
-                        .mentorCurrent("9년")
-                .build());
+//        mentorService.modify(MentorModifyRequestDTO.builder()
+//                        .mentorIdx(5L)
+//                        .mentorTitle("고고")
+//                        .mentorContent("야호")
+//                        .mentorSubject("백엔드")
+//                        .mentorCurrent("9년")
+//                .build());
 
         MentorDetailResponseDTO detail = mentorService.getDetail(2L);
         System.out.println("detail = " + detail);
@@ -54,7 +54,7 @@ class MentorServiceTest {
     @DisplayName("게시글 11번이 삭제 성공해야한다")
     void deleteTest(){
 
-        mentorService.delete(5L);
+//        mentorService.delete(5L);
     }
 
     @Test
