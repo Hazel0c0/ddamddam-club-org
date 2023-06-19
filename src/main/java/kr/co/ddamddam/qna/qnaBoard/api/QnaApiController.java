@@ -79,7 +79,6 @@ public class QnaApiController {
         return ApplicationResponse.ok(qnaListTop3);
     }
 
-    // TODO : Postman 테스트 시 prev, next 계속 false 로 뜸
     /**
      * QNA 채택완료 게시글만 정렬 조회
      * [GET] ex) /api/ddamddam/qna/adopts?page=2
@@ -225,11 +224,12 @@ public class QnaApiController {
 
     @GetMapping("/search")
     public ApplicationResponse<?> search(
-            @RequestParam("keyword") String keyword
+            @RequestParam("keyword") String keyword,
+            PageDTO pageDTO
     ){
         log.info("GET : /qna/search/{} - 게시글 제목, 본문, 해시태그로 검색", keyword);
 
-        QnaListPageResponseDTO qnaList = qnaService.getKeywordList(keyword);
+        QnaListPageResponseDTO qnaList = qnaService.getKeywordList(keyword, pageDTO);
 
         return ApplicationResponse.ok(qnaList);
     }

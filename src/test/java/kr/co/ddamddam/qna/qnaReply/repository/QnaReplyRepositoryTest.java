@@ -37,9 +37,6 @@ class QnaReplyRepositoryTest {
             Long index2 = (long) (Math.random() * 50 + 1); // 1 ~ 50
             Long index3 = (long) (Math.random() * 20 + 1); // 1 ~ 20
 
-            if (index3 == 4L) index3 = 1L;
-            if (index3 == 19L) index3 = 1L;
-
             User user = userRepository.findById(index3).orElseThrow(() -> {
                 throw new RuntimeException();
             });

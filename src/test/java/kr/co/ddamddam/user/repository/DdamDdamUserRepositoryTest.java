@@ -57,13 +57,12 @@ class DdamDdamUserRepositoryTest {
 
             User user = User.builder()
                     .userPassword("qwer1234!")
-                    .userEmail("test" + i + "@test.com")
+                    .userEmail("test" + i + "@t.t")
                     .userName(name[index2])
                     .userNickname("닉네임" + i)
                     .userBirth(LocalDate.of(year, month, day))
                     .userPosition(userPosition[index1])
                     .userCareer(career)
-                    .userRole(UserRole.COMMON)
                     .build();
             userRepository.save(user);
         }
