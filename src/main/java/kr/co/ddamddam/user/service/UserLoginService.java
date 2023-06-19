@@ -41,9 +41,8 @@ public class UserLoginService {
         String rawUserPassword = dto.getUserPassword(); // 입력한 비밀번호
         String encodedUserPassword = user.getUserPassword(); // DB 에 저장된 비밀번호
 
-        // TODO : 비밀번호 암호화 처리 후 matches 로 변경
-        // if (!encoder.matches(rawUserPassword, encodedUserPassword)) {
-        if (!rawUserPassword.equals(encodedUserPassword)) {
+//        if (!rawUserPassword.equals(encodedUserPassword)) {
+         if (!encoder.matches(rawUserPassword, encodedUserPassword)) {
             throw new LoginException(INVALID_PASSWORD, rawUserPassword);
         }
 
@@ -77,8 +76,8 @@ public class UserLoginService {
 
         System.out.println("originalUser = " + originalUser);
 
-        if (!rawPassword.equals(originalUser.getUserPassword())) {
-//        if (!encoder.matches(rawPassword, originalUser.getUserPassword())) {
+//        if (!rawPassword.equals(originalUser.getUserPassword())) {
+        if (!encoder.matches(rawPassword, originalUser.getUserPassword())) {
             log.warn("PASSWORD MATCH ERROR");
             throw new LoginException(INVALID_PASSWORD, rawPassword);
         }
