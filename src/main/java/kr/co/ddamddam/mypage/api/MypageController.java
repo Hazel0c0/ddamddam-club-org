@@ -28,7 +28,6 @@ public class MypageController {
     ){
 //        log.info("GET : MypageController/getBoardList - tokenUserInfo : {}", tokenUserInfo);
 
-//        MypageBoardPageResponseDTO boardList = myPageService.getBoardList(tokenUserInfo, pageDTO);
         MypageBoardPageResponseDTO boardList = myPageService.getBoardList(pageDTO);
 
         return ResponseEntity.ok().body(boardList);

@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
@@ -22,4 +24,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
   @Query("SELECT p FROM Project p WHERE LOWER(p.projectTitle) LIKE %:keyword%")
   Page<Project> findProjectsBySearchWord(Pageable pageable, String keyword);
+
+  // TODO : 양방향 매핑으로 변경하고 findByUserUserIdx 로 변경해야함
+    List<Project> findByUserIdx(Long userIdx);
 }
