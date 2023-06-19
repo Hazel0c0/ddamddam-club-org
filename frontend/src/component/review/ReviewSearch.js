@@ -2,11 +2,13 @@ import React, {useState} from 'react';
 import Common from "../common/Common";
 import './scss/ReviewSearch.scss';
 import searchIcon from '../../src_assets/search-icon.png';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {getToken} from "../common/util/login-util";
 
 const QnaSearch = ({onSearchChange}) => {
     const [selectedBtn, setSelectedBtn] = useState('전체');
-
+    const ACCESS_TOKEN = getToken();
+    const redirection = useNavigate();
     const handleInputChange = (e) => {
         const value = e.target.textContent;
         // console.log(value);
@@ -17,6 +19,16 @@ const QnaSearch = ({onSearchChange}) => {
     //게시글 작성하기
     const qnaWriteHandler = () => {
 
+    }
+
+    const loginCheckHandler = (e) =>{
+        console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
+        if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null){
+            alert('로그인 후 이용가능합니다.')
+            e.preventDefault();
+            redirection('/login');
+            // return;
+        }
     }
 
     return (
@@ -49,7 +61,7 @@ const QnaSearch = ({onSearchChange}) => {
                 <input className={'input-btn'} placeholder={'검색창'} name={'search'}></input>
             </div>
             <Link to={'/reviews/write'}>
-                <button className={'write-btn'}>작성하기</button>
+                <button className={'write-btn'} onClick={loginCheckHandler}>작성하기</button>
             </Link>
         </Common>
     );

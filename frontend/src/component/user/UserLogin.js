@@ -109,8 +109,8 @@ const UserLogin = () => {
       localStorage.setItem('LOGIN_USER_PROFILE', userProfile);
       localStorage.setItem('LOGIN_USER_ROLE', userRole);
     }
-
-    redirection('/');
+    window.location.href = '/';
+    // redirection('/');
   }
 
   // 비밀번호 찾기 버튼 클릭 시
