@@ -23,8 +23,9 @@ public class UploadService {
   @Value("${upload.path.project}")
   private String projectUploadRootPath;
 
-  @Value("${upload.path.qna}")
+  @Value("${upload.path.profile}")
   private String qnaUploadRootPath;
+
   /**
    * 업로드된 파일을 서버에 저장하고 저장 경로를 리턴
    * @param originalFile - 업로드된 파일의 정보
@@ -42,7 +43,7 @@ public class UploadService {
     }
 
     File rootDir = new File(uploadRootPath);
-    if (!rootDir.exists()) rootDir.mkdir();
+    if (!rootDir.exists()) rootDir.mkdirs();
 
     String uniqueFileName = UUID.randomUUID()
         + "_" + originalFile.getOriginalFilename();

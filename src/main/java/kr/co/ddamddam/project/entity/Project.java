@@ -29,6 +29,12 @@ public class Project {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long projectIdx;
 
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "user_idx")
+  private User userIdx;
+
+  private String userNickname;
+
   @Column(nullable = false, length = 100)
   private String projectTitle;
 
@@ -37,10 +43,6 @@ public class Project {
 
   @Column(nullable = false, length = 3000)
   private String projectContent;
-
-  // 작성자 FK
-  @Column(nullable = false)
-  private String writer;
 
   @Column(nullable = false, length = 10)
   private String projectType;
@@ -60,10 +62,6 @@ public class Project {
       length = 30
   )
   private LocalDateTime projectDate;
-
-  // FK
-  @Column(nullable = false)
-  private Long userIdx;
 
   // 좋아요
   @Column(nullable = false)

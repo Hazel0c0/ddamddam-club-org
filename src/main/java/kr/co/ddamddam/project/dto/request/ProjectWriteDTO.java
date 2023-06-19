@@ -1,6 +1,7 @@
 package kr.co.ddamddam.project.dto.request;
 
 import kr.co.ddamddam.project.entity.Project;
+import kr.co.ddamddam.user.entity.User;
 import lombok.*;
 
 import javax.validation.constraints.Max;
@@ -31,10 +32,10 @@ public class ProjectWriteDTO {
 
   private String offerPeriod; //모집기간
 
-  public Project toEntity(String userName, String uploadedFilePath) {
+  public Project toEntity(User userName, String uploadedFilePath) {
     return Project.builder()
-        .userIdx(this.boardWriterIdx)
-        .writer(userName)
+        .userIdx(userName)
+        .userNickname(userName.getUserNickname())
         .projectTitle(this.boardTitle)
         .projectImg(uploadedFilePath)
         .projectContent(this.boardContent)

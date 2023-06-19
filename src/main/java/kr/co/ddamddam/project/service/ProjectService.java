@@ -106,11 +106,12 @@ public class ProjectService {
         .orElseThrow(() -> new RuntimeException(projectIdx + "번 게시물이 존재하지 않습니다!"));
   }
 
+  // 글 작성
   public ProjectDetailResponseDTO write(final ProjectWriteDTO dto, final String uploadedFilePath) {
     User user = userRepository.findById(dto.getBoardWriterIdx())
         .orElseThrow(() -> new RuntimeException("존재하지 않습니다!"));
 
-    Project saved = projectRepository.save(dto.toEntity(user.getUserName(),uploadedFilePath));
+    Project saved = projectRepository.save(dto.toEntity(user,uploadedFilePath));
 
     return new ProjectDetailResponseDTO(saved);
   }
