@@ -3,18 +3,29 @@ import Common from "../common/Common";
 import './scss/MentorWrite.scss';
 import {MENTOR} from "../common/config/HostConfig";
 import {Link} from "react-router-dom";
+import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
+    getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
+    getUserRole, isLogin } from '../common/util/login-util';
 
 const MentorsWrite = () => {
-    const [textInput, setTextInput] = useState(
-        {
-            mentorTitle: '',
-            mentorContent: '',
-            mentorSubject: '프론트엔드',
-            mentorCurrent: '',
-            mentorCareer: '신입',
-            mentorMentee: 1
-        }
-    )
+
+    const ACCESS_TOKEN = getToken(); // 토큰
+
+    // headers
+      const headerInfo = {
+      'content-type': 'application/json',
+      'Authorization': 'Bearer ' + ACCESS_TOKEN
+  }
+
+  const [textInput, setTextInput] = useState({
+    mentorTitle: '',
+    mentorContent: '',
+    mentorSubject: '프론트엔드',
+    mentorMentee: '1',
+    mentorCurrent: '',
+    mentorCareer: '신입'
+  });
+  
 
     const handleSelect = (e) => {
         const {name, value} = e.target;
@@ -60,12 +71,11 @@ const MentorsWrite = () => {
 
             fetch(MENTOR, {
                 method: 'POST',
-                headers: {'content-type': 'application/json'},
+                headers: headerInfo,
                 body: JSON.stringify(data)
             })
                 .then(res => res.json())
                 .then(json => {
-                    console.log(`json값 어떻게 쓸지? : ${json}`);
                     alert('작성이 완료되었습니다.');
                     window.location.href = 'http://localhost:3000/mentors';
                 })
