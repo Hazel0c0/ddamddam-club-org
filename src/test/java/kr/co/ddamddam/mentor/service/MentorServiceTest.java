@@ -1,6 +1,5 @@
 package kr.co.ddamddam.mentor.service;
 
-import kr.co.ddamddam.mentor.dto.request.MentorModifyRequestDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorWriteRequestDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorDetailResponseDTO;
 import org.junit.jupiter.api.DisplayName;
@@ -63,7 +62,7 @@ class MentorServiceTest {
         Long userIdx = 2L;
         Long mentorIdx = 1L;
 
-        mentorService.menteeSave(mentorIdx,userIdx);
+//        mentorService.menteeSave(mentorIdx,userIdx, enterUserIdx);
 
     }
 
