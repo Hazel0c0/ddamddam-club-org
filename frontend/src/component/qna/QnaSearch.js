@@ -1,19 +1,15 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import Common from "../common/Common";
 import './scss/QnaSearch.scss';
 import searchIcon from '../../src_assets/search-icon.png';
 import {Link, useNavigate} from "react-router-dom";
 import {getToken} from "../common/util/login-util";
-
-const QnaSearch = ({onSearchChange}) => {
+import {GrPowerReset} from "react-icons/gr";
+// import {GrPowerReset} from '/react-icons/gr';
+const QnaSearch = ({onSearchChange, onSearchKeywordChange,onClickCurrentPageChange}) => {
     const [selectedBtn, setSelectedBtn] = useState('전체');
     const [valueChange, setValueChange] = useState(false);
-    const handleInputChange = (e) => {
-        const value = e.target.textContent;
-        // console.log(value);
-        onSearchChange(value);
-        setSelectedBtn(value);
-    }
+    const inputVal = useRef();
 
     //로그인 검증
     const ACCESS_TOKEN = getToken();
@@ -26,6 +22,34 @@ const QnaSearch = ({onSearchChange}) => {
             redirection('/login');
             // return;
         }
+    }
+    const handleInputChange = (e) => {
+        const value = e.target.textContent;
+        onSearchChange(value);
+        setSelectedBtn(value);
+        // onClickCurrentPageChange(1);
+    }
+
+    //검색엔터
+    const searchHandler = (e) => {
+        if (e.keyCode===13){
+            onSearchKeywordChange(e.target.value);
+        }
+        if (e.target.value === ''){
+            onSearchKeywordChange('');
+        }
+    }
+
+    //검색버튼
+    const submitHandler = () =>{
+        const inputValue =  inputVal.current.value;
+        onSearchKeywordChange(inputValue);
+    }
+    //리셋버튼
+    const resetHandler = () =>{
+        inputVal.current.value='';
+
+        onSearchKeywordChange('');
     }
 
     return (
@@ -55,7 +79,9 @@ const QnaSearch = ({onSearchChange}) => {
             </ul>
             <div className={'search-wrapper'}>
                 <img src={searchIcon} alt={'search-icon'} className={'search-icon'}/>
-                <input className={'input-btn'} placeholder={'검색창'} name={'search'}></input>
+                <input className={'input-btn'} placeholder={'검색창'} name={'search'} onKeyUp={searchHandler} ref={inputVal}></input>
+                <button className={'reset-btn'} onClick={resetHandler}><GrPowerReset /></button>
+                <button className={'submit-btn'} onClick={submitHandler}>검색</button>
             </div>
             <Link to={'/api/ddamddam/qna/write'}>
                 <button className={'write-btn'} onClick={loginCheckHandler}>작성하기</button>

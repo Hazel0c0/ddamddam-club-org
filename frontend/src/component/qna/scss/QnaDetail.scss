@@ -236,6 +236,18 @@
         justify-content: space-between;
         align-items: center;
 
+
+        .reply-modify-content{
+          width: 700px;
+          resize: none;
+          background: white;
+          height: 50px;
+          border: 1px solid #c8c8c8;
+          border-radius: 5px;
+          outline: none;
+          line-height: 1.4;
+        }
+
         .reply-content{
           //height: 30px;
           line-height: 30px;
