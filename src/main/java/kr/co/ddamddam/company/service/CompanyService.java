@@ -7,9 +7,6 @@ import kr.co.ddamddam.company.dto.response.CompanyListPageResponseDTO;
 import kr.co.ddamddam.company.dto.response.CompanyListResponseDTO;
 import kr.co.ddamddam.company.entity.Company;
 import kr.co.ddamddam.company.repository.CompanyRepository;
-import kr.co.ddamddam.review.dto.response.ReviewListPageResponseDTO;
-import kr.co.ddamddam.review.dto.response.ReviewListResponseDTO;
-import kr.co.ddamddam.review.entity.Review;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -49,8 +46,9 @@ public class CompanyService {
 
     //api xml데이터를 json으로 변경해서 DB에 저장
     @Transactional
-    public void processExternalData() throws IOException {
-        HttpURLConnection conn = (HttpURLConnection) new URL("https://openapi.work.go.kr/opi/opi/opia/wantedApi.do?authKey=WNLIS5RDCEK7WOBRD73GA2VR1HJ&returnType=xml&display=50&callTp=L&region=&keyword==%EA%B0%9C%EB%B0%9C%EC%9E%90").openConnection();
+    public void processExternalData(String url) throws IOException {
+
+        HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
         conn.connect();
         BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
         BufferedReader reader = new BufferedReader(new InputStreamReader(bis));
@@ -126,6 +124,7 @@ public class CompanyService {
 
             // Persist the Company entity
             entityManager.persist(companyEntity);
+            entityManager.flush();
 
             // Add the DTO object to the list if needed
             wantedList.add(dto);
@@ -177,6 +176,64 @@ public class CompanyService {
                 .collect(toList());
     }
 
+    //경력 별로 필터링
+    public CompanyListPageResponseDTO getCareer(PageDTO pageDTO){
+
+        PageRequest pageable = getPageable(pageDTO);
+        // 데이터베이스에서 게시글 목록 조회 후 DTO 리스트로 꺼내기
+        Page<Company> companies = companyRepository.findHavingCareer(pageable);
+        List<CompanyListResponseDTO> companyListResponseDTOList = getCompanyDTOList(companies);
+
+
+        //JSON 형태로 변형
+        return CompanyListPageResponseDTO.builder()
+                .count(companyListResponseDTOList.size())
+                .count(companyListResponseDTOList.size())
+                .pageInfo(new PageResponseDTO<Company>(companies))
+                .companyList(companyListResponseDTOList)
+                .build();
+
+    }
+
+    //신입으로 보기
+    public CompanyListPageResponseDTO getNewCareer(PageDTO pageDTO){
+
+        PageRequest pageable = getPageable(pageDTO);
+        // 데이터베이스에서 게시글 목록 조회 후 DTO 리스트로 꺼내기
+        Page<Company> companies = companyRepository.findCareer(pageable);
+        List<CompanyListResponseDTO> companyListResponseDTOList = getCompanyDTOList(companies);
+
+
+        //JSON 형태로 변형
+        return CompanyListPageResponseDTO.builder()
+                .count(companyListResponseDTOList.size())
+                .count(companyListResponseDTOList.size())
+                .pageInfo(new PageResponseDTO<Company>(companies))
+                .companyList(companyListResponseDTOList)
+                .build();
+
+    }
+
+
+    //경력관계없음
+    public CompanyListPageResponseDTO getNoCareer(PageDTO pageDTO){
+
+        PageRequest pageable = getPageable(pageDTO);
+        // 데이터베이스에서 게시글 목록 조회 후 DTO 리스트로 꺼내기
+        Page<Company> companies = companyRepository.findNoExperience(pageable);
+        List<CompanyListResponseDTO> companyListResponseDTOList = getCompanyDTOList(companies);
+
+
+        //JSON 형태로 변형
+        return CompanyListPageResponseDTO.builder()
+                .count(companyListResponseDTOList.size())
+                .count(companyListResponseDTOList.size())
+                .pageInfo(new PageResponseDTO<Company>(companies))
+                .companyList(companyListResponseDTOList)
+                .build();
+
+    }
+
     // 키워드 검색
     public CompanyListPageResponseDTO getKeywordList(String keyword){
 
@@ -196,63 +253,6 @@ public class CompanyService {
                 .map(CompanyListResponseDTO::new)
                 .collect(toList());
     }
-
-    // 경력별로 보기
-
-
-
-
-
-
-
-
-//        public CompanyListPageResponseDTO getList (PageDTO pageDTO){
-//            PageRequest pageable = getPageable(pageDTO);
-//
-//            // 데이터베이스에서 QNA 게시글 목록 조회 후 DTO 리스트로 꺼내기
-//            Page<Company> companies = companyRepository.findAll(pageable);
-//            List<CompanyListResponseDTO> companyListResponseDTOList = getCompanyDTOList(companies);
-//
-//
-//            //JSON 형태로 변형
-//            return CompanyListPageResponseDTO.builder()
-//                    .count(companyListResponseDTOList.size())
-//                    .count(companyListResponseDTOList.size())
-//                    .pageInfo(new PageResponseDTO<Company>(companies))
-//                    .responseList(companyListResponseDTOList)
-//                    .build();
-//        }
-//        private PageRequest getPageable (PageDTO pageDTO){
-//            return PageRequest.of(
-//                    pageDTO.getPage() - 1,
-//                    pageDTO.getSize(),
-//                    Sort.by("reviewDate").descending()
-//            );
-//        }
-//
-//        private List<CompanyListResponseDTO> getCompanyDTOList (Page < Company > companies) {
-//            return companies.getContent().stream()
-//                    .map(CompanyListResponseDTO::new)
-//                    .collect(toList());
-//        }
-
-//    //게시글 상세조회
-//    public CompanyDetailResponseDTO getDetail(Long companyIdx){
-//        Optional<Company> companyOptional = companyRepository.findById(companyIdx);
-//
-//        if(companyOptional.isPresent()){
-//            Company company = companyOptional.get();
-//            return new CompanyDetailResponseDTO(company);
-//        } else {
-//            throw new CompanyNotFoundException("Company not found with ID"+companyIdx);
-//        }
-//        return null;
-//
-//    }
-
-
-
-
 
 
 
