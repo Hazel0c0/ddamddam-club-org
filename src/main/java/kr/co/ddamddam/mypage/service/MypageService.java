@@ -259,7 +259,10 @@ public class MypageService {
             .map(project -> {
                 // 게시글 작성자의 포지션 가져오기
                 UserPosition writerPosition = project.getUser().getUserPosition();
-                return new MypageProjectResponseDTO(project, writerPosition);
+                MypageProjectResponseDTO dto = new MypageProjectResponseDTO(project, writerPosition);
+                dto.setFront(project);
+                dto.setBack(project);
+                return dto;
             })
             .collect(Collectors.toList());
         return dtoList;
