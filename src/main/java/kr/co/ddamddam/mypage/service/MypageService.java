@@ -1,11 +1,15 @@
 package kr.co.ddamddam.mypage.service;
 
+import kr.co.ddamddam.chat.entity.ChatRoom;
+import kr.co.ddamddam.chat.repository.ChatRoomRepository;
 import kr.co.ddamddam.mentor.entity.Mentor;
 import kr.co.ddamddam.mentor.repository.MentorRepository;
 import kr.co.ddamddam.mypage.dto.page.PageDTO;
 import kr.co.ddamddam.mypage.dto.page.PageMaker;
+import kr.co.ddamddam.mypage.dto.response.ChatRoomResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardResponseDTO;
+import kr.co.ddamddam.mypage.dto.response.MypageChatPageResponseDTO;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.repository.ProjectRepository;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
@@ -30,6 +34,7 @@ public class MypageService {
     private final String PROJECT = "프로젝트";
     private final String MENTOR = "멘토/멘티";
     private final String REVIEW = "취업후기";
+    private final String MENTEE_CHAT_ROOM = "멘티 채팅방";
 
     // 레포지토리
     private final UserRepository userRepository;
@@ -37,6 +42,41 @@ public class MypageService {
     private final MentorRepository mentorRepository;
     private final ReviewRepository reviewRepository;
     private final ProjectRepository projectRepository;
+    private final ChatRoomRepository chatRoomRepository;
+
+
+    /**
+     마이페이지의 <내가 참여한 멘티 채팅방> 채팅방 조회 및 페이징
+     * @param pageDTO - 클라이언트에서 요청한 페이지 번호
+     * @return 페이지 정보, 페이징 처리 된 로그인 유저가 참여한 멘티의 채팅방 리스트
+     */
+    public MypageChatPageResponseDTO getChatList(
+//            TokenUserInfo tokenUserInfo,
+            PageDTO pageDTO
+    ){
+        // Long userIdx = tokenUserInfo.getUserIdx();
+
+        Long userIdx = 44L;
+
+        List<ChatRoom> chatRoomList = chatRoomRepository.findBySenderUserIdx(userIdx);
+
+        PageMaker maker = new PageMaker(pageDTO, chatRoomList.size());
+        int pageStart = getPageStart(pageDTO);
+        int pageEnd = getPageEnd(pageStart, pageDTO.getSize(), chatRoomList.size());
+
+        List<ChatRoom> sliceChatRoomList = chatRoomList.subList(pageStart, pageEnd);
+
+        List<ChatRoomResponseDTO> collect = sliceChatRoomList.stream().map(chatRoom ->
+                        convertChatRoomToMypageDto(chatRoom))
+                .collect(Collectors.toList());
+
+        return MypageChatPageResponseDTO.builder()
+                .chatRoomList(collect)
+                .count(sliceChatRoomList.size())
+                .pageInfo(maker)
+                .build();
+
+    }
 
     /**
      * 마이페이지의 <내가 쓴 게시글> 목록 조회 및 페이징
@@ -81,16 +121,19 @@ public class MypageService {
     /**
      * 로그인한 유저가 작성한 Qna, Mentor, Project, Review 게시글들을
      * 리스트에 담아서 최신순으로 정렬해주는 기능
-     * @param qnaList - 로그인 유저가 작성한 Qna 게시글 리스트
-     * @param mentorList - 로그인 유저가 작성한 Mentor 게시글 리스트
-     * @param reviewList - 로그인 유저가 작성한 Review 게시글 리스트
-     * @param projectList - 로그인 유저가 작성한 Project 게시글 리스트
+     *
+     * @param qnaList      - 로그인 유저가 작성한 Qna 게시글 리스트
+     * @param mentorList   - 로그인 유저가 작성한 Mentor 게시글 리스트
+     * @param reviewList   - 로그인 유저가 작성한 Review 게시글 리스트
+     * @param projectList  - 로그인 유저가 작성한 Project 게시글 리스트
      * @return - 최신순으로 정렬된 내가 쓴 게시글 리스트
      */
     private List<MypageBoardResponseDTO> getMypageDtoList(
             List<Qna> qnaList,
             List<Mentor> mentorList,
-            List<Review> reviewList, List<Project> projectList) {
+            List<Review> reviewList,
+            List<Project> projectList
+            ) {
         List<MypageBoardResponseDTO> mypageBoardList = new ArrayList<>();
 
         // Qna 게시글 리스트 매핑
@@ -115,6 +158,12 @@ public class MypageService {
         );
 
         // Project 게시글 리스트 매핑
+        mypageBoardList.addAll(
+                projectList.stream()
+                        .map(project -> convertProjectToMypageDto(project))
+                        .collect(Collectors.toList())
+        );
+        // Mentee 채팅방 리스트 매핑
         mypageBoardList.addAll(
                 projectList.stream()
                         .map(project -> convertProjectToMypageDto(project))
@@ -178,6 +227,20 @@ public class MypageService {
                 .boardType(PROJECT)
                 .boardIdx(project.getProjectIdx())
                 .boardDate(project.getProjectDate())
+                .build();
+    }
+
+    /**
+     * ChatRoom 를 ChatRoomReponseDTO 로 변환
+     * @param chatRoom - ChatRoom 엔터티
+     * @return - ChatRoomReponseDTO
+     */
+    private ChatRoomResponseDTO convertChatRoomToMypageDto(ChatRoom chatRoom) {
+
+        return ChatRoomResponseDTO.builder()
+                .chatType(MENTEE_CHAT_ROOM)
+                .mentorIdx(chatRoom.getMentor().getMentorIdx())
+                .roomIdx(chatRoom.getRoomId())
                 .build();
     }
 
