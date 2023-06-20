@@ -186,7 +186,7 @@ public class CompanyService {
 
         return CompanyListPageResponseDTO.builder()
                 .count(companyListResponseDTOS.size())
-                .pageInfo(new PageResponseDTO(companies))
+                .pageInfo(new PageResponseDTO<>(companies))
                 .companyList(companyListResponseDTOS)
                 .build();
     }
