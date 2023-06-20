@@ -9,14 +9,16 @@ import kr.co.ddamddam.project.dto.request.ProjectSearchRequestDto;
 import kr.co.ddamddam.project.dto.request.ProjectWriteDTO;
 import kr.co.ddamddam.project.dto.response.ProjectDetailResponseDTO;
 import kr.co.ddamddam.project.dto.response.ProjectListPageResponseDTO;
-import kr.co.ddamddam.project.service.ProjectLikeService;
 import kr.co.ddamddam.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import kr.co.ddamddam.upload.UploadService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,6 +36,7 @@ public class ProjectApiController {
    */
 
   private final ProjectService projectService;
+  private final UploadService uploadService;
 
 
   /**
@@ -54,7 +57,7 @@ public class ProjectApiController {
     log.info("/api/ddamddam/page={}$size={}", pageDTO.getPage(), pageDTO.getSize());
 
     ProjectListPageResponseDTO dto = projectService.getList(pageDTO, searchRequestDto);
-    log.info("dto의 값 : {}",dto);
+//    log.info("dto의 값 : {}",dto);
     return ApplicationResponse.ok(dto);
   }
 
@@ -82,8 +85,12 @@ public class ProjectApiController {
   })
   @PostMapping
   public ApplicationResponse<?> write(
-      @Validated @RequestBody ProjectWriteDTO dto
+      @Validated @RequestPart("project") ProjectWriteDTO dto,
+      @RequestPart(
+          value = "projectImage",
+          required = false) MultipartFile projectImg
   ) {
+
     log.info("/api/ddamddam write POST!! - payload: {}", dto);
 
     if (dto == null) {
@@ -91,12 +98,24 @@ public class ProjectApiController {
     }
 
     try {
-      ProjectDetailResponseDTO responseDTO = projectService.write(dto);
+      // 파일 업로드
+      String uploadedFilePath = null;
+      String boardType="project";
+
+      if(projectImg != null) {
+        log.info("projectImage file name: {}", projectImg.getOriginalFilename());
+        uploadedFilePath = uploadService.uploadFileImage(projectImg,boardType);
+      }
+
+      ProjectDetailResponseDTO responseDTO = projectService.write(dto,uploadedFilePath);
       return ApplicationResponse.ok(responseDTO);
+      // ==========
 
     } catch (RuntimeException e) {
       e.printStackTrace();
       return ApplicationResponse.error(e.getMessage());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
 
   }

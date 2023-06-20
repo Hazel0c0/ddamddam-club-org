@@ -23,7 +23,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	testImplementation 'org.projectlombok:lombok:1.18.26'
+    implementation 'org.projectlombok:lombok:1.18.26'
+    testImplementation 'org.projectlombok:lombok:1.18.26'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
@@ -62,6 +63,10 @@ dependencies {
 	// -------------- 메일 인증
 
 	implementation 'com.google.code.gson:gson:2.8.7'
+
+	//파일업로드 라이브러리
+	implementation 'commons-io:commons-io:2.8.0'
+
 }
 
 tasks.named('test') {
