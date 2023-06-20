@@ -25,6 +25,8 @@ const QnaDetail = () => {
             'Authorization': 'Bearer ' + ACCESS_TOKEN
         };
 
+        const [replyModifyShow, setReplyModifyShow] = useState(false);
+
         const asyncDetail = async () => {
             console.log(boardIdx);
             const res = await fetch(`${QNA}/${boardIdx}`, {
@@ -83,7 +85,7 @@ const QnaDetail = () => {
                 headers: {'content-type': 'application/json',},
                 body: JSON.stringify({
                     replyContent: inputContent,
-                    boardIdx : boardIdx
+                    boardIdx: boardIdx
                 })
             })
 
@@ -102,10 +104,13 @@ const QnaDetail = () => {
             setReplyList(modifiedReplyList);
             inputRef.current.value = '';
             alert("댓글이 등록 되었습니다.");
+
+            //임시방편 데이터에 무리갈듯
+            asyncDetail();
         }
 
         //댓글 수정
-        const replyModifyHandler = async () =>{
+        const replyModifyHandler = async () => {
             if (detailQna.boardAdoption === 'Y') {
                 alert('이미 채택된 글은 댓글은 수정하실 수 없습니다.');
                 return;
@@ -139,7 +144,7 @@ const QnaDetail = () => {
         }
 
         //댓글 삭제
-        const replyDeleteHandler = async(replyIdx) =>{
+        const replyDeleteHandler = async (replyIdx) => {
             if (detailQna.boardAdoption === 'Y') {
                 alert('이미 채택된 글은 댓글은 삭제하실 수 없습니다.');
                 return;
@@ -159,39 +164,8 @@ const QnaDetail = () => {
             asyncDetail();
         }
 
-//더보기 버튼 만드는 중 개같네..
-//안된다시발비ㅓㅂ리버라ㅣㄸ라ㅣ리ㅣㅓㄷ바ㅣ디랃ㅂ
 
-        const showMoreHandler = (reply, index) => {
-            if (replyList[index].showMore) {
-                const updateReplyList = [...replyList];
-                updateReplyList[index] = {...replyList[index], showMore: !replyList[index].showMore};
-                setReplyList(updateReplyList);
-
-                console.log(`showMore : false로 변경`);
-            } else {
-                const test = replyList[index].replyContent
-                const strTest = subStr(test, 0, test.length - 1)
-                console.log(`strTest : ${strTest}`)
-                // console.log(e.target.closest('.reply-content'))
-                const updateReplyList = [...replyList];
-                updateReplyList[index] = {...replyList[index], replyContent: strTest, showMore: !replyList[index].showMore};
-                setReplyList(updateReplyList);
-                console.log(updateReplyList[index])
-                console.log(`showMore : true로 변경`);
-
-            }
-
-        };
-
-//첫 랜더링 될 때 글자 잘라주기
-        const subStr = (replyContent, start, end) => {
-            const subStrResult = replyContent.substr(start, end);
-            return subStrResult;
-        }
-
-
-//채택완료 처리
+        //채택완료 처리
         const adoptHandler = async (e) => {
             const confirmBtn = window.confirm("정말 채택하시겠습니까? 채택 완료 후 수정이 불가합니다.");
             console.log(`replyIdx : ${e.target.closest('.reply-content-wrapper').querySelector('.replyIdx').value}`)
@@ -219,7 +193,6 @@ const QnaDetail = () => {
             const replyData = await res.json();
 
             if (replyData.payload === "SUCCESS") {
-                console.log("여기까지는 넘어옴");
                 const replyIndex = checkedReplyAdoption.findIndex((reply) => {
                     console.log('after success reply: ', reply);
                     console.log('after success replyIdxVal: ', replyIdxValue);
@@ -265,7 +238,7 @@ const QnaDetail = () => {
             }
         };
 
-//게시물 수정
+        //게시물 수정
         const modifyHandler = (event) => {
             if (detailQna.boardAdoption === 'Y') {
                 alert('이미 채택된 글은 수정 또는 삭제하실 수 없습니다.');
@@ -273,7 +246,7 @@ const QnaDetail = () => {
             }
         }
 
-//게시물 삭제
+        //게시물 삭제
         const deleteHandler = async () => {
             if (detailQna.boardAdoption === 'Y') {
                 alert('이미 채택된 글은 수정 또는 삭제하실 수 없습니다.');
@@ -378,12 +351,14 @@ const QnaDetail = () => {
                                             <div className={'reply-top-wrapper'}>
                                                 <p className={'reply-writer'}>{reply.replyWriter}</p>
                                                 <div className={'reply-date'}>{reply.replyDate}</div>
-                                                enterUserNickName : {enterUserNickName}
-                                                reply.replyWriter : {reply.replyWriter}
+                                                {/*enterUserNickName : {enterUserNickName}*/}
+                                                {/*reply.replyWriter : {reply.replyWriter}*/}
                                                 {enterUserNickName === reply.replyWriter &&
                                                     <>
-                                                        <span className={'modify'} onClick={replyModifyHandler}>수정</span>
-                                                        <span className={'modify'} onClick={() => replyDeleteHandler(reply.replyIdx)}>삭제</span>
+                                                        <span className={'reply-modify'}
+                                                              onClick={replyModifyHandler}>수정</span>
+                                                        <span className={'reply-delete'}
+                                                              onClick={() => replyDeleteHandler(reply.replyIdx)}>삭제</span>
                                                     </>
                                                 }
                                             </div>
@@ -391,25 +366,8 @@ const QnaDetail = () => {
                                             <div className={'reply-content-wrapper'}>
                                                 <input type={"hidden"} value={reply.replyIdx} name={"replyIdx"}
                                                        className={'replyIdx'}/>
-                                                {reply.replyContent.length <= 120 ?
-                                                    <div>{reply.replyContent}</div>
-                                                    :
-                                                    <>
-                                            <span className={'reply-content'} key={index}>
-                                                {subStr(reply.replyContent, 0, 120)}
-                                                <span
-                                                    className={'showMore-btn'}
-                                                    onClick={() => showMoreHandler(reply.replyContent, index)}
-                                                    ref={$clickMore}
-                                                >
-                                                    '[펼치기]'
-                                            </span>
-                                            </span>
+                                                <div>{reply.replyContent}</div>
 
-                                                    </>
-
-                                                }
-                                                {/*{replyAdoptionHandler(detailQna.boardAdoption)}*/}
                                                 <div>
                                                     {detailQna.boardAdoption === 'Y' ? (
                                                         checkedReplyAdoption && checkedReplyAdoption[index].replyAdoption === 'Y' ? (
