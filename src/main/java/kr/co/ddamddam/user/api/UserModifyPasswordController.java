@@ -97,14 +97,4 @@ public class UserModifyPasswordController {
         return ResponseEntity.ok().body(SUCCESS);
     }
 
-    @PostMapping("modify-password")
-    public ResponseEntity<?> modifyPassword(
-            @RequestBody UserPasswordRequestDTO requestDTO
-    ) {
-        log.info("POST : 비밀번호 변경 요청 /auth/password/modify-password, Password : {}", requestDTO);
-
-
-        return null;
-    }
-
 }

@@ -20,7 +20,6 @@ import static kr.co.ddamddam.common.response.ResponseMessage.*;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
 public class UserModifyPasswordService {
 
     private final UserRepository userRepository;

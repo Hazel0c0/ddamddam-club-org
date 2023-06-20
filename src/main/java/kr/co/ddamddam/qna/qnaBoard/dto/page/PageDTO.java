@@ -20,7 +20,7 @@ public class PageDTO {
     // 첫 페이지는 1로 지정, 한 페이지에 5개의 게시글 보이도록 지정
     public PageDTO() {
         this.page = 1;
-        this.size = 5;
+        this.size = 10;
     }
     
 }

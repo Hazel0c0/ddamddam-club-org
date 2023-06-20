@@ -1,13 +1,17 @@
 package kr.co.ddamddam.user.repository;
 
+import kr.co.ddamddam.user.dto.request.UserRequestSignUpDTO;
+import kr.co.ddamddam.user.dto.response.UserSignUpResponseDTO;
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.entity.UserPosition;
 import kr.co.ddamddam.user.entity.UserRole;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 
 import java.security.SecureRandom;
@@ -17,11 +21,13 @@ import java.util.Base64;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@RequiredArgsConstructor
 @Rollback(false)
 class DdamDdamUserRepositoryTest {
 
     @Autowired
     UserRepository userRepository;
+
 
 //    @BeforeEach
 //    void insertUser() {
@@ -46,8 +52,9 @@ class DdamDdamUserRepositoryTest {
 
         for (int i = 1; i <= 20; i++) {
 
-            int index1 = (int) (Math.random() + 1); // 0 또는 1
-            int index2 = (int) (Math.random() * 4); // 0 ~ 4
+            int index1 = (int) (Math.random() * 2); // 0 또는 1
+            int index2 = (int) (Math.random() * 5); // 0 ~ 4
+            int index3 = (int) (Math.random() * 5); // 0 ~ 4
             int year = (int) (Math.random() * 31 + 1970); // 1970 ~ 2000 사이의 랜덤 정수
             int month = (int) (Math.random() * 12 + 1); // 1 ~ 12 사이의 랜덤 정수
             int day = (int) (Math.random() * 30 + 1); // 1 ~ 30 사이의 랜덤 정수
@@ -56,7 +63,7 @@ class DdamDdamUserRepositoryTest {
             String[] name = {"조예원", "김태근", "최예진", "채지원", "조경훈"};
 
             User user = User.builder()
-                    .userPassword("qwer1234!")
+                    .userPassword("qwer1234!") // TODO : 암호화 필요 
                     .userEmail("test" + i + "@t.t")
                     .userName(name[index2])
                     .userNickname("닉네임" + i)
@@ -65,6 +72,18 @@ class DdamDdamUserRepositoryTest {
                     .userCareer(career)
                     .build();
             userRepository.save(user);
+
+//            UserRequestSignUpDTO dto = UserRequestSignUpDTO.builder()
+//                    .userEmail("test" + i + "@t.t")
+//                    .userPw("qwer1234!")
+//                    .userName(name[index2])
+//                    .userNickName(name[index3])
+//                    .userPosition(String.valueOf(userPosition[index1]))
+//                    .userCareer(career)
+//                    .userBirth(LocalDate.parse(year + "-" + month + "-" + day))
+//                    .build();
+
+            // when, then
         }
         //when
         //then

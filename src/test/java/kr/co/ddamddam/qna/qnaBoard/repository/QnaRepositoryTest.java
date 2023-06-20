@@ -61,7 +61,7 @@ class QnaRepositoryTest {
             if (index4 == 19L) index4 = 1L;
 
             Long finalIndex = index4;
-            User user = userRepository.findById(index4).orElseThrow(() -> {
+            User user = userRepository.findById(1L).orElseThrow(() -> {
                 throw new NotFoundUserException(ErrorCode.NOT_FOUND_USER, finalIndex);
             });
 
