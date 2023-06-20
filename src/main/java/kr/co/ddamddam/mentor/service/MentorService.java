@@ -21,7 +21,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
@@ -193,11 +192,11 @@ public class MentorService {
     }
 
     // 멘티 테이블 저장
-    public void menteeSave(Long mentorIdx, Long userIdx) {
-        Optional<Mentor> optionalMentor = mentorRepository.findById(mentorIdx);
-        Optional<User> optionalUser = userRepository.findById(userIdx);
+    public void menteeSave(Long mentorIdx, Long menteeIdx, Long enterUserIdx) {
+        Mentor mentor = mentorRepository.findByMentorIdxAndUserUserIdx(mentorIdx,enterUserIdx);
+        Optional<User> optionalUser = userRepository.findById(menteeIdx);
         Mentee mentee = new Mentee();
-        mentee.setMentor(optionalMentor.get());
+        mentee.setMentor(mentor);
         mentee.setUser(optionalUser.get());
         menteeRepository.save(mentee);
     }

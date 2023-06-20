@@ -143,13 +143,15 @@ public class MentorApiController {
     }
 
     // 멘티 확정 시 생성
-    @RequestMapping(value = "/mentee/{mentorIdx}",method = {RequestMethod.PUT,RequestMethod.PATCH})
+    @RequestMapping(value = "/mentee/{mentorIdx}/{menteeIdx}",method = {RequestMethod.PUT,RequestMethod.PATCH})
     public ResponseEntity<?> menteeSave(
             @PathVariable Long mentorIdx
+            ,@PathVariable Long menteeIdx
             ,@AuthenticationPrincipal TokenUserInfo userInfo
     ){
-        Long userIdx = Long.valueOf(userInfo.getUserIdx());
-        mentorService.menteeSave(mentorIdx,userIdx);
+        Long enterUserIdx = Long.valueOf(userInfo.getUserIdx());
+
+        mentorService.menteeSave(mentorIdx,menteeIdx, enterUserIdx);
 
         return null;
     }
