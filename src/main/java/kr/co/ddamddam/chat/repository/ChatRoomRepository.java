@@ -10,6 +10,8 @@ import java.util.List;
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     // 추가적인 쿼리 메서드가 필요한 경우 작성
     List<ChatRoom> findByMentorMentorIdx(Long mentorIdx);
+    // userID로 채팅방 목록 조회
+    List<ChatRoom> findBySenderUserIdx(Long userIdx);
     // 멘티의 아이디로 채팅방 찾기
     ChatRoom findByMentorMentorIdxAndSenderUserIdx(Long mentorIdx, Long senderIdx);
     ChatRoom findByMentorMentorIdxAndReceiverUserIdxAndSenderUserIdx(Long mentorIdx, Long receiverIdx, Long senderIdx);
