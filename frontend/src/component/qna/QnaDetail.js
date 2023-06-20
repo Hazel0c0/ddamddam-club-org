@@ -68,19 +68,22 @@ const QnaDetail = () => {
         }, []);
 
 //댓글 작성
+
+        const enterUserIdx = getUserIdx();
         const writeReplyHandler = async () => {
             if (detailQna.boardAdoption === 'Y') {
                 alert('이미 채택된 글은 댓글을 작성하실 수 없습니다.');
                 return;
             }
             const inputContent = document.querySelector('.reply-input').value;
-            // console.log(`inputContent의 값 ${inputContent}`);
+            console.log(`inputContent의 값 ${inputContent}`);
             const res = await fetch(`${QNAREPLY}/write`, {
                 method: 'POST',
-                headers: {'content-type': 'application/json'},
+                // headers: requestHeader,
+                headers: {'content-type': 'application/json',},
                 body: JSON.stringify({
                     replyContent: inputContent,
-                    boardIdx: boardIdx
+                    boardIdx : boardIdx
                 })
             })
 
@@ -101,6 +104,60 @@ const QnaDetail = () => {
             alert("댓글이 등록 되었습니다.");
         }
 
+        //댓글 수정
+        const replyModifyHandler = async () =>{
+            if (detailQna.boardAdoption === 'Y') {
+                alert('이미 채택된 글은 댓글은 수정하실 수 없습니다.');
+                return;
+            }
+
+            // console.log(`inputContent의 값 ${inputContent}`);
+            const res = await fetch(`${QNAREPLY}/modify`, {
+                method: 'PATCH',
+                headers: requestHeader,
+                body: JSON.stringify({
+                    // replyIdx : replyIdx,
+                    // replyContent: replyContent,
+                })
+            })
+
+            if (res.status === 400) { // 가입이 안되어있거나, 비번틀린 경우
+                const text = await res.text(); // 서버에서 온 문자열 읽기
+                alert(text);
+                return;
+            }
+            const replyData = await res.json();
+            const replyList = replyData.payload;
+
+            const modifiedReplyList = replyList.map((reply) => {
+                const showMore = false;
+                return {...reply, showMore};
+            });
+            setReplyList(modifiedReplyList);
+            inputRef.current.value = '';
+            alert("댓글이 수정 되었습니다.");
+        }
+
+        //댓글 삭제
+        const replyDeleteHandler = async(replyIdx) =>{
+            if (detailQna.boardAdoption === 'Y') {
+                alert('이미 채택된 글은 댓글은 삭제하실 수 없습니다.');
+                return;
+            }
+
+            // console.log(`inputContent의 값 ${inputContent}`);
+            const res = await fetch(`${QNAREPLY}/delete/${replyIdx}`, {
+                method: 'DELETE',
+                headers: requestHeader,
+                // body: JSON.stringify({
+                //     replyIdx : replyIdx,
+                //     replyContent: replyContent,
+                // })
+            })
+            console.log(`댓글 삭제 res ${JSON.stringify(res)}`)
+            alert("댓글이 삭제 되었습니다.");
+            asyncDetail();
+        }
 
 //더보기 버튼 만드는 중 개같네..
 //안된다시발비ㅓㅂ리버라ㅣㄸ라ㅣ리ㅣㅓㄷ바ㅣ디랃ㅂ
@@ -208,7 +265,7 @@ const QnaDetail = () => {
             }
         };
 
-//댓글 수정
+//게시물 수정
         const modifyHandler = (event) => {
             if (detailQna.boardAdoption === 'Y') {
                 alert('이미 채택된 글은 수정 또는 삭제하실 수 없습니다.');
@@ -216,7 +273,7 @@ const QnaDetail = () => {
             }
         }
 
-//댓글 삭제
+//게시물 삭제
         const deleteHandler = async () => {
             if (detailQna.boardAdoption === 'Y') {
                 alert('이미 채택된 글은 수정 또는 삭제하실 수 없습니다.');
@@ -321,6 +378,14 @@ const QnaDetail = () => {
                                             <div className={'reply-top-wrapper'}>
                                                 <p className={'reply-writer'}>{reply.replyWriter}</p>
                                                 <div className={'reply-date'}>{reply.replyDate}</div>
+                                                enterUserNickName : {enterUserNickName}
+                                                reply.replyWriter : {reply.replyWriter}
+                                                {enterUserNickName === reply.replyWriter &&
+                                                    <>
+                                                        <span className={'modify'} onClick={replyModifyHandler}>수정</span>
+                                                        <span className={'modify'} onClick={() => replyDeleteHandler(reply.replyIdx)}>삭제</span>
+                                                    </>
+                                                }
                                             </div>
 
                                             <div className={'reply-content-wrapper'}>

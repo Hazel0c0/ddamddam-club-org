@@ -5,7 +5,7 @@ import {MENTOR, QNA} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import Tags from '@yaireo/tagify/dist/react.tagify';
 import {getWhitelistFromServer, getValue} from './hashTagConfig/mockServer'
-import {getToken} from "../common/util/login-util";
+import {getToken, getUserName, getUserNickname} from "../common/util/login-util";
 
 const MentorsWrite = () => {
     const redirection = useNavigate();
@@ -31,10 +31,6 @@ const MentorsWrite = () => {
             [name]: parseValue
         }));
     };
-
-    const submitTest =() =>{
-        console.log(textInput)
-    }
 
     const handleSubmit = async () => {
         console.log(textInput);

@@ -4,7 +4,7 @@ import Common from "../common/Common";
 import {useParams} from "react-router-dom";
 import {QNA, REVIEW} from "../common/config/HostConfig";
 import {getToken} from "../common/util/login-util";
-
+// 여기만 하면 토큰 완료
 const QnaDetail = () => {
     const {reviewIdx} = useParams();
     const [reviewQna, setDetailReview] = useState([]);
