@@ -20,6 +20,7 @@ import java.util.List;
 public class QnaInsertRequestDTO {
 
     // TODO : Validated 처리
+    private Long boardIdx;
     private String boardTitle;
     private String boardContent;
     private List<String> hashtagList;

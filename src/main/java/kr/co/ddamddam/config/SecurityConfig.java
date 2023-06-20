@@ -50,6 +50,7 @@ public class SecurityConfig {
                     .antMatchers("/socket/chat/**", "/").permitAll()
                 /*
                     .antMatchers("/api/ddamddam/oauth/**").permitAll()
+                    .antMatchers("/socket/chat/**").permitAll()
                     .antMatchers("/api/ddamddam/companies/list").permitAll()
                     .antMatchers("/api/ddamddam/mentors/list").permitAll()
                     .antMatchers("/api/ddamddam/mentors/sublist").permitAll()
