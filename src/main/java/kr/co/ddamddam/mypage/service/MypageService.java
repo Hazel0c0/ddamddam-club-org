@@ -1,7 +1,6 @@
 package kr.co.ddamddam.mypage.service;
 
-import kr.co.ddamddam.common.exception.custom.ErrorCode;
-import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
+import kr.co.ddamddam.UserUtil;
 import kr.co.ddamddam.mentor.entity.Mentor;
 import kr.co.ddamddam.mentor.repository.MentorRepository;
 import kr.co.ddamddam.mypage.dto.page.PageDTO;
@@ -10,6 +9,10 @@ import kr.co.ddamddam.mypage.dto.response.MypageBoardPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageProjectResponseDTO;
 import kr.co.ddamddam.project.entity.Project;
+import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
+import kr.co.ddamddam.project.entity.applicant.ApplicantOfFront;
+import kr.co.ddamddam.project.repository.BackRepository;
+import kr.co.ddamddam.project.repository.FrontRepository;
 import kr.co.ddamddam.project.repository.ProjectRepository;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
@@ -19,6 +22,7 @@ import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.entity.UserPosition;
 import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class MypageService {
 
@@ -41,16 +46,21 @@ public class MypageService {
     private final QnaRepository qnaRepository;
     private final MentorRepository mentorRepository;
     private final ReviewRepository reviewRepository;
+
     private final ProjectRepository projectRepository;
+    private final BackRepository backRepository;
+    private final FrontRepository frontRepository;
+    private final UserUtil userUtil;
 
     /**
      * 마이페이지의 <내가 쓴 게시글> 목록 조회 및 페이징
+     *
      * @param pageDTO - 클라이언트에서 요청한 페이지 번호
      * @return 페이지 정보, 페이징 처리 된 로그인 유저가 작성한 게시글 목록 리스트
      */
     public MypageBoardPageResponseDTO getBoardList(
 //            TokenUserInfo tokenUserInfo,
-            PageDTO pageDTO
+        PageDTO pageDTO
     ) {
         // 토큰 유효성 검사
 //        validateToken.validateToken(tokenUserInfo);
@@ -63,10 +73,10 @@ public class MypageService {
         List<Mentor> mentorList = mentorRepository.findByUserUserIdx(userIdx);
         List<Review> reviewList = reviewRepository.findByUserUserIdx(userIdx);
         // TODO : User 양방향 매핑으로 바꾸고 findByUserUserIdx 로 변경 필요
-        List<Project> projectList = projectRepository.findByUserIdx(userIdx);
+        List<Project> projectList = projectRepository.findByUserUserIdx(userIdx);
 
         List<MypageBoardResponseDTO> mypageBoardList
-                = getMypageDtoList(qnaList, mentorList, reviewList, projectList);
+            = getMypageDtoList(qnaList, mentorList, reviewList, projectList);
 
         PageMaker maker = new PageMaker(pageDTO, mypageBoardList.size());
         int pageStart = getPageStart(pageDTO);
@@ -75,60 +85,60 @@ public class MypageService {
         List<MypageBoardResponseDTO> slicedMypageBoardList = mypageBoardList.subList(pageStart, pageEnd);
 
         return MypageBoardPageResponseDTO.builder()
-                .count(slicedMypageBoardList.size())
-                .pageInfo(maker)
-                .boardList(slicedMypageBoardList)
-                .build();
+            .count(slicedMypageBoardList.size())
+            .pageInfo(maker)
+            .boardList(slicedMypageBoardList)
+            .build();
     }
-
 
 
     /**
      * 로그인한 유저가 작성한 Qna, Mentor, Project, Review 게시글들을
      * 리스트에 담아서 최신순으로 정렬해주는 기능
-     * @param qnaList - 로그인 유저가 작성한 Qna 게시글 리스트
-     * @param mentorList - 로그인 유저가 작성한 Mentor 게시글 리스트
-     * @param reviewList - 로그인 유저가 작성한 Review 게시글 리스트
+     *
+     * @param qnaList     - 로그인 유저가 작성한 Qna 게시글 리스트
+     * @param mentorList  - 로그인 유저가 작성한 Mentor 게시글 리스트
+     * @param reviewList  - 로그인 유저가 작성한 Review 게시글 리스트
      * @param projectList - 로그인 유저가 작성한 Project 게시글 리스트
      * @return - 최신순으로 정렬된 내가 쓴 게시글 리스트
      */
     private List<MypageBoardResponseDTO> getMypageDtoList(
-            List<Qna> qnaList,
-            List<Mentor> mentorList,
-            List<Review> reviewList, List<Project> projectList) {
+        List<Qna> qnaList,
+        List<Mentor> mentorList,
+        List<Review> reviewList, List<Project> projectList) {
         List<MypageBoardResponseDTO> mypageBoardList = new ArrayList<>();
 
         // Qna 게시글 리스트 매핑
         mypageBoardList.addAll(
-                qnaList.stream()
-                        .map(qna -> convertQnaToMypageDto(qna))
-                        .collect(Collectors.toList())
+            qnaList.stream()
+                .map(qna -> convertQnaToMypageDto(qna))
+                .collect(Collectors.toList())
         );
 
         // Mentor 게시글 리스트 매핑
         mypageBoardList.addAll(
-                mentorList.stream()
-                        .map(mentor -> convertMentorToMypageDto(mentor))
-                        .collect(Collectors.toList())
+            mentorList.stream()
+                .map(mentor -> convertMentorToMypageDto(mentor))
+                .collect(Collectors.toList())
         );
 
         // Review 게시글 리스트 매핑
         mypageBoardList.addAll(
-                reviewList.stream()
-                        .map(review -> convertReviewToMypageDto(review))
-                        .collect(Collectors.toList())
+            reviewList.stream()
+                .map(review -> convertReviewToMypageDto(review))
+                .collect(Collectors.toList())
         );
 
         // Project 게시글 리스트 매핑
         mypageBoardList.addAll(
-                projectList.stream()
-                        .map(project -> convertProjectToMypageDto(project))
-                        .collect(Collectors.toList())
+            projectList.stream()
+                .map(project -> convertProjectToMypageDto(project))
+                .collect(Collectors.toList())
         );
 
         // 작성시간 기준 최신순으로 정렬
         mypageBoardList.sort(
-                Comparator.comparing(MypageBoardResponseDTO::getBoardDate).reversed()
+            Comparator.comparing(MypageBoardResponseDTO::getBoardDate).reversed()
         );
 
         return mypageBoardList;
@@ -136,54 +146,58 @@ public class MypageService {
 
     /**
      * Qna 를 MypageBoardResponseDTO 로 변환
+     *
      * @param qna - Qna 엔터티
      * @return - MypageBoardResponseDTO
      */
     private MypageBoardResponseDTO convertQnaToMypageDto(Qna qna) {
         return MypageBoardResponseDTO.builder()
-                .boardType(QNA)
-                .boardIdx(qna.getQnaIdx())
-                .boardDate(qna.getQnaDate())
-                .build();
+            .boardType(QNA)
+            .boardIdx(qna.getQnaIdx())
+            .boardDate(qna.getQnaDate())
+            .build();
     }
 
     /**
      * Mentor 를 MypageBoardResponseDTO 로 변환
+     *
      * @param mentor - Mentor 엔터티
      * @return - MypageBoardResponseDTO
      */
     private MypageBoardResponseDTO convertMentorToMypageDto(Mentor mentor) {
         return MypageBoardResponseDTO.builder()
-                .boardType(MENTOR)
-                .boardIdx(mentor.getMentorIdx())
-                .boardDate(mentor.getMentorDate())
-                .build();
+            .boardType(MENTOR)
+            .boardIdx(mentor.getMentorIdx())
+            .boardDate(mentor.getMentorDate())
+            .build();
     }
 
     /**
      * Review 를 MypageBoardResponseDTO 로 변환
+     *
      * @param review - Review 엔터티
      * @return - MypageBoardResponseDTO
      */
     private MypageBoardResponseDTO convertReviewToMypageDto(Review review) {
         return MypageBoardResponseDTO.builder()
-                .boardType(REVIEW)
-                .boardIdx(review.getReviewIdx())
-                .boardDate(review.getReviewDate())
-                .build();
+            .boardType(REVIEW)
+            .boardIdx(review.getReviewIdx())
+            .boardDate(review.getReviewDate())
+            .build();
     }
 
     /**
      * Project 를 MypageBoardResponseDTO 로 변환
+     *
      * @param project - Review 엔터티
      * @return - MypageBoardResponseDTO
      */
     private MypageBoardResponseDTO convertProjectToMypageDto(Project project) {
         return MypageBoardResponseDTO.builder()
-                .boardType(PROJECT)
-                .boardIdx(project.getProjectIdx())
-                .boardDate(project.getProjectDate())
-                .build();
+            .boardType(PROJECT)
+            .boardIdx(project.getProjectIdx())
+            .boardDate(project.getProjectDate())
+            .build();
     }
 
     /**
@@ -202,25 +216,36 @@ public class MypageService {
 
     /**
      * 프로젝트 게시판 목록 조회
-     *
-     * @return
      */
     public List<MypageProjectResponseDTO> getProjectList(Long userIdx) {
 
-        // 본인의 모든 게시글 찾기
-        List<Project> foundProject = projectRepository.findByUserIdx(userIdx);
+        // 내가 작성한 프로젝트 모든 게시글 찾기
+        List<Project> myProjects = projectRepository.findByUserUserIdx(userIdx);
+        System.out.println("mypage - foundProject = " + myProjects);
 
-        // 작성자의 포지션 조회
-        User user = userRepository.findById(userIdx)
-            .orElseThrow(() -> {
-                throw new NotFoundBoardException(ErrorCode.NOT_FOUND_USER, userIdx);
-            });
-        String userNickname = user.getUserNickname();
+        // 로그인한 유저 객체 가져오기
+        User user = userUtil.getUser(userIdx);
+        UserPosition userPosition = user.getUserPosition();
 
-        return foundProject.stream()
+        if (userPosition == UserPosition.FRONTEND) {
+            List<Project> frontProjects  = frontRepository.findByUser(user)
+                .stream().map(ApplicantOfFront::getProject)
+                .collect(Collectors.toList());
+            myProjects.addAll(frontProjects);
+        } else {
+            List<Project> backProjects  = backRepository.findByUser(user)
+                .stream().map(ApplicantOfBack::getProject)
+                .collect(Collectors.toList());
+            myProjects.addAll(backProjects);
+        }
+
+        List<MypageProjectResponseDTO> myProjectList = new ArrayList<>();
+
+        return myProjects.stream()
             .map(project -> {
-                UserPosition writerPosition = project.getUserIdx().getUserPosition();
-                return new MypageProjectResponseDTO(project,writerPosition);
+                // 게시글 작성자의 포지션 가져오기
+                UserPosition writerPosition = project.getUser().getUserPosition();
+                return new MypageProjectResponseDTO(project, writerPosition);
             })
             .collect(Collectors.toList());
     }

@@ -32,10 +32,10 @@ public class ProjectWriteDTO {
 
   private String offerPeriod; //모집기간
 
-  public Project toEntity(User userName, String uploadedFilePath) {
+  public Project toEntity(User user, String uploadedFilePath) {
     return Project.builder()
-        .userIdx(userName)
-        .userNickname(userName.getUserNickname())
+        .user(user)
+        .userNickname(user.getUserNickname())
         .projectTitle(this.boardTitle)
         .projectImg(uploadedFilePath)
         .projectContent(this.boardContent)

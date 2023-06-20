@@ -85,7 +85,7 @@ const ProjectsDetail = () => {
 
   const handleApply = () => {
     // 11 대신 유저 번호 넣을거
-    fetch(PROJECT + `/applicant/11/${projectIdx}`, {
+    fetch(PROJECT + `/applicant/1/${projectIdx}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ const ProjectsDetail = () => {
   return (
       <>
         <ProjectsTitle/>
-        <Common className={'qna-detail-wrapper'}>
+        <Common className={'project-detail-wrapper'}>
           {projectDetail.map(de => {
             return (
                 <section className={'main-text-wrapper'}>

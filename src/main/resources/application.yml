@@ -17,7 +17,7 @@ spring:
     # ??? ?? ? ?? ??? ?? ???? ??
     database-platform: org.hibernate.dialect.MariaDB106Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true # sql? ????? ??? ??
@@ -54,5 +54,5 @@ sns:
 
 upload:
   path:
-    project: D:/ddam_upload/project
+    project: c:/ddam_upload/project
     profile: D:/ddam_upload/profile

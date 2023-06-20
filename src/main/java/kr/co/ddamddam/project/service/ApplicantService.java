@@ -1,6 +1,7 @@
 
 package kr.co.ddamddam.project.service;
 
+import kr.co.ddamddam.UserUtil;
 import kr.co.ddamddam.project.dto.response.ProjectDetailResponseDTO;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
@@ -29,6 +30,7 @@ public class ApplicantService {
   private final FrontRepository frontRepository;
 
   private final ProjectService projectService;
+  private final UserUtil userUtil;
 
   public ProjectDetailResponseDTO apply(Long userIdx, Long projectIdx) {
     log.info("apply service");
@@ -36,7 +38,7 @@ public class ApplicantService {
     Project currProject = projectService.getProject(projectIdx);
 
     // 유저 객체
-    User foundUser = getUser(userIdx);
+    User foundUser = userUtil.getUser(userIdx);
 
     //유저 포지션별 분류
     if (foundUser.getUserPosition() == UserPosition.BACKEND) {
@@ -44,7 +46,7 @@ public class ApplicantService {
       if (currProject.getApplicantOfBacks().size() < currProject.getMaxBack()) {
         currProject.addBack(backRepository.save(
             ApplicantOfBack.builder()
-                .userIdx(userIdx)
+                .user(foundUser)
                 .project(currProject)
                 .build()
         ));
@@ -57,7 +59,7 @@ public class ApplicantService {
       if (currProject.getApplicantOfFronts().size() < currProject.getMaxFront()) {
         currProject.addFront(frontRepository.save(
             ApplicantOfFront.builder()
-                .userIdx(userIdx)
+                .user(foundUser)
                 .project(currProject)
                 .build()
         ));
@@ -71,22 +73,12 @@ public class ApplicantService {
     return new ProjectDetailResponseDTO(currProject);
   }
 
-  private User getUser(Long userIdx) {
-    User foundUser = userRepository.findById(userIdx)
-        .orElseThrow(
-            () -> new RuntimeException(
-                userIdx + "번 유저 없음!"
-            )
-        );
-    log.info("foundUser : {}", foundUser);
-    return foundUser;
-  }
 
 
   public void cancel(Long userIdx, Long projectIdx) {
     Project currProject = projectService.getProject(projectIdx);
 
-    User foundUser = getUser(userIdx);
+    User foundUser = userUtil.getUser(userIdx);
 
     //유저 포지션별 분류
     if (foundUser.getUserPosition() == UserPosition.BACKEND) {

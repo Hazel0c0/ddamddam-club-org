@@ -25,6 +25,8 @@ public class ApplicantApiController {
    * 자동으로 내가 입력했던 포지션을 가져와서 신청
    *
    * @param userIdx : 세션에서 내 (유저)정보 받아올것
+   *
+   *         TODO       error : 신청하기 게시판 한번밖에 안됨
    */
   @PatchMapping("/{userIdx}/{projectIdx}")
   private ApplicationResponse<?> apply(
