@@ -25,21 +25,16 @@ public class MypageProjectResponseDTO {
     private String boardTitle;
     private String boardWriter;
     private UserPosition writerPosition;
-    private List<String> front;
-    private List<String> back;
+    private List<String> front= new ArrayList<>();
+    private List<String> back= new ArrayList<>();
 
     public MypageProjectResponseDTO(Project p, UserPosition writerPosition) {
         this.boardTitle = p.getProjectTitle();
         this.boardWriter = p.getUserNickname();
         this.writerPosition = writerPosition;
-
-        this.front = new ArrayList<>();
-        setFront(p);
-        this.back = new ArrayList<>();
-        setBack(p);
     }
 
-    private void setBack(Project p) {
+    public void setBack(Project p) {
         List<ApplicantOfBack> applicantOfBacks = p.getApplicantOfBacks();
         for (ApplicantOfBack back : applicantOfBacks) {
             String userNickname = back.getUser().getUserNickname();
@@ -47,7 +42,7 @@ public class MypageProjectResponseDTO {
         }
     }
 
-    private void setFront(Project p) {
+    public void setFront(Project p) {
         List<ApplicantOfFront> applicantOfFronts = p.getApplicantOfFronts();
         for (ApplicantOfFront front : applicantOfFronts) {
             String userNickname = front.getUser().getUserNickname();

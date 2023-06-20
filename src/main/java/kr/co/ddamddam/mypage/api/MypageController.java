@@ -39,14 +39,14 @@ public class MypageController {
     public ResponseEntity<?> getProjectList(
 //        @AuthenticationPrincipal TokenUserInfo tokenUserInfo
         @PathVariable Long userIdx,
-        @RequestParam String type
+        @RequestParam(required = false) String type
     ) {
 
         log.info("mypage - userIdx {} ", userIdx);
 //        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
         List<MypageProjectResponseDTO> myProjectList;
-        if (type.equals("arrayProject")) {
+        if (type != null && type.equals("arrayProject")) {
             myProjectList = myPageService.getArrayProjectList(userIdx);
         } else {
             myProjectList = myPageService.getProjectList(userIdx);
