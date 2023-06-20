@@ -3,22 +3,44 @@ import logo from '../../src_assets/logo.png';
 import './scss/Header.scss';
 import Common from "./Common";
 import {Link} from "react-router-dom";
-import {getToken, isLogin} from "./util/login-util";
+import {getToken} from "./util/login-util";
 import profileImg from "../../src_assets/IMG_4525.JPG"
+
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [animating, setAnimating] = useState(false);
     const [background, setBackground] = useState('rgba(0, 0, 0, 0)');
     const navigationRef = useRef(null);
     const categoryRef = useRef(null);
-    const [isLoginEnd, setIsLoginEnd] = useState(false);
+    // const [token, setToken] = useState(null);
 
-    // const ACCESS_TOKEN = getToken();
-    useEffect(() =>{
-        if (isLogin()){
-            setIsLoginEnd(true)
+    const ACCESS_TOKEN = getToken();
+
+    useEffect(() => {
+    }, []);
+
+    //로그아웃
+    const logoutHandler = () => {
+        const confirmBtn  = window.confirm("정말 로그아웃 하시겠습니까?")
+        if (confirmBtn){
+        sessionStorage.removeItem('ACCESS_TOKEN');
+        sessionStorage.removeItem('LOGIN_USER_IDX');
+        sessionStorage.removeItem('LOGIN_USER_EMAIL');
+        sessionStorage.removeItem('LOGIN_USER_NAME');
+        sessionStorage.removeItem('LOGIN_USER_NICKNAME');
+        sessionStorage.removeItem('LOGIN_USER_REGDATE');
+        sessionStorage.removeItem('LOGIN_USER_BIRTH');
+        sessionStorage.removeItem('LOGIN_USER_POSITION');
+        sessionStorage.removeItem('LOGIN_USER_CAREER');
+        sessionStorage.removeItem('LOGIN_USER_POINT');
+        sessionStorage.removeItem('LOGIN_USER_PROFILE');
+        sessionStorage.removeItem('LOGIN_USER_ROLE');
+
+        window.location.href='/';
+        }else {
+            return;
         }
-    },[isLogin()])
+    }
 
     const handleMouseEnter = () => {
         if (!dropdownOpen) {
@@ -71,20 +93,20 @@ const Header = () => {
 
 
                 <div className="login-wrapper">
-                    {isLoginEnd
-                        ?<>
-                            {/*로그아웃 해야함*/}
-                            <div className={'logout'}>LOGOUT</div>
-                            <Link to={'/myPage'} className={'myPage'}><img src={profileImg} alt={'profileImg'} className={'profile-img'}/></Link>
-                        </>
-                        : <>
+                    {/*{ACCESS_TOKEN ? 'isLoginEnd의 값 true' : 'isLoginEnd의 값 false'}*/}
+                    {ACCESS_TOKEN === null || ACCESS_TOKEN === ''
+                        ? <>
                             <Link to={'/login'} className={'login'}>로그인</Link>
                             <Link to={'/join'} className={'sign-in'}>회원가입</Link>
                         </>
+                        :
+                        <>
+                            <div className={'logout'} onClick={logoutHandler}>LOGOUT</div>
+                            <Link to={'/myPage'} className={'myPage'}><img src={profileImg} alt={'profileImg'}
+                                                                           className={'profile-img'}/></Link>
+                        </>
 
                     }
-
-
                 </div>
             </div>
 

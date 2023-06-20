@@ -214,6 +214,20 @@
           font-size: 14px;
           color: #828282;
         }
+
+        //댓글 수정,삭제
+        .reply-modify,
+        .reply-delete{
+          margin-left: 5px;
+          font-size: 14px;
+          color: #292834;
+          cursor: pointer;
+        }
+
+        .reply-modify{
+          margin-left: 15px;
+        }
+
       }
 
       .reply-content-wrapper{
