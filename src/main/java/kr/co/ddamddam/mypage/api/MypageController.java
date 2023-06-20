@@ -2,6 +2,7 @@ package kr.co.ddamddam.mypage.api;
 
 import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.mypage.dto.page.PageDTO;
+import kr.co.ddamddam.mypage.dto.request.MypageModifyRequestDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageChatPageResponseDTO;
@@ -10,9 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -40,10 +39,25 @@ public class MypageController {
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             PageDTO pageDTO
     ){
-
         MypageChatPageResponseDTO chatRoomList = myPageService.getChatList(pageDTO);
 
         return ResponseEntity.ok().body(chatRoomList);
+    }
+
+    // 회원 정보 수정
+    @PostMapping("/modify")
+    public ResponseEntity<?> modify(
+//            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
+            @RequestBody MypageModifyRequestDTO dto
+    ){
+
+        Long userIdx = 44L;
+
+        log.info("modify: {}",dto);
+
+        myPageService.myPageModify(dto, userIdx);
+
+        return ResponseEntity.ok().body("회원정보 수정완료!");
     }
 
 }
