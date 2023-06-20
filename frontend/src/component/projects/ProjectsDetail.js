@@ -88,7 +88,7 @@ const ProjectsDetail = () => {
   return (
     <>
       <ProjectsTitle />
-      <Common className={'qna-detail-wrapper'}>
+      <Common className={'project-detail-wrapper'}>
         {projectDetail.map(de => {
           return(
           <section className={'main-text-wrapper'}>

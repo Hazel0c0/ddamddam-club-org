@@ -1,26 +1,28 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Common from "../common/Common";
 import './scss/ReviewWrite.scss';
-import {MENTOR, QNA, REVIEW} from "../common/config/HostConfig";
+import {REVIEW} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import ReviewStarRating from "./StartRating/ReviewStarRating";
+import {getToken} from "../common/util/login-util";
 // import Tags from '@yaireo/tagify/dist/react.tagify';
 // import {getWhitelistFromServer, getValue} from './hashTagConfig/mockServer'
 
 const MentorsWrite = () => {
+    const ACCESS_TOKEN = getToken();
     const redirection = useNavigate();
     const [reviewRating, setReviewRating] = useState(0);
     const [textInput, setTextInput] = useState(
         {
             reviewTitle: '',
             reviewContent: '',
-            // reviewRating: reviewRating,
             reviewJob: '',
             reviewTenure: '',
             companyName: '',
             reviewLocation: '',
         }
     )
+
     const handleSelect = (e) => {
         const {name, value} = e.target;
         let parseValue = value;
@@ -64,13 +66,19 @@ const MentorsWrite = () => {
         // 비동기 POST 요청 처리 로직 작성
         console.log(data); // 확인을 위해 콘솔에 출력
 
-        /*
+
         const res = await fetch(REVIEW + '/write', {
             method: 'POST',
-            headers: {'content-type': 'application/json'},
+            headers: {
+                'content-type': 'application/json',
+                // 'Authorization': 'Bearer ' + ACCESS_TOKEN
+            },
             body: JSON.stringify(data)
         });
-
+        if (res.status === 500) {
+            console.log(`서버 오류`);
+            return;
+        }
         if (res.status === 400) {
             const text = await res;
             console.log(`오류시 알람 : ${text}`);
@@ -79,8 +87,6 @@ const MentorsWrite = () => {
             alert('작성이 완료되었습니다.')
             redirection('/reviews')
         }
-
-         */
     };
 
 
@@ -91,8 +97,8 @@ const MentorsWrite = () => {
     return (
         <Common className={'review-write-wrapper'}>
             <div className={'title-wrapper'}>
-                <p className={'main-title'}>Q&A</p>
-                <p className={'main-sub-title'}>땀땀클럽 회원들과 개발 지식을 공유할 수 있는 공간입니다.</p>
+                <p className={'main-title'}>취업 후기</p>
+                <p className={'main-sub-title'}>근무했던 기업에 대한 정보를 공유해보세요.</p>
             </div>
 
             <section className={'write-form-wrapper'}>
@@ -112,7 +118,7 @@ const MentorsWrite = () => {
                     <h1 className={'sub-title'}>회사명</h1>
                     <input
                         type={"text"}
-                        placeholder={'제목을 입력하세요'}
+                        placeholder={'ex.땀땀컴퍼니'}
                         className={'detail-text-input'}
                         name={'companyName'}
                         defaultValue={textInput.companyName}
@@ -122,21 +128,10 @@ const MentorsWrite = () => {
                     <h1 className={'sub-title'}>직무</h1>
                     <input
                         type={"text"}
-                        placeholder={'제목을 입력하세요'}
+                        placeholder={'ex.백엔드 개발자'}
                         className={'detail-text-input'}
                         name={'reviewJob'}
                         defaultValue={textInput.reviewJob}
-                        onChange={handleSelect}/>
-                </div>
-
-                <div className={'input-company-tenure'}>
-                    <h1 className={'sub-title'}>근속년수</h1>
-                    <input
-                        type={"text"}
-                        placeholder={'제목을 입력하세요'}
-                        className={'detail-text-input'}
-                        name={'reviewTenure'}
-                        defaultValue={textInput.reviewTenure}
                         onChange={handleSelect}/>
                 </div>
 
@@ -144,11 +139,23 @@ const MentorsWrite = () => {
                     <h1 className={'sub-title'}>위치</h1>
                     <input
                         type={"text"}
-                        placeholder={'제목을 입력하세요'}
+                        placeholder={'ex.강남구 신사동'}
                         className={'detail-text-input'}
                         name={'reviewLocation'}
                         defaultValue={textInput.reviewLocation}
                         onChange={handleSelect}/>
+                </div>
+
+                <div className={'input-company-tenure'}>
+                    <h1 className={'sub-title'}>근속년수</h1>
+                    <input
+                        type={"text"}
+                        placeholder={''}
+                        className={'tenure-text-input'}
+                        name={'reviewTenure'}
+                        defaultValue={textInput.reviewTenure}
+                        onChange={handleSelect}/>
+                    <span className={'fix-text'}>년</span>
                 </div>
             </section>
 

@@ -4,10 +4,24 @@ import './scss/QnaMain.scss';
 import viewIcon from '../../src_assets/view-icon.png';
 import speechBubble from '../../src_assets/speech-bubble.png';
 import {QNA} from "../common/config/HostConfig";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {getToken} from "../common/util/login-util";
 
 const QnaMain = () => {
+
     const [topViewQna, setTopViewQna] = useState([]);
+
+    const ACCESS_TOKEN = getToken();
+    const redirection = useNavigate();
+    const loginCheckHandler = (e) =>{
+        console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
+        if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null){
+            alert('로그인 후 이용가능합니다.')
+            e.preventDefault();
+            redirection('/login');
+            // return;
+        }
+    }
 
     useEffect(() => {
         fetch(QNA + '/top')
@@ -45,7 +59,7 @@ const QnaMain = () => {
                     <div className={'top-section-one'} key={qna.boardIdx}>
 
                         <h1 className={'top-section-title'}>🔥 주간 조회수 TOP{index + 1} 🔥</h1>
-                        <Link to={`/api/ddamddam/qna/${qna.boardIdx}`} className={'detail-link'}>
+                        <Link to={`/api/ddamddam/qna/${qna.boardIdx}`} className={'detail-link'} onClick={loginCheckHandler}>
                             <section className={'top-section-wrapper'}>
                                 {/*채택완료 수정해야함*/}
                                 {/*<div className={'checked'}>값주세요</div>*/}

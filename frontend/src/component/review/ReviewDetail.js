@@ -2,25 +2,41 @@ import React, {useEffect, useState} from 'react';
 import './scss/ReviewDetail.scss';
 import Common from "../common/Common";
 import {useParams} from "react-router-dom";
-import {REVIEW} from "../common/config/HostConfig";
-
+import {QNA, REVIEW} from "../common/config/HostConfig";
+import {getToken} from "../common/util/login-util";
+// 여기만 하면 토큰 완료
 const QnaDetail = () => {
     const {reviewIdx} = useParams();
     const [reviewQna, setDetailReview] = useState([]);
-    useEffect(()=>{
+
+    const ACCESS_TOKEN = getToken();
+    const requestHeader = {
+        'content-type': 'application/json',
+        'Authorization': 'Bearer ' + ACCESS_TOKEN
+    };
+
+    const asyncDetail = async () => {
         console.log(reviewIdx);
-        fetch(`${REVIEW}/detail?${reviewIdx}`)
-            .then((res) => {
-                if (res.status === 500) {
-                    alert('잠시 후 다시 접속해주세요.[서버오류]');
-                    return;
-                }
-                return res.json();
-            })
-            .then((result) => {
-                setDetailReview(result.payload);
-                console.log(result.payload);
-            });
+        const res = await fetch(`${REVIEW}/detail?reviewIdx=${reviewIdx}`, {
+            method: 'GET',
+            headers: requestHeader
+        })
+
+        if (res.status === 500) {
+            alert('잠시 후 다시 접속해주세요.[서버오류]');
+            return;
+        }
+
+        const result = await res.json();
+        // console.log(`result = ${result}`)
+        console.log(`resultJSON = ${JSON.stringify(result)}`)
+        setDetailReview(result);
+
+    }
+
+
+    useEffect(()=>{
+        asyncDetail();
     },[]);
 
     // /api/ddamddam/mentors/detail?mentorIdx={}
@@ -28,8 +44,8 @@ const QnaDetail = () => {
     return (
         <Common className={'qna-detail-wrapper'}>
             <div className={'title-wrapper'}>
-                <p className={'main-title'}>Q&A</p>
-                <p className={'main-sub-title'}>땀땀클럽 회원들과 개발 지식을 공유할 수 있는 공간입니다.</p>
+                <p className={'main-title'}>취업후기</p>
+                <p className={'main-sub-title'}>근무했던 기업에 대한 정보를 공유해보세요.</p>
             </div>
 
             {/*<section className={'main-text-wrapper'}>*/}

@@ -5,8 +5,9 @@ import speechBubble from "../../src_assets/speech-bubble.png";
 import './scss/QnaList.scss'
 import {IoIosArrowForward} from 'react-icons/io';
 import {QNA} from "../common/config/HostConfig";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import PageNation from "../common/pageNation/PageNation";
+import {getToken} from "../common/util/login-util";
 
 const QnaList = ({searchValue}) => {
     const [qnaList, setQnaList] = useState([]);
@@ -16,24 +17,18 @@ const QnaList = ({searchValue}) => {
     //상세보기 이동
     const [qnaDetailBoardIdx, setqnaDetailBoardIdx] = useState([]);
 
-    //전체 목록 렌더링 필터 async
-    // const asyncQnaList = async () => {
-    //     const res = await fetch(`${QNA}?page=${clickCurrentPage}&size=10`, {
-    //         method: 'GET',
-    //         headers: {'content-type': 'application/json'}
-    //     });
-    //
-    //     if (res.status === 500) {
-    //         alert('잠시 후 다시 접속해주세요.[서버오류]');
-    //         return;
-    //     }
-    //
-    //     const qnaList = await res.json();
-    //     console.log(qnaList)
-    //     console.log(`qnaList = ${qnaList.payload}`);
-    //     setQnaList(qnaList.payload.qnas);
-    //     setPageNation(qnaList.payload.pageInfo);
-    // }
+    //로그인 검증
+    const ACCESS_TOKEN = getToken();
+    const redirection = useNavigate();
+    const loginCheckHandler = (e) =>{
+        console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
+        if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null){
+            alert('로그인 후 이용가능합니다.')
+            e.preventDefault();
+            redirection('/login');
+            // return;
+        }
+    }
 
     const asyncQnaList = async () => {
         let responseUrl;
@@ -111,7 +106,7 @@ const QnaList = ({searchValue}) => {
                         <div className={'write-date'} key={qna.boardDate}>{qna.boardDate}</div>
                     </section>
 
-                    <Link to={`/api/ddamddam/qna/${qna.boardIdx}`}>
+                    <Link to={`/api/ddamddam/qna/${qna.boardIdx}`} onClick={loginCheckHandler}>
                         {/*<div className={'go-detail'} onClick={() => detailHandler(qna.boardIdx)}>*/}
                         <div className={'go-detail'}>
                             <div className={'go-detail-text'}>더보기</div>

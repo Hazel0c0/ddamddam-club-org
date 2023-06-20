@@ -37,8 +37,8 @@ public class ReviewWriteRequestDTO {
 
     private int reviewTenure;
 
-    @NotNull
-    private Long reviewCompanyId;
+//    @NotNull
+//    private Long reviewCompanyId;
 
 //    @NotBlank
     private String companyName;
@@ -50,7 +50,7 @@ public class ReviewWriteRequestDTO {
 
     public Review toEntity(User user){
         Company company = new Company();
-        company.setCompanyIdx(this.reviewCompanyId);
+        company.setCompanyIdx(1L);
         company.setCompanyName(this.companyName);
         company.setCompanyArea(this.reviewLocation);
 
