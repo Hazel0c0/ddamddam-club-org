@@ -37,6 +37,7 @@ class ProjectRepositoryTest {
               .projectType("웹페이지")
               .maxFront(3)
               .maxBack(2)
+//              .memberIdx(""+i)
               .build()
       );
     }
