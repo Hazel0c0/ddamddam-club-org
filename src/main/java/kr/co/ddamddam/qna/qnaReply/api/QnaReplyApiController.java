@@ -2,6 +2,7 @@ package kr.co.ddamddam.qna.qnaReply.api;
 
 import kr.co.ddamddam.common.response.ApplicationResponse;
 import kr.co.ddamddam.common.response.ResponseMessage;
+import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.qna.qnaReply.dto.page.PageDTO;
 import kr.co.ddamddam.qna.qnaReply.dto.request.QnaReplyInsertRequestDTO;
 import kr.co.ddamddam.qna.qnaReply.dto.request.QnaReplyModifyRequestDTO;
@@ -10,6 +11,7 @@ import kr.co.ddamddam.qna.qnaReply.dto.response.QnaReplyListResponseDTO;
 import kr.co.ddamddam.qna.qnaReply.service.QnaReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +22,6 @@ import static kr.co.ddamddam.common.response.ResponseMessage.*;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam/qna-reply")
-@CrossOrigin(origins = "http://localhost:3000")
 public class QnaReplyApiController {
 
     private final QnaReplyService qnaReplyService;
@@ -51,21 +52,19 @@ public class QnaReplyApiController {
      */
     @PostMapping("/write")
     public ApplicationResponse<?> writeReply(
-//            Long userIdx,
+            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             @RequestBody QnaReplyInsertRequestDTO dto
     ) {
         log.info("POST : /qna-reply/write - QNA {}번 게시글에 '{}' 댓글 작성", dto.getBoardIdx(), dto.getReplyContent());
 
-        // TODO : 토큰 방식으로 로그인한 회원의 idx 를 가져와서 Service 파라미터로 넣는 처리 필요
-        Long userIdx = 2L;
-
-        ResponseMessage result = qnaReplyService.writeReply(userIdx, dto);
+        ResponseMessage result = qnaReplyService.writeReply(tokenUserInfo, dto);
 
         if (result == FAIL) {
             return ApplicationResponse.bad(result);
         }
 
         List<QnaReplyListResponseDTO> list = qnaReplyService.getList(dto.getBoardIdx());
+
         return ApplicationResponse.ok(list);
     }
 
@@ -78,11 +77,12 @@ public class QnaReplyApiController {
      */
     @DeleteMapping("/delete/{replyIdx}")
     public ApplicationResponse<?> deleteReply(
+            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             @PathVariable Long replyIdx
     ) {
         log.info("DELETE : /qna-reply/delete/{} - QNA 댓글 삭제", replyIdx);
 
-        ResponseMessage result = qnaReplyService.deleteReply(replyIdx);
+        ResponseMessage result = qnaReplyService.deleteReply(tokenUserInfo, replyIdx);
 
         if (result == FAIL) {
             return ApplicationResponse.bad(result);
@@ -100,11 +100,12 @@ public class QnaReplyApiController {
      */
     @PatchMapping("/modify")
     public ApplicationResponse<?> modifyReply(
+            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             @RequestBody QnaReplyModifyRequestDTO dto
     ) {
         log.info("PATCH : /qna-reply/modify/{} - QNA 댓글 수정", dto.getReplyIdx());
 
-        ResponseMessage result = qnaReplyService.modifyReply(dto);
+        ResponseMessage result = qnaReplyService.modifyReply(tokenUserInfo, dto);
 
         if (result == FAIL) {
             ApplicationResponse.bad(result);
@@ -122,11 +123,12 @@ public class QnaReplyApiController {
      */
     @PatchMapping("/adopts/{replyIdx}")
     public ApplicationResponse<?> adoptQnaReply(
+            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             @PathVariable Long replyIdx
     ) {
         log.info("PATCH : /qna-reply/adopts/{} - QNA 댓글 채택", replyIdx);
 
-        ResponseMessage result = qnaReplyService.adoptQnaReply(replyIdx);
+        ResponseMessage result = qnaReplyService.adoptQnaReply(tokenUserInfo, replyIdx);
 
         if (result == FAIL) {
             ApplicationResponse.bad(result);
