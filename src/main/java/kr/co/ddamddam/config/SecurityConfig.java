@@ -46,7 +46,9 @@ public class SecurityConfig {
                 .authorizeRequests()
                     // 어떤 요청에서 인증을 안할 것인지 설정
                     // - 회원가입, 로그인, index 페이지, 각 게시판 첫 페이지
-                    .antMatchers("/api/ddamddam/auth/**", "/").permitAll()
+                    .antMatchers("/api/ddamddam/**", "/").permitAll()
+                    .antMatchers("/socket/chat/**", "/").permitAll()
+                /*
                     .antMatchers("/api/ddamddam/oauth/**").permitAll()
                     .antMatchers("/socket/chat/**").permitAll()
                     .antMatchers("/api/ddamddam/companies/list").permitAll()
@@ -63,6 +65,8 @@ public class SecurityConfig {
                     .antMatchers("/api/ddamddam/reviews/viewTop3").permitAll()
                     .antMatchers("/api/ddamddam/reviews/view").permitAll()
                     .antMatchers("/api/ddamddam/reviews/rating").permitAll()
+
+                 */
                     // 어떤 요청에서 인증을 할 것인지 설정 - 그 외의 모든 경로
                     .anyRequest().authenticated();
                 ;

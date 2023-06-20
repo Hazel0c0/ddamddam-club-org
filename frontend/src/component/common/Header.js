@@ -1,15 +1,24 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import logo from '../../src_assets/logo.png';
 import './scss/Header.scss';
 import Common from "./Common";
 import {Link} from "react-router-dom";
-
+import {getToken, isLogin} from "./util/login-util";
+import profileImg from "../../src_assets/IMG_4525.JPG"
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [animating, setAnimating] = useState(false);
     const [background, setBackground] = useState('rgba(0, 0, 0, 0)');
     const navigationRef = useRef(null);
     const categoryRef = useRef(null);
+    const [isLoginEnd, setIsLoginEnd] = useState(false);
+
+    // const ACCESS_TOKEN = getToken();
+    useEffect(() =>{
+        if (isLogin()){
+            setIsLoginEnd(true)
+        }
+    },[isLogin()])
 
     const handleMouseEnter = () => {
         if (!dropdownOpen) {
@@ -46,7 +55,7 @@ const Header = () => {
     return (
         <Common className={'header-background'}>
             <div className={'header-wrapper'}>
-                <Link to={'/'} >
+                <Link to={'/'}>
                     <img className={'logo'} src={logo} alt="logo"/>
                 </Link>
                 <ul className={'category-wrapper'}
@@ -59,9 +68,23 @@ const Header = () => {
                     <li>프로젝트 공유</li>
                     <li>Q&A</li>
                 </ul>
+
+
                 <div className="login-wrapper">
-                    <Link to={'/login'} className={'login'}>로그인</Link>
-                    <Link to={'/join'} className={'sign-in'}>회원가입</Link>
+                    {isLoginEnd
+                        ?<>
+                            {/*로그아웃 해야함*/}
+                            <div className={'logout'}>LOGOUT</div>
+                            <Link to={'/myPage'} className={'myPage'}><img src={profileImg} alt={'profileImg'} className={'profile-img'}/></Link>
+                        </>
+                        : <>
+                            <Link to={'/login'} className={'login'}>로그인</Link>
+                            <Link to={'/join'} className={'sign-in'}>회원가입</Link>
+                        </>
+
+                    }
+
+
                 </div>
             </div>
 

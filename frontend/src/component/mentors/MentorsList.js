@@ -33,7 +33,6 @@ const MentorsList = ({selectedSubjects}) => {
     // 접속한 유저 idx
     const enterUserIdx = +getUserIdx();
 
-
     //캐러셀
     // const [currentPage, setCurrentPage] = useState(1);
     const [carouselIndex, setCarouselIndex] = useState(1);
@@ -113,7 +112,9 @@ const MentorsList = ({selectedSubjects}) => {
                 // console.log(result.idx);
             });
     };
+
     const createChatRoom = e => {
+        e.preventDefault();
         const data = {
             senderId: enterUserIdx,
             mentorIdx: chatPageIdx
@@ -125,9 +126,12 @@ const MentorsList = ({selectedSubjects}) => {
             body: JSON.stringify(data)
         })
             .then(res => res.json())
-            .then(json => {
-                // alert('채팅방 생성 완료! 멘토와 즐거운 채팅~');
+            .then(result => {
+                alert('채팅방 생성 완료! 멘토와 즐거운 채팅~');
                 console.log('방 생성');
+                console.log(`setRoomId의 값 : ${result.roomId}`);
+                window.location.href = `/mentors/detail/chat/${chatPageIdx}/${result.roomId}`;
+
             })
     }
 
@@ -160,8 +164,8 @@ const MentorsList = ({selectedSubjects}) => {
                 }
             });
 
-           
-            
+
+
 
     }, [selectedSubjects, carouselIndex]);
 
@@ -173,7 +177,7 @@ const MentorsList = ({selectedSubjects}) => {
 
     return (
         <div className={'mentors-list-wrapper'}>
-            
+
             {/*{prevBtn &&*/}
             {pageNation.prev &&
                 <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
@@ -211,8 +215,8 @@ const MentorsList = ({selectedSubjects}) => {
 
             {/*모달창 띄워주기*/}
             <Modal show={show} onHide={handleClose} id={'modal-container'}>
-            
-            
+
+
                 <section className={'top-section'}>
                     <div className={'top-title'}>
                         <h1 className={'top-title-text'}>멘토 소개</h1>
@@ -228,7 +232,7 @@ const MentorsList = ({selectedSubjects}) => {
                                 </div>
                                 </>
                         }
-                        
+
                     </div>
 
                     <div className={'close-btn'} onClick={handleClose}><TfiClose/></div>
@@ -255,7 +259,7 @@ const MentorsList = ({selectedSubjects}) => {
                 </section>
 
                 <div className={'btn-wrapper'}>
-                    <Link to={`/mentors/detail/chat/${chatPageIdx}`} onClick={createChatRoom}>
+                    <Link to={`#`} onClick={createChatRoom}>
                         <button className={'application-btn'}>신청하기</button>
                     </Link>
                 </div>

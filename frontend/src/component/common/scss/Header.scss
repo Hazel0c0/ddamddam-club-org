@@ -43,23 +43,44 @@
   //로그인 영역
   .login-wrapper{
     margin-left: auto;
+    display: flex;
+    align-items: center;
+
+    .logout{
+      margin-right: 20px;
+      font-size: 15px;
+      font-weight: 400;
+      cursor: pointer;
+    }
+    .myPage{
+      //width: 30px;
+      //height: 30px;
+
+      .profile-img{
+        width: 45px;
+        height: 45px;
+        border-radius: 100px;
+      }
+    }
+    .login,
+    .sign-in{
+      text-decoration: none;
+      padding: 8px 21px;
+      font-size: 14px;
+      border-radius: 50px;
+    }
+    .login{
+      background: #d9d9d9;
+      color:#292834;
+      margin-right: 8px;
+    }
+    .sign-in{
+      background: #1e4fff;
+      color: white;
+    }
   }
 
-  .login-wrapper a{
-    text-decoration: none;
-    padding: 8px 21px;
-    font-size: 14px;
-    border-radius: 50px;
-  }
-  .login{
-    background: #d9d9d9;
-    color:#292834;
-    margin-right: 8px;
-  }
-  .sign-in{
-    background: #1e4fff;
-    color: white;
-  }
+
 
   //네비 바
   .navigation-bar{

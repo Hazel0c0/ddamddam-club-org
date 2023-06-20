@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 // TODO: 취업후기 작성하기
 @Getter @Setter
@@ -36,8 +37,8 @@ public class ReviewWriteRequestDTO {
 
     private int reviewTenure;
 
-//    @NotNull
-//    private Long reviewCompanyId;
+    @NotNull
+    private Long reviewCompanyId;
 
 //    @NotBlank
     private String companyName;
@@ -45,13 +46,11 @@ public class ReviewWriteRequestDTO {
 //    @NotBlank
     private String reviewLocation;
 
-//    @NotNull
-//    private Timestamp reviewDate;
 
 
     public Review toEntity(User user){
         Company company = new Company();
-//        company.setCompanyIdx(this.reviewCompanyId);
+        company.setCompanyIdx(this.reviewCompanyId);
         company.setCompanyName(this.companyName);
         company.setCompanyArea(this.reviewLocation);
 
@@ -62,7 +61,6 @@ public class ReviewWriteRequestDTO {
                 .reviewJob(this.reviewJob)
                 .reviewTenure(this.reviewTenure)
                 .company(company)
-//                .reviewDate(this.reviewDate)
                 .user(user)
                 .build();
     }
