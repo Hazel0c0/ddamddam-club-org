@@ -1,13 +1,21 @@
 package kr.co.ddamddam.mypage.dto.response;
 
+import kr.co.ddamddam.UserUtil;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfFront;
 import kr.co.ddamddam.user.entity.UserPosition;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@ToString
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class MypageProjectResponseDTO {
     /*
           프로젝트 명
@@ -26,17 +34,24 @@ public class MypageProjectResponseDTO {
         this.writerPosition = writerPosition;
 
         this.front = new ArrayList<>();
-        List<ApplicantOfFront> applicantOfFronts = p.getApplicantOfFronts();
-        for (ApplicantOfFront front : applicantOfFronts) {
-            Long userIdx = front.getUserIdx();
-            this.front.add(String.valueOf(userIdx));
-        }
-
+        setFront(p);
         this.back = new ArrayList<>();
+        setBack(p);
+    }
+
+    private void setBack(Project p) {
         List<ApplicantOfBack> applicantOfBacks = p.getApplicantOfBacks();
         for (ApplicantOfBack back : applicantOfBacks) {
-            Long userIdx = back.getUserIdx();
-            this.back.add(String.valueOf(userIdx));
+            String userNickname = back.getUser().getUserNickname();
+            this.back.add(userNickname);
+        }
+    }
+
+    private void setFront(Project p) {
+        List<ApplicantOfFront> applicantOfFronts = p.getApplicantOfFronts();
+        for (ApplicantOfFront front : applicantOfFronts) {
+            String userNickname = front.getUser().getUserNickname();
+            this.back.add(userNickname);
         }
     }
 

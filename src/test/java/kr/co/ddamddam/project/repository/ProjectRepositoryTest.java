@@ -37,7 +37,7 @@ class ProjectRepositoryTest {
 
       projectRepository.save(
           Project.builder()
-              .userIdx(
+              .user(
                   userRepository.findById(ran)
                       .orElseThrow()
               )

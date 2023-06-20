@@ -41,10 +41,12 @@ public class MypageController {
     public ResponseEntity<?> getProjectList(
 //        @AuthenticationPrincipal TokenUserInfo tokenUserInfo
         @PathVariable Long userIdx
-
     ){
+
+        log.info("mypage - userIdx {} ", userIdx);
 //        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
         List<MypageProjectResponseDTO> myProjectList = myPageService.getProjectList(userIdx);
+        System.out.println("myProjectList = " + myProjectList);
 
         return ResponseEntity.ok().body(myProjectList);
     }
