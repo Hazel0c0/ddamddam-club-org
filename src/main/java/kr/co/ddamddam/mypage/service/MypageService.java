@@ -1,17 +1,22 @@
 package kr.co.ddamddam.mypage.service;
 
+import kr.co.ddamddam.common.exception.custom.ErrorCode;
+import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
 import kr.co.ddamddam.mentor.entity.Mentor;
 import kr.co.ddamddam.mentor.repository.MentorRepository;
 import kr.co.ddamddam.mypage.dto.page.PageDTO;
 import kr.co.ddamddam.mypage.dto.page.PageMaker;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardResponseDTO;
+import kr.co.ddamddam.mypage.dto.response.MypageProjectResponseDTO;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.repository.ProjectRepository;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
 import kr.co.ddamddam.review.entity.Review;
 import kr.co.ddamddam.review.repository.ReviewRepository;
+import kr.co.ddamddam.user.entity.User;
+import kr.co.ddamddam.user.entity.UserPosition;
 import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -193,5 +198,30 @@ public class MypageService {
      */
     private int getPageEnd(int pageStart, int pageSize, int totalCount) {
         return Math.min(pageStart + pageSize, totalCount);
+    }
+
+    /**
+     * 프로젝트 게시판 목록 조회
+     *
+     * @return
+     */
+    public List<MypageProjectResponseDTO> getProjectList(Long userIdx) {
+
+        // 본인의 모든 게시글 찾기
+        List<Project> foundProject = projectRepository.findByUserIdx(userIdx);
+
+        // 작성자의 포지션 조회
+        User user = userRepository.findById(userIdx)
+            .orElseThrow(() -> {
+                throw new NotFoundBoardException(ErrorCode.NOT_FOUND_USER, userIdx);
+            });
+        String userNickname = user.getUserNickname();
+
+        return foundProject.stream()
+            .map(project -> {
+                UserPosition writerPosition = project.getUserIdx().getUserPosition();
+                return new MypageProjectResponseDTO(project,writerPosition);
+            })
+            .collect(Collectors.toList());
     }
 }
