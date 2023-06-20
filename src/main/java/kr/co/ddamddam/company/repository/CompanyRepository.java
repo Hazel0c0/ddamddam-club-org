@@ -20,7 +20,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 //    Page<Company> findAllBy(Pageable pageable);
 
 
-    @Query("SELECT c FROM Company c WHERE c.companyCareer = '경력'")
+    @Query("SELECT c FROM Company c WHERE c.companyCareer ='경력' ")
     Page<Company> findHavingCareer(Pageable pageable);
 
     @Query("SELECT c FROM Company c WHERE c.companyCareer = '신입'")
@@ -28,6 +28,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     @Query("SELECT c FROM Company c WHERE c.companyCareer = '관계없음'")
     Page<Company> findNoExperience(Pageable pageable);
+
 
 
 
