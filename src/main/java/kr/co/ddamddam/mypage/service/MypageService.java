@@ -214,8 +214,11 @@ public class MypageService {
         return Math.min(pageStart + pageSize, totalCount);
     }
 
+
     /**
-     * 프로젝트 게시판 목록 조회
+     *  프로젝트 목록 조회 조회
+     * @param userIdx : 로그인한 회원 idx
+     * @return : 내가 만든 프로젝트 게시판 목록
      */
     public List<MypageProjectResponseDTO> getProjectList(Long userIdx) {
 
@@ -223,30 +226,42 @@ public class MypageService {
         List<Project> myProjects = projectRepository.findByUserUserIdx(userIdx);
         System.out.println("mypage - foundProject = " + myProjects);
 
+        return toDtoList(myProjects);
+    }
+
+    /**
+     * @return : 내가 신청한 프로젝트 목록 조회
+     */
+    public List<MypageProjectResponseDTO> getArrayProjectList(Long userIdx) {
+
         // 로그인한 유저 객체 가져오기
         User user = userUtil.getUser(userIdx);
         UserPosition userPosition = user.getUserPosition();
 
+        List<Project> arrayProjects = new ArrayList<>();
         if (userPosition == UserPosition.FRONTEND) {
             List<Project> frontProjects  = frontRepository.findByUser(user)
                 .stream().map(ApplicantOfFront::getProject)
                 .collect(Collectors.toList());
-            myProjects.addAll(frontProjects);
+            arrayProjects.addAll(frontProjects);
         } else {
             List<Project> backProjects  = backRepository.findByUser(user)
                 .stream().map(ApplicantOfBack::getProject)
                 .collect(Collectors.toList());
-            myProjects.addAll(backProjects);
+            arrayProjects.addAll(backProjects);
         }
 
-        List<MypageProjectResponseDTO> myProjectList = new ArrayList<>();
+        return toDtoList(arrayProjects);
+    }
 
-        return myProjects.stream()
+    private static List<MypageProjectResponseDTO> toDtoList(List<Project> myProjects) {
+        List<MypageProjectResponseDTO> dtoList = myProjects.stream()
             .map(project -> {
                 // 게시글 작성자의 포지션 가져오기
                 UserPosition writerPosition = project.getUser().getUserPosition();
                 return new MypageProjectResponseDTO(project, writerPosition);
             })
             .collect(Collectors.toList());
+        return dtoList;
     }
 }
