@@ -40,7 +40,7 @@ public class Company {
     @Column(name = "company_career",nullable = false, length = 10 )
     private String companyCareer;
 
-    @Column(name = "company_area",nullable = false, length = 10 )
+    @Column(name = "company_area",nullable = false, length = 200 )
     private String companyArea; //위치
 //    @Column(name = "company_detailadder", length = 10 )
 //    private String companyDetailAdder; //상세위치
@@ -51,9 +51,9 @@ public class Company {
     @Column(name = "company_sal", length = 30)
     private String companySal; //  급여
 
-    @CreationTimestamp
+//    @CreationTimestamp
     @Column(name = "company_date",updatable = false)
-    private LocalDate companyDate; //작성날짜(채용시작날짜)
+    private String companyDate; //작성날짜(채용시작날짜)
 
     @Column(name = "comapany_enddate",nullable = false)
     private String companyEnddate; //마감날짜 -> api에서 String타입으로 되어있음

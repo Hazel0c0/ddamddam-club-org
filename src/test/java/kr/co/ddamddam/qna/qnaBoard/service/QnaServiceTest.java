@@ -20,7 +20,7 @@ class QnaServiceTest {
 
     @Autowired
     QnaService qnaService;
-    
+
 //    @BeforeEach
 //    void test() {
 //        // 조회수 상승
@@ -44,7 +44,7 @@ class QnaServiceTest {
         //then
         assertEquals(Y, foundQnaBoard.getBoardAdoption());
     }
-    
+
     @Test
     @DisplayName("QNA 게시글을 조회순으로 3개 조회했을 때, 첫번째 게시글의 조회수가 두번째, 세번째 게시글의 조회수보다 높아야 한다.")
     void viewTest() {
