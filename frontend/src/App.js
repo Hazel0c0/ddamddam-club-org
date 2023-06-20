@@ -27,6 +27,7 @@ import ReviewList from "./component/review/ReviewList";
 import ReviewTemplate from "./component/review/ReviewTemplate";
 import ReviewDetail from "./component/review/ReviewDetail";
 import ReviewWrite from "./component/review/ReviewWrite";
+import OAuth2RedirectHandler from "./component/snslogin/OAuth2RedirectHandler";
 
 
 function App() {
@@ -78,6 +79,8 @@ function App() {
                 {/*Review/글작성*/}
                 <Route path={'/reviews/write'} element={<ReviewWrite/>}></Route>
 
+                {/*카카오 로그인*/}
+                <Route path={'/oauth/callback/kakao'} element={<OAuth2RedirectHandler/>}></Route>
 
                 {/*로그인*/}
                 <Route path={'/login'} element={<UserLogin/>}></Route>

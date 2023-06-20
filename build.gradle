@@ -62,6 +62,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	// -------------- 메일 인증
 
+	// 카카오 로그인에 사용하는 Gson 라이브러리
 	implementation 'com.google.code.gson:gson:2.8.7'
 
 	//파일업로드 라이브러리
