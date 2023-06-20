@@ -1,10 +1,7 @@
 package kr.co.ddamddam.company.api;
 
 import kr.co.ddamddam.company.dto.page.PageDTO;
-import kr.co.ddamddam.company.dto.response.CompanyDetailResponseDTO;
 import kr.co.ddamddam.company.dto.response.CompanyListPageResponseDTO;
-import kr.co.ddamddam.company.dto.response.CompanyListResponseDTO;
-//import kr.co.ddamddam.company.service.CompanyService;
 import kr.co.ddamddam.company.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.awt.event.WindowFocusListener;
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -34,6 +29,7 @@ public class CompanyApiController {
         CompanyListPageResponseDTO dto = companyService.getList(pageDTO);
         return ResponseEntity.ok().body(dto);
     }
+
 
     //키워드 검색
     @GetMapping("/search")

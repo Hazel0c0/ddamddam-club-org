@@ -26,7 +26,6 @@ class ReviewRepositoryTest {
     @DisplayName("취업후기 게시판 9개 생성")
     void bulkInsert() {
         Optional<User> userOptional = userRepository.findById(1L);
-        Optional<Company> companyOptional = companyRepository.findById(1L);
         for (int i = 1; i < 10 ; i++) {
             reviewRepository.save(
                     Review.builder()
@@ -35,7 +34,8 @@ class ReviewRepositoryTest {
                             .reviewTenure(i)
                             .reviewRating((float) (0+0.5*i))
                             .reviewJob("백엔드"+i)
-                            .company(companyOptional.get())
+                            .reviewCompany("감귤회사"+i)
+                            .reviewLocation("서울특별시 용산구")
                             .user(userOptional.get())
                             .reviewView(i)
                             .build()

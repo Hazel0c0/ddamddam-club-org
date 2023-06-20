@@ -42,8 +42,6 @@ public class Company {
 
     @Column(name = "company_area",nullable = false, length = 200 )
     private String companyArea; //위치
-//    @Column(name = "company_detailadder", length = 10 )
-//    private String companyDetailAdder; //상세위치
 
     @Column(name = "company_url",updatable = false, length = 100)
     private  String companyUrl; // 회사URL
@@ -58,8 +56,5 @@ public class Company {
     @Column(name = "comapany_enddate",nullable = false)
     private String companyEnddate; //마감날짜 -> api에서 String타입으로 되어있음
 
-    @OneToMany(mappedBy = "company")
-    @Builder.Default
-    private List<Review> review = new ArrayList<>();
-    
+
 }
