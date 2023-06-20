@@ -8,40 +8,40 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Getter @ToString
+@Getter
+@ToString
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class ProjectWriteDTO {
 
-  @NotNull
-  private Long boardWriterIdx;
+    @NotBlank
+    private String boardTitle;
+    @NotBlank
+    private String boardContent;
+    private String projectType;
 
-  @NotBlank
-  private String boardTitle;
-  @NotBlank
-  private String boardContent;
-  private String projectType;
+    //모집인원
+    @NotNull
+    @Max(5)
+    private int maxFront;
+    @NotNull
+    @Max(5)
+    private int maxBack;
 
-  //모집인원
-  @NotNull @Max(5)
-  private int maxFront;
-  @NotNull @Max(5)
-  private int maxBack;
+    private String offerPeriod; //모집기간
 
-  private String offerPeriod; //모집기간
-
-  public Project toEntity(User userName, String uploadedFilePath) {
-    return Project.builder()
-        .userIdx(userName)
-        .userNickname(userName.getUserNickname())
-        .projectTitle(this.boardTitle)
-        .projectImg(uploadedFilePath)
-        .projectContent(this.boardContent)
-        .projectType(this.projectType)
-        .maxFront(this.maxFront)
-        .maxBack(this.maxBack)
-        .build();
-  }
+    public Project toEntity(User user, String uploadedFilePath) {
+        return Project.builder()
+                .userNickname(user.getUserNickname())
+                .projectTitle(this.boardTitle)
+                .projectImg(uploadedFilePath)
+                .projectContent(this.boardContent)
+                .projectType(this.projectType)
+                .maxFront(this.maxFront)
+                .maxBack(this.maxBack)
+                .user(user)
+                .build();
+    }
 }
