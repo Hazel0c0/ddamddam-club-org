@@ -2,12 +2,11 @@ package kr.co.ddamddam.company.dto.request;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import kr.co.ddamddam.company.entity.Company;
 import lombok.*;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -17,29 +16,40 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class CompanyRequestDTO {
-    private String company;
-    private String title;
-    private String career;
-    private String basicAddr;
-    private String detailAddr;
-    private String wantedInfoUrl;;
-    private String sal;
-    @JsonFormat(pattern = "yyyy-mm-dd")
-    private String regDt;
-    private String closeDt;
+
+    @JsonProperty("company")
+    private String companyName;
+    @JsonProperty("title")
+    private String companyTitle;
+    @JsonProperty("career")
+    private String companyCareer;
+    @JsonProperty("basicAddr")
+    private String companyArea;
+    @JsonProperty("detailAddr")
+    private String companyDetailArea;
+    @JsonProperty("wantedInfoUrl")
+    private String companyUrl;;
+    @JsonProperty("sal")
+    private String companySal;
+
+//    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonProperty("regDt")
+    private String companyDate;
+    @JsonProperty("closeDt")
+    private String companyEndDate;
 
     //엔티티로 변환
     public Company toEntity (){
 
         return Company.builder()
-                .companyName(this.company)
-                .companyTitle(this.title)
-                .companyCareer(this.career)
-                .companyArea(this.basicAddr +" "+ this.detailAddr)
-                .companyUrl(this.wantedInfoUrl)
-                .companySal(this.sal)
-                .companyDate(LocalDate.parse(this.regDt))
-                .companyEnddate(this.closeDt)
+                .companyName(this.companyName)
+                .companyTitle(this.companyTitle)
+                .companyCareer(this.companyCareer)
+                .companyArea(this.companyArea +" "+ this.companyDetailArea)
+                .companyUrl(this.companyUrl)
+                .companySal(this.companySal)
+                .companyDate(this.companyDate)
+                .companyEnddate(this.companyEndDate)
                 .build();
     }
 
