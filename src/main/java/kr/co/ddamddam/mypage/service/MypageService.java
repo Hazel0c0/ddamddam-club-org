@@ -2,10 +2,12 @@ package kr.co.ddamddam.mypage.service;
 
 import kr.co.ddamddam.chat.entity.ChatRoom;
 import kr.co.ddamddam.chat.repository.ChatRoomRepository;
+import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.mentor.entity.Mentor;
 import kr.co.ddamddam.mentor.repository.MentorRepository;
 import kr.co.ddamddam.mypage.dto.page.PageDTO;
 import kr.co.ddamddam.mypage.dto.page.PageMaker;
+import kr.co.ddamddam.mypage.dto.request.MypageModifyRequestDTO;
 import kr.co.ddamddam.mypage.dto.response.ChatRoomResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardResponseDTO;
@@ -16,6 +18,8 @@ import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
 import kr.co.ddamddam.review.entity.Review;
 import kr.co.ddamddam.review.repository.ReviewRepository;
+import kr.co.ddamddam.user.entity.User;
+import kr.co.ddamddam.user.entity.UserPosition;
 import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -256,5 +261,30 @@ public class MypageService {
      */
     private int getPageEnd(int pageStart, int pageSize, int totalCount) {
         return Math.min(pageStart + pageSize, totalCount);
+    }
+
+    /**
+     * 회원정보 수정하라고 해서 한다
+     * @param dto
+     * @param
+     */
+    public void myPageModify(MypageModifyRequestDTO dto, Long userIdx) {
+
+//        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
+
+        User dupUser = userRepository.findByUserNickname(dto.getUserNickname());
+
+        if (dupUser == null){
+            User user = userRepository.findById(userIdx)
+                    .orElseThrow(() -> new IllegalArgumentException("없는 유저입니다"));
+                user.setUserName(dto.getUserName());
+                user.setUserNickname(dto.getUserNickname());
+                user.setUserBirth(dto.getUserBirth());
+                user.setUserCareer(dto.getUserCareer());
+                user.setUserPosition(UserPosition.valueOf(dto.getUserPosition()));
+
+                userRepository.save(user);
+        }
+
     }
 }

@@ -63,3 +63,4 @@ yarn-error.log*
 /frontend/yarn.lock
 /package-lock.json
 /node_modules/.package-lock.json
+/frontend/node_modules/
