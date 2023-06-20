@@ -22,6 +22,4 @@ public class ApplicantOfFront {
 
   @Id
   private Long userIdx;
-
-
 }
