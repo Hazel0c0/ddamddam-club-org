@@ -2,6 +2,7 @@ package kr.co.ddamddam.config;
 
 import kr.co.ddamddam.config.security.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -47,26 +48,25 @@ public class SecurityConfig {
                     // 어떤 요청에서 인증을 안할 것인지 설정
                     // - 회원가입, 로그인, index 페이지, 각 게시판 첫 페이지
                     .antMatchers("/api/ddamddam/**", "/").permitAll()
-                    .antMatchers("/socket/chat/**", "/").permitAll()
-                /*
-                    .antMatchers("/api/ddamddam/oauth/**").permitAll()
-                    .antMatchers("/socket/chat/**").permitAll()
-                    .antMatchers("/api/ddamddam/companies/list").permitAll()
-                    .antMatchers("/api/ddamddam/mentors/list").permitAll()
-                    .antMatchers("/api/ddamddam/mentors/sublist").permitAll()
-                    .antMatchers("/api/ddamddam/project").permitAll()
-                    .antMatchers("/api/ddamddam/qna").permitAll()
-                    .antMatchers("/api/ddamddam/qna/top").permitAll()
-                    .antMatchers("/api/ddamddam/qna/adopts").permitAll()
-                    .antMatchers("/api/ddamddam/qna/non-adopts").permitAll()
-                    .antMatchers("/api/ddamddam/qna/search").permitAll()
-                    .antMatchers("/api/ddamddam/reviews/list").permitAll()
-                    .antMatchers("/api/ddamddam/reviews/search/**").permitAll()
-                    .antMatchers("/api/ddamddam/reviews/viewTop3").permitAll()
-                    .antMatchers("/api/ddamddam/reviews/view").permitAll()
-                    .antMatchers("/api/ddamddam/reviews/rating").permitAll()
+//                    .antMatchers("/socket/chat/**", "/").permitAll()
+//                    .antMatchers("/api/ddamddam/oauth/**").permitAll()
+//                    .antMatchers("/api/ddamddam/auth/**").permitAll()
+//                    .antMatchers("/socket/chat/**").permitAll()
+//                    .antMatchers("/api/ddamddam/companies/list").permitAll()
+//                    .antMatchers("/api/ddamddam/mentors/list").permitAll()
+//                    .antMatchers("/api/ddamddam/mentors/sublist").permitAll()
+//                    .antMatchers("/api/ddamddam/project").permitAll()
+//                    .antMatchers("/api/ddamddam/qna").permitAll()
+//                    .antMatchers("/api/ddamddam/qna/top").permitAll()
+//                    .antMatchers("/api/ddamddam/qna/adopts").permitAll()
+//                    .antMatchers("/api/ddamddam/qna/non-adopts").permitAll()
+//                    .antMatchers("/api/ddamddam/qna/search").permitAll()
+//                    .antMatchers("/api/ddamddam/reviews/list").permitAll()
+//                    .antMatchers("/api/ddamddam/reviews/search/**").permitAll()
+//                    .antMatchers("/api/ddamddam/reviews/viewTop3").permitAll()
+//                    .antMatchers("/api/ddamddam/reviews/view").permitAll()
+//                    .antMatchers("/api/ddamddam/reviews/rating").permitAll()
 
-                 */
                     // 어떤 요청에서 인증을 할 것인지 설정 - 그 외의 모든 경로
                     .anyRequest().authenticated();
                 ;

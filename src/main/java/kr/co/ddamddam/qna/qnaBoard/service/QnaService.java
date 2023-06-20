@@ -15,6 +15,7 @@ import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaListPageResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaTopListResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
+import kr.co.ddamddam.qna.qnaBoard.entity.QnaAdoption;
 import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
 import kr.co.ddamddam.qna.qnaHashtag.entity.Hashtag;
 import kr.co.ddamddam.qna.qnaHashtag.repository.HashtagRepository;
@@ -44,7 +45,7 @@ import static kr.co.ddamddam.common.exception.custom.ErrorCode.*;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
+//@Transactional
 public class QnaService {
 
     private final int VIEW_COUNT_UP = 1;
@@ -258,7 +259,8 @@ public class QnaService {
         log.info("[Qna/Service] QNA 채택완료 상태인 게시글들만 조회");
 
         PageRequest pageable = getPageable(pageDTO);
-        Page<Qna> qnas = qnaRepository.findAll(pageable);
+//        Page<Qna> qnas = qnaRepository.findAll(pageable);
+        Page<Qna> qnas = qnaRepository.findByQnaAdoption(Y, pageable);
         List<QnaListResponseDTO> qnaList = getQnaDtoListByAdoption(qnas);
 
         return QnaListPageResponseDTO.builder()
@@ -273,7 +275,8 @@ public class QnaService {
         log.info("[Qna/Service] QNA 미채택 상태인 게시글들만 조회");
 
         PageRequest pageable = getPageable(pageDTO);
-        Page<Qna> qnas = qnaRepository.findAll(pageable);
+//        Page<Qna> qnas = qnaRepository.findAll(pageable);
+        Page<Qna> qnas = qnaRepository.findByQnaAdoption(N, pageable);
         List<QnaListResponseDTO> qnaList = getQnaDtoListByNonAdoption(qnas);
 
         return QnaListPageResponseDTO.builder()

@@ -37,15 +37,12 @@ class ProjectRepositoryTest {
 
       projectRepository.save(
           Project.builder()
-              .userIdx(
-                  userRepository.findById(ran)
-                      .orElseThrow()
-              )
               .projectTitle("제목" + i + "이다")
               .projectContent("내용" + i)
               .projectType("웹페이지")
               .maxFront(index)
               .maxBack(index)
+                  .user(userRepository.findById(1L).orElse(null))
               .build()
       );
     }
