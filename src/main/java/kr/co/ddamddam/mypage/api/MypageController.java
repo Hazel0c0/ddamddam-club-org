@@ -4,6 +4,7 @@ import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.mypage.dto.page.PageDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardResponseDTO;
+import kr.co.ddamddam.mypage.dto.response.MypageChatPageResponseDTO;
 import kr.co.ddamddam.mypage.service.MypageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,18 @@ public class MypageController {
         MypageBoardPageResponseDTO boardList = myPageService.getBoardList(pageDTO);
 
         return ResponseEntity.ok().body(boardList);
+    }
+
+    // 채팅방 목록 조회
+    @GetMapping("/chat-list")
+    public ResponseEntity<?> getChatList(
+            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
+            PageDTO pageDTO
+    ){
+
+        MypageChatPageResponseDTO chatRoomList = myPageService.getChatList(pageDTO);
+
+        return ResponseEntity.ok().body(chatRoomList);
     }
 
 }
