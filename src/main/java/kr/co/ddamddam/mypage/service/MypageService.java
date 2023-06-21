@@ -113,8 +113,7 @@ public class MypageService {
         List<Qna> qnaList = qnaRepository.findByUserUserIdx(userIdx);
         List<Mentor> mentorList = mentorRepository.findByUserUserIdx(userIdx);
         List<Review> reviewList = reviewRepository.findByUserUserIdx(userIdx);
-        // TODO : User 양방향 매핑으로 바꾸고 findByUserUserIdx 로 변경 필요
-        List<Project> projectList = projectRepository.findByUserIdx(userIdx);
+        List<Project> projectList = projectRepository.findByUserUserIdx(userIdx);
 
         List<MypageBoardResponseDTO> mypageBoardList
             = getMypageDtoList(qnaList, mentorList, reviewList, projectList);

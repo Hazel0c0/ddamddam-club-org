@@ -65,11 +65,14 @@ public class ProjectApiController {
 
   // 게시글 상세 보기
   @GetMapping("/{projectIdx}")
-  public ApplicationResponse<?> getDetail(@PathVariable Long projectIdx) {
+  public ApplicationResponse<?> getDetail(
+          TokenUserInfo tokenUserInfo,
+          @PathVariable Long projectIdx
+  ) {
     log.info("/api/ddamddam/{} GET", projectIdx);
 
     try {
-      ProjectDetailResponseDTO dto = projectService.getDetail(projectIdx);
+      ProjectDetailResponseDTO dto = projectService.getDetail(tokenUserInfo, projectIdx);
 
       return ApplicationResponse.ok(dto);
 
@@ -99,7 +102,7 @@ public class ProjectApiController {
     try {
       String uploadedFilePath = fileUpload(projectImg);
 
-      ProjectDetailResponseDTO responseDTO = projectService.write(dto,uploadedFilePath);
+      ProjectDetailResponseDTO responseDTO = projectService.write(tokenUserInfo, dto, uploadedFilePath);
       return ApplicationResponse.ok(responseDTO);
 
         } catch (RuntimeException e) {
@@ -138,6 +141,7 @@ public class ProjectApiController {
    */
   @PatchMapping
   public ApplicationResponse<?> modify(
+          @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
       @Validated @RequestPart("project") ProjectModifyRequestDTO dto,
       @RequestPart(
           value = "projectImage",
@@ -148,26 +152,12 @@ public class ProjectApiController {
     try {
       String uploadedFilePath = fileUpload(projectImg);
 
-      ProjectDetailResponseDTO responseDTO = projectService.modify(dto,uploadedFilePath);
+      ProjectDetailResponseDTO responseDTO = projectService.modify(tokenUserInfo, dto, uploadedFilePath);
       return ApplicationResponse.ok(responseDTO);
     } catch (Exception e) {
       return ApplicationResponse.error(e.getMessage());
     }
   }
-    // 게시글 수정
-    @PatchMapping
-    public ApplicationResponse<?> modify(
-            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
-            @Validated @RequestBody ProjectModifyRequestDTO dto
-//            , HttpServletRequest request // TODO : 이건뭐징???? 필요한가요?! -예원
-    ) {
-        try {
-            ProjectDetailResponseDTO responseDTO = projectService.modify(tokenUserInfo, dto);
-            return ApplicationResponse.ok(responseDTO);
-        } catch (Exception e) {
-            return ApplicationResponse.error(e.getMessage());
-        }
-    }
 
   //삭제
   @DeleteMapping("/{idx}")

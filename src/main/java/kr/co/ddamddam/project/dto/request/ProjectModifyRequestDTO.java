@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Builder
 public class ProjectModifyRequestDTO {
+
+  private Long projectIdx;
   @NotBlank
   private String boardTitle;
   private String boardContent;

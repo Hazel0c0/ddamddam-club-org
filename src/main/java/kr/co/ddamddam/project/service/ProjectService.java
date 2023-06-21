@@ -1,6 +1,7 @@
 package kr.co.ddamddam.project.service;
 
 import kr.co.ddamddam.common.common.ValidateToken;
+import kr.co.ddamddam.common.exception.custom.ErrorCode;
 import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
 import kr.co.ddamddam.common.exception.custom.UnauthorizationException;
 import kr.co.ddamddam.config.security.TokenUserInfo;
@@ -25,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -163,7 +165,7 @@ public class ProjectService {
 
   // 퀵 매칭
   // select : 오래된 순 / 내 포지션 / 남은자리가 작은것 부터
-  public ProjectListPageResponseDTO quickMatching(PageDTO dto, ProjectSearchRequestDto searchDto) {
+  public ProjectListPageResponseDTO quickMatching(TokenUserInfo tokenUserInfo, PageDTO dto, ProjectSearchRequestDto searchDto) {
     Pageable pageable = null;
 
     if (StringUtils.isEmpty(searchDto.getSort())) {
@@ -191,4 +193,31 @@ public class ProjectService {
 
     return getProjectList(projectPage);
   }
+
+    /**
+     * 토큰 유효성을 검사합니다.
+     * 로그인 중인 유저와 게시글 작성자가 동일한지 검사합니다.
+     *
+     * @param tokenUserInfo
+     * @param boardIdx
+     * @return
+     */
+    private Project validateDTO(TokenUserInfo tokenUserInfo, Long boardIdx) {
+        // 토큰 인증 실패
+        if (tokenUserInfo == null) {
+            throw new UnauthorizationException(UNAUTHENTICATED_USER, "로그인 후 이용 가능합니다.");
+        }
+
+        // 게시글 존재 여부 확인
+        Project project = projectRepository.findById(boardIdx).orElseThrow(() -> {
+            throw new NotFoundBoardException(NOT_FOUND_BOARD, boardIdx);
+        });
+
+        // 토큰 내 회원 이메일과 게시글 작성자의 이메일이 일치하지 않음 -> 작성자가 아님 -> 수정 및 삭제 불가
+        if (!project.getUser().getUserEmail().equals(tokenUserInfo.getUserEmail())) {
+            throw new UnauthorizationException(ACCESS_FORBIDDEN, tokenUserInfo.getUserEmail());
+        }
+
+        return project;
+    }
 }

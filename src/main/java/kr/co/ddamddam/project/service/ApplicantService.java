@@ -57,9 +57,6 @@ public class ApplicantService {
             throw new UnauthorizationException(ErrorCode.ACCESS_FORBIDDEN, tokenUserInfo.getUserEmail());
         }
 
-        // 유저 객체
-        User foundUser = getUser(userIdx);
-
     //유저 포지션별 분류
     if (foundUser.getUserPosition() == UserPosition.BACKEND) {
       System.out.println("이 유저는 backend 다");
