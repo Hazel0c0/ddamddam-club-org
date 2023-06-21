@@ -144,18 +144,24 @@ public class ProjectService {
 
         Project currProject = getProject(dto.getProjectIdx());
 
-        currProject.setProjectTitle(dto.getBoardTitle());
-        currProject.setProjectContent(dto.getBoardContent());
-        currProject.setProjectType(dto.getProjectType());
-        currProject.setMaxFront(dto.getMaxFront());
-        currProject.setMaxBack(dto.getMaxBack());
-        currProject.setOfferPeriod(dto.getOfferPeriod());
-        currProject.setProjectIdx(dto.getProjectIdx());
-      currProject.setProjectImg(uploadedFilePath);
+        if (currProject.getUser().getUserEmail().equals(
+            tokenUserInfo.getUserEmail())
+        ) {
+            currProject.setProjectTitle(dto.getBoardTitle());
+            currProject.setProjectContent(dto.getBoardContent());
+            currProject.setProjectType(dto.getProjectType());
+            currProject.setMaxFront(dto.getMaxFront());
+            currProject.setMaxBack(dto.getMaxBack());
+            currProject.setOfferPeriod(dto.getOfferPeriod());
+            currProject.setProjectIdx(dto.getProjectIdx());
+            currProject.setProjectImg(uploadedFilePath);
 
-    Project modifiedProject = projectRepository.save(currProject);
+            Project modifiedProject = projectRepository.save(currProject);
 
-    return new ProjectDetailResponseDTO(modifiedProject);
+            return new ProjectDetailResponseDTO(modifiedProject);
+        } else {
+            throw new UnauthorizationException(ErrorCode.ACCESS_FORBIDDEN, tokenUserInfo.getUserEmail());
+        }
   }
 
   public void delete(Long id) {
