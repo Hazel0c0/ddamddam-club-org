@@ -125,7 +125,7 @@ const MentorsList = ({selectedSubjects}) => {
 
         fetch(CHAT+'/rooms', {
             method: 'POST',
-            headers: {'content-type': 'application/json'},
+            headers: headerInfo,
             body: JSON.stringify(data)
         })
             .then(res => res.json())

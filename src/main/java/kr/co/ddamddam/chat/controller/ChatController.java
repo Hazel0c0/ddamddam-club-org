@@ -29,11 +29,11 @@ public class ChatController {
     @PostMapping("/rooms")
     public ResponseEntity<?> createChatRoom(
             @RequestBody ChatRoomRequestDTO dto
+            , @AuthenticationPrincipal TokenUserInfo tokenUserInfo
     ) {
-//        Long userId = 1L;
         log.info("requestDTO 들어옴: {}",dto);
 
-            ChatRoomResponseDTO responseDTO = chatService.createChatRoom(dto);
+            ChatRoomResponseDTO responseDTO = chatService.createChatRoom(dto,tokenUserInfo);
             log.info("responseDTO 보냄 : {}", responseDTO.getRoomId());
             return ResponseEntity.ok(responseDTO);
     }
