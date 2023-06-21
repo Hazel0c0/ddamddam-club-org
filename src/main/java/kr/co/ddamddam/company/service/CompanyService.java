@@ -235,9 +235,9 @@ public class CompanyService {
     }
 
     // 키워드 검색
-    public CompanyListPageResponseDTO getKeywordList(String keyword){
+    public CompanyListPageResponseDTO getKeywordList(String keyword, PageDTO pageDTO){
 
-        PageRequest pageable = getPageable(new PageDTO());
+        PageRequest pageable = getPageable(pageDTO);
         Page<Company> companies = companyRepository.findByKeyword(keyword,pageable);
         List<CompanyListResponseDTO> companyListResponseDTOS = getCompanyListKeyword(companies);
 
