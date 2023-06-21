@@ -6,6 +6,9 @@ import { Link, useNavigate } from "react-router-dom"; // useHistory 대신 useNa
 import ProjectsTitle from "./mainpage/ProjectsTitle";
 import {Grid} from "@mui/material";
 import * as PropTypes from "prop-types";
+import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
+  getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
+  getUserRole, isLogin } from '../common/util/login-util';
 
 
 
@@ -22,6 +25,7 @@ const ProjectsWrite = () => {
     projectImg:'',
   });
   const navigate = useNavigate();
+  const ACCESS_TOKEN = getToken();
 
   const handleInputChange = (e) => {
     const {name, value} = e.target;
@@ -37,13 +41,17 @@ const ProjectsWrite = () => {
         [JSON.stringify(formData)],
         { type: 'application/json' }
     );
+    const headerInfo = {
+      'Authorization': 'Bearer ' + ACCESS_TOKEN
+    }
 
     const projectFormData = new FormData();
-    projectFormData.appenda('project', projectJsonBlob);
+    projectFormData.append('project', projectJsonBlob);
     projectFormData.append('projectImage', $fileTag.current.files[0]);
 
     fetch(PROJECT, {
       method: 'POST',
+      headers : headerInfo,
       body: projectFormData,
     }).then(response => response.json())
       .then(data => {

@@ -104,8 +104,7 @@ public class ProjectService {
         return projectPage;
     }
 
-    public ProjectDetailResponseDTO getDetail(TokenUserInfo tokenUserInfo, Long projectIdx) {
-        validateToken.validateToken(tokenUserInfo);
+    public ProjectDetailResponseDTO getDetail(Long projectIdx) {
 
         Project foundProject = getProject(projectIdx);
 
@@ -128,7 +127,7 @@ public class ProjectService {
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
         User user = userRepository.findById(userIdx)
-                .orElseThrow(() -> new RuntimeException("존재하지 않습니다!"));
+                .orElseThrow(() -> new RuntimeException(userIdx+"회원이 존재하지 않습니다!"));
 
         Project saved = projectRepository.save(dto.toEntity(user, uploadedFilePath));
 

@@ -3,6 +3,9 @@ import ProjectsItem from "./ProjectsItem";
 import Common from "../../common/Common";
 import {PROJECT} from "../../common/config/HostConfig";
 import { Link, useNavigate } from "react-router-dom";
+import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
+  getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
+  getUserRole, isLogin } from '../../common/util/login-util';
 
 
 const ProjectsMain = () => {
@@ -12,6 +15,7 @@ const ProjectsMain = () => {
   const navigate = useNavigate();
 
   const childRef = useRef(null);
+  const ACCESS_TOKEN = getToken(); // 토큰
 
 
   const handleFrontClick = () => {
@@ -24,13 +28,15 @@ const ProjectsMain = () => {
     setCurrentUrl(PROJECT + '?position=back');
   };
 
-
+  const headerInfo = {
+    'content-type': 'application/json',
+    'Authorization': 'Bearer ' + ACCESS_TOKEN
+  }
   const handleLikeClick = (projectId) => {
     // 서버에 좋아요 처리를 위한 POST 요청을 보냅니다
-    // 1-> ${userIdx} 세션에서 가져올거라 없어질 예정
-    fetch(PROJECT+`/like/1/${projectId}`, {
+    fetch(PROJECT+`/like/${projectId}`, {
       method: 'POST',
-      headers: {'content-type': 'application/json'}
+      headers: headerInfo
     })
       .then(res => {
         if (res.status === 200) return res.json()
