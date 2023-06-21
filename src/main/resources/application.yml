@@ -10,7 +10,7 @@ spring:
     url: jdbc:mariadb://localhost:3306/ddamddam
 #    username: taegun
     username: root
-    password: 1111
+    password: 1234
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     # show-sql: true  # ?? ??? ??? ???? ??
@@ -51,3 +51,8 @@ sns:
   kakao:
     app-key: d16ee03edff29a44b1760307dcd1d15d
     redirect-uri: http://localhost:3000/oauth/callback/kakao
+
+upload:
+  path:
+    project: D:/ddam_upload/project
+    profile: D:/ddam_upload/profile

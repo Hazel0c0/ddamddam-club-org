@@ -88,6 +88,10 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     @Builder.Default
+    private List<ProjectLike> projects = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
     private List<ProjectLike> likedProjects = new ArrayList<>();
 
 
