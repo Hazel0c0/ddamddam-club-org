@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Builder
 public class ProjectModifyRequestDTO {
+
+  private Long projectIdx;
   @NotBlank
   private String boardTitle;
   private String boardContent;
@@ -29,5 +31,5 @@ public class ProjectModifyRequestDTO {
   private String offerPeriod; //모집기간
 
   @NotNull
-  private Long projectIdx;
+  private Long boardIdx;
 }

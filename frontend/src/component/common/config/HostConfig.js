@@ -4,7 +4,7 @@ const hostname = window.location.hostname;
 let backendHost; // 백엔드 호스트 이름
 
 if(hostname === 'localhost') {
-  backendHost = 'http://localhost:8181/api/ddamddam';    // 로컬 테스트용
+  backendHost = '//localhost:8181/api/ddamddam';    // 로컬 테스트용
 
 }else if(hostname === 'newcen.co.kr') {
   backendHost = '';  // 배포 테스트용
@@ -26,3 +26,5 @@ export const AUTH = "/auth";
 export const JOININ = "//localhost:8181/api/ddamddam/auth"
 export const EMAIL = "//localhost:8181/api/ddamddam/email"
 export const REVIEW = "//localhost:8181/api/ddamddam/reviews"
+
+export const MYPAGE = "/mypage"

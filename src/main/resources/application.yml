@@ -54,5 +54,5 @@ sns:
 
 upload:
   path:
-    project: D:/ddam_upload/project
+    project: c:/ddam_upload/project
     profile: D:/ddam_upload/profile
