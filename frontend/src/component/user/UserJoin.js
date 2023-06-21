@@ -383,7 +383,7 @@ const UserJoin = () => {
 
         // 이미지파일과 회원정보 JSON을 하나로 묶어야 함
         const userFormData = new FormData();
-        userFormData.append('user', JSON.stringify(userValue));
+        userFormData.append('user', userJsonBlob);
         userFormData.append('profileImage', $fileTag.current.files[0]);
 
         const res = await fetch(`${BASE_URL}/signup`, {
