@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
+@SuppressWarnings("unchecked")
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -85,7 +86,6 @@ public class ReviewService {
         } else {
             throw new ReviewNotFoundException("Review not found with ID: " + reviewIdx);
         }
-
     }
 
     //TOP3 게시글 가져오기
@@ -96,11 +96,11 @@ public class ReviewService {
                 .boardIdx(review.getReviewIdx())
                 .boardTitle(review.getReviewTitle())
                 .boardView(review.getReviewView())
-                .companyName(review.getCompany().getCompanyName())
+                .companyName(review.getReviewCompany())
                 .boardRating(review.getReviewRating())
                 .boardJob(review.getReviewJob())
                 .boardTenure(review.getReviewTenure())
-                .boardLocation(review.getCompany().getCompanyArea())
+                .boardLocation(review.getReviewLocation())
                 .build()
         ).collect(toList());
     }
@@ -206,7 +206,9 @@ public class ReviewService {
             review.setReviewContent(dto.getReviewContent());
             review.setReviewJob(dto.getReviewJob());
             review.setReviewRating(dto.getReviewRating());
-            review.setCompany(company);
+            review.setReviewCompany(dto.getCompanyName());
+            review.setReviewLocation(dto.getReviewLocation());
+            review.setReviewTenure(dto.getReviewTenure());
 
             reviewRepository.save(review);
         }else {

@@ -23,7 +23,7 @@ public class CompanyDetailResponseDTO {
     private String companyUrl;;
     private String companySal;
     @JsonFormat(pattern = "yyyy-mm-dd")
-    private LocalDate companyDate;
+    private String companyDate;
     private String companyEnddate;
 
     public CompanyDetailResponseDTO(Company company){

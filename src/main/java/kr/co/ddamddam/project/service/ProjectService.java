@@ -1,6 +1,7 @@
 package kr.co.ddamddam.project.service;
 
 import kr.co.ddamddam.common.common.ValidateToken;
+import kr.co.ddamddam.common.exception.custom.ErrorCode;
 import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
 import kr.co.ddamddam.common.exception.custom.UnauthorizationException;
 import kr.co.ddamddam.config.security.TokenUserInfo;
@@ -25,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -136,7 +138,8 @@ public class ProjectService {
 
     public ProjectDetailResponseDTO modify(
             TokenUserInfo tokenUserInfo,
-            ProjectModifyRequestDTO dto
+            ProjectModifyRequestDTO dto,
+            String uploadedFilePath
     ) {
         validateDTO(tokenUserInfo, dto.getProjectIdx());
 
@@ -149,53 +152,47 @@ public class ProjectService {
         currProject.setMaxBack(dto.getMaxBack());
         currProject.setOfferPeriod(dto.getOfferPeriod());
         currProject.setProjectIdx(dto.getProjectIdx());
+      currProject.setProjectImg(uploadedFilePath);
 
-        Project modifiedProject = projectRepository.save(currProject);
+    Project modifiedProject = projectRepository.save(currProject);
 
-        return new ProjectDetailResponseDTO(modifiedProject);
+    return new ProjectDetailResponseDTO(modifiedProject);
+  }
+
+  public void delete(Long id) {
+    projectRepository.deleteById(id);
+  }
+
+  // 퀵 매칭
+  // select : 오래된 순 / 내 포지션 / 남은자리가 작은것 부터
+  public ProjectListPageResponseDTO quickMatching(TokenUserInfo tokenUserInfo, PageDTO dto, ProjectSearchRequestDto searchDto) {
+    Pageable pageable = null;
+
+    if (StringUtils.isEmpty(searchDto.getSort())) {
+      if ("front".equals(searchDto.getPosition())) {
+        pageable = PageRequest.of(
+            dto.getPage() - 1,
+            dto.getSize(),
+            Sort.by(
+                Sort.Order.asc("applicantOfFronts.size"),
+                Sort.Order.asc("projectDate")
+            )
+        );
+      } else if ("back".equals(searchDto.getPosition())) {
+        pageable = PageRequest.of(
+            dto.getPage() - 1,
+            dto.getSize(),
+            Sort.by(
+                Sort.Order.asc("applicantOfBacks.size"),
+                Sort.Order.asc("projectDate")
+            )
+        );
+      }
     }
+    Page<Project> projectPage = search(pageable, searchDto);
 
-    public void delete(TokenUserInfo tokenUserInfo, Long boardIdx) {
-        validateDTO(tokenUserInfo, boardIdx);
-        projectRepository.deleteById(boardIdx);
-    }
-
-    // 퀵 매칭
-    // select : 오래된 순 / 내 포지션 / 남은자리가 작은것 부터
-    public ProjectListPageResponseDTO quickMatching(
-            TokenUserInfo tokenUserInfo,
-            ProjectSearchRequestDto searchDto,
-            PageDTO dto
-    ) {
-        validateToken.validateToken(tokenUserInfo);
-
-        Pageable pageable = null;
-
-        if (StringUtils.isEmpty(searchDto.getSort())) {
-            if ("front".equals(searchDto.getPosition())) {
-                pageable = PageRequest.of(
-                        dto.getPage() - 1,
-                        dto.getSize(),
-                        Sort.by(
-                                Sort.Order.asc("applicantOfFronts.size"),
-                                Sort.Order.asc("projectDate")
-                        )
-                );
-            } else if ("back".equals(searchDto.getPosition())) {
-                pageable = PageRequest.of(
-                        dto.getPage() - 1,
-                        dto.getSize(),
-                        Sort.by(
-                                Sort.Order.asc("applicantOfBacks.size"),
-                                Sort.Order.asc("projectDate")
-                        )
-                );
-            }
-        }
-        Page<Project> projectPage = search(pageable, searchDto);
-
-        return getProjectList(projectPage);
-    }
+    return getProjectList(projectPage);
+  }
 
     /**
      * 토큰 유효성을 검사합니다.

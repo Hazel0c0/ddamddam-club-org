@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 // TODO : 회사취업후기 게시판
 @Setter
 @Getter
-@ToString(exclude = {"user", "company"})
+@ToString(exclude = {"user"})
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,12 +27,14 @@ public class Review {
      @Column(name = "review_idx")
     private Long reviewIdx;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_idx") //company 숫자 ...? 채용공고에서 연결되는건가?
-    private Company company;
-
     @Column(name = "review_title",nullable = false, length = 300)
     private String reviewTitle;
+
+    @Column(name = "review_company",nullable = false, length = 50)
+    private String reviewCompany;
+
+    @Column(name = "review_Location",nullable = false, length = 50)
+    private String reviewLocation;
 
     @Column(name ="review_content", nullable = false , length = 3000)
     private String reviewContent;

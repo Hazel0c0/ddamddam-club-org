@@ -46,9 +46,6 @@ public class ReviewModifyRequestDTO {
 
 
     public Review toEntity(){
-        Company company = new Company();
-        company.setCompanyName(this.companyName);
-        company.setCompanyArea(this.reviewLocation);
 
         return Review.builder()
                 .reviewTitle(this.reviewTitle)
@@ -56,7 +53,8 @@ public class ReviewModifyRequestDTO {
                 .reviewRating(this.reviewRating)
                 .reviewJob(this.reviewJob)
                 .reviewTenure(this.reviewTenure)
-                .company(company)
+                .reviewLocation(this.reviewLocation)
+                .reviewCompany(this.companyName)
                 .build();
     }
 
