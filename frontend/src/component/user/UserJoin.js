@@ -11,6 +11,9 @@ import {BASE_URL as BASE, AUTH, JOININ, EMAIL} from '../../component/common/conf
 
 const UserJoin = () => {
 
+    //useRef로 태그 참조하기
+    const $fileTag = useRef();
+
     // 리다이렉트 사용하기
     const redirection = useNavigate();
 
@@ -405,6 +408,24 @@ const UserJoin = () => {
             alert('입력란을 다시 확인해주세요!');
         }
     }
+    //이미지 파일 상태변수
+    const [imgFile, setImgFile] = useState(null);
+
+    // 이미지파일을 선택했을 때 썸네일 뿌리기
+    const showThumbnailHandler = e => {
+
+        // 첨부된 파일 정보
+        const file = $fileTag.current.files[0];
+
+        const reader = new FileReader(); //이미지파일 읽어오기
+        reader.readAsDataURL(file);
+
+        reader.onloadend = () => {
+            setImgFile(reader.result);
+        }
+    };
+
+
 
 
     //렌더링이 끝난 이후 실행되는 함수
@@ -419,8 +440,21 @@ const UserJoin = () => {
             </section>
             <div className={'background'}></div>
             <section className={'form-wrapper'}>
-                <img src={profile} alt={'profileImg'} className={'profile-img'}></img>
-                <div className={'profile-img-text'}>프로필을 등록해주세요</div>
+                <div className={"thunmbnail-box"} onClick={() => $fileTag.current.click()}>
+                    <img src={imgFile || require('../../src_assets/IMG_4525.JPG')}
+                         alt={'profileImg'}
+                         className={'profile-img'}
+                    />
+                </div>
+                <label className='signup-img-label' htmlFor='profile-img'>프로필을 등록해주세요</label>
+                <input
+                  id='profile-img'
+                  type='file'
+                  style={{display: 'none'}}
+                  accept='image/*'
+                  ref={$fileTag}
+                  onChange={showThumbnailHandler}
+                />
                 <div className={'input-email'}>
                     <input type={"text"} className={'email-input'} id={'userEmail'} name={'userEmail'}
                            placeholder={'이메일'} onChange={emailHandler}/>

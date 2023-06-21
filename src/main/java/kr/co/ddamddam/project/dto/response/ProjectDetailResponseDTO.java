@@ -40,7 +40,7 @@ public class ProjectDetailResponseDTO {
   private LocalDateTime projectDate;
 
   public ProjectDetailResponseDTO(Project project){
-    this.boardWriter =project.getWriter();
+    this.boardWriter =project.getUserNickname();
     this.boardIdx =project.getProjectIdx();
     this.boardTitle =project.getProjectTitle();
     this.boardContent =project.getProjectContent();

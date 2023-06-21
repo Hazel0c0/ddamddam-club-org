@@ -1,21 +1,26 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import Common from "../common/Common";
 import './scss/ProjectsWrite.scss';
 import {PROJECT} from "../common/config/HostConfig";
-import {Link} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // useHistory 대신 useNavigate 추가
 import ProjectsTitle from "./mainpage/ProjectsTitle";
+import {Grid} from "@mui/material";
+import * as PropTypes from "prop-types";
+
+
 
 const ProjectsWrite = () => {
   const [formData
     , setFormData] = useState({
-    boardWriterIdx: '3',
+    boardWriterIdx: '1',
     boardTitle: '',
     boardContent: '',
-    projectType: '',
-    maxFront: '',
-    maxBack: '',
-    offerPeriod: '',
+    projectType: '웹페이지',
+    maxFront: '1',
+    maxBack: '1',
+    offerPeriod: '2023-07-19',
   });
+
 
   const handleInputChange = (e) => {
     const {name, value} = e.target;
@@ -26,19 +31,28 @@ const ProjectsWrite = () => {
     console.log(name+" : "+value);
   }
 
+  const navigate = useNavigate(); // useNavigate 훅 사용
+
   const handleSubmit = () => {
-    // 작성완료 버튼을 눌렀을 때 실행되는 함수
-    // formData를 컨트롤러로 보내는 로직을 작성하세요.
+
+    const projectJsonBlob = new Blob(
+        [JSON.stringify(formData)],
+        { type: 'application/json' }
+    );
+
+    const projectFormData = new FormData();
+    projectFormData.append('project', projectJsonBlob);
+    projectFormData.append('projectImage', $fileTag.current.files[0]);
+
     fetch(PROJECT, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
+      body: projectFormData,
     }).then(response => response.json())
       .then(data => {
         // setFormData(data.formData);
+        console.log("write post")
         console.log(data); // Handle the response data
+        navigate('/projects')
       })
       .catch(error => {
         console.error(error); // Handle errors
@@ -46,11 +60,49 @@ const ProjectsWrite = () => {
     console.log(formData); // 예시: 콘솔에 데이터 출력
   };
 
+  const $fileTag = useRef();
+
+  const [imgFile, setImgFile] = useState(null);
+
+  const showThumbnailHandler = e => {
+
+    const file = $fileTag.current.files[0];
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      setImgFile(reader.result);
+    }
+  };
+
+
+
   return (
     <>
       <ProjectsTitle/>
       <Common className={'project-write-wrapper'}>
         <section className={'write-form-wrapper'}>
+
+          <Grid item xs={12}>
+            <div className="thumbnail-box" onClick={() => $fileTag.current.click()}>
+              <img
+                  src={imgFile || require('../../assets/img/image-add.png')}
+                  alt="profile"
+
+              />
+            </div>
+            <label className='signup-img-label' htmlFor='profile-img'>프로필 이미지 추가</label>
+            <input
+                id='profile-img'
+                type='file'
+                style={{display: 'none'}}
+                accept='image/*'
+                ref={$fileTag}
+                onChange={showThumbnailHandler}
+            />
+          </Grid>
+
           <div className={'title-input-wrapper'}>
             <h1 className={'sub-title'}>제목</h1>
             <input
@@ -70,9 +122,6 @@ const ProjectsWrite = () => {
                       value={formData.projectType}
                       onChange={handleInputChange}
               >
-                {/*<option disabled selected>fruits 🍊</option>*/}
-                <option value="웹페이지">웹페이지</option>
-                <option value="웹페이지">웹페이지</option>
                 <option value="웹페이지">웹페이지</option>
                 <option value="기타">기타</option>
               </select>
@@ -134,7 +183,9 @@ const ProjectsWrite = () => {
           <Link to={'/projects'} className={'close-btn-a'}>
             <button className={'close-btn'}>취소하기</button>
           </Link>
-          <button className={'submit-btn'} onClick={handleSubmit}>작성완료</button>
+          <button className={'submit-btn'}
+                  onClick={handleSubmit}
+          >작성완료</button>
         </div>
       </Common>
     </>
