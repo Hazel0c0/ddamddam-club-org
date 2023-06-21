@@ -26,7 +26,7 @@ class ReviewRepositoryTest {
     @DisplayName("취업후기 게시판 9개 생성")
     void bulkInsert() {
         Optional<User> userOptional = userRepository.findById(1L);
-        for (int i = 1; i < 10 ; i++) {
+        for (int i = 1; i < 100 ; i++) {
             reviewRepository.save(
                     Review.builder()
                             .reviewTitle("여기 완전 좋지렁"+ i)

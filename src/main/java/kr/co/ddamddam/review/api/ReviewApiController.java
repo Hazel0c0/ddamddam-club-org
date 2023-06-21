@@ -1,10 +1,10 @@
 package kr.co.ddamddam.review.api;
-import kr.co.ddamddam.company.dto.page.PageDTO;
+
+import kr.co.ddamddam.review.dto.page.PageDTO;
 import kr.co.ddamddam.review.dto.request.ReviewModifyRequestDTO;
 import kr.co.ddamddam.review.dto.request.ReviewWriteRequestDTO;
 import kr.co.ddamddam.review.dto.response.ReviewDetailResponseDTO;
 import kr.co.ddamddam.review.dto.response.ReviewListPageResponseDTO;
-import kr.co.ddamddam.review.dto.response.ReviewListResponseDTO;
 import kr.co.ddamddam.review.dto.response.ReviewTopListResponseDTO;
 import kr.co.ddamddam.review.service.ReviewNotFoundException;
 import kr.co.ddamddam.review.service.ReviewService;
@@ -13,9 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.ls.LSException;
 
-import javax.swing.*;
 import java.util.List;
 
 @RestController
@@ -30,7 +28,7 @@ public class ReviewApiController {
     //전체 목록 조회
     @GetMapping("/list")
     public ResponseEntity<?> list(PageDTO pageDTO){
-        log.info("api/ddamddam/reviews/list>page{}&size={}&sort={}",pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort());
+        log.info("api/ddamddam/reviews/list?page{}&size={}&sort={}",pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort());
         ReviewListPageResponseDTO dto = reviewService.getList(pageDTO);
         return ResponseEntity.ok().body(dto);
     }
@@ -60,25 +58,26 @@ public class ReviewApiController {
 
     //키워드 검색
     @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam("keyword") String keyword){
-        log.info("api/ddamddam/reviews/search?keyword={} ", keyword);
-        ReviewListPageResponseDTO reviewList = reviewService.getKeywordList(keyword);
+    public ResponseEntity<?> search(@RequestParam("keyword") String keyword,
+                                    PageDTO pageDTO){
+        log.info("api/ddamddam/reviews/search?keyword={}&page{}&size={}&sort={}", keyword,pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort());
+        ReviewListPageResponseDTO reviewList = reviewService.getKeywordList(keyword,pageDTO);
         return ResponseEntity.ok().body(reviewList);
     }
 
     //조회순으로 조회하기
     @GetMapping("/view")
-    public ResponseEntity<?> OrderByView(){
-        log.info("api/ddamddam/reviews/view ");
-        ReviewListPageResponseDTO reviewList = reviewService.getListOrderByView();
+    public ResponseEntity<?> OrderByView(PageDTO pageDTO){
+        log.info("api/ddamddam/reviews/view?&page={}&size={}&sort={},",pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort());
+        ReviewListPageResponseDTO reviewList = reviewService.getListOrderByView(pageDTO);
         return ResponseEntity.ok().body(reviewList);
     }
 
     //평점순으로 조회하기
     @GetMapping("/rating")
-    public ResponseEntity<?> OrderByrating(){
-        log.info("api/ddamddam/reviews/rating ");
-        ReviewListPageResponseDTO reviewList = reviewService.getListOrderByRateDesc();
+    public ResponseEntity<?> OrderByrating(PageDTO pageDTO){
+        log.info("api/ddamddam/reviews/rating?&page={}&size={} ");
+        ReviewListPageResponseDTO reviewList = reviewService.getListOrderByRateDesc(pageDTO);
         return ResponseEntity.ok().body(reviewList);
     }
 
