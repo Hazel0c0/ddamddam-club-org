@@ -8,10 +8,10 @@ import {QNA} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import PageNation from "../common/pageNation/PageNation";
 import {getToken} from "../common/util/login-util";
-import QnaTotal from "./QnaTotal";
-import QnaNoAdoption from "./QnaNoAdoption";
-import QnaAdoption from "./QnaAdoption";
-import QnaSearchKeyword from "./QnaSearchKeyword";
+import QnaTotal from "./hashTagConfig/QnaTotal";
+import QnaNoAdoption from "./hashTagConfig/QnaNoAdoption";
+import QnaAdoption from "./hashTagConfig/QnaAdoption";
+import QnaSearchKeyword from "./hashTagConfig/QnaSearchKeyword";
 
 const QnaList = ({searchValue, searchKeyword}) => {
     const [pageTrue, setPageTrue] = useState({
@@ -27,9 +27,8 @@ const QnaList = ({searchValue, searchKeyword}) => {
     useEffect(() => {
         //로그인 검증
         const ACCESS_TOKEN = getToken();
-        if (ACCESS_TOKEN !== '' || ACCESS_TOKEN !== null) {
+        if (ACCESS_TOKEN !== '' && ACCESS_TOKEN !== null) {
             setLoginCheck(true);
-
         }
         console.log(`searchValue = ${searchKeyword}`)
         if (searchKeyword !== null && searchKeyword !== '') {

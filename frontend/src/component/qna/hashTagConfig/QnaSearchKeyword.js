@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import viewIcon from "../../src_assets/view-icon.png";
-import speechBubble from "../../src_assets/speech-bubble.png";
+import viewIcon from "../../../src_assets/view-icon.png";
+import speechBubble from "../../../src_assets/speech-bubble.png";
 import {Link, useNavigate} from "react-router-dom";
 import {IoIosArrowForward} from "react-icons/io";
-import PageNation from "../common/pageNation/PageNation";
-import {QNA} from "../common/config/HostConfig";
-import {getToken} from "../common/util/login-util";
+import PageNation from "../../common/pageNation/PageNation";
+import {QNA} from "../../common/config/HostConfig";
+import {getToken} from "../../common/util/login-util";
 
 const QnaNoAdoption = ({loginCheck,searchKeyword}) => {
     const [qnaList, setQnaList] = useState([]);
@@ -37,11 +37,9 @@ const QnaNoAdoption = ({loginCheck,searchKeyword}) => {
         setClickCurrentPage(clickPageNum);
     }
 
-    const ACCESS_TOKEN = getToken();
     const redirection = useNavigate();
     const loginCheckHandler = (e) => {
-        console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
-        if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null) {
+        if (!loginCheck) {
             alert('로그인 후 이용가능합니다.')
             e.preventDefault();
             redirection('/login');

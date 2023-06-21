@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import ReviewList from "./ReviewList";
+import ReviewList from "./ReviewList2";
 import ReviewSearch from "./ReviewSearch";
 import ReviewMain from "./ReviewMain";
 
