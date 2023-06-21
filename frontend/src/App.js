@@ -86,7 +86,7 @@ function App() {
                 {/*회원가입*/}
                 <Route path={'/join'} element={<UserJoin/>}></Route>
 
-                {/*로그인*/}
+                {/*카카오로그인*/}
                 <Route path={`/oauth/callback/kakao`} element={<OAuth2RedirectHandler/>}></Route>
 
             </Routes>
