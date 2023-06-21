@@ -2,6 +2,7 @@ package kr.co.ddamddam.mypage.service;
 
 import kr.co.ddamddam.chat.entity.ChatRoom;
 import kr.co.ddamddam.chat.repository.ChatRoomRepository;
+import kr.co.ddamddam.common.common.ValidateToken;
 import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.UserUtil;
 import kr.co.ddamddam.mentor.entity.Mentor;
@@ -56,6 +57,11 @@ public class MypageService {
     private final ReviewRepository reviewRepository;
     private final ProjectRepository projectRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final BackRepository backRepository;
+    private final FrontRepository frontRepository;
+    private final UserUtil userUtil;
+    private final ValidateToken validateToken;
+
 
 
     /**
@@ -90,9 +96,7 @@ public class MypageService {
                 .build();
 
     }
-    private final BackRepository backRepository;
-    private final FrontRepository frontRepository;
-    private final UserUtil userUtil;
+
 
     /**
      * 마이페이지의 <내가 쓴 게시글> 목록 조회 및 페이징
@@ -100,15 +104,15 @@ public class MypageService {
      * @return 페이지 정보, 페이징 처리 된 로그인 유저가 작성한 게시글 목록 리스트
      */
     public MypageBoardPageResponseDTO getBoardList(
-//            TokenUserInfo tokenUserInfo,
+            TokenUserInfo tokenUserInfo,
             PageDTO pageDTO
     ) {
         // 토큰 유효성 검사
-//        validateToken.validateToken(tokenUserInfo);
+        validateToken.validateToken(tokenUserInfo);
 
         // 유효성 검사 통과 시 서비스 기능 수행
-//        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
-        Long userIdx = 1L;
+        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
+//        Long userIdx = 1L;
 
         List<Qna> qnaList = qnaRepository.findByUserUserIdx(userIdx);
         List<Mentor> mentorList = mentorRepository.findByUserUserIdx(userIdx);
@@ -200,6 +204,7 @@ public class MypageService {
         return MypageBoardResponseDTO.builder()
                 .boardType(QNA)
                 .boardIdx(qna.getQnaIdx())
+                .boardTitle(qna.getQnaTitle())
                 .boardDate(qna.getQnaDate())
                 .build();
     }
@@ -213,6 +218,7 @@ public class MypageService {
         return MypageBoardResponseDTO.builder()
                 .boardType(MENTOR)
                 .boardIdx(mentor.getMentorIdx())
+                .boardTitle(mentor.getMentorTitle())
                 .boardDate(mentor.getMentorDate())
                 .build();
     }
@@ -226,6 +232,7 @@ public class MypageService {
         return MypageBoardResponseDTO.builder()
                 .boardType(REVIEW)
                 .boardIdx(review.getReviewIdx())
+                .boardTitle(review.getReviewTitle())
                 .boardDate(review.getReviewDate())
                 .build();
     }
@@ -239,6 +246,7 @@ public class MypageService {
         return MypageBoardResponseDTO.builder()
                 .boardType(PROJECT)
                 .boardIdx(project.getProjectIdx())
+                .boardTitle(project.getProjectTitle())
                 .boardDate(project.getProjectDate())
                 .build();
     }
