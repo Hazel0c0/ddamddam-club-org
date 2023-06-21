@@ -24,18 +24,20 @@ class MentorRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    @DisplayName("멘토 게시판 9개 생성")
+    @DisplayName("멘토 게시판 30개 생성")
     void bulkInsert(){
         Optional<User> userOptional = userRepository.findById(3L);
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i <= 30; i++) {
+            int index = (int) (Math.random() * 4); // 0 ~ 5
+            Long ran = (long) (Math.random() * 20 + 1);
             mentorRepository.save(
                     Mentor.builder()
                             .mentorTitle("백엔드 너무 어려워요" + i)
                             .mentorContent("안녕하세요 반갑습니다 ㅣㅅㅂㅅㅂㅅㅂㅆㅂ"+i)
                             .mentorSubject("백엔드")
-                            .mentorCurrent(i+"년")
+                            .mentorCurrent(index+"년")
                             .mentorCareer("배구")
-                            .user(userOptional.get())
+                            .user(userRepository.findById(ran).orElse(null))
                             .build()
             );
         }
