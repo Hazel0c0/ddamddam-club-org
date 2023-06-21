@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 // 세션 스토리지
 // 로그인 유저의 토큰을 반환하는 함수
 export const getToken = () => {
-  if (localStorage !== null) {
+  if (localStorage.getItem('ACCESS_TOKEN') !== null) {
     return localStorage.getItem('ACCESS_TOKEN');
   }
   return sessionStorage.getItem('ACCESS_TOKEN');
@@ -15,7 +15,7 @@ export const getToken = () => {
 
 // 로그인 유저의 식별번호(idx)를 반환하는 함수
 export const getUserIdx = () => {
-  if (localStorage !== null) {
+  if (localStorage.getItem('ACCESS_TOKEN') !== null) {
     return localStorage.getItem('LOGIN_USER_IDX');
   }
   return sessionStorage.getItem('LOGIN_USER_IDX');
@@ -23,7 +23,7 @@ export const getUserIdx = () => {
 
 // 로그인 유저의 이메일을 반환하는 함수
 export const getUserEmail = () => {
-  if (localStorage !== null) {
+  if (localStorage.getItem('ACCESS_TOKEN') !== null) {
     return localStorage.getItem('LOGIN_USER_EMAIL');
   }
   return sessionStorage.getItem('LOGIN_USER_EMAIL');
@@ -31,7 +31,7 @@ export const getUserEmail = () => {
 
 // 로그인 유저의 이름을 반환하는 함수
 export const getUserName = () => {
-  if (localStorage !== null) {
+  if (localStorage.getItem('ACCESS_TOKEN') !== null) {
     return localStorage.getItem('LOGIN_USER_NAME');
   }
   return sessionStorage.getItem('LOGIN_USER_NAME');
@@ -39,7 +39,7 @@ export const getUserName = () => {
 
 // 로그인 유저의 닉네임을 반환하는 함수
 export const getUserNickname = () => {
-  if (localStorage !== null) {
+  if (localStorage.getItem('ACCESS_TOKEN') !== null) {
     return localStorage.getItem('LOGIN_USER_NICKNAME');
   }
   return sessionStorage.getItem('LOGIN_USER_NICKNAME');
@@ -47,7 +47,7 @@ export const getUserNickname = () => {
 
 // 로그인 유저의 가입일자를 반환하는 함수
 export const getUserRegdate = () => {
-  if (localStorage !== null) {
+  if (localStorage.getItem('ACCESS_TOKEN') !== null) {
     return localStorage.getItem('ACCESS_TOKEN');
   }
   return sessionStorage.getItem('LOGIN_USER_REGDATE');
@@ -55,7 +55,7 @@ export const getUserRegdate = () => {
 
 // 로그인 유저의 생년월일을 반환하는 함수
 export const getUserBirth = () => {
-  if (localStorage !== null) {
+  if (localStorage.getItem('ACCESS_TOKEN') !== null) {
     return localStorage.getItem('LOGIN_USER_BIRTH');
   }
   return sessionStorage.getItem('LOGIN_USER_BIRTH');
@@ -63,7 +63,7 @@ export const getUserBirth = () => {
 
 // 로그인 유저의 포지션을 반환하는 함수
 export const getUserPosition = () => {
-  if (localStorage !== null) {
+  if (localStorage.getItem('ACCESS_TOKEN') !== null) {
     return localStorage.getItem('LOGIN_USER_POSITION');
   }
   return sessionStorage.getItem('LOGIN_USER_POSITION');
@@ -71,7 +71,7 @@ export const getUserPosition = () => {
 
 // 로그인 유저의 경력을 반환하는 함수 (n년)
 export const getUserCareer = () => {
-  if (localStorage !== null) {
+  if (localStorage.getItem('ACCESS_TOKEN') !== null) {
     return localStorage.getItem('LOGIN_USER_CAREER');
   }
   return sessionStorage.getItem('LOGIN_USER_CAREER');
@@ -79,7 +79,7 @@ export const getUserCareer = () => {
 
 // 로그인 유저의 보유 포인트를 반환하는 함수
 export const getUserPoint = () => {
-  if (localStorage !== null) {
+  if (localStorage.getItem('ACCESS_TOKEN') !== null) {
     return localStorage.getItem('LOGIN_USER_POINT');
   }
   return sessionStorage.getItem('LOGIN_USER_POINT');
@@ -87,7 +87,7 @@ export const getUserPoint = () => {
 
 // 로그인 유저의 프로필 사진 경로를 반환하는 함수
 export const getUserProfile = () => {
-  if (localStorage !== null) {
+  if (localStorage.getItem('ACCESS_TOKEN') !== null) {
     return localStorage.getItem('LOGIN_USER_PROFILE');
   }
   return sessionStorage.getItem('LOGIN_USER_PROFILE');
@@ -96,7 +96,7 @@ export const getUserProfile = () => {
 
 // 로그인 유저의 권한을 반환하는 함수
 export const getUserRole = () => {
-  if (localStorage !== null) {
+  if (localStorage.getItem('ACCESS_TOKEN') !== null) {
     return localStorage.getItem('LOGIN_USER_ROLE');
   }
   return sessionStorage.getItem('LOGIN_USER_ROLE');

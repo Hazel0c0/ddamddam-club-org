@@ -130,6 +130,8 @@ public class QnaService {
         PageRequest pageable = getPageable(pageDTO);
 
         Page<Qna> qnas = qnaRepository.findByKeyword(keyword, pageable);
+
+        System.out.println("qnas = " + qnas);
         List<QnaListResponseDTO> qnaList = getQnaDtoListByKeyword(qnas);
 
         return QnaListPageResponseDTO.builder()
