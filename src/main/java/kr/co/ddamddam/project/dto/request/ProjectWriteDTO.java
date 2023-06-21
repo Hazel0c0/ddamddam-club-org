@@ -16,32 +16,33 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class ProjectWriteDTO {
 
-    @NotBlank
-    private String boardTitle;
-    @NotBlank
-    private String boardContent;
-    private String projectType;
+  @NotNull
+  private Long boardWriterIdx;
 
-    //모집인원
-    @NotNull
-    @Max(5)
-    private int maxFront;
-    @NotNull
-    @Max(5)
-    private int maxBack;
+  @NotBlank
+  private String boardTitle;
+  @NotBlank
+  private String boardContent;
+  private String projectType;
 
-    private String offerPeriod; //모집기간
+  //모집인원
+  @NotNull @Max(5)
+  private int maxFront;
+  @NotNull @Max(5)
+  private int maxBack;
 
-    public Project toEntity(User user, String uploadedFilePath) {
-        return Project.builder()
-                .userNickname(user.getUserNickname())
-                .projectTitle(this.boardTitle)
-                .projectImg(uploadedFilePath)
-                .projectContent(this.boardContent)
-                .projectType(this.projectType)
-                .maxFront(this.maxFront)
-                .maxBack(this.maxBack)
-                .user(user)
-                .build();
-    }
+  private String offerPeriod; //모집기간
+
+  public Project toEntity(User user, String uploadedFilePath) {
+    return Project.builder()
+        .user(user)
+        .userNickname(user.getUserNickname())
+        .projectTitle(this.boardTitle)
+        .projectImg(uploadedFilePath)
+        .projectContent(this.boardContent)
+        .projectType(this.projectType)
+        .maxFront(this.maxFront)
+        .maxBack(this.maxBack)
+        .build();
+  }
 }
