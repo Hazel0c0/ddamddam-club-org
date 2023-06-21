@@ -5,8 +5,13 @@ import Common from "./Common";
 import {Link} from "react-router-dom";
 import {getToken, isLogin} from "./util/login-util";
 import profileImg from "../../src_assets/IMG_4525.JPG"
+import {BASE_URL, AUTH} from "../../component/common/config/HostConfig";
 
 const Header = () => {
+
+    //프로필 이미지 url 상태변수
+    const [profileUrl, setProfileUrl] = useState(null); //기본값은 null
+    const profileRequestURL = `${BASE_URL}${AUTH}/load-profile`;
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [animating, setAnimating] = useState(false);
     const [background, setBackground] = useState('rgba(0, 0, 0, 0)');
@@ -17,9 +22,35 @@ const Header = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(isLogin());
 
     const ACCESS_TOKEN = getToken();
+    const headerInfo = {
+        'content-type': 'application/json',
+        'Authorization': 'Bearer ' + ACCESS_TOKEN
+    };
+
+    //프로필사진 이미지 패치
+    const fetchProfileImage = async() => {
+        const res = await fetch(profileRequestURL,{
+            method: 'GET',
+            headers: headerInfo
+          }
+
+        );
+        if(res.status === 200){
+            //서버에서 직렬화된 이미지가 응답된다.
+            const profileBlob = await res.blob();
+            //해당 이미지를 imgUrl로 변경
+            const imgUrl = window.URL.createObjectURL(profileBlob);
+            setProfileUrl(imgUrl);
+        } else{
+            const err = await res.text();
+            setProfileUrl(null);
+        }
+    } ;
 
     useEffect(() => {
-    }, []);
+        fetchProfileImage();
+
+    }, [profileUrl]);
 
     //로그아웃
     const logoutHandler = () => {
@@ -37,6 +68,19 @@ const Header = () => {
         sessionStorage.removeItem('LOGIN_USER_POINT');
         sessionStorage.removeItem('LOGIN_USER_PROFILE');
         sessionStorage.removeItem('LOGIN_USER_ROLE');
+        // 자동 ㅗ
+        localStorage.removeItem('ACCESS_TOKEN');
+        localStorage.removeItem('LOGIN_USER_IDX');
+        localStorage.removeItem('LOGIN_USER_EMAIL');
+        localStorage.removeItem('LOGIN_USER_NAME');
+        localStorage.removeItem('LOGIN_USER_NICKNAME');
+        localStorage.removeItem('LOGIN_USER_REGDATE');
+        localStorage.removeItem('LOGIN_USER_BIRTH');
+        localStorage.removeItem('LOGIN_USER_POSITION');
+        localStorage.removeItem('LOGIN_USER_CAREER');
+        localStorage.removeItem('LOGIN_USER_POINT');
+        localStorage.removeItem('LOGIN_USER_PROFILE');
+        localStorage.removeItem('LOGIN_USER_ROLE');
 
         window.location.href='/';
         }else {
@@ -104,7 +148,7 @@ const Header = () => {
                         :
                         <>
                             <div className={'logout'} onClick={logoutHandler}>LOGOUT</div>
-                            <Link to={'/myPage'} className={'myPage'}><img src={profileImg} alt={'profileImg'}
+                            <Link to={'/myPage'} className={'myPage'}><img src={profileUrl ? profileUrl : require(profileImg)} alt={'profileImg'}
                                                                            className={'profile-img'}/></Link>
                         </>
 

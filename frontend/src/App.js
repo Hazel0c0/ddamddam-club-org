@@ -22,6 +22,8 @@ import ProjectsModify from "./component/projects/ProjectsModify";
 import ReviewTemplate from "./component/review/ReviewTemplate";
 import ReviewDetail from "./component/review/ReviewDetail";
 import ReviewWrite from "./component/review/ReviewWrite";
+import OAuth2RedirectHandler from "./component/snslogin/OAuth2RedirectHandler";
+import MypageMain from "./component/mypage/MypageMain";
 
 
 function App() {
@@ -73,12 +75,17 @@ function App() {
                 {/*Review/글작성*/}
                 <Route path={'/reviews/write'} element={<ReviewWrite/>}></Route>
 
+                {/*마이페이지*/}
+                <Route path={'/mypage'} element={<MypageMain/>}></Route>
 
                 {/*로그인*/}
                 <Route path={'/login'} element={<UserLogin/>}></Route>
 
                 {/*회원가입*/}
                 <Route path={'/join'} element={<UserJoin/>}></Route>
+
+                {/*카카오로그인*/}
+                <Route path={`/oauth/callback/kakao`} element={<OAuth2RedirectHandler/>}></Route>
 
             </Routes>
             <Footer/>
@@ -87,3 +94,4 @@ function App() {
 }
 
 export default App;
+
