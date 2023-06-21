@@ -93,8 +93,8 @@ public class UserSignUpService {
     public String getProfilePath(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow();
-//        return uploadRootPath + "/" + user.getProfileImg();
-        return user.getUserProfile();
+        return uploadRootPath + "/" + user.getUserProfile();
+//        return user.getUserProfile();
     }
 
 

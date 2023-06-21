@@ -11,7 +11,8 @@ const Header = () => {
 
     //프로필 이미지 url 상태변수
     const [profileUrl, setProfileUrl] = useState(null); //기본값은 null
-    const profileRequestURL = `${BASE_URL}${AUTH}/load-profile`;
+    // const profileRequestURL = `${BASE_URL}${AUTH}/load-profile`;
+    const profileRequestURL = `//localhost:8181/api/ddamddam/auth/load-profile`;
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [animating, setAnimating] = useState(false);
     const [background, setBackground] = useState('rgba(0, 0, 0, 0)');
@@ -29,9 +30,10 @@ const Header = () => {
 
     //프로필사진 이미지 패치
     const fetchProfileImage = async() => {
-        const res = await fetch(profileRequestURL,{
+        const res = await fetch('//localhost:8181/api/ddamddam/auth/load-profile',{
             method: 'GET',
             headers: headerInfo
+            // headers: { 'Authorization': 'Bearer ' + getToken() }
           }
 
         );
@@ -41,6 +43,7 @@ const Header = () => {
             //해당 이미지를 imgUrl로 변경
             const imgUrl = window.URL.createObjectURL(profileBlob);
             setProfileUrl(imgUrl);
+            console.log(`imgUrl : `,imgUrl)
         } else{
             const err = await res.text();
             setProfileUrl(null);
@@ -50,7 +53,7 @@ const Header = () => {
     useEffect(() => {
         fetchProfileImage();
 
-    }, [profileUrl]);
+    }, []);
 
     //로그아웃
     const logoutHandler = () => {
@@ -148,8 +151,9 @@ const Header = () => {
                         :
                         <>
                             <div className={'logout'} onClick={logoutHandler}>LOGOUT</div>
-                            <Link to={'/myPage'} className={'myPage'}><img src={profileUrl ? profileUrl : require(profileImg)} alt={'profileImg'}
-                                                                           className={'profile-img'}/></Link>
+                            <Link to={'/myPage'} className={'myPage'}>
+                                <img src={profileUrl ? profileUrl : profileImg} alt={'profileImg'} className={'profile-img'}/>
+                            </Link>
                         </>
 
                     }
