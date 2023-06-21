@@ -25,6 +25,8 @@ const Header = () => {
         'Authorization': 'Bearer ' + ACCESS_TOKEN
     };
 
+
+
     //프로필사진 이미지 패치
     const fetchProfileImage = async() => {
         const res = await fetch(profileRequestURL,{
