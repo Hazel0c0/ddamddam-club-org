@@ -20,12 +20,16 @@ const Header = () => {
     // const [token, setToken] = useState(null);
 
     const ACCESS_TOKEN = getToken();
+    const headerInfo = {
+        'content-type': 'application/json',
+        'Authorization': 'Bearer ' + ACCESS_TOKEN
+    };
 
     //프로필사진 이미지 패치
     const fetchProfileImage = async() => {
         const res = await fetch(profileRequestURL,{
             method: 'GET',
-            headers: {'Authorization': 'Bearer'}
+            headers: headerInfo
           }
 
         );
