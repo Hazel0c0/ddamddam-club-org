@@ -25,7 +25,7 @@ public class MypageController {
 
     @GetMapping("/board-list")
     public ResponseEntity<?> getBoardList(
-            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
+//            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             PageDTO pageDTO
     ){
 //        log.info("GET : MypageController/getBoardList - tokenUserInfo : {}", tokenUserInfo);

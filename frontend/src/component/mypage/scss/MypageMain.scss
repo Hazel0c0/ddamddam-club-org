@@ -1,0 +1,31 @@
+@mixin content-center {
+  display: flex;
+  justify-content: center;
+}
+
+.mentors-top-wrapper {
+  padding: 160px 370px 0;
+  display: flex;
+  flex-direction: column;
+  //height: 100vh;
+
+  .main-title {
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+    font-family: 'IBM Plex Mono', sans-serif !important;
+    font-size: 43.2px;
+    font-weight: 500;
+    letter-spacing: -1.5px;
+
+    .mypage-info-wrapper {
+      width: 300px;
+
+    }
+  }
+
+  .mypage-medium-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+}

@@ -42,7 +42,7 @@ class ProjectRepositoryTest {
               .projectType("웹페이지")
               .maxFront(index)
               .maxBack(index)
-                  .user(userRepository.findById(1L).orElse(null))
+              .user(userRepository.findById(ran).orElse(null))
               .build()
       );
     }
