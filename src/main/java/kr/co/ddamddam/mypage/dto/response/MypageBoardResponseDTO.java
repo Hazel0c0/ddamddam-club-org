@@ -1,5 +1,6 @@
 package kr.co.ddamddam.mypage.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -15,9 +16,12 @@ import java.time.LocalDateTime;
 @Builder
 public class MypageBoardResponseDTO {
 
-    // TODO : Validate 처리
+    // TODO : 전체 Validate 처리
     private String boardType; // 게시판 타입
     private Long boardIdx;
+    // TODO : 제목 길면 Truncate 처리
+    private String boardTitle;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime boardDate;
 
 }

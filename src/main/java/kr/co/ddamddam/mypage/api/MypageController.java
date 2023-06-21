@@ -31,9 +31,10 @@ public class MypageController {
         @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
         PageDTO pageDTO
     ) {
-//        log.info("GET : MypageController/getBoardList - tokenUserInfo : {}", tokenUserInfo);
+        log.info("GET : MypageController/getBoardList - tokenUserInfo : {}", tokenUserInfo);
+//        log.info("GET : MypageController/getBoardList - tokenUserInfo : {}", pageDTO);
 
-        MypageBoardPageResponseDTO boardList = myPageService.getBoardList(pageDTO);
+        MypageBoardPageResponseDTO boardList = myPageService.getBoardList(tokenUserInfo, pageDTO);
 
         return ResponseEntity.ok().body(boardList);
     }
