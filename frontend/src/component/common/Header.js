@@ -3,7 +3,7 @@ import logo from '../../src_assets/logo.png';
 import './scss/Header.scss';
 import Common from "./Common";
 import {Link} from "react-router-dom";
-import {getToken} from "./util/login-util";
+import {getToken, isLogin} from "./util/login-util";
 import profileImg from "../../src_assets/IMG_4525.JPG"
 
 const Header = () => {
@@ -13,6 +13,8 @@ const Header = () => {
     const navigationRef = useRef(null);
     const categoryRef = useRef(null);
     // const [token, setToken] = useState(null);
+
+    const [isLoggedIn, setIsLoggedIn] = useState(isLogin());
 
     const ACCESS_TOKEN = getToken();
 

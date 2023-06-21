@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import viewIcon from "../../../src_assets/view-icon.png";
 import {Link, useNavigate} from "react-router-dom";
 import {IoIosArrowForward} from "react-icons/io";
+import PageNation from "../../common/pageNation/PageNation";
 import {REVIEW} from "../../common/config/HostConfig";
 import ReviewStar from "../StartRating/ReviewStar";
-import PageNation from "../../common/pageNation/PageNation";
 
 const ReviewTotal = ({loginCheck}) => {
     const [reviewList, setReviewList] = useState([]);
@@ -12,11 +12,11 @@ const ReviewTotal = ({loginCheck}) => {
     const [clickCurrentPage, setClickCurrentPage] = useState(1);
 
     useEffect(()=>{
-        asyncReviewTotalList();
+        asyncReviewRatingList();
     },[clickCurrentPage])
 
-    const asyncReviewTotalList = async () => {
-        const responseUrl = `/list?page=${clickCurrentPage}&size=10`
+    const asyncReviewRatingList = async () => {
+        const responseUrl = `/rating?page=${clickCurrentPage}&size=10`
         const res = await fetch(`${REVIEW}${responseUrl}`, {
             method: 'GET',
             headers: {'content-type': 'application/json'}
@@ -28,7 +28,7 @@ const ReviewTotal = ({loginCheck}) => {
         }
 
         const reviewList = await res.json();
-        console.log(`전체 reviewList : `,reviewList)
+
         setReviewList(reviewList.responseList);
         setPageNation(reviewList.pageInfo);
     }
@@ -45,7 +45,6 @@ const ReviewTotal = ({loginCheck}) => {
             alert('로그인 후 이용가능합니다.')
             e.preventDefault();
             redirection('/login');
-            // return;
         }
     }
 

@@ -18,7 +18,8 @@ const QnaNoAdoption = ({loginCheck,searchKeyword}) => {
     },[clickCurrentPage])
 
     const asyncQnaSearchKeywordList = async () => {
-        const res = await fetch(`${QNA}/search?keyword=${searchKeyword}`, {
+        const res = await fetch(`${QNA}/search?keyword=${searchKeyword}?page=${clickCurrentPage}&size=10`, {
+        // const res = await fetch(`${QNA}/search?keyword=${searchKeyword}`, {
             method: 'GET',
             headers: {'content-type': 'application/json'}
         })

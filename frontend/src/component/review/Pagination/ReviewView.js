@@ -1,32 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import Common from "../common/Common";
-import viewIcon from "../../src_assets/view-icon.png";
-import './scss/ReviewList.scss'
-import {IoIosArrowForward} from 'react-icons/io';
-import {QNA, REVIEW} from "../common/config/HostConfig";
-import {Link} from "react-router-dom";
-import ReviewStarRating from "./StartRating/ReviewStarRating";
-import ReviewStar from "./StartRating/ReviewStar";
-import PageNation from "../common/pageNation/PageNation";
+import viewIcon from "../../../src_assets/view-icon.png";
+import {Link, useNavigate} from "react-router-dom";
+import {IoIosArrowForward} from "react-icons/io";
+import PageNation from "../../common/pageNation/PageNation";
+import {REVIEW} from "../../common/config/HostConfig";
+import ReviewStar from "../StartRating/ReviewStar";
 
-const QnaList = ({searchValue}) => {
+const ReviewTotal = ({loginCheck}) => {
     const [reviewList, setReviewList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
-    const [clickCurrentPage, setClickCurrentPage] = useState([1]);
+    const [clickCurrentPage, setClickCurrentPage] = useState(1);
 
-    //조회순, 평점순 처리중
-    const asyncReviewList = async () => {
-        let responseUrl;
-        if (searchValue === '' || searchValue === '전체') {
-            responseUrl = `/list?page=${clickCurrentPage}&size=10`
-        } else if (searchValue === '평점순') {
-            responseUrl = '/rating';
-        } else if (searchValue === '조회순') {
-            responseUrl = '/view';
-        }
+    useEffect(()=>{
+        asyncReviewViewList();
+    },[clickCurrentPage])
 
-
-        // console.log(`responseUrl = ${responseUrl}`)
+    const asyncReviewViewList = async () => {
+        const responseUrl = `/view?page=${clickCurrentPage}&size=10`
         const res = await fetch(`${REVIEW}${responseUrl}`, {
             method: 'GET',
             headers: {'content-type': 'application/json'}
@@ -36,28 +26,31 @@ const QnaList = ({searchValue}) => {
             alert('잠시 후 다시 접속해주세요.[서버오류]');
             return;
         }
-        const reivewList = await res.json();
-        console.log(reivewList)
-        setReviewList(reivewList.responseList);
-        setPageNation(reivewList.pageInfo);
+
+        const reviewList = await res.json();
+
+        setReviewList(reviewList.responseList);
+        setPageNation(reviewList.pageInfo);
     }
 
-    // 전체 목록 리스트 출력
-    useEffect(() => {
-        asyncReviewList();
 
-    }, [searchValue,clickCurrentPage]);
-
-    //현재 페이지 설정
-    const currentPageHandler = (clickPageNum) =>{
+    const currentPageHandler = (clickPageNum) => {
         console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
         setClickCurrentPage(clickPageNum);
     }
 
-    //페이지 수 설정
+    const redirection = useNavigate();
+    const loginCheckHandler = (e) => {
+        if (!loginCheck) {
+            alert('로그인 후 이용가능합니다.')
+            e.preventDefault();
+            redirection('/login');
+            // return;
+        }
+    }
 
     return (
-        <Common className={'review-list-wrapper'}>
+        <>
             {reviewList.map((review) => (
                 <section className={'review-list'}>
 
@@ -82,7 +75,7 @@ const QnaList = ({searchValue}) => {
                         <div className={'text-content'}>{review.reviewContent}</div>
                     </section>
                     <div className={'right-section'}>
-                        <Link to={`/reviews/detail/${review.reviewIdx}`} className={'text'}>
+                        <Link to={`/reviews/detail/${review.reviewIdx}`} className={'text'} onClick={loginCheckHandler}>
                             <div className={'go-detail'}>
                                 <div className={'go-detail-text'}>더보기</div>
                                 <i className={'go-detail-icon'}><IoIosArrowForward/></i>
@@ -101,15 +94,15 @@ const QnaList = ({searchValue}) => {
                     </div>
                 </section>
             ))}
-            {/*{clickCurrentPage}*/}
+
             <ul>
                 <PageNation
                     pageNation={pageNation}
                     currentPageHandler={currentPageHandler}
                     clickCurrentPage={clickCurrentPage} />
             </ul>
-        </Common>
+        </>
     );
 };
 
-export default QnaList;
+export default ReviewTotal;
