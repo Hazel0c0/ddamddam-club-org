@@ -45,7 +45,6 @@ public class MentorApiController {
 
         MentorListResponseDTO dto = mentorService.getList(pageDTO);
 
-//        log.info("!!!!!!!!!!!!: {}",dto);
         return ResponseEntity.ok().body(dto);
     }
 
@@ -60,16 +59,18 @@ public class MentorApiController {
 
         MentorListResponseDTO dto = mentorService.getSubList(pageDTO, subjectList);
 
-//        log.info("!!!!!!!!!!!!: {}",dto);
         return ResponseEntity.ok().body(dto);
     }
 
 
     // 게시물 상세 페이지 조회
     @GetMapping("/detail")
-    public ResponseEntity<?> detail(Long mentorIdx){
+    public ResponseEntity<?> detail(
+            Long mentorIdx
+            ,@AuthenticationPrincipal TokenUserInfo tokenUserInfo
+    ){
 //        log.info("/api/ddamddam/mentors/detail?mentorIdx={}",mentorIdx);
-        MentorDetailResponseDTO dto = mentorService.getDetail(mentorIdx);
+        MentorDetailResponseDTO dto = mentorService.getDetail(mentorIdx, tokenUserInfo);
 
         return ResponseEntity.ok().body(dto);
     }
@@ -90,8 +91,7 @@ public class MentorApiController {
         //}
         log.info("/api/ddamddam/mentors POST!! - payload {}",dto);
         // 로그인한 토큰방식으로 user_idx값 받아와 서비스 파라미터에 넣기
-        Long userIdx = Long.valueOf(userInfo.getUserIdx());
-        MentorDetailResponseDTO responseDTO = mentorService.write(dto,userIdx);
+        MentorDetailResponseDTO responseDTO = mentorService.write(dto,userInfo);
 
         return ResponseEntity.ok().body(responseDTO);
     }
@@ -111,12 +111,11 @@ public class MentorApiController {
         //  "mentorCurrent": "현재 상태"
         // 게시글 수정 후 상세 모달 보기로 일단 처리
         //}
-        log.info("/api/ddamddam/mentors PUT!! - payload {}",dto);
+//        log.info("/api/ddamddam/mentors PUT!! - payload {}",dto);
 
-        Long userIdx = Long.valueOf(userInfo.getUserIdx());
 
         try {
-            MentorDetailResponseDTO responseDTO = mentorService.modify(dto,userIdx);
+            MentorDetailResponseDTO responseDTO = mentorService.modify(dto,userInfo);
             return ResponseEntity.ok().body(responseDTO);
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body("해당 게시판은 존재하지 않습니다");
@@ -130,7 +129,7 @@ public class MentorApiController {
             @PathVariable Long mentorIdx
             ,@AuthenticationPrincipal TokenUserInfo userInfo
     ){
-        log.info("/api/ddamddam/mentors/{} DELETE!!",mentorIdx);
+//        log.info("/api/ddamddam/mentors/{} DELETE!!",mentorIdx);
         Long userIdx = Long.valueOf(userInfo.getUserIdx());
         try {
             mentorService.delete(mentorIdx,userIdx);

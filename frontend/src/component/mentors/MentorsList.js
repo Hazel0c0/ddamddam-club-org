@@ -93,7 +93,10 @@ const MentorsList = ({selectedSubjects}) => {
         setShow(true)
         const detailIdx = e.target.closest('.mentors-list').querySelector('.member-idx').value
 
-        fetch(MENTOR + '/detail?mentorIdx=' + detailIdx)
+        fetch(MENTOR + '/detail?mentorIdx=' + detailIdx, {
+            method : 'GET',
+            headers : headerInfo
+        })
             .then(res => {
                 if (res.status === 500) {
                     alert('잠시 후 다시 접속해주세요.[서버오류]');

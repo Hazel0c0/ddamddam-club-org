@@ -276,7 +276,7 @@ public class MypageService {
      * @param dto
      * @param
      */
-    public void myPageModify(MypageModifyRequestDTO dto, Long userIdx) {
+    public void myPageModify(MypageModifyRequestDTO dto, Long userIdx, String uploadedFilePath) {
 
 //        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
@@ -290,6 +290,7 @@ public class MypageService {
                 user.setUserBirth(dto.getUserBirth());
                 user.setUserCareer(dto.getUserCareer());
                 user.setUserPosition(UserPosition.valueOf(dto.getUserPosition()));
+                user.setUserProfile(uploadedFilePath);
 
                 userRepository.save(user);
         }
