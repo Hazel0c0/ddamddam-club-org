@@ -17,11 +17,13 @@ const ReviewSearchKeyword = ({loginCheck,searchKeyword}) => {
     },[clickCurrentPage])
 
     const asyncReviewSearchKeywordList = async () => {
-        // const res = await fetch(`${REVIEW}/search?keyword=${searchKeyword}?page=${clickCurrentPage}&size=10`, {
-        const res = await fetch(`${REVIEW}/search?keyword=${searchKeyword}`, {
+        const res = await fetch(`${REVIEW}/search?keyword=${searchKeyword}&page=${clickCurrentPage}&size=10`, {
+        // const res = await fetch(`${REVIEW}/search?keyword=${searchKeyword}`, {
             method: 'GET',
             headers: {'content-type': 'application/json'}
         })
+
+        console.log(`요청 url = ${REVIEW}/search?keyword=${searchKeyword}?page=${clickCurrentPage}&size=10`)
 
         const reviewList = await res.json();
 
