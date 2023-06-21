@@ -5,6 +5,7 @@ import kr.co.ddamddam.user.dto.response.UserSignUpResponseDTO;
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.entity.UserPosition;
 import kr.co.ddamddam.user.entity.UserRole;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,8 +29,10 @@ class DdamDdamUserRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    PasswordEncoder encoder;
 
-//    @BeforeEach
+    //    @BeforeEach
 //    void insertUser() {
 //        User user = User.builder()
 //                .userEmail("test@test.com")
@@ -61,9 +64,12 @@ class DdamDdamUserRepositoryTest {
             int career = (int) (Math.random() * 10 + 1); // 1 ~ 10 사이의 랜덤 정수
             UserPosition[] userPosition = {UserPosition.BACKEND, UserPosition.FRONTEND};
             String[] name = {"조예원", "김태근", "최예진", "채지원", "조경훈"};
+            String encoded = encoder.encode("qwer1234!");
+
+            System.out.println("encoded = " + encoded);
 
             User user = User.builder()
-                    .userPassword("qwer1234!") // TODO : 암호화 필요 
+                    .userPassword(encoded) // TODO : 암호화 필요
                     .userEmail("test" + i + "@t.t")
                     .userName(name[index2])
                     .userNickname("닉네임" + i)
@@ -73,20 +79,7 @@ class DdamDdamUserRepositoryTest {
                     .build();
             userRepository.save(user);
 
-//            UserRequestSignUpDTO dto = UserRequestSignUpDTO.builder()
-//                    .userEmail("test" + i + "@t.t")
-//                    .userPw("qwer1234!")
-//                    .userName(name[index2])
-//                    .userNickName(name[index3])
-//                    .userPosition(String.valueOf(userPosition[index1]))
-//                    .userCareer(career)
-//                    .userBirth(LocalDate.parse(year + "-" + month + "-" + day))
-//                    .build();
-
-            // when, then
         }
-        //when
-        //then
     }
 
     @Test
