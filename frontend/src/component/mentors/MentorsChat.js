@@ -93,16 +93,14 @@ const MentorsChat = () => {
   
     // 멘티 채팅방 입장 후 메세지 렌더링
 const menteeMsgBox = chat.map((item, idx) => {
-  console.log(chat);
   if (+item.roomId === +selectChatRoomId || +item.roomId === +roomId) {
     return (
       <div className={item.senderId === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
-        <span className={item.senderId === enterUserIdx ? 'sender' : 'receiver'}>{item.name}ㅁ</span>
+        <span className={item.senderId === enterUserIdx ? 'sender' : 'receiver'}>{item.name}</span>
         <span className={item.senderId === enterUserIdx ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
       </div>
     );
   }
-  return console.log('shit');
 });
 
 // 멘토가 채팅방 입장 후 메세지 렌더링
@@ -111,7 +109,7 @@ const menteeMsgBox = chat.map((item, idx) => {
             return (
                 <div className={item.senderId === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'}
                      key={`${item.name}-${idx}`}>
-                    <span className={item.senderId === enterUserIdx ? 'sender' : 'receiver'}>{item.name}ㅋ</span>
+                    <span className={item.senderId === enterUserIdx ? 'sender' : 'receiver'}>{item.name}</span>
                     <span
                         className={item.senderId === enterUserIdx ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
                 </div>
@@ -361,6 +359,10 @@ const menteeMsgBox = chat.map((item, idx) => {
             <div className={'mentor-chat-room'}>
 
                 <section className={'chating-list'} ref={chatScroll}>
+
+                     {/*디비 메세지 렌더링 */}
+                     {menteeMsgRender}
+
                     {/*멘토 채팅방*/}
                     {detailMember.userIdx === enterUserIdx &&
                         <>
@@ -368,9 +370,6 @@ const menteeMsgBox = chat.map((item, idx) => {
                           {mentorMsgBox}
                         </>
                     }
-
-                    {/*디비 메세지 렌더링 */}
-                    {menteeMsgRender}
 
                     {/*멘토 채팅방*/}
                     {detailMember.userIdx !== enterUserIdx &&
