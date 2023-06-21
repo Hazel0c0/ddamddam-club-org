@@ -15,7 +15,6 @@ import java.util.List;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class MypageProjectResponseDTO {
     /*
           프로젝트 명
