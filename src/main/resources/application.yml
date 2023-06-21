@@ -55,5 +55,6 @@ sns:
 
 upload:
   path:
-    project: c:/ddam_upload/project
-    profile: D:/ddam_upload/profile
+    project: /Users/taegeun/Desktop/
+#    profile: D:/ddam_upload/profile
+    profile: /Users/taegeun/Desktop/
