@@ -32,12 +32,12 @@ public class ReviewDetailResponseDTO {
 
     public ReviewDetailResponseDTO(Review review) {
         this.reviewIdx = review.getReviewIdx();
-        this.reviewCompanyName = review.getCompany().getCompanyName();
+        this.reviewCompanyName = review.getReviewCompany();
         this.reviewTitle = review.getReviewTitle();
         this.reviewContent = review.getReviewContent();
         this.reviewJob = review.getReviewJob();
         this.reviewRating = review.getReviewRating();
-        this.reviewLocation = review.getCompany().getCompanyArea();
+        this.reviewLocation = review.getReviewLocation();
         this.reviewDate = review.getReviewDate();
         this.reviewView = review.getReviewView();
         this.reviewTenure = review.getReviewTenure();

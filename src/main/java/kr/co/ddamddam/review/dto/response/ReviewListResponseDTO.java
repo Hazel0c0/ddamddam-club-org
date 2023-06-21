@@ -43,32 +43,32 @@ public class ReviewListResponseDTO {
         }
     }
 
-    public static ReviewListResponseDTO fromReview(Review review) {
-        ReviewListResponseDTO dto = new ReviewListResponseDTO();
-        dto.setReviewIdx(review.getReviewIdx());
-        dto.setReviewCompanyName(review.getCompany().getCompanyName());
-        dto.setReviewTitle(review.getReviewTitle());
-        dto.setReviewContent(review.getReviewContent());
-        dto.setReviewJob(review.getReviewJob());
-        dto.setReviewLocation(review.getCompany().getCompanyArea());
-        dto.setReviewDate(review.getReviewDate());
-        dto.setReviewRating(review.getReviewRating());
-        dto.setReviewView(review.getReviewView());
-
-        return dto;
-    }
+//    public static ReviewListResponseDTO fromReview(Review review) {
+//        ReviewListResponseDTO dto = new ReviewListResponseDTO();
+//        dto.setReviewIdx(review.getReviewIdx());
+//        dto.setReviewCompanyName(review.getReviewCompany());
+//        dto.setReviewTitle(review.getReviewTitle());
+//        dto.setReviewContent(review.getReviewContent());
+//        dto.setReviewJob(review.getReviewJob());
+//        dto.setReviewLocation(review.getReviewLocation());
+//        dto.setReviewDate(review.getReviewDate());
+//        dto.setReviewRating(review.getReviewRating());
+//        dto.setReviewView(review.getReviewView());
+//
+//        return dto;
+//    }
 
 
     public ReviewListResponseDTO(Review review) {
 //        log.info("review: {}", review);
         this.reviewIdx = review.getReviewIdx();
-        this.reviewCompanyName = review.getCompany().getCompanyName();
+        this.reviewCompanyName = review.getReviewCompany();
         this.reviewTitle = review.getReviewTitle();
         this.reviewContent = getLimitedContent(review.getReviewContent());
         this.reviewJob = review.getReviewJob();
         this.reviewRating = review.getReviewRating();
         this.reviewTenure = review.getReviewTenure();
-        this.reviewLocation = review.getCompany().getCompanyArea();
+        this.reviewLocation = review.getReviewLocation();
         this.reviewDate = review.getReviewDate();
         this.reviewView = review.getReviewView();
     }

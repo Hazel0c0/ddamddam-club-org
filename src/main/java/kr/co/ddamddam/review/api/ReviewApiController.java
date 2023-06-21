@@ -48,6 +48,16 @@ public class ReviewApiController {
         return ResponseEntity.ok().body(dto);
     }
 
+//    ///더미 데이터 넣어 놓는용...
+//    @PostMapping("/insert")
+//    public  ResponseEntity<?> write(@Validated @RequestBody ReviewWriteRequestDTO dto) throws ReviewNotFoundException {
+//        log.info("POST : /reviews/write - 게시글 생성 {}", dto);
+//        Long userIdx = 1L;
+//        ReviewDetailResponseDTO responseDTO = reviewService.write(dto,userIdx);
+//        return ResponseEntity.ok().body(responseDTO);
+//    }
+
+
     //키워드 검색
     @GetMapping("/search")
     public ResponseEntity<?> search(@RequestParam("keyword") String keyword){
