@@ -27,8 +27,8 @@ const ProjectsDetail = () => {
         })
         .then(data => {
           setProjectDetail([data.payload]);
+          console.log("프로젝트 디테일 dto")
           console.log(data.payload);
-
         })
         .catch(error => {
           console.error(error);
@@ -46,6 +46,7 @@ const ProjectsDetail = () => {
       const fileBlob = await res.blob();
       const imgUrl = window.URL.createObjectURL(fileBlob);
       setProjectImgUrl(imgUrl);
+      console.log("프로젝트 디테일 - 이미지 : "+imgUrl)
     } else {
       const err = await res.text();
       setProjectImgUrl(null);
@@ -57,10 +58,6 @@ const ProjectsDetail = () => {
     fetchProjectDetail();
     fetchFileImage();
   }, []);
-
-
-  console.log('2-----프로젝트 디테일 : ');
-  console.log(projectDetail.boardIdx);
 
   const handleDelete = (id) => {
     console.log("delete id : " + id);
@@ -84,8 +81,8 @@ const ProjectsDetail = () => {
   }
 
   const handleApply = () => {
-    // 11 대신 유저 번호 넣을거
-    fetch(PROJECT + `/applicant/11/${projectIdx}`, {
+    // 11 대신 유저 번호
+    fetch(PROJECT + `/applicant/1/${projectIdx}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -115,7 +112,7 @@ const ProjectsDetail = () => {
   return (
       <>
         <ProjectsTitle/>
-        <Common className={'qna-detail-wrapper'}>
+        <Common className={'project-detail-wrapper'}>
           {projectDetail.map(de => {
             return (
                 <section className={'main-text-wrapper'}>

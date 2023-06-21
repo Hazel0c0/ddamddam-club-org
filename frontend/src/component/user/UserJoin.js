@@ -5,6 +5,7 @@ import profile from "../../src_assets/IMG_4525.JPG";
 import './scss/UserJoin.scss';
 import {LocalDate, MathUtil as Integer} from 'js-joda';
 import {BsCheckLg} from "react-icons/bs"
+
 // 리다이렉트 사용하기
 import {useNavigate, Link} from 'react-router-dom';
 import {BASE_URL as BASE, AUTH, JOININ, EMAIL} from '../../component/common/config/HostConfig';
@@ -436,8 +437,6 @@ const UserJoin = () => {
             setImgFile(reader.result);
         }
     };
-
-
 
 
     //렌더링이 끝난 이후 실행되는 함수

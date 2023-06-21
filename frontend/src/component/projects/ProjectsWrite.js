@@ -19,8 +19,9 @@ const ProjectsWrite = () => {
     maxFront: '1',
     maxBack: '1',
     offerPeriod: '2023-07-19',
+    projectImg:'',
   });
-
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const {name, value} = e.target;
@@ -31,17 +32,14 @@ const ProjectsWrite = () => {
     console.log(name+" : "+value);
   }
 
-  const navigate = useNavigate(); // useNavigate 훅 사용
-
   const handleSubmit = () => {
-
     const projectJsonBlob = new Blob(
         [JSON.stringify(formData)],
         { type: 'application/json' }
     );
 
     const projectFormData = new FormData();
-    projectFormData.append('project', projectJsonBlob);
+    projectFormData.appenda('project', projectJsonBlob);
     projectFormData.append('projectImage', $fileTag.current.files[0]);
 
     fetch(PROJECT, {
@@ -61,7 +59,6 @@ const ProjectsWrite = () => {
   };
 
   const $fileTag = useRef();
-
   const [imgFile, setImgFile] = useState(null);
 
   const showThumbnailHandler = e => {
@@ -73,10 +70,10 @@ const ProjectsWrite = () => {
 
     reader.onloadend = () => {
       setImgFile(reader.result);
+
     }
   };
-
-
+      console.log(imgFile)
 
   return (
     <>
@@ -89,16 +86,15 @@ const ProjectsWrite = () => {
               <img
                   src={imgFile || require('../../assets/img/image-add.png')}
                   alt="profile"
-
               />
             </div>
-            <label className='signup-img-label' htmlFor='profile-img'>프로필 이미지 추가</label>
+            <label className='signup-img-label' htmlFor='profile-img'>사진 추가하기</label>
             <input
                 id='profile-img'
                 type='file'
-                style={{display: 'none'}}
                 accept='image/*'
                 ref={$fileTag}
+                style={{display: 'none'}}
                 onChange={showThumbnailHandler}
             />
           </Grid>
