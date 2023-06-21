@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import './scss/ReviewDetail.scss';
 import Common from "../common/Common";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {QNA, REVIEW} from "../common/config/HostConfig";
 import {getToken} from "../common/util/login-util";
-// 여기만 하면 토큰 완료
-const QnaDetail = () => {
+import ReviewStar from "./StartRating/ReviewStar";
+import back from "../../src_assets/back.png";
+
+const ReviewDetail = () => {
     const {reviewIdx} = useParams();
-    const [reviewQna, setDetailReview] = useState([]);
+    const [detailReview, setDetailReview] = useState([]);
 
     const ACCESS_TOKEN = getToken();
     const requestHeader = {
@@ -28,8 +30,8 @@ const QnaDetail = () => {
         }
 
         const result = await res.json();
-        // console.log(`result = ${result}`)
-        console.log(`resultJSON = ${JSON.stringify(result)}`)
+        console.log(`result = `,result)
+        // console.log(`resultJSON = ${JSON.stringify(result)}`)
         setDetailReview(result);
 
     }
@@ -42,65 +44,57 @@ const QnaDetail = () => {
     // /api/ddamddam/mentors/detail?mentorIdx={}
     ///api/ddamddam/qna/{boardId}
     return (
-        <Common className={'qna-detail-wrapper'}>
+        <Common className={'review-detail-wrapper'}>
             <div className={'title-wrapper'}>
                 <p className={'main-title'}>취업후기</p>
                 <p className={'main-sub-title'}>근무했던 기업에 대한 정보를 공유해보세요.</p>
+                <Link to={'/reviews'} className={'back-btn'}>
+                    <img src={back} alt={'back-icon'} className={'back-icon'}/>
+                    <span className={'back-text'}>Back</span>
+                </Link>
             </div>
 
-            {/*<section className={'main-text-wrapper'}>*/}
-            {/*    <h1 className={'qna-title'}>*/}
-            {/*        {detailQna.boardTitle}*/}
-            {/*    </h1>*/}
-            {/*    <section className={'info-detail-container'}>*/}
-            {/*        <div className={'info-wrapper'}>*/}
-            {/*            <div className={'category'}>*/}
-            {/*                <span className={'sub-title'}>직무</span>*/}
-            {/*                <span className={'sub-content'}>백엔드 개발자</span>*/}
-            {/*            </div>*/}
-            {/*            <div className={'category'}>*/}
-            {/*                <span className={'sub-title'}>근속연수</span>*/}
-            {/*                <span className={'sub-content'}>3년</span>*/}
-            {/*            </div>*/}
-            {/*            <div className={'category'}>*/}
-            {/*                <span className={'sub-title'}>위치</span>*/}
-            {/*                <span className={'sub-content'}>강남</span>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*        <div className={'detail-wrapper'}>*/}
-            {/*            <div className={'category'}>*/}
-            {/*                <span className={'sub-title'}>작성일자</span>*/}
-            {/*                <span className={'sub-content'}>2023.06.23</span>*/}
-            {/*            </div>*/}
-            {/*            <div className={'category'}>*/}
-            {/*                <span className={'sub-title'}>조회수</span>*/}
-            {/*                <span className={'sub-content'}>299</span>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*    </section>*/}
-            {/*    <section className={'main-content'}>*/}
-            {/*        잡플래닛에 후기가 없다는건.. 규모가 작아서 회사의 채용규모 또한 작을 수 밖에 없는 것 입니다.*/}
-            {/*        또한, 이와 같은 회사의 후기가 다른 사이트에 있더라도 후기의 숫자가 적을 수 밖에 없을 거구요.*/}
-            {/*        이정도 수준이면 회사에 대한 판단은 충분할 듯 하며, 참고로 잡플래닛 후기는 회사에 대한 전반적인*/}
-            {/*        평이외에는 큰 의미가 없습니다. 어떤 직무에서 어떤 상사와 사수를 만나느냐에 따라 회사는 천국이 되기도*/}
-            {/*        하고 지옥이 되기도 하니.. 운이 사실 훨씬 중요합니다. 지원자가 알 수 있는 영역이 아니에요..*/}
-
-            {/*        잡플래닛에 후기가 없다는건.. 규모가 작아서 회사의 채용규모 또한 작을 수 밖에 없는 것 입니다.*/}
-            {/*        또한, 이와 같은 회사의 후기가 다른 사이트에 있더라도 후기의 숫자가 적을 수 밖에 없을 거구요.*/}
-            {/*        이정도 수준이면 회사에 대한 판단은 충분할 듯 하며, 참고로 잡플래닛 후기는 회사에 대한 전반적인*/}
-            {/*        평이외에는 큰 의미가 없습니다. 어떤 직무에서 어떤 상사와 사수를 만나느냐에 따라 회사는 천국이 되기도*/}
-            {/*        하고 지옥이 되기도 하니.. 운이 사실 훨씬 중요합니다. 지원자가 알 수 있는 영역이 아니에요..*/}
-            {/*    </section>*/}
-
-            {/*    <section className={'checked-wrapper'}>*/}
-            {/*        <span className={'check-title'}>도움이 되었다면?</span>*/}
-            {/*        <button className={'check-btn'}>*/}
-            {/*            <span className={'check'}>채택하기</span>*/}
-            {/*        </button>*/}
-            {/*    </section>*/}
-            {/*</section>*/}
+            <section className={'main-text-wrapper'}>
+                <h1 className={'review-title'}>
+                    " {detailReview.reviewTitle} "
+                </h1>
+                <section className={'info-detail-container'}>
+                    <div className={'info-wrapper'}>
+                        <div className={'category'}>
+                            <span className={'sub-title'}>직무</span>
+                            <span className={'sub-content'}>{detailReview.reviewJob}</span>
+                        </div>
+                        <div className={'category'}>
+                            <span className={'sub-title'}>근속연수</span>
+                            <span className={'sub-content'}>{detailReview.reviewTenure}년</span>
+                        </div>
+                        <div className={'category'}>
+                            <span className={'sub-title'}>위치</span>
+                            <span className={'sub-content'}>{detailReview.reviewLocation}</span>
+                        </div>
+                    </div>
+                    <div className={'rating'}>
+                        <span className={'rating-title'}>{detailReview.reviewCompanyName}</span>
+                        {/*{detailReview.reviewRating}*/}
+                        <ReviewStar starCount={detailReview.reviewRating}/>
+                    </div>
+                    <div className={'detail-wrapper'}>
+                        <div className={'category right-category'}>
+                            <span className={'sub-title'}>작성일자</span>
+                            <span className={'sub-content'}>{detailReview.reviewDate}</span>
+                        </div>
+                        <div className={'category'}>
+                            <span className={'sub-title'}>조회수</span>
+                            <span className={'sub-content'}>{detailReview.reviewView}</span>
+                        </div>
+                    </div>
+                </section>
+                <section className={'main-content'}>
+                    {detailReview.reviewContent}
+                </section>
+            </section>
         </Common>
     );
 };
 
-export default QnaDetail;
+export default ReviewDetail;

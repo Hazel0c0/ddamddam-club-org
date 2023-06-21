@@ -246,6 +246,8 @@ const UserJoin = () => {
 
         //이메일 주소 선택
         const emailDomainValue = emailValue.current.value;
+
+
         console.log(emailDomainValue);
 
         const inputVal = `${inputEmail}@${emailDomainValue}`;
