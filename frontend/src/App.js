@@ -23,7 +23,7 @@ import QnaDetail from "./component/qna/QnaDetail";
 import QnaWrite from "./component/qna/QnaWrite";
 import QnaModify from "./component/qna/QnaModify";
 import ProjectsModify from "./component/projects/ProjectsModify";
-import ReviewList from "./component/review/ReviewList";
+import ReviewList from "./component/review/ReviewList2";
 import ReviewTemplate from "./component/review/ReviewTemplate";
 import ReviewDetail from "./component/review/ReviewDetail";
 import ReviewWrite from "./component/review/ReviewWrite";

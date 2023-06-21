@@ -6,9 +6,8 @@ import {Link, useNavigate} from "react-router-dom";
 import {getToken} from "../common/util/login-util";
 import {GrPowerReset} from "react-icons/gr";
 // import {GrPowerReset} from '/react-icons/gr';
-const QnaSearch = ({onSearchChange, onSearchKeywordChange,onClickCurrentPageChange}) => {
+const QnaSearch = ({onSearchChange, onSearchKeywordChange}) => {
     const [selectedBtn, setSelectedBtn] = useState('전체');
-    const [valueChange, setValueChange] = useState(false);
     const inputVal = useRef();
 
     //로그인 검증

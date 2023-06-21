@@ -1,23 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import viewIcon from "../../src_assets/view-icon.png";
-import speechBubble from "../../src_assets/speech-bubble.png";
+import viewIcon from "../../../src_assets/view-icon.png";
+import speechBubble from "../../../src_assets/speech-bubble.png";
 import {Link, useNavigate} from "react-router-dom";
 import {IoIosArrowForward} from "react-icons/io";
-import PageNation from "../common/pageNation/PageNation";
-import {QNA} from "../common/config/HostConfig";
-import {getToken} from "../common/util/login-util";
+import PageNation from "../../common/pageNation/PageNation";
+import {QNA} from "../../common/config/HostConfig";
+import {getToken} from "../../common/util/login-util";
 
-const QnaNoAdoption = () => {
+const QnaTotal = ({loginCheck}) => {
     const [qnaList, setQnaList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
     const [clickCurrentPage, setClickCurrentPage] = useState(1);
 
     useEffect(()=>{
-        asyncQnaNoAdoptionList();
+        asyncQnaTotalList();
     },[clickCurrentPage])
-
-    const asyncQnaNoAdoptionList = async () => {
-        const responseUrl = `/non-adopts?page=${clickCurrentPage}&size=10`;
+    const asyncQnaTotalList = async () => {
+        const responseUrl = `?page=${clickCurrentPage}&size=10`
 
         const res = await fetch(`${QNA}${responseUrl}`, {
             method: 'GET',
@@ -31,23 +30,21 @@ const QnaNoAdoption = () => {
 
         const qnaList = await res.json();
         // console.log(qnaList)
-        console.log(`no-adoption qnaList = `,qnaList);
+        console.log(`total qnaList = `,qnaList);
 
         setQnaList(qnaList.payload.qnas);
         setPageNation(qnaList.payload.pageInfo);
     }
-
 
     const currentPageHandler = (clickPageNum) => {
         console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
         setClickCurrentPage(clickPageNum);
     }
 
-    const ACCESS_TOKEN = getToken();
+
     const redirection = useNavigate();
     const loginCheckHandler = (e) => {
-        console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
-        if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null) {
+        if (!loginCheck) {
             alert('로그인 후 이용가능합니다.')
             e.preventDefault();
             redirection('/login');
@@ -110,4 +107,4 @@ const QnaNoAdoption = () => {
     );
 };
 
-export default QnaNoAdoption;
+export default QnaTotal;
