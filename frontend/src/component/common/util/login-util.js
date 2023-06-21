@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 // 세션 스토리지
 // 로그인 유저의 토큰을 반환하는 함수
 export const getToken = () => {
-  if (localStorage !== null) {
+  if (localStorage.getItem('ACCESS_TOKEN') !== null) {
     return localStorage.getItem('ACCESS_TOKEN');
   }
   return sessionStorage.getItem('ACCESS_TOKEN');

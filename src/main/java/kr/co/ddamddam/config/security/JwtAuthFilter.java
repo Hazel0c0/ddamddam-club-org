@@ -73,6 +73,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
         } catch (Exception e) {
 
+            e.printStackTrace();
             throw new UnauthorizationException(UNAUTHENTICATED_USER, parseBearerToken(request));
 
         }
