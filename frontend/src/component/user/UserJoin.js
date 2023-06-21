@@ -60,8 +60,8 @@ const UserJoin = () => {
 
     // 검증 완료 체크에 대한 상태변수 관리
     const [correct, setCorrect] = useState({
-        userEmail: false,
-        userCode : false,
+        userEmail: true,
+        userCode : true,
         userPw: false,
         passwordCheck: false,
         userName: false,
@@ -389,7 +389,7 @@ const UserJoin = () => {
         const res = await fetch(`${BASE_URL}/signup`, {
             method: 'POST',
             headers: {'content-type': 'application/json'},
-            body: JSON.stringify(userValue)
+            body: userFormData
         });
 
         if (res.status === 200) {
@@ -438,7 +438,7 @@ const UserJoin = () => {
 
     //렌더링이 끝난 이후 실행되는 함수
     useEffect(() => {
-    }, [emailValue]);
+    }, [emailValue,imgFile]);
 
     return (
         <Common className={'join-wrapper'}>

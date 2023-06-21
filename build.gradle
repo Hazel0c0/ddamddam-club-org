@@ -67,6 +67,9 @@ dependencies {
 	//파일업로드 라이브러리
 	implementation 'commons-io:commons-io:2.8.0'
 
+	// s3 라이브러리
+	implementation 'software.amazon.awssdk:s3:2.17.52'
+
 }
 
 tasks.named('test') {

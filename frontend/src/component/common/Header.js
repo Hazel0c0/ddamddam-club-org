@@ -11,7 +11,7 @@ const Header = () => {
 
     //프로필 이미지 url 상태변수
     const [profileUrl, setProfileUrl] = useState(null); //기본값은 null
-    const profileRequestURL = `${BASE_URL}${AUTH}/load-profile`;
+    const profileRequestURL = `${BASE_URL}${AUTH}/load-s3`;
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [animating, setAnimating] = useState(false);
     const [background, setBackground] = useState('rgba(0, 0, 0, 0)');
@@ -34,14 +34,18 @@ const Header = () => {
 
         );
         if(res.status === 200){
-            //서버에서 직렬화된 이미지가 응답된다.
-            const profileBlob = await res.blob();
-            //해당 이미지를 imgUrl로 변경
-            const imgUrl = window.URL.createObjectURL(profileBlob);
+            //서버에서 s3 url이 응답된다.
+            const imgUrl = await res.text();
             setProfileUrl(imgUrl);
-        } else{
-            const err = await res.text();
-            setProfileUrl(null);
+
+        //     //서버에서 직렬화된 이미지가 응답된다.
+        //     const profileBlob = await res.blob();
+        //     //해당 이미지를 imgUrl로 변경
+        //     const imgUrl = window.URL.createObjectURL(profileBlob);
+        //     setProfileUrl(imgUrl);
+        // } else{
+        //     const err = await res.text();
+        //     setProfileUrl(null);
         }
     } ;
 

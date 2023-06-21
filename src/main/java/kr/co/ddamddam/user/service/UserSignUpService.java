@@ -25,6 +25,7 @@ public class UserSignUpService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
+    private final S3Service s3Service;
 
     @Value("${upload.path.profile}")
     private String uploadRootPath;
@@ -76,18 +77,21 @@ public class UserSignUpService {
     public String uploadProfileImage(MultipartFile originalFile) throws IOException {
 
         // 루트 디렉토리가 존재하는지 확인 후 존재하지 않으면 생성
-        File rootDir = new File(uploadRootPath);
-        if (!rootDir.exists()) rootDir.mkdir();
+//        File rootDir = new File(uploadRootPath);
+//        if (!rootDir.exists()) rootDir.mkdir();
 
         // 파일명을 유니크하게 변경
         String uniqueFileName = UUID.randomUUID()
                 + "_" + originalFile.getOriginalFilename();
 
         // 파일을 저장
-        File uploadFile = new File(uploadRootPath + "/" + uniqueFileName);
-        originalFile.transferTo(uploadFile);
+//        File uploadFile = new File(uploadRootPath + "/" + uniqueFileName);
+//        originalFile.transferTo(uploadFile);
 
-        return uniqueFileName;
+        //파일을 s3 버킷에 저장
+        String uploadUrl = s3Service.uploadToS3Bucket(originalFile.getBytes(), uniqueFileName);
+
+        return uploadUrl;
     }
 
     public String getProfilePath(Long userId) {
