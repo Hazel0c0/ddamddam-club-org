@@ -12,19 +12,10 @@ import './scss/ProjectsWrite.scss';
 const ProjectsModify = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  // const projectIdx = searchParams.get('projectIdx');
+  const projectIdx = searchParams.get('projectIdx');
 
-  const [projectDetail, setProjectDetail] = useState([]);
+  const [updatedFormData, setUpdatedFormData] = useState([]);
 
-  const [updatedFormData, setUpdatedFormData] = useState({
-    boardTitle: '',
-    boardContent: '',
-    projectType: '',
-    maxFront: '',
-    maxBack: '',
-  });
-
-  const projectIdx = 12;
   useEffect(() => {
     fetch(PROJECT + `/${projectIdx}`, {
       method: 'GET',
@@ -37,16 +28,16 @@ const ProjectsModify = () => {
         return response.json();
       })
       .then(data => {
-        setProjectDetail(data.payload);
-        console.log(`수정 후 : ${JSON.stringify(data.payload)}`);
+        setUpdatedFormData(data.payload);
       })
       .catch(error => {
         console.error(error);
       });
   }, []);
 
-  console.log('프로젝트 디테일 : ');
-  console.log(projectDetail[0].boardContent);
+  // console.log('프로젝트 디테일 : ');
+  // console.log(updatedFormData);
+  // console.log(updatedFormData.boardIdx);
 
   const modifySubmitHandler = async () => {
       console.log(updatedFormData);
@@ -62,7 +53,7 @@ const ProjectsModify = () => {
       body: JSON.stringify(updatedFormData),
     }).then(response => response.json())
       .then(data => {
-        // setFormData(data.formData);
+        // setUpdatedFormData(data.formData);
         console.log(data); // Handle the response data
       })
       .catch(error => {
@@ -74,7 +65,7 @@ const ProjectsModify = () => {
 
   const handleInputChange = (e) => {
     const {name, value} = e.target;
-    setProjectDetail((prevFormData) => ({
+    setUpdatedFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
     }));
@@ -85,15 +76,13 @@ const ProjectsModify = () => {
     <>
       <ProjectsTitle/>
       <Common className={'qna-detail-wrapper'}>
-        {projectDetail.map(de => {
-          return (
             <section className={'main-text-wrapper'}>
-              <div key={de.boardIdx}>
+              <div key={updatedFormData.boardIdx}>
                 <div className={'qna-title'}>
                   <h1 className={'sub-title'}>제목</h1>
                   <input
                     type={"text"}
-                    placeholder={de.boardTitle}
+                    placeholder={updatedFormData.boardTitle}
                     className={'title-text-input'}
                     name={'boardTitle'}
                     defaultValue={updatedFormData.boardTitle}
@@ -107,7 +96,7 @@ const ProjectsModify = () => {
                     </div>
                     <div className={'category'}>
                       <span className={'sub-title'}>작성자</span>
-                      <span className={'sub-content'}>{de.boardWriter}</span>
+                      <span className={'sub-content'}>{updatedFormData.boardWriter}</span>
                     </div>
 
                     <div className={'project-type'}>
@@ -115,7 +104,6 @@ const ProjectsModify = () => {
                       <select className="subject-select"
                               name="projectType"
                       >
-                        {/*<option disabled selected>fruits 🍊</option>*/}
                         <option value="웹페이지">웹페이지</option>
                         <option defaultValue="웹페이지">웹페이지</option>
                         <option defaultValue="웹페이지">웹페이지</option>
@@ -129,7 +117,7 @@ const ProjectsModify = () => {
                       <select className="mentee-text-input"
                               name="maxFront"
                               // value={formData.maxFront}
-                              // onChange={handleInputChange}
+                              onChange={handleInputChange}
                       >
                         <option defaultValue="1">1명</option>
                         <option defaultValue="2">2명</option>
@@ -141,7 +129,7 @@ const ProjectsModify = () => {
                       <select className="mentee-text-input"
                               name="maxBack"
                               // value={formData.maxBack}
-                              // onChange={handleInputChange}
+                              onChange={handleInputChange}
                       >
                         <option defaultValue="1">1명</option>
                         <option defaultValue="2">2명</option>
@@ -165,18 +153,17 @@ const ProjectsModify = () => {
                     <div className={'category'}>
                       {/* 수정 후에는 작성일자 변경 되도록 */}
                       <span className={'sub-title'}>작성일자</span>
-                      <span className={'sub-content'}>{de.projectDate}</span>
+                      <span className={'sub-content'}>{updatedFormData.projectDate}</span>
                     </div>
                   </div>
                 </section>
                 <section>
                 <textarea type="text"
-                          placeholder={de.boardContent}
+                          placeholder={updatedFormData.boardContent}
                           className={'main-content'}
                           name="boardContent"
                   // value={formData.boardContent}
-                  // onChange={(e) =>
-                  //     handleInputChange(e, formData, setFormData)        }
+                          onChange={handleInputChange}
                 />
                 </section>
 
@@ -190,8 +177,6 @@ const ProjectsModify = () => {
 
               </div>
             </section>
-          )
-        })}
       </Common>
     </>
   );
