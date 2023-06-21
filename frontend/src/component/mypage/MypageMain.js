@@ -69,6 +69,7 @@ const MypageMain = props => {
           <div className={'mypage-sub-title'}>참여중인 프로젝트</div>
         </div>
 
+
         {/* 내가 작성한 전체 게시글 불러오기 */}
         <div className={'board-wrapper'}>
           <div className={'mypage-sub-title'}>내가 쓴 게시글</div>

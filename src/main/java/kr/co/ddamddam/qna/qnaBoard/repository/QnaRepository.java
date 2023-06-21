@@ -1,7 +1,9 @@
 package kr.co.ddamddam.qna.qnaBoard.repository;
 
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
+import kr.co.ddamddam.qna.qnaBoard.entity.QnaAdoption;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,4 +28,6 @@ public interface QnaRepository extends JpaRepository<Qna, Long> {
     Page<Qna> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
     List<Qna> findByUserUserIdx(@Param("userIdx") Long UserIdx);
+
+    Page<Qna> findByQnaAdoption(QnaAdoption qnaAdoption, PageRequest pageable);
 }
