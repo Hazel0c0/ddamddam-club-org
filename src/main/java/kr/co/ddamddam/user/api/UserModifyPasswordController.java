@@ -2,7 +2,6 @@ package kr.co.ddamddam.user.api;
 
 import kr.co.ddamddam.common.response.ResponseMessage;
 import kr.co.ddamddam.config.security.TokenUserInfo;
-import kr.co.ddamddam.user.dto.request.UserPasswordRequestDTO;
 import kr.co.ddamddam.user.service.UserModifyPasswordService;
 import kr.co.ddamddam.useremail.dto.UserEmailCheckRequestDTO;
 import kr.co.ddamddam.useremail.dto.request.UserCodeRequestDTO;
@@ -13,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -96,5 +94,6 @@ public class UserModifyPasswordController {
 
         return ResponseEntity.ok().body(SUCCESS);
     }
+
 
 }

@@ -59,6 +59,7 @@ const MypageBoardList = props => {
         }
       })
 
+
     return () => {
       effect
     };
