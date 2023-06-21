@@ -12,9 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
- * 회원가입, 로그인 요청을 처리하는 컨트롤러
+ * TODO: 회원가입 요청을 처리하는 컨트롤러
  */
 @RestController
 @Slf4j
@@ -22,17 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/ddamddam/auth")
 public class UserApiController {
 
-//    private final UserService userService;
     private final UserSignUpService userSingUpService;
-
-//    @PostMapping("/signin")
-//    public ApplicationResponse<?> signIn(
-//            @Validated @RequestBody LoginRequestDTO dto
-//    ) {
-//        LoginResponseDTO responseDTO = userService.authenticate(dto);
-//
-//        return ApplicationResponse.ok(responseDTO);
-//    }
 
 
     // 이메일 중복확인 요청 처리
@@ -54,11 +45,13 @@ public class UserApiController {
     // POST: /api/signup
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(
-            @Validated @RequestBody UserRequestSignUpDTO dto
+            @Validated @RequestPart("user") UserRequestSignUpDTO dto
+            , @RequestPart(value = "profileImage", required = false) MultipartFile profileImg
             , BindingResult result
     ) {
         //값이 잘 들어오는지 확인
         log.info("/api/auth POST! - {}", dto);
+        log.info("attached file name; {}", profileImg.getOriginalFilename());
 
         if (result.hasErrors()) {
             log.warn(result.toString());
@@ -67,14 +60,26 @@ public class UserApiController {
         }
 
         try {
-            UserSignUpResponseDTO responseDTO = userSingUpService.create(dto);
+
+            String uploadedFilePath = null;
+            if (profileImg != null) {
+                log.info("attached file name: {}", profileImg.getOriginalFilename());
+                uploadedFilePath = userSingUpService.uploadProfileImage(profileImg);
+            }
+
+            UserSignUpResponseDTO responseDTO = userSingUpService.create(dto,uploadedFilePath);
             return ResponseEntity.ok().body(responseDTO);
+
         } catch (NoRegisteredArgumentsException e) {
             log.warn("필수 가입 정보를 전달받지 못했습니다.");
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (DuplicatedEmailException e) {
             log.warn("이메일 중복입니다!");
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e){
+            log.warn("기타 예외가 발생했습니다."); //파일업로드 에러처리
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
 
     }
