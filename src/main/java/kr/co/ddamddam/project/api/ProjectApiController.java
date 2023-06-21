@@ -76,8 +76,13 @@ public class ProjectApiController {
     }
   }
 
-  // 게시글 작성
 
+  /**
+   * 게시글 작성
+   * @param dto
+   * @param projectImg
+   * @return
+   */
   @Parameters({
       @Parameter(name = "boardTitle", description = "제목을 입력하세요", example = "제목을 입력하세요", required = true)
       , @Parameter(name = "boardContent", description = "내용을 입력하세요", example = "내용을 입력하세요", required = true)
@@ -91,25 +96,17 @@ public class ProjectApiController {
           required = false) MultipartFile projectImg
   ) {
 
-    log.info("/api/ddamddam write POST!! - payload: {}", dto);
+    log.info("/api/ddamddam write POST!! - dto: {}  \n img : {}", dto,projectImg);
 
     if (dto == null) {
       return ApplicationResponse.bad("게시글 정보를 전달해주세요");
     }
 
     try {
-      // 파일 업로드
-      String uploadedFilePath = null;
-      String boardType="project";
-
-      if(projectImg != null) {
-        log.info("projectImage file name: {}", projectImg.getOriginalFilename());
-        uploadedFilePath = uploadService.uploadFileImage(projectImg,boardType);
-      }
+      String uploadedFilePath = fileUpload(projectImg);
 
       ProjectDetailResponseDTO responseDTO = projectService.write(dto,uploadedFilePath);
       return ApplicationResponse.ok(responseDTO);
-      // ==========
 
     } catch (RuntimeException e) {
       e.printStackTrace();
@@ -120,17 +117,44 @@ public class ProjectApiController {
 
   }
 
-  // 게시글 수정
+
+  /**
+   * 파일 업로드
+   * @param projectImg
+   * @return
+   * @throws IOException
+   */
+  private String fileUpload(MultipartFile projectImg) throws IOException {
+    String uploadedFilePath = null;
+    String boardType="project";
+
+    if(projectImg != null) {
+      log.info("projectImage file name: {}", projectImg.getOriginalFilename());
+      uploadedFilePath = uploadService.uploadFileImage(projectImg,boardType);
+    }
+    return uploadedFilePath;
+  }
+
+
+  /**
+   * 게시글 수정
+   * @param dto
+   * @param projectImg
+   * @return
+   */
   @PatchMapping
   public ApplicationResponse<?> modify(
-      @Validated @RequestBody ProjectModifyRequestDTO dto
-      , HttpServletRequest request
-
+      @Validated @RequestPart("project") ProjectModifyRequestDTO dto,
+      @RequestPart(
+          value = "projectImage",
+          required = false) MultipartFile projectImg
   ) {
-    log.info("/api/ddamddam modify {} !! - dot : {}", request.getMethod(), dto);
+    log.info("/api/ddamddam modify {} !! - dto : {}", dto,projectImg);
 
     try {
-      ProjectDetailResponseDTO responseDTO = projectService.modify(dto);
+      String uploadedFilePath = fileUpload(projectImg);
+
+      ProjectDetailResponseDTO responseDTO = projectService.modify(dto,uploadedFilePath);
       return ApplicationResponse.ok(responseDTO);
     } catch (Exception e) {
       return ApplicationResponse.error(e.getMessage());

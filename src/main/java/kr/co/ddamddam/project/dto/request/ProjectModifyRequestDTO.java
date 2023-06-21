@@ -29,5 +29,5 @@ public class ProjectModifyRequestDTO {
   private String offerPeriod; //모집기간
 
   @NotNull
-  private Long projectIdx;
+  private Long boardIdx;
 }
