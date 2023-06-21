@@ -259,7 +259,6 @@ public class QnaService {
         log.info("[Qna/Service] QNA 채택완료 상태인 게시글들만 조회");
 
         PageRequest pageable = getPageable(pageDTO);
-//        Page<Qna> qnas = qnaRepository.findAll(pageable);
         Page<Qna> qnas = qnaRepository.findByQnaAdoption(Y, pageable);
         List<QnaListResponseDTO> qnaList = getQnaDtoListByAdoption(qnas);
 
@@ -275,7 +274,6 @@ public class QnaService {
         log.info("[Qna/Service] QNA 미채택 상태인 게시글들만 조회");
 
         PageRequest pageable = getPageable(pageDTO);
-//        Page<Qna> qnas = qnaRepository.findAll(pageable);
         Page<Qna> qnas = qnaRepository.findByQnaAdoption(N, pageable);
         List<QnaListResponseDTO> qnaList = getQnaDtoListByNonAdoption(qnas);
 
