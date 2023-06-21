@@ -35,6 +35,19 @@ const Header = () => {
         sessionStorage.removeItem('LOGIN_USER_POINT');
         sessionStorage.removeItem('LOGIN_USER_PROFILE');
         sessionStorage.removeItem('LOGIN_USER_ROLE');
+        // 자동 ㅗ
+        localStorage.removeItem('ACCESS_TOKEN');
+        localStorage.removeItem('LOGIN_USER_IDX');
+        localStorage.removeItem('LOGIN_USER_EMAIL');
+        localStorage.removeItem('LOGIN_USER_NAME');
+        localStorage.removeItem('LOGIN_USER_NICKNAME');
+        localStorage.removeItem('LOGIN_USER_REGDATE');
+        localStorage.removeItem('LOGIN_USER_BIRTH');
+        localStorage.removeItem('LOGIN_USER_POSITION');
+        localStorage.removeItem('LOGIN_USER_CAREER');
+        localStorage.removeItem('LOGIN_USER_POINT');
+        localStorage.removeItem('LOGIN_USER_PROFILE');
+        localStorage.removeItem('LOGIN_USER_ROLE');
 
         window.location.href='/';
         }else {

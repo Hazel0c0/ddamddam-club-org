@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {BASE_URL, MYPAGE} from '../common/config/HostConfig';
 import {getToken} from "../common/util/login-util";
@@ -26,7 +26,7 @@ const MypageBoardList = props => {
   // 첫 렌더링 시 작성 게시글 전체 출력
   useEffect(() => {
 
-    fetch(API_BASE_URL + `/board-list?page=${carouselIndex}`, {
+    fetch(API_BASE_URL + `/board-list?page=${carouselIndex}&size=10`, {
       method: 'GET',
       headers: headerInfo,
     })
@@ -52,18 +52,14 @@ const MypageBoardList = props => {
         // 오류 없이 값을 잘 받아왔다면
         return res.json();
       })
-      .then(result => {
-        if (!!result) {
-          setBoardList(result);
-          setPageNation(result.pageInfo);
-        }
-      })
+      // .then(result => {
+      //   if (!!result) {
+      //     setBoardList(result);
+      //     setPageNation(result.pageInfo);
+      //   }
+      // })
 
-
-    return () => {
-      effect
-    };
-  }, [input]);
+  }, []);
 
   return (
     <div>
@@ -71,7 +67,5 @@ const MypageBoardList = props => {
     </div>
   );
 };
-
-MypageBoardList.propTypes = {};
 
 export default MypageBoardList;
