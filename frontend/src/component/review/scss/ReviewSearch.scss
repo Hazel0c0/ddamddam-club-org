@@ -24,12 +24,19 @@
 
   .search-wrapper{
     position: relative;
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 0 5px 0 10px;
+    border-radius: 6px;
+
     .input-btn{
-      width: 650px;
+      width: 550px;
       border-radius: 5px;
-      padding: 5px 30px;
+      padding: 10px 10px;
       border: none;
       background-color: #f0f0f0;
+      outline: none;
 
 
     }
@@ -38,10 +45,23 @@
     }
 
     .search-icon{
-      left: 10px;
-      transform: translateY(50%);
-      position: absolute;
+      //left: 10px;
+      //transform: translateY(50%);
+      //position: absolute;
       width: 14px;
+    }
+
+    .reset-btn,
+    .submit-btn{
+      background-color: white;
+      margin-left: 5px;
+      padding: 7px 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    .reset-btn{
+      padding: 7px 8px;
     }
   }
 

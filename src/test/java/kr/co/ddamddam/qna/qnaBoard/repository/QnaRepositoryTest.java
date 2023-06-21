@@ -61,13 +61,13 @@ class QnaRepositoryTest {
             if (index4 == 19L) index4 = 1L;
 
             Long finalIndex = index4;
-            User user = userRepository.findById(index4).orElseThrow(() -> {
+            User user = userRepository.findById(1L).orElseThrow(() -> {
                 throw new NotFoundUserException(ErrorCode.NOT_FOUND_USER, finalIndex);
             });
 
             Qna qna = Qna.builder()
                     .qnaTitle(randomTitle[index1])
-                    .qnaContent(randomContent[index2])
+                    .qnaContent(i+randomContent[index2])
                     .qnaWriter(user.getUserNickname())
                     .qnaAdoption(randomAdoption[index3])
                     .user(user)
@@ -84,7 +84,7 @@ class QnaRepositoryTest {
         
         String[] randomHashtag = {"자바", "질문", "취업", "진로고민", "프론트엔드_고민", "백엔드_고민", "신입_개발자", "회사_문화", "퇴사_상담", "알고리즘", "C++", "파이썬", "학습서추천", "인텔리제이", "이클립스"};
 
-        for (int i = 1; i <= 50; i++) {
+        for (int i = 1; i <= 120; i++) {
             Long qnaIdx = (long) i;
             int index3 = (int) (Math.random() * 10); // 0 ~ 9 사이의 랜덤 정수
 

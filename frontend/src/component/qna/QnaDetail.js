@@ -1,19 +1,17 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './scss/QnaDetail.scss';
 import Common from "../common/Common";
-import {json, Link, useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import viewIcon from "../../src_assets/view-icon.png";
 import speechBubble from "../../src_assets/speech-bubble.png";
 import {QNA, QNAREPLY} from "../common/config/HostConfig";
-import qnaDetail from "./QnaDetail";
-import {getToken, getUserIdx, getUserName, getUserNickname} from "../common/util/login-util";
+import {getToken, getUserNickname} from "../common/util/login-util";
 
 const QnaDetail = () => {
         const redirection = useNavigate();
         const inputRef = useRef();
         const {boardIdx} = useParams();
         const [detailQna, setDetailQna] = useState(null);
-        const $clickMore = useRef();
         const [replyList, setReplyList] = useState([]);
         const [checkedReplyAdoption, setCheckedReplyAdoption] = useState([]);
 
@@ -25,7 +23,9 @@ const QnaDetail = () => {
             'Authorization': 'Bearer ' + ACCESS_TOKEN
         };
 
+        //수정버튼 누르면 수정할 수 있게
         const [replyModifyShow, setReplyModifyShow] = useState(false);
+
 
         const asyncDetail = async () => {
             console.log(boardIdx);
@@ -69,9 +69,8 @@ const QnaDetail = () => {
             asyncDetail();
         }, []);
 
-//댓글 작성
-
-        const enterUserIdx = getUserIdx();
+        //댓글 작성
+        // const enterUserIdx = getUserIdx();
         const writeReplyHandler = async () => {
             if (detailQna.boardAdoption === 'Y') {
                 alert('이미 채택된 글은 댓글을 작성하실 수 없습니다.');
@@ -81,8 +80,7 @@ const QnaDetail = () => {
             console.log(`inputContent의 값 ${inputContent}`);
             const res = await fetch(`${QNAREPLY}/write`, {
                 method: 'POST',
-                // headers: requestHeader,
-                headers: {'content-type': 'application/json',},
+                headers: requestHeader,
                 body: JSON.stringify({
                     replyContent: inputContent,
                     boardIdx: boardIdx
@@ -110,19 +108,27 @@ const QnaDetail = () => {
         }
 
         //댓글 수정
-        const replyModifyHandler = async () => {
+        const replyModifyShowHandler = async () => {
+            setReplyModifyShow(true);
+        }
+
+
+        const replyModifyHandler = async (replyIdx) => {
+
             if (detailQna.boardAdoption === 'Y') {
                 alert('이미 채택된 글은 댓글은 수정하실 수 없습니다.');
                 return;
             }
+
+            const modifyContent = document.querySelector('.reply-modify-content').value;
 
             // console.log(`inputContent의 값 ${inputContent}`);
             const res = await fetch(`${QNAREPLY}/modify`, {
                 method: 'PATCH',
                 headers: requestHeader,
                 body: JSON.stringify({
-                    // replyIdx : replyIdx,
-                    // replyContent: replyContent,
+                    replyIdx : replyIdx,
+                    replyContent: modifyContent,
                 })
             })
 
@@ -131,17 +137,11 @@ const QnaDetail = () => {
                 alert(text);
                 return;
             }
-            const replyData = await res.json();
-            const replyList = replyData.payload;
-
-            const modifiedReplyList = replyList.map((reply) => {
-                const showMore = false;
-                return {...reply, showMore};
-            });
-            setReplyList(modifiedReplyList);
-            inputRef.current.value = '';
+            setReplyModifyShow(false);
+            asyncDetail();
             alert("댓글이 수정 되었습니다.");
         }
+
 
         //댓글 삭제
         const replyDeleteHandler = async (replyIdx) => {
@@ -167,10 +167,10 @@ const QnaDetail = () => {
 
         //채택완료 처리
         const adoptHandler = async (e) => {
+            // if (enterUserNickName === )
             const confirmBtn = window.confirm("정말 채택하시겠습니까? 채택 완료 후 수정이 불가합니다.");
             console.log(`replyIdx : ${e.target.closest('.reply-content-wrapper').querySelector('.replyIdx').value}`)
 
-            // ㅈㄱㄹㅈㄷ
             const replyIdxValue = e.target.closest('.reply-content-wrapper').querySelector('.replyIdx').value;
 
             const res = await fetch(`${QNAREPLY}/adopts/${replyIdxValue}`, {
@@ -351,36 +351,49 @@ const QnaDetail = () => {
                                             <div className={'reply-top-wrapper'}>
                                                 <p className={'reply-writer'}>{reply.replyWriter}</p>
                                                 <div className={'reply-date'}>{reply.replyDate}</div>
-                                                {/*enterUserNickName : {enterUserNickName}*/}
-                                                {/*reply.replyWriter : {reply.replyWriter}*/}
+
                                                 {enterUserNickName === reply.replyWriter &&
                                                     <>
                                                         <span className={'reply-modify'}
-                                                              onClick={replyModifyHandler}>수정</span>
+                                                              onClick={replyModifyShowHandler}>수정</span>
                                                         <span className={'reply-delete'}
                                                               onClick={() => replyDeleteHandler(reply.replyIdx)}>삭제</span>
                                                     </>
                                                 }
                                             </div>
 
+                                            {/*수정 버튼 누르면 수정 폼 뛰워주기*/}
                                             <div className={'reply-content-wrapper'}>
-                                                <input type={"hidden"} value={reply.replyIdx} name={"replyIdx"}
-                                                       className={'replyIdx'}/>
-                                                <div>{reply.replyContent}</div>
-
-                                                <div>
-                                                    {detailQna.boardAdoption === 'Y' ? (
-                                                        checkedReplyAdoption && checkedReplyAdoption[index].replyAdoption === 'Y' ? (
-                                                            <button className="adoption-btn-checked">채택완료</button>
-                                                        ) : (
-                                                            <button className="adoption-btn-disabled" disabled>채택불가</button>
-                                                        )
-                                                    ) : (
+                                                {replyModifyShow ?
+                                                    <>
+                                                        <textarea name={"replyContent"} className={'reply-modify-content'}
+                                                                  // autoFocus={true}
+                                                                  defaultValue={reply.replyContent}/>
                                                         <button className="adoption-btn"
-                                                                onClick={adoptHandler}>채택하기</button>
-                                                    )}
-                                                </div>
-
+                                                                onClick={() => replyModifyHandler(reply.replyIdx)}>수정완료
+                                                        </button>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <input type={"hidden"} value={reply.replyIdx} name={"replyIdx"}
+                                                               className={'replyIdx'}/>
+                                                        <div>{reply.replyContent}</div>
+                                                        <div>
+                                                            {detailQna.boardAdoption === 'Y' ? (
+                                                                checkedReplyAdoption && checkedReplyAdoption[index].replyAdoption === 'Y' ? (
+                                                                    <button className="adoption-btn-checked">채택완료</button>
+                                                                ) : (
+                                                                    <button className="adoption-btn-disabled"
+                                                                            disabled>채택불가</button>
+                                                                )
+                                                            ) : (
+                                                                enterUserNickName !== reply.replyWriter && (
+                                                                    <button className="adoption-btn" onClick={adoptHandler}>채택하기</button>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    </>
+                                                }
                                             </div>
                                         </div>
                                     )
