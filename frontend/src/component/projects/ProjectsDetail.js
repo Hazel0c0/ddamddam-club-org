@@ -84,7 +84,7 @@ const ProjectsDetail = () => {
   }
 
   const handleApply = () => {
-    // 11 대신 유저 번호 넣을거
+    // 11 대신 유저 번호
     fetch(PROJECT + `/applicant/1/${projectIdx}`, {
       method: 'PATCH',
       headers: {
