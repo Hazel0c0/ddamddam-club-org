@@ -20,9 +20,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 public class ProjectDetailResponseDTO {
-    private String boardWriter;
 
     private Long boardIdx;
+
+    private String boardWriter;
+    private String boardImg;
     private String boardTitle;
     private String boardContent;
     private String projectType;
@@ -44,6 +46,7 @@ public class ProjectDetailResponseDTO {
     public ProjectDetailResponseDTO(Project project) {
         this.boardWriter = project.getUserNickname();
         this.boardIdx = project.getProjectIdx();
+        this.boardImg = project.getProjectImg();
         this.boardTitle = project.getProjectTitle();
         this.boardContent = project.getProjectContent();
         this.projectType = project.getProjectType();

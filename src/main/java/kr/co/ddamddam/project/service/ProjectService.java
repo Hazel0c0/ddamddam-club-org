@@ -106,7 +106,7 @@ public class ProjectService {
         .orElseThrow(() -> new RuntimeException(projectIdx + "번 게시물이 존재하지 않습니다!"));
   }
 
-  // 글 작성
+  // 작성
   public ProjectDetailResponseDTO write(final ProjectWriteDTO dto, final String uploadedFilePath) {
     User user = userRepository.findById(dto.getBoardWriterIdx())
         .orElseThrow(() -> new RuntimeException("존재하지 않습니다!"));
@@ -116,9 +116,9 @@ public class ProjectService {
     return new ProjectDetailResponseDTO(saved);
   }
 
-
-  public ProjectDetailResponseDTO modify(ProjectModifyRequestDTO dto) {
-    Project currProject = getProject(dto.getProjectIdx());
+  // 수정
+  public ProjectDetailResponseDTO modify(ProjectModifyRequestDTO dto, String uploadedFilePath) {
+    Project currProject = getProject(dto.getBoardIdx());
 
     currProject.setProjectTitle(dto.getBoardTitle());
     currProject.setProjectContent(dto.getBoardContent());
@@ -126,7 +126,8 @@ public class ProjectService {
     currProject.setMaxFront(dto.getMaxFront());
     currProject.setMaxBack(dto.getMaxBack());
     currProject.setOfferPeriod(dto.getOfferPeriod());
-    currProject.setProjectIdx(dto.getProjectIdx());
+    currProject.setProjectIdx(dto.getBoardIdx());
+    currProject.setProjectImg(uploadedFilePath);
 
     Project modifiedProject = projectRepository.save(currProject);
 

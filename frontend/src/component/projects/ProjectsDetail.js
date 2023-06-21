@@ -27,8 +27,8 @@ const ProjectsDetail = () => {
         })
         .then(data => {
           setProjectDetail([data.payload]);
+          console.log("프로젝트 디테일 dto")
           console.log(data.payload);
-
         })
         .catch(error => {
           console.error(error);
@@ -46,6 +46,7 @@ const ProjectsDetail = () => {
       const fileBlob = await res.blob();
       const imgUrl = window.URL.createObjectURL(fileBlob);
       setProjectImgUrl(imgUrl);
+      console.log("프로젝트 디테일 - 이미지 : "+imgUrl)
     } else {
       const err = await res.text();
       setProjectImgUrl(null);
@@ -57,10 +58,6 @@ const ProjectsDetail = () => {
     fetchProjectDetail();
     fetchFileImage();
   }, []);
-
-
-  console.log('2-----프로젝트 디테일 : ');
-  console.log(projectDetail.boardIdx);
 
   const handleDelete = (id) => {
     console.log("delete id : " + id);
