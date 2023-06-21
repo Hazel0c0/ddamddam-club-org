@@ -4,7 +4,6 @@ package kr.co.ddamddam.user.dto.request;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.entity.UserPosition;
-import kr.co.ddamddam.user.entity.UserRole;
 import lombok.*;
 
 import javax.validation.constraints.Email;
@@ -53,7 +52,7 @@ public class UserRequestSignUpDTO {
 
 
     //엔티티로 변경하는 메서드
-    public User toEntity(){
+    public User toEntity(String uploadedFilePath){
         return User.builder()
                 .userEmail(this.userEmail)
                 .userPassword(this.userPw)
@@ -62,7 +61,7 @@ public class UserRequestSignUpDTO {
                 .userCareer(this.userCareer)
                 .userNickname(this.userNickName)
                 .userPosition(UserPosition.valueOf(this.userPosition))
-                .userProfile(this.userProfile)
+                .userProfile(uploadedFilePath)
                 .build();
     }
 

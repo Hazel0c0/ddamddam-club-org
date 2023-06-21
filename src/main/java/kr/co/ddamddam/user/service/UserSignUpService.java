@@ -10,19 +10,29 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 public class UserSignUpService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
+    @Value("${upload.path.profile}")
+    private String uploadRootPath;
+
     //회원가입 처리
-    public UserSignUpResponseDTO create(final UserRequestSignUpDTO dto)
+    public UserSignUpResponseDTO create(
+            final UserRequestSignUpDTO dto,
+            final String uploadedFilePath)
             throws RuntimeException {
 
         if (dto == null) {
@@ -41,7 +51,8 @@ public class UserSignUpService {
         dto.setUserPw(encoded);
 
         // 유저 엔터티로 변환
-        User user = dto.toEntity();
+        User user = dto.toEntity(uploadedFilePath);
+
         //엔티티를 저장하고 리턴값 반환
         User saved = userRepository.save(user);
 
@@ -54,6 +65,40 @@ public class UserSignUpService {
     public boolean isDuplicate(String email) {
         return userRepository.existsByUserEmail(email);
     }
+
+
+
+    /**
+     * 업로드된 파일을 서버에 저장하고 저장 경로를 리턴
+     * @param originalFile - 업로드된 파일의 정보
+     * @return 실제로 저장된 이미지의 경로
+     */
+    public String uploadProfileImage(MultipartFile originalFile) throws IOException {
+
+        // 루트 디렉토리가 존재하는지 확인 후 존재하지 않으면 생성
+        File rootDir = new File(uploadRootPath);
+        if (!rootDir.exists()) rootDir.mkdir();
+
+        // 파일명을 유니크하게 변경
+        String uniqueFileName = UUID.randomUUID()
+                + "_" + originalFile.getOriginalFilename();
+
+        // 파일을 저장
+        File uploadFile = new File(uploadRootPath + "/" + uniqueFileName);
+        originalFile.transferTo(uploadFile);
+
+        return uniqueFileName;
+    }
+
+    public String getProfilePath(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow();
+//        return uploadRootPath + "/" + user.getProfileImg();
+        return user.getUserProfile();
+    }
+
+
+}
 
 //    //유저정보 수정기능
 //    public UserModifyResponseDTO modify(UserModifyRequestDTO dto){
@@ -95,4 +140,4 @@ public class UserSignUpService {
 
 
 
-}
+

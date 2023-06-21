@@ -374,6 +374,17 @@ const UserJoin = () => {
     const fetchSignUpPost = async () => {
         console.log(`fetchSignUpPost의 userValue : ${userValue}`);
 
+        // JSON을 Blob타입으로 변경 후 FormData에 넣기
+        const userJsonBlob = new Blob(
+          [JSON.stringify(userValue)],
+          { type: 'application/json' }
+        );
+
+        // 이미지파일과 회원정보 JSON을 하나로 묶어야 함
+        const userFormData = new FormData();
+        userFormData.append('user', JSON.stringify(userValue));
+        userFormData.append('profileImage', $fileTag.current.files[0]);
+
         const res = await fetch(`${BASE_URL}/signup`, {
             method: 'POST',
             headers: {'content-type': 'application/json'},
@@ -428,7 +439,7 @@ const UserJoin = () => {
 
     //렌더링이 끝난 이후 실행되는 함수
     useEffect(() => {
-    }, []);
+    }, [emailValue]);
 
     return (
         <Common className={'join-wrapper'}>
