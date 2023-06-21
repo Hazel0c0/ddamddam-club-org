@@ -28,6 +28,8 @@ const MentorsChat = () => {
 
     const ACCESS_TOKEN = getToken(); // 토큰
 
+    const [menteeCount, setMenteeCount] = useState(0);
+
     // headers
     const headerInfo = {
         'content-type': 'application/json',
@@ -55,10 +57,13 @@ const MentorsChat = () => {
             element.style.display = 'none';
         });
 
-            document.querySelector('.input-section').style.display = 'block';
+            document.querySelector('.input-section').style.display = 'flex';
             document.querySelector('.mentor-back-room').style.display = 'block';
 
-        fetch(CHAT + `/mentor/chatroom/detail?mentorIdx=${chatPageIdx}&roomIdx=${e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value}&senderIdx=${e.target.closest('.chat-room-list').querySelector('.sender-idx').value}`)
+        fetch(CHAT + `/mentor/chatroom/detail?mentorIdx=${chatPageIdx}&roomIdx=${e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value}&senderIdx=${e.target.closest('.chat-room-list').querySelector('.sender-idx').value}`,{
+            method : 'GET',
+            headers : headerInfo
+        })
             .then(res => {
                 if (res.status === 500) {
                     return;
@@ -75,7 +80,14 @@ const MentorsChat = () => {
 
   // 멘티 확정 시 렌더링
   const menteeCountUp = e => {
-
+    fetch(MENTOR + '/mentee/' + chatPageIdx, {
+        method: 'PUT',
+        headers: headerInfo
+    })
+        .then((res) => res.json())
+        .then((result) => {
+            setMenteeCount(result);
+        });
   };
 
 
@@ -133,7 +145,10 @@ const menteeMsgBox = chat.map((item, idx) => {
 // 렌더링
   useEffect(() => {
     // 멘토 상세 정보 조회
-    fetch(MENTOR + '/detail?mentorIdx=' + chatPageIdx).then((res) => {
+    fetch(MENTOR + '/detail?mentorIdx=' + chatPageIdx,{
+        method : 'GET',
+        headers : headerInfo
+    }).then((res) => {
         if (res.status === 500) {
           alert('잠시 후 다시 접속해주세요.[서버오류]');
           return;
@@ -328,14 +343,15 @@ const menteeMsgBox = chat.map((item, idx) => {
                             <div className={'member-count'}>
                                 <p className={'detail-sub-text'}>인원</p>
                                 {mentee}명 모집
+                               
+                            </div>
+                            <div className={'career'}>
+                                <p className={'detail-sub-text'}>모집완료</p>
+                                {menteeCount} 명
                             </div>
                             <div className={'subject'}>
                                 <p className={'detail-sub-text'}>주제</p>
                                 {subject}
-                            </div>
-                            <div className={'career'}>
-                                <p className={'detail-sub-text'}>경력</p>
-                                {career}
                             </div>
                             <div className={'current'}>
                                 <p className={'detail-sub-text'}>현직</p>
@@ -351,7 +367,9 @@ const menteeMsgBox = chat.map((item, idx) => {
 
                 <div className={'btn-wrapper'}>
                     <button
-                        className={'application-btn'}>{detailMember.userIdx === enterUserIdx ? '멘티 확정' : '멘토링중'}</button>
+                        className={'application-btn'} onClick={menteeCountUp}>
+                            {detailMember.userIdx === enterUserIdx ? '멘티 확정' : '멘토링중'}
+                    </button>
                     <button className={'mentor-back-room'} onClick={backChatRoomList}>채팅방 돌아가기</button>
                 </div>
             </div>
