@@ -8,10 +8,10 @@ import {QNA} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import PageNation from "../common/pageNation/PageNation";
 import {getToken} from "../common/util/login-util";
-import QnaTotal from "./hashTagConfig/QnaTotal";
-import QnaNoAdoption from "./hashTagConfig/QnaNoAdoption";
-import QnaAdoption from "./hashTagConfig/QnaAdoption";
-import QnaSearchKeyword from "./hashTagConfig/QnaSearchKeyword";
+import QnaTotal from "./Paginatrion/QnaTotal";
+import QnaNoAdoption from "./Paginatrion/QnaNoAdoption";
+import QnaAdoption from "./Paginatrion/QnaAdoption";
+import QnaSearchKeyword from "./Paginatrion/QnaSearchKeyword";
 
 const QnaList = ({searchValue, searchKeyword}) => {
     const [pageTrue, setPageTrue] = useState({

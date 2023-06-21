@@ -243,6 +243,8 @@ const UserJoin = () => {
 
         //이메일 주소 선택
         const emailDomainValue = emailValue.current.value;
+
+
         console.log(emailDomainValue);
 
         const inputVal = `${inputEmail}@${emailDomainValue}`;
@@ -407,7 +409,7 @@ const UserJoin = () => {
 
     //렌더링이 끝난 이후 실행되는 함수
     useEffect(() => {
-    }, []);
+    }, [emailValue]);
 
     return (
         <Common className={'join-wrapper'}>

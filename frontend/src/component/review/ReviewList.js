@@ -1,9 +1,11 @@
 import ReviewTotal from "./Pagination/ReviewTotal";
-
 import Common from "../common/Common";
 import './scss/ReviewList.scss'
 import {getToken} from "../common/util/login-util";
 import {useEffect, useState} from "react";
+import ReviewSearchKeyword from "./Pagination/ReviewSearchKeyword";
+import ReviewView from "./Pagination/ReviewView";
+import ReviewRating from "./Pagination/ReviewRating";
 
 const ReviewList = ({searchValue, searchKeyword}) => {
     const [pageTrue, setPageTrue] = useState({
@@ -64,9 +66,9 @@ const ReviewList = ({searchValue, searchKeyword}) => {
         <Common className={'review-list-wrapper'}>
             {/*{pageTrue.search ? 'pageTrue.search의 값 true' : 'pageTrue.search의 값 false'}*/}
             {pageTrue.total && <ReviewTotal loginCheck={loginCheck}/>}
-            {/*{pageTrue.rating && <QnaNoAdoption loginCheck={loginCheck}/>}*/}
-            {/*{pageTrue.view && <QnaAdoption loginCheck={loginCheck}/>}*/}
-            {/*{pageTrue.search && <QnaSearchKeyword loginCheck={loginCheck} searchKeyword={searchKeyword}/>}*/}
+            {pageTrue.rating && <ReviewRating loginCheck={loginCheck}/>}
+            {pageTrue.view && <ReviewView loginCheck={loginCheck}/>}
+            {pageTrue.search && <ReviewSearchKeyword loginCheck={loginCheck} searchKeyword={searchKeyword}/>}
         </Common>
     );
 };

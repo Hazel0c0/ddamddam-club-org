@@ -55,7 +55,7 @@
         flex-direction: column;
         margin-top: 10px;
         padding: 18px 25px 23px;
-        width: 350px;
+        width: 370px;
         height: 180px;
         background: white;
         border-radius: 15px;
@@ -72,7 +72,7 @@
         }
 
         .star {
-          padding: 1px;
+          //padding: 1px;
           margin-top: 15px;
           font-size: 23px;
           color: #fec700;
@@ -87,10 +87,10 @@
         //하단 디테일 영역
         .detail-wrapper {
           display: flex;
-          margin-top: 30px;
+          margin-top: 25px;
 
           .detail-reviewJob{
-            font-size: 14px;
+            font-size: 13px;
             margin-right: 10px;
           }
 

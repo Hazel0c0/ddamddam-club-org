@@ -1,34 +1,34 @@
 import React, {useEffect, useState} from 'react';
-import viewIcon from "../../src_assets/view-icon.png";
-import speechBubble from "../../src_assets/speech-bubble.png";
+import viewIcon from "../../../src_assets/view-icon.png";
 import {Link, useNavigate} from "react-router-dom";
 import {IoIosArrowForward} from "react-icons/io";
-import PageNation from "../common/pageNation/PageNation";
-import {QNA} from "../common/config/HostConfig";
-import {getToken} from "../common/util/login-util";
+import PageNation from "../../common/pageNation/PageNation";
+import {REVIEW} from "../../common/config/HostConfig";
+import ReviewStar from "../StartRating/ReviewStar";
 
-const QnaNoAdoption = ({loginCheck,searchKeyword}) => {
-    const [qnaList, setQnaList] = useState([]);
+const ReviewSearchKeyword = ({loginCheck,searchKeyword}) => {
+    const [reviewList, setReviewList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
     const [clickCurrentPage, setClickCurrentPage] = useState(1);
 
     useEffect(()=>{
-        asyncQnaSearchKeywordList();
+        asyncReviewSearchKeywordList();
 
     },[clickCurrentPage])
 
-    const asyncQnaSearchKeywordList = async () => {
-        const res = await fetch(`${QNA}/search?keyword=${searchKeyword}`, {
+    const asyncReviewSearchKeywordList = async () => {
+        // const res = await fetch(`${REVIEW}/search?keyword=${searchKeyword}?page=${clickCurrentPage}&size=10`, {
+        const res = await fetch(`${REVIEW}/search?keyword=${searchKeyword}`, {
             method: 'GET',
             headers: {'content-type': 'application/json'}
         })
 
-        const qnaList = await res.json();
+        const reviewList = await res.json();
 
-        setQnaList(qnaList.payload.qnas);
-        setPageNation(qnaList.payload.pageInfo);
+        setReviewList(reviewList.responseList);
+        setPageNation(reviewList.pageInfo);
 
-        console.log(`searchKeyword qnaList = `,qnaList);
+        console.log(`searchKeyword reviewList = `,reviewList);
     }
 
 
@@ -48,47 +48,49 @@ const QnaNoAdoption = ({loginCheck,searchKeyword}) => {
     }
 
     return (
+
         <>
-            {qnaList.map((qna) => (
-                <section className={'qna-list'} key={qna.boardIdx}>
-                    {qna.boardAdoption === 'Y'
-                        ? <div className={'checked'} key={qna.boardAdoption}>
-                            채택완료</div>
-                        : <div className={'not-checked'} key={qna.boardAdoption}>
-                            미채택</div>
-                    }
+            {reviewList.map((review) => (
+                <section className={'review-list'}>
 
+                    <div className={'company-info-wrapper'}>
+                        <span className={'company'}>{review.reviewCompanyName}</span>
+                        <ReviewStar starCount={review.reviewRating}/>
+                    </div>
                     <section className={'text-wrapper'}>
-                        <div className={'text-title'} key={qna.boardTitle}>{qna.boardTitle}</div>
-                        <div className={'text-content'} key={qna.boardContent}>{qna.boardContent}</div>
-                        <ul className={'text-hashTag'}>
-                            {qna.hashtagList.map((hashTag, index) => (
-                                <li key={index}>#{hashTag}</li>
-                            ))}
-                        </ul>
-                    </section>
-                    <section className={'qna-info'}>
-                        <div className={'qna-writer'} key={qna.boardWriter}>{qna.boardWriter}</div>
-                        <div className={'icon-wrapper'}>
-                            <div className={'view-count-wrapper'}>
-                                <img src={viewIcon} alt={'view-count'}
-                                     className={'view-count-icon'}/><span>{qna.viewCount}</span>
+                        <div className={'main-content'}>
+                            <div className={'text-title'}>{review.reviewTitle}</div>
+                            <div className={'detail-wrapper'}>
+                                <div className={'detail-reviewJob'}><span
+                                    className={'sub-title'}>직무</span> {review.reviewJob}</div>
+                                <div className={'detail-reviewJob'}><span
+                                    className={'sub-title'}>근속년수</span>{review.reviewTenure}년
+                                </div>
+                                <div className={'detail-reviewJob'}><span
+                                    className={'sub-title'}>위치</span>{review.reviewLocation}</div>
                             </div>
-                            <div className={'speech-count-wrapper'}>
-                                <img src={speechBubble} alt={'view-count'}
-                                     className={'speech-count-icon'}/><span>{qna.replyCount}</span>
-                            </div>
-                        </div>
-                        <div className={'write-date'} key={qna.boardDate}>{qna.boardDate}</div>
-                    </section>
 
-                    <Link to={`/api/ddamddam/qna/${qna.boardIdx}`} onClick={loginCheckHandler}>
-                        {/*<div className={'go-detail'} onClick={() => detailHandler(qna.boardIdx)}>*/}
-                        <div className={'go-detail'}>
-                            <div className={'go-detail-text'}>더보기</div>
-                            <i className={'go-detail-icon'}><IoIosArrowForward/></i>
                         </div>
-                    </Link>
+                        <div className={'text-content'}>{review.reviewContent}</div>
+                    </section>
+                    <div className={'right-section'}>
+                        <Link to={`/reviews/detail/${review.reviewIdx}`} className={'text'} onClick={loginCheckHandler}>
+                            <div className={'go-detail'}>
+                                <div className={'go-detail-text'}>더보기</div>
+                                <i className={'go-detail-icon'}><IoIosArrowForward/></i>
+                            </div>
+                        </Link>
+
+                        <section className={'review-info'}>
+                            <div className={'icon-wrapper'}>
+                                <div className={'view-count-wrapper'}>
+                                    <img src={viewIcon} alt={'view-count'} className={'view-count-icon'}/>
+                                    <span>{review.reviewView}</span>
+                                </div>
+                            </div>
+                            <div className={'write-date'}>{review.reviewDate}</div>
+                        </section>
+                    </div>
                 </section>
             ))}
 
@@ -96,10 +98,11 @@ const QnaNoAdoption = ({loginCheck,searchKeyword}) => {
                 <PageNation
                     pageNation={pageNation}
                     currentPageHandler={currentPageHandler}
-                    clickCurrentPage={clickCurrentPage}/>
+                    clickCurrentPage={clickCurrentPage} />
             </ul>
         </>
+
     );
 };
 
-export default QnaNoAdoption;
+export default ReviewSearchKeyword;
