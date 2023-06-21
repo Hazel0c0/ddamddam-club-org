@@ -37,5 +37,4 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
 
     List<Review> findByUserUserIdx(Long userIdx);
 
-//    List<Review> findTop3ByOrderByReviewRatingDesc(); 탑3는 프론트에서 거르
 }

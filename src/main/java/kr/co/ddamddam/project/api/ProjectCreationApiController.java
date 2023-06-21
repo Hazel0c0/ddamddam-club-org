@@ -65,7 +65,7 @@ public class ProjectCreationApiController {
     ) {
         log.info("/api/ddamddam/quick");
 
-        ProjectListPageResponseDTO quickList = projectService.quickMatching(tokenUserInfo, searchDto, dto);
+        ProjectListPageResponseDTO quickList = projectService.quickMatching(tokenUserInfo, dto, searchDto);
 
         return ApplicationResponse.ok(quickList);
     }

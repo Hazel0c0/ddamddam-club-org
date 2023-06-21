@@ -1,13 +1,8 @@
 package kr.co.ddamddam.company.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import kr.co.ddamddam.company.dto.page.PageResponseDTO;
-import kr.co.ddamddam.company.dto.request.CompanyRequestDTO;
 import kr.co.ddamddam.company.entity.Company;
 import lombok.*;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Setter
 @Getter
@@ -25,7 +20,7 @@ public class CompanyListResponseDTO {
     private String companyUrl;;
     private String companySal;
     @JsonFormat(pattern = "yyyy-mm-dd")
-    private LocalDate companyDate;
+    private String  companyDate;
     private String companyEnddate;
 
     public CompanyListResponseDTO(Company company){
