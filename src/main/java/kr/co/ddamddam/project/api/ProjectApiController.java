@@ -66,13 +66,12 @@ public class ProjectApiController {
   // 게시글 상세 보기
   @GetMapping("/{projectIdx}")
   public ApplicationResponse<?> getDetail(
-          TokenUserInfo tokenUserInfo,
           @PathVariable Long projectIdx
   ) {
     log.info("/api/ddamddam/{} GET", projectIdx);
 
     try {
-      ProjectDetailResponseDTO dto = projectService.getDetail(tokenUserInfo, projectIdx);
+      ProjectDetailResponseDTO dto = projectService.getDetail(projectIdx);
 
       return ApplicationResponse.ok(dto);
 
@@ -117,9 +116,6 @@ public class ProjectApiController {
 
   /**
    * 파일 업로드
-   * @param projectImg
-   * @return
-   * @throws IOException
    */
   private String fileUpload(MultipartFile projectImg) throws IOException {
     String uploadedFilePath = null;
@@ -135,9 +131,6 @@ public class ProjectApiController {
 
   /**
    * 게시글 수정
-   * @param dto
-   * @param projectImg
-   * @return
    */
   @PatchMapping
   public ApplicationResponse<?> modify(

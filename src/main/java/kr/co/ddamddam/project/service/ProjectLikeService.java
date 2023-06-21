@@ -29,7 +29,6 @@ public class ProjectLikeService {
 
     public void handleLike(TokenUserInfo tokenUserInfo, Long projectIdx) {
         validateToken.validateToken(tokenUserInfo);
-
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
         User user = getUser(userIdx);
@@ -60,8 +59,9 @@ public class ProjectLikeService {
     }
 
     public boolean checkIfLiked(TokenUserInfo tokenUserInfo, Long projectIdx) {
-        // 사용자의 userIdx와 프로젝트의 projectIdx를 기반으로 좋아요 여부를 조회합니다.
         validateToken.validateToken(tokenUserInfo);
+
+        // 사용자의 userIdx와 프로젝트의 projectIdx를 기반으로 좋아요 여부를 조회합니다.
 
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
