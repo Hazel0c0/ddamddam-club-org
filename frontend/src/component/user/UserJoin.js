@@ -59,12 +59,12 @@ const UserJoin = () => {
 
     // 검증 완료 체크에 대한 상태변수 관리
     const [correct, setCorrect] = useState({
-        userEmail: false,
-        userCode : false,
-        userPw: false,
-        passwordCheck: false,
-        userName: false,
-        userNickName: false,
+        userEmail: true,
+        userCode : true,
+        userPw: true,
+        passwordCheck: true,
+        userName: true,
+        userNickName: true,
         userBirth: true,
         userPosition: true,
         userCareer: true
@@ -411,9 +411,10 @@ const UserJoin = () => {
         // const $nameInput = document.getElementsByName('name');
         console.log(userValue)
         console.log(isValid)
+        console.log(`imgFile의 값 : `,imgFile)
         // 회원가입 서버 요청
         if (isValid()) {
-            fetchSignUpPost();
+            // fetchSignUpPost();
             // alert('회원가입 정보를 서버에 전송합니다.')
         } else {
             alert('입력란을 다시 확인해주세요!');
@@ -441,7 +442,7 @@ const UserJoin = () => {
 
     //렌더링이 끝난 이후 실행되는 함수
     useEffect(() => {
-    }, [emailValue]);
+    }, [emailValue,imgFile]);
 
     return (
         <Common className={'join-wrapper'}>
