@@ -50,7 +50,6 @@ public class ApplicantService {
         User foundUser = userUtil.getUser(userIdx);
 
         // 게시글 작성자와 로그인 한 유저가 동일할 경우 예외처리 - 이메일로 검사합니다.
-        // TODO : 테스트 필요 - 예원
         if (currProject.getUser().getUserEmail().equals(
             tokenUserInfo.getUserEmail())
         ) {
