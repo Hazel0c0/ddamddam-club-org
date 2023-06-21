@@ -2,10 +2,10 @@ package kr.co.ddamddam.review.service;
 
 import kr.co.ddamddam.common.exception.custom.ErrorCode;
 import kr.co.ddamddam.common.exception.custom.NotFoundUserException;
-import kr.co.ddamddam.company.dto.page.PageDTO;
 import kr.co.ddamddam.company.dto.page.PageResponseDTO;
 import kr.co.ddamddam.company.entity.Company;
 import kr.co.ddamddam.company.repository.CompanyRepository;
+import kr.co.ddamddam.review.dto.page.PageDTO;
 import kr.co.ddamddam.review.dto.request.ReviewModifyRequestDTO;
 import kr.co.ddamddam.review.dto.request.ReviewWriteRequestDTO;
 import kr.co.ddamddam.review.dto.response.ReviewDetailResponseDTO;
@@ -57,6 +57,7 @@ public class ReviewService {
 
     }
 
+    //페이지네이션
     private PageRequest getPageable(PageDTO pageDTO) {
         return PageRequest.of(
                 pageDTO.getPage() - 1,
@@ -107,9 +108,9 @@ public class ReviewService {
 
 
     // 조회순으로 조회하기
-    public ReviewListPageResponseDTO getListOrderByView(){
+    public ReviewListPageResponseDTO getListOrderByView(PageDTO pageDTO){
 
-        PageRequest pageable = getPageable(new PageDTO());
+        PageRequest pageable = getPageable(pageDTO);
         Page<Review> reviews = reviewRepository.findByDesc(pageable);
 
         List<ReviewListResponseDTO> reviewListResponseDTOS = getReviewListView(reviews);
@@ -129,9 +130,9 @@ public class ReviewService {
 
 
     // 평점순으로 조회하기
-    public ReviewListPageResponseDTO getListOrderByRateDesc(){
+    public ReviewListPageResponseDTO getListOrderByRateDesc(PageDTO pageDTO){
 
-        PageRequest pageable = getPageable(new PageDTO());
+        PageRequest pageable = getPageable(pageDTO);
         Page<Review> reviews = reviewRepository.findByRate(pageable);
 
         List<ReviewListResponseDTO> reviewListResponseDTOS = getReviewListRate(reviews);
@@ -150,9 +151,9 @@ public class ReviewService {
     }
 
     //키워드 검색기능 구현하기
-    public ReviewListPageResponseDTO getKeywordList(String keyword){
+    public ReviewListPageResponseDTO getKeywordList(String keyword, PageDTO pageDTO){
 
-        PageRequest pageable = getPageable(new PageDTO());
+        PageRequest pageable = getPageable(pageDTO);
         Page<Review> reviews = reviewRepository.findByKeyword(keyword,pageable);
         List<ReviewListResponseDTO> reviewListResponseDTOS = getReviewListKeyword(reviews);
 
