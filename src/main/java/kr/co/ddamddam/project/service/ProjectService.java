@@ -136,7 +136,8 @@ public class ProjectService {
 
     public ProjectDetailResponseDTO modify(
             TokenUserInfo tokenUserInfo,
-            ProjectModifyRequestDTO dto
+            ProjectModifyRequestDTO dto,
+            String uploadedFilePath
     ) {
         validateDTO(tokenUserInfo, dto.getProjectIdx());
 
@@ -149,78 +150,45 @@ public class ProjectService {
         currProject.setMaxBack(dto.getMaxBack());
         currProject.setOfferPeriod(dto.getOfferPeriod());
         currProject.setProjectIdx(dto.getProjectIdx());
+      currProject.setProjectImg(uploadedFilePath);
 
-        Project modifiedProject = projectRepository.save(currProject);
+    Project modifiedProject = projectRepository.save(currProject);
 
-        return new ProjectDetailResponseDTO(modifiedProject);
+    return new ProjectDetailResponseDTO(modifiedProject);
+  }
+
+  public void delete(Long id) {
+    projectRepository.deleteById(id);
+  }
+
+  // 퀵 매칭
+  // select : 오래된 순 / 내 포지션 / 남은자리가 작은것 부터
+  public ProjectListPageResponseDTO quickMatching(PageDTO dto, ProjectSearchRequestDto searchDto) {
+    Pageable pageable = null;
+
+    if (StringUtils.isEmpty(searchDto.getSort())) {
+      if ("front".equals(searchDto.getPosition())) {
+        pageable = PageRequest.of(
+            dto.getPage() - 1,
+            dto.getSize(),
+            Sort.by(
+                Sort.Order.asc("applicantOfFronts.size"),
+                Sort.Order.asc("projectDate")
+            )
+        );
+      } else if ("back".equals(searchDto.getPosition())) {
+        pageable = PageRequest.of(
+            dto.getPage() - 1,
+            dto.getSize(),
+            Sort.by(
+                Sort.Order.asc("applicantOfBacks.size"),
+                Sort.Order.asc("projectDate")
+            )
+        );
+      }
     }
+    Page<Project> projectPage = search(pageable, searchDto);
 
-    public void delete(TokenUserInfo tokenUserInfo, Long boardIdx) {
-        validateDTO(tokenUserInfo, boardIdx);
-        projectRepository.deleteById(boardIdx);
-    }
-
-    // 퀵 매칭
-    // select : 오래된 순 / 내 포지션 / 남은자리가 작은것 부터
-    public ProjectListPageResponseDTO quickMatching(
-            TokenUserInfo tokenUserInfo,
-            ProjectSearchRequestDto searchDto,
-            PageDTO dto
-    ) {
-        validateToken.validateToken(tokenUserInfo);
-
-        Pageable pageable = null;
-
-        if (StringUtils.isEmpty(searchDto.getSort())) {
-            if ("front".equals(searchDto.getPosition())) {
-                pageable = PageRequest.of(
-                        dto.getPage() - 1,
-                        dto.getSize(),
-                        Sort.by(
-                                Sort.Order.asc("applicantOfFronts.size"),
-                                Sort.Order.asc("projectDate")
-                        )
-                );
-            } else if ("back".equals(searchDto.getPosition())) {
-                pageable = PageRequest.of(
-                        dto.getPage() - 1,
-                        dto.getSize(),
-                        Sort.by(
-                                Sort.Order.asc("applicantOfBacks.size"),
-                                Sort.Order.asc("projectDate")
-                        )
-                );
-            }
-        }
-        Page<Project> projectPage = search(pageable, searchDto);
-
-        return getProjectList(projectPage);
-    }
-
-    /**
-     * 토큰 유효성을 검사합니다.
-     * 로그인 중인 유저와 게시글 작성자가 동일한지 검사합니다.
-     *
-     * @param tokenUserInfo
-     * @param boardIdx
-     * @return
-     */
-    private Project validateDTO(TokenUserInfo tokenUserInfo, Long boardIdx) {
-        // 토큰 인증 실패
-        if (tokenUserInfo == null) {
-            throw new UnauthorizationException(UNAUTHENTICATED_USER, "로그인 후 이용 가능합니다.");
-        }
-
-        // 게시글 존재 여부 확인
-        Project project = projectRepository.findById(boardIdx).orElseThrow(() -> {
-            throw new NotFoundBoardException(NOT_FOUND_BOARD, boardIdx);
-        });
-
-        // 토큰 내 회원 이메일과 게시글 작성자의 이메일이 일치하지 않음 -> 작성자가 아님 -> 수정 및 삭제 불가
-        if (!project.getUser().getUserEmail().equals(tokenUserInfo.getUserEmail())) {
-            throw new UnauthorizationException(ACCESS_FORBIDDEN, tokenUserInfo.getUserEmail());
-        }
-
-        return project;
-    }
+    return getProjectList(projectPage);
+  }
 }

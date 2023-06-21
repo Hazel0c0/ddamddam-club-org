@@ -37,44 +37,41 @@ public class ProjectApiController {
     게시글 검색 :      [GET]
    */
 
-    private final ProjectService projectService;
-    private final UploadService uploadService;
+  private final ProjectService projectService;
+  private final UploadService uploadService;
 
 
-    /**
-     * 게시글 전체 조회
-     *
-     * @param pageDTO : 페이지 정보
-     * @return : 페이징 처리 된 프로젝트 리스트 정보
-     * <p>
-     * 기본 조회 (조회순) - keyword 입력 없음
-     * 좋아요 순 조회 - keyword : like
-     * 프론트 / 백 조회 : keyword : front/back
-     */
-    @GetMapping
-    private ApplicationResponse<ProjectListPageResponseDTO> getList(
-            PageDTO pageDTO,
-            ProjectSearchRequestDto searchRequestDto
-    ) {
-        log.info("/api/ddamddam/page={}$size={}", pageDTO.getPage(), pageDTO.getSize());
+  /**
+   * 게시글 전체 조회
+   *
+   * @param pageDTO : 페이지 정보
+   * @return : 페이징 처리 된 프로젝트 리스트 정보
+   * <p>
+   * 기본 조회 (조회순) - keyword 입력 없음
+   * 좋아요 순 조회 - keyword : like
+   * 프론트 / 백 조회 : keyword : front/back
+   */
+  @GetMapping
+  private ApplicationResponse<ProjectListPageResponseDTO> getList(
+      PageDTO pageDTO,
+      ProjectSearchRequestDto searchRequestDto
+  ) {
+    log.info("/api/ddamddam/page={}$size={}", pageDTO.getPage(), pageDTO.getSize());
 
-        ProjectListPageResponseDTO dto = projectService.getList(pageDTO, searchRequestDto);
+    ProjectListPageResponseDTO dto = projectService.getList(pageDTO, searchRequestDto);
 //    log.info("dto의 값 : {}",dto);
-        return ApplicationResponse.ok(dto);
-    }
+    return ApplicationResponse.ok(dto);
+  }
 
-    // 게시글 상세 보기
-    @GetMapping("/{projectIdx}")
-    public ApplicationResponse<?> getDetail(
-            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
-            @PathVariable Long projectIdx
-    ) {
-        log.info("/api/ddamddam/{} GET", projectIdx);
+  // 게시글 상세 보기
+  @GetMapping("/{projectIdx}")
+  public ApplicationResponse<?> getDetail(@PathVariable Long projectIdx) {
+    log.info("/api/ddamddam/{} GET", projectIdx);
 
-        try {
-            ProjectDetailResponseDTO dto = projectService.getDetail(tokenUserInfo, projectIdx);
+    try {
+      ProjectDetailResponseDTO dto = projectService.getDetail(projectIdx);
 
-            return ApplicationResponse.ok(dto);
+      return ApplicationResponse.ok(dto);
 
         } catch (Exception e) {
             return ApplicationResponse.bad(e.getMessage());
@@ -95,23 +92,15 @@ public class ProjectApiController {
     ) {
         log.info("/api/ddamddam write POST!! - payload: {}", dto);
 
-        if (dto == null) {
-            return ApplicationResponse.bad("게시글 정보를 전달해주세요");
-        }
+    if (dto == null) {
+      return ApplicationResponse.bad("게시글 정보를 전달해주세요");
+    }
 
-        try {
-            // 파일 업로드
-            String uploadedFilePath = null;
-            String boardType="project";
+    try {
+      String uploadedFilePath = fileUpload(projectImg);
 
-            if(projectImg != null) {
-                log.info("projectImage file name: {}", projectImg.getOriginalFilename());
-                uploadedFilePath = uploadService.uploadFileImage(projectImg,boardType);
-            }
-
-            ProjectDetailResponseDTO responseDTO = projectService.write(tokenUserInfo, dto, uploadedFilePath);
-            return ApplicationResponse.ok(responseDTO);
-            // ==========
+      ProjectDetailResponseDTO responseDTO = projectService.write(dto,uploadedFilePath);
+      return ApplicationResponse.ok(responseDTO);
 
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -122,6 +111,49 @@ public class ProjectApiController {
 
     }
 
+
+  /**
+   * 파일 업로드
+   * @param projectImg
+   * @return
+   * @throws IOException
+   */
+  private String fileUpload(MultipartFile projectImg) throws IOException {
+    String uploadedFilePath = null;
+    String boardType="project";
+
+    if(projectImg != null) {
+      log.info("projectImage file name: {}", projectImg.getOriginalFilename());
+      uploadedFilePath = uploadService.uploadFileImage(projectImg,boardType);
+    }
+    return uploadedFilePath;
+  }
+
+
+  /**
+   * 게시글 수정
+   * @param dto
+   * @param projectImg
+   * @return
+   */
+  @PatchMapping
+  public ApplicationResponse<?> modify(
+      @Validated @RequestPart("project") ProjectModifyRequestDTO dto,
+      @RequestPart(
+          value = "projectImage",
+          required = false) MultipartFile projectImg
+  ) {
+    log.info("/api/ddamddam modify {} !! - dto : {}", dto,projectImg);
+
+    try {
+      String uploadedFilePath = fileUpload(projectImg);
+
+      ProjectDetailResponseDTO responseDTO = projectService.modify(dto,uploadedFilePath);
+      return ApplicationResponse.ok(responseDTO);
+    } catch (Exception e) {
+      return ApplicationResponse.error(e.getMessage());
+    }
+  }
     // 게시글 수정
     @PatchMapping
     public ApplicationResponse<?> modify(
@@ -137,22 +169,19 @@ public class ProjectApiController {
         }
     }
 
-    //삭제
-    @DeleteMapping("/{idx}")
-    public ApplicationResponse<?> delete(
-            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
-            @PathVariable Long idx
-    ) {
-        log.info("/api/ddamddam {}  DELETE!! ", idx);
+  //삭제
+  @DeleteMapping("/{idx}")
+  public ApplicationResponse<?> delete(@PathVariable Long idx) {
+    log.info("/api/ddamddam {}  DELETE!! ", idx);
 
-        try {
-            projectService.delete(tokenUserInfo, idx);
-            return ApplicationResponse.ok("DEL SUCCESS!!");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ApplicationResponse.bad(e.getMessage());
-        }
+    try {
+      projectService.delete(idx);
+      return ApplicationResponse.ok("DEL SUCCESS!!");
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ApplicationResponse.bad(e.getMessage());
     }
+  }
 
 
 }
