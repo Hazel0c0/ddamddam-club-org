@@ -15,21 +15,20 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class ProjectModifyRequestDTO {
 
-  private Long projectIdx;
+  @NotNull
+  private Long boardIdx;
   @NotBlank
   private String boardTitle;
+  @NotBlank
   private String boardContent;
+  @NotBlank
   private String projectType;
 
   //모집인원
-  @NotNull
-  @Max(5)
+  @NotNull @Max(5)
   private int maxFront;
   @NotNull @Max(5)
   private int maxBack;
 
   private String offerPeriod; //모집기간
-
-  @NotNull
-  private Long boardIdx;
 }

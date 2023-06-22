@@ -4,21 +4,22 @@ import ProjectsTitle from "./mainpage/ProjectsTitle";
 import {PROJECT} from "../common/config/HostConfig";
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import './scss/ProjectDetail.scss';
-import {
-  getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
-  getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
-  getUserRole, isLogin
-} from '../common/util/login-util';
+import {getToken} from "../common/util/login-util";
 
 const ProjectsDetail = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const projectIdx = searchParams.get('projectIdx');
-
   const [projectDetail, setProjectDetail] = useState([]);
   const [projectImgUrl, setProjectImgUrl] = useState(''); // 새로운 상태 추가
-  const navigate = useNavigate();
-  const ACCESS_TOKEN = getToken(); // 토큰
+
+  const ACCESS_TOKEN = getToken();
+
+  const headerInfo = {
+    'content-type': 'application/json',
+    'Authorization': 'Bearer ' + ACCESS_TOKEN
+  }
 
   const fetchProjectDetail = () => {
     fetch(PROJECT + `/${projectIdx}`, {
@@ -85,10 +86,7 @@ const ProjectsDetail = () => {
         console.error(error);
       });
   }
-  const headerInfo = {
-    'content-type': 'application/json',
-    'Authorization': 'Bearer ' + ACCESS_TOKEN
-  }
+
   const handleApply = () => {
     fetch(PROJECT + `/applicant/${projectIdx}`, {
       method: 'PATCH',
@@ -109,6 +107,8 @@ const ProjectsDetail = () => {
         // 요청이 실패했을 때 처리할 코드를 추가합니다.
       });
   };
+
+
 
 
   return (

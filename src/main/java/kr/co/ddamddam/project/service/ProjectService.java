@@ -140,20 +140,22 @@ public class ProjectService {
             ProjectModifyRequestDTO dto,
             String uploadedFilePath
     ) {
-        validateDTO(tokenUserInfo, dto.getProjectIdx());
+        validateDTO(tokenUserInfo, dto.getBoardIdx());
 
-        Project currProject = getProject(dto.getProjectIdx());
+        Project currProject = getProject(dto.getBoardIdx());
 
         if (currProject.getUser().getUserEmail().equals(
             tokenUserInfo.getUserEmail())
         ) {
+            log.info("이 게시글 작성자와 현재 로그인 사용자가 일치합니다");
+
             currProject.setProjectTitle(dto.getBoardTitle());
             currProject.setProjectContent(dto.getBoardContent());
             currProject.setProjectType(dto.getProjectType());
             currProject.setMaxFront(dto.getMaxFront());
             currProject.setMaxBack(dto.getMaxBack());
             currProject.setOfferPeriod(dto.getOfferPeriod());
-            currProject.setProjectIdx(dto.getProjectIdx());
+            currProject.setProjectIdx(dto.getBoardIdx());
             currProject.setProjectImg(uploadedFilePath);
 
             Project modifiedProject = projectRepository.save(currProject);

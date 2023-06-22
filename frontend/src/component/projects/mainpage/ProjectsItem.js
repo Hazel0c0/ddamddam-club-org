@@ -22,8 +22,6 @@ const ProjectsItem = forwardRef((
     }));
 
     const fetchData = () => {
-      // 데이터 다시 가져오는 함수
-      // 예: setCurrentUrl을 업데이트한 후 해당 URL로 fetch 요청하여 데이터를 가져옴
       fetch(url, {
         method: 'GET',
         headers: {'content-type': 'application/json'}
