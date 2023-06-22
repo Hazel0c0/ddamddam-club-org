@@ -1,6 +1,10 @@
 import React, {useEffect, useState, forwardRef, useImperativeHandle} from 'react';
 import {useNavigate} from 'react-router-dom';
 import Common from '../../common/Common';
+import less from "../../../src_assets/less.png";
+import than from "../../../src_assets/than.png";
+import logo from '../../../src_assets/logo.png'
+
 import '../scss/ProjectsItem.scss';
 
 const ProjectsItem = forwardRef((
@@ -13,10 +17,14 @@ const ProjectsItem = forwardRef((
     ref
   ) => {
     const navigate = useNavigate();
-
     const [projects, setProjects] = useState([]);
-    const [pageNation, setPageNation] = useState([]);
     const [projectImgUrls, setProjectImgUrls] = useState([]);
+
+    const [pageNation, setPageNation] = useState([]);
+    const [prevBtn, setPrevBtn] = useState(false);
+    const [nextBtn, setNextBtn] = useState(false);
+    //캐러셀
+    const [carouselIndex, setCarouselIndex] = useState(1);
 
     useImperativeHandle(ref, () => ({
       fetchData
@@ -38,11 +46,11 @@ const ProjectsItem = forwardRef((
           if (!!result) {
             let res = result.payload.projects;
             setProjects(res);
-            console.log('결과')
-            console.log(res)
+            // console.log('결과')
+            // console.log(res)
             setProjects(res)
             for (let i = 0; i < res.length; i++) {
-              console.log(res[i].boardIdx)
+              // console.log(res[i].boardIdx)
               fetchFileImage(res[i].boardIdx, i)
             }
           }
@@ -66,7 +74,7 @@ const ProjectsItem = forwardRef((
           updatedUrls[index] = imgUrl;
           return updatedUrls;
         });
-        console.log(`프로젝트 디테일 - 이미지 (${index}): ${imgUrl}`);
+        // console.log(`프로젝트 디테일 - 이미지 (${index}): ${imgUrl}`);
       } else {
         const err = await res.text();
         setProjectImgUrls((prevUrls) => {
@@ -77,8 +85,30 @@ const ProjectsItem = forwardRef((
       }
     };
 
+
+    const handlePrevious = () => {
+      if (pageNation.prev === true) {
+        setCarouselIndex(prevIndex => prevIndex - 1);
+      }
+    };
+    const handleNext = () => {
+      if (pageNation.next === true) {
+        setCarouselIndex(prevIndex => prevIndex + 1);
+      }
+    };
+
+
     return (
       <Common className={'project-list-wrapper'}>
+
+        {/*{pageNation.prev &&*/}
+          <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
+        {/*}*/}
+
+        {/*{pageNation.next &&*/}
+          <img src={than} alt={"than-icon"} className={'than-icon'} onClick={handleNext}/>
+        {/*}*/}
+
         <h2 className={'sort-title'}>{sortTitle}</h2>
         <div className="project-list-container">
           {projects.map((p, index) => {
@@ -97,12 +127,14 @@ const ProjectsItem = forwardRef((
                 <div className={'project-wrapper'}>
                   <div className={'project-img'}>
                     <img
-                      src={projectImgUrls[index]}
+                      src={projectImgUrls[index] || logo}
                       alt="Project Image" className={'project-img'}
                       style={{
-                        height: 120
+                        height: 120,
+                        marginBottom: 20
                       }}
                     />
+
                   </div>
                   <div className={'text-title'}>{p.boardTitle}</div>
                   <div className={'text-content'}>{p.boardContent}</div>
