@@ -33,9 +33,10 @@ public class MypageController {
         @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
         PageDTO pageDTO
     ) {
-//        log.info("GET : MypageController/getBoardList - tokenUserInfo : {}", tokenUserInfo);
+        log.info("GET : MypageController/getBoardList - tokenUserInfo : {}", tokenUserInfo);
+//        log.info("GET : MypageController/getBoardList - tokenUserInfo : {}", pageDTO);
 
-        MypageBoardPageResponseDTO boardList = myPageService.getBoardList(pageDTO);
+        MypageBoardPageResponseDTO boardList = myPageService.getBoardList(tokenUserInfo, pageDTO);
 
         return ResponseEntity.ok().body(boardList);
     }
@@ -46,7 +47,7 @@ public class MypageController {
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             PageDTO pageDTO
     ){
-        MypageChatPageResponseDTO chatRoomList = myPageService.getChatList(pageDTO);
+        MypageChatPageResponseDTO chatRoomList = myPageService.getChatList(tokenUserInfo, pageDTO);
 
         return ResponseEntity.ok().body(chatRoomList);
     }
@@ -67,22 +68,23 @@ public class MypageController {
 //        return ResponseEntity.ok().body("회원정보 수정완료!");
 //    }
 
-    @GetMapping("/project-list/{userIdx}")
+    @GetMapping("/project-list")
     public ResponseEntity<?> getProjectList(
-//        @AuthenticationPrincipal TokenUserInfo tokenUserInfo
-        @PathVariable Long userIdx,
-        @RequestParam(required = false) String type
+        @AuthenticationPrincipal TokenUserInfo tokenUserInfo
+//        @PathVariable Long userIdx,
+//        @RequestParam(required = false) String type
     ) {
 
-        log.info("mypage - userIdx {} ", userIdx);
-//        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
+        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
-        List<MypageProjectResponseDTO> myProjectList;
-        if (type != null && type.equals("arrayProject")) {
-            myProjectList = myPageService.getArrayProjectList(userIdx);
-        } else {
-            myProjectList = myPageService.getProjectList(userIdx);
-        }
+        log.info("mypage - userIdx {} ", userIdx);
+
+//        if (type != null && type.equals("arrayProject")) {
+        List<MypageProjectResponseDTO> myProjectList
+                = myPageService.getArrayProjectList(userIdx);
+//        } else {
+//            = myPageService.getProjectList(userIdx);
+//        }
         System.out.println("myProjectList = " + myProjectList);
 
         return ResponseEntity.ok().body(myProjectList);
