@@ -1,6 +1,7 @@
 package kr.co.ddamddam.mypage.api;
 
 import kr.co.ddamddam.config.security.TokenUserInfo;
+import kr.co.ddamddam.mypage.dto.MypageProjectPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.page.PageDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageChatPageResponseDTO;
@@ -80,11 +81,10 @@ public class MypageController {
 
         log.info("mypage - userIdx {} ", userIdx);
 
-        List<MypageProjectResponseDTO> myProjectList
-                = myPageService.getArrayProjectList(userIdx,pageDTO);
+        MypageProjectPageResponseDTO arrayProjectList = myPageService.getArrayProjectList(userIdx, pageDTO);
 
-        System.out.println("myProjectList = " + myProjectList);
+        System.out.println("myProjectList = " + arrayProjectList);
 
-        return ResponseEntity.ok().body(myProjectList);
+        return ResponseEntity.ok().body(arrayProjectList);
     }
 }

@@ -25,15 +25,15 @@ public class ApplicantApiController {
      * 프로젝트 참가 신청
      * 게시글에서 신청하기 버튼을 누르면
      * 자동으로 내가 입력했던 포지션을 가져와서 신청
-     *
-     * @param userIdx : 세션에서 내 (유저)정보 받아올것
      */
-    @PatchMapping("/{userIdx}/{projectIdx}")
+    @PatchMapping("/{projectIdx}")
     private ApplicationResponse<?> apply(
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             @RequestBody @PathVariable Long projectIdx
     ) {
-        log.info("/api/ddamddam/applicant/user={}/board={}", tokenUserInfo.getUserIdx(), projectIdx);
+
+        if (tokenUserInfo.getUserIdx()==null) log.info("토큰 XX");
+        log.info("/api/ddamddam/applicant/board={}" , projectIdx);
 
         try {
             ProjectDetailResponseDTO projectDto = applicantService.apply(tokenUserInfo, projectIdx);

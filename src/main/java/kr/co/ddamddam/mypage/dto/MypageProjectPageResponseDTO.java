@@ -1,10 +1,10 @@
 package kr.co.ddamddam.mypage.dto;
 
+import kr.co.ddamddam.mypage.dto.response.MypageProjectResponseDTO;
 import kr.co.ddamddam.project.dto.page.PageResponseDTO;
 import lombok.*;
 
 import java.util.List;
-import java.util.stream.DoubleStream;
 
 @Setter
 @Getter
@@ -16,6 +16,6 @@ import java.util.stream.DoubleStream;
 public class MypageProjectPageResponseDTO {
     private int count; // 총게시물 수
     private PageResponseDTO pageInfo; // 페이지 렌더링 정보
-    private List<MypageProjectPageResponseDTO> posts; // 게시물 렌더링 정보
+    private List<MypageProjectResponseDTO> posts; // 게시물 렌더링 정보
 
 }
