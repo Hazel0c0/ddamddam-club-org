@@ -57,17 +57,14 @@ class QnaRepositoryTest {
             int index3 = (int) (Math.random() * 2); // 0 ~ 1
             Long index4 = (long) (Math.random() * 20 + 1); // 1 ~ 20
 
-            if (index4 == 4L) index4 = 1L;
-            if (index4 == 19L) index4 = 1L;
-
             Long finalIndex = index4;
-            User user = userRepository.findById(2L).orElseThrow(() -> {
+            User user = userRepository.findById(index4).orElseThrow(() -> {
                 throw new NotFoundUserException(ErrorCode.NOT_FOUND_USER, finalIndex);
             });
 
             Qna qna = Qna.builder()
-                    .qnaTitle(randomTitle[index1])
-                    .qnaContent(randomContent[index2])
+                    .qnaTitle(randomTitle[0])
+                    .qnaContent(randomContent[0])
                     .qnaWriter(user.getUserNickname())
                     .qnaAdoption(randomAdoption[index3])
                     .user(user)
