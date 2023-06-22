@@ -81,8 +81,7 @@ const ProjectsDetail = () => {
   }
 
   const handleApply = () => {
-    // 11 대신 유저 번호
-    fetch(PROJECT + `/applicant/1/${projectIdx}`, {
+    fetch(PROJECT + `/applicant/${projectIdx}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

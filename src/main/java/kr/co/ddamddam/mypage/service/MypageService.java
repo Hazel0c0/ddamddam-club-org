@@ -340,40 +340,50 @@ public class MypageService {
     /**
      * @return : 내가 신청한 프로젝트 목록 조회
      */
-    public List<MypageProjectResponseDTO> getArrayProjectList(Long userIdx, PageDTO pageDTO) {
+    public MypageProjectPageResponseDTO getArrayProjectList(Long userIdx, PageDTO pageDTO) {
         Pageable pageable = getPageable(pageDTO);
 
         // 로그인한 유저 객체 가져오기
         User user = userUtil.getUser(userIdx);
         UserPosition userPosition = user.getUserPosition();
-        log.info("user : {}  , 포지션 : {} !!",user ,userPosition);
+        log.info("user : {}  , 포지션 : {} !!", user, userPosition);
 
         List<Project> arrayProjects = new ArrayList<>();
-            Page<T> page;
+        MypageProjectPageResponseDTO pageResponseDTO;
+
         if (userPosition == UserPosition.FRONTEND) {
-            page = frontRepository.findByUser(user, pageable);
+            Page<ApplicantOfFront> page = frontRepository.findByUser(user, pageable);
             List<ApplicantOfFront> content = page.getContent();
             List<Project> frontCollect = content.stream()
                 .map(ApplicantOfFront::getProject)
                 .collect(Collectors.toList());
-            arrayProjects.addAll(frontCollect);
+
+            List<MypageProjectResponseDTO> dtoList = toDtoList(frontCollect);
+
+            return MypageProjectPageResponseDTO.builder()
+                .count(dtoList.size()) // 총게시물 수가 아니라 조회된 게시물 수
+                .pageInfo(new PageResponseDTO<ApplicantOfFront>(page))
+                .posts(dtoList)
+                .build();
+
         } else {
-            page = backRepository.findByUser(user, pageable);
+            Page<ApplicantOfBack> page = backRepository.findByUser(user, pageable);
             List<ApplicantOfBack> content = page.getContent();
             List<Project> backCollect = content.stream()
                 .map(ApplicantOfBack::getProject)
                 .collect(Collectors.toList());
             arrayProjects.addAll(backCollect);
+
+            List<MypageProjectResponseDTO> dtoList = toDtoList(arrayProjects);
+
+            return MypageProjectPageResponseDTO.builder()
+                .count(dtoList.size()) // 총게시물 수가 아니라 조회된 게시물 수
+                .pageInfo(new PageResponseDTO<ApplicantOfBack>(page))
+                .posts(dtoList)
+                .build();
         }
 
-        List<MypageProjectResponseDTO> dtoList = toDtoList(arrayProjects);
 
-        MypageProjectPageResponseDTO.builder()
-            .count(dtoList.size()) // 총게시물 수가 아니라 조회된 게시물 수
-            .pageInfo(new PageResponseDTO<ApplicantOfBack>(page))
-            .posts(dtoList)
-            .build();
-        return dtoList;
     }
 
     private Pageable getPageable(PageDTO dto) {
