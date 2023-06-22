@@ -103,8 +103,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected String parseBearerToken(
             HttpServletRequest request
     ) {
+
+        log.info("pure token:{}", request.getHeader("Authorization"));
+
         // 요청 헤더에서 토큰 가져오기 - "Authorization" : "Bearer {token}"
         String bearerToken = request.getHeader("Authorization");
+
+        log.info("bearerToken:{}", bearerToken);
 
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
