@@ -15,7 +15,7 @@ const MentorsWrite = () => {
       const headerInfo = {
       'content-type': 'application/json',
       'Authorization': 'Bearer ' + ACCESS_TOKEN
-  }
+    }
 
   const [textInput, setTextInput] = useState({
     mentorTitle: '',

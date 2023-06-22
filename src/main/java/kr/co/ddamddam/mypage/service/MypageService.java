@@ -2,8 +2,12 @@ package kr.co.ddamddam.mypage.service;
 
 import kr.co.ddamddam.chat.entity.ChatRoom;
 import kr.co.ddamddam.chat.repository.ChatRoomRepository;
+import kr.co.ddamddam.common.common.ValidateToken;
+import kr.co.ddamddam.common.exception.custom.ErrorCode;
+import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
 import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.UserUtil;
+import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
 import kr.co.ddamddam.mentor.entity.Mentor;
 import kr.co.ddamddam.mentor.repository.MentorRepository;
 import kr.co.ddamddam.mypage.dto.page.PageDTO;
@@ -29,12 +33,15 @@ import kr.co.ddamddam.user.entity.UserPosition;
 import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,7 +51,7 @@ public class MypageService {
 
     // 게시판 타입 상수
     private final String QNA = "Q&A";
-    private final String PROJECT = "프로젝트";
+    private final String PROJECT = "프로젝트 모집";
     private final String MENTOR = "멘토/멘티";
     private final String REVIEW = "취업후기";
     private final String MENTEE_CHAT_ROOM = "멘티 채팅방";
@@ -56,43 +63,49 @@ public class MypageService {
     private final ReviewRepository reviewRepository;
     private final ProjectRepository projectRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final BackRepository backRepository;
+    private final FrontRepository frontRepository;
+    private final UserUtil userUtil;
+    private final ValidateToken validateToken;
+
 
 
     /**
-     마이페이지의 <내가 참여한 멘티 채팅방> 채팅방 조회 및 페이징
-     * @param pageDTO - 클라이언트에서 요청한 페이지 번호
+     * 마이페이지의 <내가 참여한 멘티 채팅방> 채팅방 조회 및 페이징
+     *
+     * @param tokenUserInfo
+     * @param pageDTO       - 클라이언트에서 요청한 페이지 번호
      * @return 페이지 정보, 페이징 처리 된 로그인 유저가 참여한 멘티의 채팅방 리스트
      */
     public MypageChatPageResponseDTO getChatList(
-//            TokenUserInfo tokenUserInfo,
-            PageDTO pageDTO
+            TokenUserInfo tokenUserInfo, PageDTO pageDTO
     ){
-        // Long userIdx = tokenUserInfo.getUserIdx();
+//        Long userIdx = 1L;
+         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
-        Long userIdx = 44L;
+        Pageable pageable = PageRequest.of(
+                pageDTO.getPage() - 1,
+                pageDTO.getSize(),
+                Sort.by(Sort.Direction.ASC, "roomId")
+        );
 
-        List<ChatRoom> chatRoomList = chatRoomRepository.findBySenderUserIdx(userIdx);
+        Page<ChatRoom> pageChatRoomList = chatRoomRepository.findBySenderUserIdx(userIdx, pageable);
+        List<ChatRoom> chatRoomList = pageChatRoomList.getContent();
 
-        PageMaker maker = new PageMaker(pageDTO, chatRoomList.size());
-        int pageStart = getPageStart(pageDTO);
-        int pageEnd = getPageEnd(pageStart, pageDTO.getSize(), chatRoomList.size());
 
-        List<ChatRoom> sliceChatRoomList = chatRoomList.subList(pageStart, pageEnd);
 
-        List<ChatRoomResponseDTO> collect = sliceChatRoomList.stream().map(chatRoom ->
+        List<ChatRoomResponseDTO> collect = chatRoomList.stream().map(chatRoom ->
                         convertChatRoomToMypageDto(chatRoom))
                 .collect(Collectors.toList());
 
         return MypageChatPageResponseDTO.builder()
                 .chatRoomList(collect)
-                .count(sliceChatRoomList.size())
-                .pageInfo(maker)
+                .count(collect.size())
+                .pageInfo(new PageResponseDTO<ChatRoom>(pageChatRoomList))
                 .build();
 
     }
-    private final BackRepository backRepository;
-    private final FrontRepository frontRepository;
-    private final UserUtil userUtil;
+
 
     /**
      * 마이페이지의 <내가 쓴 게시글> 목록 조회 및 페이징
@@ -100,15 +113,15 @@ public class MypageService {
      * @return 페이지 정보, 페이징 처리 된 로그인 유저가 작성한 게시글 목록 리스트
      */
     public MypageBoardPageResponseDTO getBoardList(
-//            TokenUserInfo tokenUserInfo,
+            TokenUserInfo tokenUserInfo,
             PageDTO pageDTO
     ) {
         // 토큰 유효성 검사
-//        validateToken.validateToken(tokenUserInfo);
+        validateToken.validateToken(tokenUserInfo);
 
         // 유효성 검사 통과 시 서비스 기능 수행
-//        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
-        Long userIdx = 1L;
+        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
+//        Long userIdx = 1L;
 
         List<Qna> qnaList = qnaRepository.findByUserUserIdx(userIdx);
         List<Mentor> mentorList = mentorRepository.findByUserUserIdx(userIdx);
@@ -200,6 +213,7 @@ public class MypageService {
         return MypageBoardResponseDTO.builder()
                 .boardType(QNA)
                 .boardIdx(qna.getQnaIdx())
+                .boardTitle(qna.getQnaTitle())
                 .boardDate(qna.getQnaDate())
                 .build();
     }
@@ -213,6 +227,7 @@ public class MypageService {
         return MypageBoardResponseDTO.builder()
                 .boardType(MENTOR)
                 .boardIdx(mentor.getMentorIdx())
+                .boardTitle(mentor.getMentorTitle())
                 .boardDate(mentor.getMentorDate())
                 .build();
     }
@@ -226,6 +241,7 @@ public class MypageService {
         return MypageBoardResponseDTO.builder()
                 .boardType(REVIEW)
                 .boardIdx(review.getReviewIdx())
+                .boardTitle(review.getReviewTitle())
                 .boardDate(review.getReviewDate())
                 .build();
     }
@@ -239,6 +255,7 @@ public class MypageService {
         return MypageBoardResponseDTO.builder()
                 .boardType(PROJECT)
                 .boardIdx(project.getProjectIdx())
+                .boardTitle(project.getProjectTitle())
                 .boardDate(project.getProjectDate())
                 .build();
     }
@@ -250,10 +267,19 @@ public class MypageService {
      */
     private ChatRoomResponseDTO convertChatRoomToMypageDto(ChatRoom chatRoom) {
 
+        Mentor mentor = mentorRepository.findById(chatRoom.getMentor().getMentorIdx()).orElseThrow(
+                () -> {
+                    throw new NotFoundBoardException(ErrorCode.NOT_FOUND_BOARD, chatRoom.getMentor().getMentorIdx());
+                }
+        );
+
         return ChatRoomResponseDTO.builder()
                 .chatType(MENTEE_CHAT_ROOM)
                 .mentorIdx(chatRoom.getMentor().getMentorIdx())
                 .roomIdx(chatRoom.getRoomId())
+                .current(mentor.getMentorCareer())
+                .title(mentor.getMentorTitle())
+                .subject(mentor.getMentorSubject())
                 .build();
     }
 
@@ -276,7 +302,7 @@ public class MypageService {
      * @param dto
      * @param
      */
-    public void myPageModify(MypageModifyRequestDTO dto, Long userIdx) {
+    public void myPageModify(MypageModifyRequestDTO dto, Long userIdx, String uploadedFilePath) {
 
 //        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
@@ -290,12 +316,14 @@ public class MypageService {
                 user.setUserBirth(dto.getUserBirth());
                 user.setUserCareer(dto.getUserCareer());
                 user.setUserPosition(UserPosition.valueOf(dto.getUserPosition()));
+                user.setUserProfile(uploadedFilePath);
 
                 userRepository.save(user);
         }
 
     }
 
+// TODO : 사용안하는지 확인하고 지우기
 
     /**
      *  프로젝트 목록 조회 조회

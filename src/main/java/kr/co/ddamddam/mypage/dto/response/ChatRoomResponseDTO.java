@@ -14,5 +14,8 @@ public class ChatRoomResponseDTO {
 
     private Long roomIdx;
     private Long mentorIdx;
+    private String current;
+    private String title;
+    private String subject;
 
 }
