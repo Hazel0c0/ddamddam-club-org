@@ -6,7 +6,6 @@ const MypageTemplate = props => {
   return (
     <>
       <MypageMain />
-      {/*<MypageBoardList />*/}
     </>
   );
 };

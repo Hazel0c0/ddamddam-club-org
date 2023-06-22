@@ -45,7 +45,7 @@ public class MypageService {
 
     // 게시판 타입 상수
     private final String QNA = "Q&A";
-    private final String PROJECT = "프로젝트";
+    private final String PROJECT = "프로젝트 모집";
     private final String MENTOR = "멘토/멘티";
     private final String REVIEW = "취업후기";
     private final String MENTEE_CHAT_ROOM = "멘티 채팅방";
@@ -304,6 +304,7 @@ public class MypageService {
 
     }
 
+// TODO : 사용안하는지 확인하고 지우기
 
     /**
      *  프로젝트 목록 조회 조회

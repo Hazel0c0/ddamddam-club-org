@@ -11,6 +11,8 @@ import {
   getUserCareer, getUserRole
 } from "../common/util/login-util";
 import MypageBoardList from "./MypageBoardList";
+import MypageProjectList from "./MypageProjectList";
+import MypageChatRoom from "./MypageChatRoomList";
 
 /**
  * [               타이틀                ]
@@ -92,12 +94,13 @@ const MypageMain = props => {
         {/* 멘토 채팅방 목록 불러오기 */}
         <div className={'mentor-wrapper'}>
           <div className={'mypage-sub-title'}>참여중인 멘토링</div>
-
+          <MypageChatRoom />
         </div>
 
         {/* 참여중인 프로젝트 목록 불러오기 */}
         <div className={'project-wrapper'}>
           <div className={'mypage-sub-title'}>참여중인 프로젝트</div>
+          <MypageProjectList />
         </div>
 
 
