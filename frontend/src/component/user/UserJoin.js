@@ -151,13 +151,17 @@ const UserJoin = () => {
             msg = '사용 가능한 닉네임입니다.';
             flag = true;
         }
+
+
+
         console.log(msg)
         saveInputState({
             key: 'userNickName',
             inputVal,
             msg,
             flag
-        });
+        })
+
     };
 
     // 이메일 중복체크 서버 통신 함수
@@ -187,6 +191,35 @@ const UserJoin = () => {
         setUserValue({...userValue, userEmail: inputEmail});
         setMessage({...message, userEmail: msg});
         setCorrect({...correct, userEmail: flag});
+    };
+
+    // 닉네임 중복체크 서버 통신 함수
+    const fetchDuplicateNickCheck = async (e) => {
+
+        const inputNickname = userValue.userNickName;
+        console.log(`inputNick : ${inputNickname}`)
+        const res = await fetch(`${JOININ}/checknickname?nickname=${inputNickname}`);
+
+        let msg = '', flag = false;
+        if (res.status === 200) {
+            const json = await res.json();
+            // console.log(json);
+            if (json) {
+                msg = '닉네임이 중복되었습니다!';
+                flag = false;
+            } else {
+                msg = '사용 가능한 네임입니다.';
+                flag = true;
+                alert("사용 가능한 닉네임입니다.");
+                setShowCertificationBtn(true);
+            }
+        } else {
+            alert('서버 통신이 원활하지 않습니다!');
+        }
+
+        setUserValue({...userValue, userNickName: inputNickname});
+        setMessage({...message, userNickName: msg});
+        setCorrect({...correct, userNickName: flag});
     };
 
     //인증하기 클릭
