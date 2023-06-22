@@ -44,7 +44,7 @@ const UserJoin = () => {
         userNickName: '',
         userBirth: '',
         userPosition: 'FRONTEND',
-        userCareer: ''
+        userCareer: '',
         // userProfile: '0'
     });
 
@@ -62,8 +62,8 @@ const UserJoin = () => {
 
     // 검증 완료 체크에 대한 상태변수 관리
     const [correct, setCorrect] = useState({
-        userEmail: false,
-        userCode : false,
+        userEmail: true,
+        userCode : true,
         userPw: false,
         passwordCheck: false,
         userName: false,
@@ -151,13 +151,17 @@ const UserJoin = () => {
             msg = '사용 가능한 닉네임입니다.';
             flag = true;
         }
+
+
+
         console.log(msg)
         saveInputState({
             key: 'userNickName',
             inputVal,
             msg,
             flag
-        });
+        })
+
     };
 
     // 이메일 중복체크 서버 통신 함수
@@ -187,6 +191,35 @@ const UserJoin = () => {
         setUserValue({...userValue, userEmail: inputEmail});
         setMessage({...message, userEmail: msg});
         setCorrect({...correct, userEmail: flag});
+    };
+
+    // 닉네임 중복체크 서버 통신 함수
+    const fetchDuplicateNickCheck = async (e) => {
+
+        const inputNickname = userValue.userNickName;
+        console.log(`inputNick : ${inputNickname}`)
+        const res = await fetch(`${JOININ}/checknickname?nickname=${inputNickname}`);
+
+        let msg = '', flag = false;
+        if (res.status === 200) {
+            const json = await res.json();
+            // console.log(json);
+            if (json) {
+                msg = '닉네임이 중복되었습니다!';
+                flag = false;
+            } else {
+                msg = '사용 가능한 네임입니다.';
+                flag = true;
+                alert("사용 가능한 닉네임입니다.");
+                setShowCertificationBtn(true);
+            }
+        } else {
+            alert('서버 통신이 원활하지 않습니다!');
+        }
+
+        setUserValue({...userValue, userNickName: inputNickname});
+        setMessage({...message, userNickName: msg});
+        setCorrect({...correct, userNickName: flag});
     };
 
     //인증하기 클릭
@@ -249,8 +282,6 @@ const UserJoin = () => {
 
         //이메일 주소 선택
         const emailDomainValue = emailValue.current.value;
-
-
         console.log(emailDomainValue);
 
         const inputVal = `${inputEmail}@${emailDomainValue}`;
@@ -388,18 +419,17 @@ const UserJoin = () => {
         // 이미지파일과 회원정보 JSON을 하나로 묶어야 함
         const userFormData = new FormData();
         userFormData.append('user', userJsonBlob);
-        // userFormData.append('profileImage', $fileTag.current.files[0],{ type: `image/jpeg`});
         userFormData.append('profileImage', $fileTag.current.files[0]);
+        // userFormData.append('profileImage', $fileTag.current.files[0],{ type: `image/jpeg`});
 
         console.log(`userFormData : `,userFormData)
 
         const res = await fetch(`${BASE_URL}/signup`, {
             method: 'POST',
             // headers: {'content-type': 'application/json'},
+            // headers: {'content-type': 'application/json'},
             body: userFormData
         });
-
-
 
         if (res.status === 200) {
             alert('회원가입에 성공했습니다! 축하합니다!');
@@ -419,7 +449,7 @@ const UserJoin = () => {
         // const $nameInput = document.getElementsByName('name');
         console.log(userValue)
         console.log(isValid)
-        console.log(`imgFile의 값 : `,imgFile)
+        // console.log(`imgFile의 값 : `,imgFile)
         // 회원가입 서버 요청
         if (isValid()) {
             fetchSignUpPost();

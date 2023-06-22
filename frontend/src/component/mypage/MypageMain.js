@@ -86,6 +86,9 @@ const MypageMain = props => {
         <div className={'career'}>
           <b>{USER_CAREER}년째 {USER_POSITION}</b> 개발중!
         </div>
+        <div>
+          <Link to={'/mypage/password'}>비밀번호 변경</Link>
+        </div>
       </div>
 
       {/* TODO : 콘텐츠 랩퍼 CSS 작성 */}

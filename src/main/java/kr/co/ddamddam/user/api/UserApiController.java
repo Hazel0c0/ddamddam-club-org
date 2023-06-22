@@ -38,6 +38,7 @@ public class UserApiController {
     // GET: /api/auth/check?email=zzzz@xxx.com
     @GetMapping("/check")
     public ResponseEntity<?> check(String email) {
+        log.info("/api/auth/check?email={}", email);
 
         if (email.trim().isEmpty()) {
             return ResponseEntity.badRequest()
@@ -47,6 +48,20 @@ public class UserApiController {
         log.info("{} 중복?? - {}", email, resultFlag);
 
         return ResponseEntity.ok().body(resultFlag);
+    }
+
+    //닉네임 중복확인 요청처리
+    @GetMapping("/checknickname")
+    public ResponseEntity<?> checknick(String nickname) {
+        log.info("/api/auth/checknickname?nickname={}", nickname);
+
+        if(nickname.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("닉네임이 없습니다");
+        }
+        boolean resultFlag = userSingUpService.isNicknameExist(nickname);
+        log.info("{} 중복?? - {}", nickname, resultFlag);
+
+        return  ResponseEntity.ok().body(resultFlag);
     }
 
     // 회원가입 요청처리
@@ -166,5 +181,23 @@ public class UserApiController {
         }
 
     }
+
+    //s3에서 불러온 프로필 사진 처리
+    @GetMapping("/load-s3")
+    public ResponseEntity<?> loads3(
+            @AuthenticationPrincipal TokenUserInfo userInfo
+    ) {
+        log.info("/api/auth/load-s3 GET - user: {}", userInfo);
+        try {
+            String profilePath = userSingUpService.getProfilePath(Long.valueOf(userInfo.getUserIdx()));
+            return ResponseEntity.ok().body(profilePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+
+        }
+    }
+
+
 
 }
