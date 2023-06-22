@@ -73,7 +73,7 @@ public class TokenProvider {
      */
     public TokenUserInfo validateAndGetTokenUserInfo(String token) {
 
-        log.info("validateAndGetTokenUserInfo");
+        log.info("validateAndGetTokenUserInfo / token: {}", token);
         
         Claims claims = Jwts.parserBuilder()
                 // 토큰 발급자의 발급 당시 서명을 넣어줌
