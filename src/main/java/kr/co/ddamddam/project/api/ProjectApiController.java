@@ -72,7 +72,7 @@ public class ProjectApiController {
     log.info("/api/ddamddam/{} GET", projectIdx);
 
     try {
-      ProjectDetailResponseDTO dto = projectService.getDetail(tokenUserInfo, projectIdx);
+      ProjectDetailResponseDTO dto = projectService.getDetail(projectIdx);
 
       return ApplicationResponse.ok(dto);
 
