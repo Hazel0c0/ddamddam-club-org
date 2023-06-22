@@ -47,9 +47,11 @@ public class MypageController {
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             PageDTO pageDTO
     ){
-
+        log.info("chattttttttttt {}", tokenUserInfo);
         // {?page=1&size=3}
         MypageChatPageResponseDTO chatRoomList = myPageService.getChatList(tokenUserInfo, pageDTO);
+
+        log.info("chatRoomList {}", chatRoomList);
 
         return ResponseEntity.ok().body(chatRoomList);
     }
@@ -72,7 +74,8 @@ public class MypageController {
 
     @GetMapping("/project-list")
     public ResponseEntity<?> getProjectList(
-        @AuthenticationPrincipal TokenUserInfo tokenUserInfo
+        @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
+        PageDTO pageDTO
 //        @PathVariable Long userIdx,
 //        @RequestParam(required = false) String type
     ) {
@@ -83,7 +86,7 @@ public class MypageController {
 
 //        if (type != null && type.equals("arrayProject")) {
         List<MypageProjectResponseDTO> myProjectList
-                = myPageService.getArrayProjectList(userIdx);
+                = myPageService.getArrayProjectList(pageDTO, userIdx);
 //        } else {
 //            = myPageService.getProjectList(userIdx);
 //        }
