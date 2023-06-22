@@ -83,8 +83,8 @@ function App() {
                 <Route path={'/reviews/write'} element={<ReviewWrite/>}></Route>
 
                 {/*마이페이지*/}
-                <Routes path={'/auth/modify-password'} element={<UserFindPassword/>}></Routes>
                 <Route path={'/mypage'} element={<MypageTemplate/>}></Route>
+                <Route path={'/mypage/password'} element={<UserFindPassword/>}></Route>
 
                 {/*로그인*/}
                 <Route path={'/login'} element={<UserLogin/>}></Route>

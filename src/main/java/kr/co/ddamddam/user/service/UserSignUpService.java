@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Value;
 import javax.transaction.Transactional;
-import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -40,10 +39,18 @@ public class UserSignUpService {
             throw new NoRegisteredArgumentsException("가입 정보가 없습니다.");
         }
         String email = dto.getUserEmail();
+        String nickname = dto.getUserNickName();
 
+        //이메일 중복검사
         if (isDuplicate(email)) {
             log.warn("이메일이 중복되었습니다. - {}", email);
             throw new DuplicatedEmailException("중복된 이메일입니다.");
+        }
+
+        //닉네임 중복검사
+        if(isNicknameExist(nickname)){
+            log.warn("닉네임이 중복되었습니다. - {}", nickname);
+            throw new DuplicatedEmailException("이미 존재하는 닉네임입니다.");
         }
 
         // 패스워드 인코딩(유저 엔티티로 변환하기전에 해야할일 !)
@@ -65,6 +72,10 @@ public class UserSignUpService {
 
     public boolean isDuplicate(String email) {
         return userRepository.existsByUserEmail(email);
+    }
+
+    public boolean isNicknameExist(String nickname){
+        return userRepository.existsByUserNickname(nickname);
     }
 
 
