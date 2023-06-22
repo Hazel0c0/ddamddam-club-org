@@ -6,6 +6,7 @@ import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfFront;
 import kr.co.ddamddam.user.entity.UserPosition;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Slf4j
 public class MypageProjectResponseDTO {
     /*
           프로젝트 명
@@ -26,30 +28,33 @@ public class MypageProjectResponseDTO {
     private String boardTitle;
     private String boardWriter;
     private UserPosition writerPosition;
-    @Builder.Default
-    private List<String> front= new ArrayList<>();
-    @Builder.Default
-    private List<String> back= new ArrayList<>();
+    private List<String> front;
+    private List<String> back;
 
     public MypageProjectResponseDTO(Project p, UserPosition writerPosition) {
         this.boardTitle = p.getProjectTitle();
         this.boardWriter = p.getUserNickname();
         this.writerPosition = writerPosition;
+        this.front = new ArrayList<>();
+        this.back = new ArrayList<>();
     }
 
     public void setBack(Project p) {
         List<ApplicantOfBack> applicantOfBacks = p.getApplicantOfBacks();
-        for (ApplicantOfBack back : applicantOfBacks) {
-            String userNickname = back.getUser().getUserNickname();
+        log.info("applicantOfBacks: "+applicantOfBacks);
+        for (ApplicantOfBack applyBack : applicantOfBacks) {
+            String userNickname = applyBack.getUser().getUserNickname();
+            log.info("유저 닉네임 : "+userNickname);
             this.back.add(userNickname);
         }
+            log.info("set back -> {}",back);
     }
 
     public void setFront(Project p) {
         List<ApplicantOfFront> applicantOfFronts = p.getApplicantOfFronts();
         for (ApplicantOfFront front : applicantOfFronts) {
             String userNickname = front.getUser().getUserNickname();
-            this.back.add(userNickname);
+            this.front.add(userNickname);
         }
     }
 

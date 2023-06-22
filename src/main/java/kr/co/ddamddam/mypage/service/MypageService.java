@@ -401,7 +401,9 @@ public class MypageService {
                 // 게시글 작성자의 포지션 가져오기
                 UserPosition writerPosition = project.getUser().getUserPosition();
                 MypageProjectResponseDTO dto = new MypageProjectResponseDTO(project, writerPosition);
+                log.info("setFront !!");
                 dto.setFront(project);
+                log.info("setBack !!");
                 dto.setBack(project);
                 return dto;
             })
