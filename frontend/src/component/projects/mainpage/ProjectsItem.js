@@ -1,6 +1,10 @@
 import React, {useEffect, useState, forwardRef, useImperativeHandle} from 'react';
 import {useNavigate} from 'react-router-dom';
 import Common from '../../common/Common';
+import less from "../../../src_assets/less.png";
+import than from "../../../src_assets/than.png";
+import logo from '../../../src_assets/logo.png'
+
 import '../scss/ProjectsItem.scss';
 
 const ProjectsItem = forwardRef((
@@ -13,17 +17,20 @@ const ProjectsItem = forwardRef((
     ref
   ) => {
     const navigate = useNavigate();
-
     const [projects, setProjects] = useState([]);
+    const [projectImgUrls, setProjectImgUrls] = useState([]);
+
     const [pageNation, setPageNation] = useState([]);
+    const [prevBtn, setPrevBtn] = useState(false);
+    const [nextBtn, setNextBtn] = useState(false);
+    //캐러셀
+    const [carouselIndex, setCarouselIndex] = useState(1);
 
     useImperativeHandle(ref, () => ({
       fetchData
     }));
 
     const fetchData = () => {
-      // 데이터 다시 가져오는 함수
-      // 예: setCurrentUrl을 업데이트한 후 해당 URL로 fetch 요청하여 데이터를 가져옴
       fetch(url, {
         method: 'GET',
         headers: {'content-type': 'application/json'}
@@ -37,21 +44,74 @@ const ProjectsItem = forwardRef((
         })
         .then(result => {
           if (!!result) {
-            // 데이터 업데이트
-            setProjects(result.payload.projects);
+            let res = result.payload.projects;
+            setProjects(res);
+            // console.log('결과')
+            // console.log(res)
+            setProjects(res)
+            for (let i = 0; i < res.length; i++) {
+              // console.log(res[i].boardIdx)
+              fetchFileImage(res[i].boardIdx, i)
+            }
           }
         });
     };
     useEffect(() => {
       fetchData();
     }, []);
+    const file_URL = '//localhost:8181/api/ddamddam/load-file'
+
+    const fetchFileImage = async (projectIdx, index) => {
+      const res = await fetch(
+        `${file_URL}?projectIdx=${projectIdx}&boardType=project`, {
+          method: 'GET',
+        });
+      if (res.status === 200) {
+        const fileBlob = await res.blob();
+        const imgUrl = window.URL.createObjectURL(fileBlob);
+        setProjectImgUrls((prevUrls) => {
+          const updatedUrls = [...prevUrls];
+          updatedUrls[index] = imgUrl;
+          return updatedUrls;
+        });
+        // console.log(`프로젝트 디테일 - 이미지 (${index}): ${imgUrl}`);
+      } else {
+        const err = await res.text();
+        setProjectImgUrls((prevUrls) => {
+          const updatedUrls = [...prevUrls];
+          updatedUrls[index] = null;
+          return updatedUrls;
+        });
+      }
+    };
+
+
+    const handlePrevious = () => {
+      if (pageNation.prev === true) {
+        setCarouselIndex(prevIndex => prevIndex - 1);
+      }
+    };
+    const handleNext = () => {
+      if (pageNation.next === true) {
+        setCarouselIndex(prevIndex => prevIndex + 1);
+      }
+    };
 
 
     return (
       <Common className={'project-list-wrapper'}>
+
+        {/*{pageNation.prev &&*/}
+          <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
+        {/*}*/}
+
+        {/*{pageNation.next &&*/}
+          <img src={than} alt={"than-icon"} className={'than-icon'} onClick={handleNext}/>
+        {/*}*/}
+
         <h2 className={'sort-title'}>{sortTitle}</h2>
         <div className="project-list-container">
-          {projects.map((p) => {
+          {projects.map((p, index) => {
             // 현재 날짜와 게시글 작성일 간의 차이를 계산합니다
             const currentDate = new Date();
             const writeDate = new Date(p.projectDate);
@@ -65,6 +125,17 @@ const ProjectsItem = forwardRef((
                 onClick={() => handleShowDetails(p.boardIdx)}
               >
                 <div className={'project-wrapper'}>
+                  <div className={'project-img'}>
+                    <img
+                      src={projectImgUrls[index] || logo}
+                      alt="Project Image" className={'project-img'}
+                      style={{
+                        height: 120,
+                        marginBottom: 20
+                      }}
+                    />
+
+                  </div>
                   <div className={'text-title'}>{p.boardTitle}</div>
                   <div className={'text-content'}>{p.boardContent}</div>
                   <div className={'project-type'}>{p.projectType}</div>
@@ -89,7 +160,8 @@ const ProjectsItem = forwardRef((
                   )}
                 </div>
               </section>
-            );
+            )
+              ;
           })}
         </div>
       </Common>

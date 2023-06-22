@@ -36,7 +36,7 @@ public class UploadService {
 
     if ("project".equals(boardType)) {
       uploadRootPath = projectUploadRootPath;
-    } else if ("qna".equals(boardType)) {
+    } else if ("profile".equals(boardType)) {
       uploadRootPath = qnaUploadRootPath;
     } else {
       throw new IllegalArgumentException("Unsupported board type: " + boardType);
