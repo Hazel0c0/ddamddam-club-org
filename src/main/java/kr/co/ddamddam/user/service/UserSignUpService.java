@@ -76,6 +76,7 @@ public class UserSignUpService {
      */
     public String uploadProfileImage(MultipartFile originalFile) throws IOException {
 
+        //AWS적용하기(주석친 부분은 로컬에 저장하는거)
         // 루트 디렉토리가 존재하는지 확인 후 존재하지 않으면 생성
 //        File rootDir = new File(uploadRootPath);
 //        if (!rootDir.exists()) rootDir.mkdir();
@@ -97,49 +98,13 @@ public class UserSignUpService {
     public String getProfilePath(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow();
-        return uploadRootPath + "/" + user.getUserProfile();
-//        return user.getUserProfile();
+//        return uploadRootPath + "/" + user.getUserProfile();
+        return user.getUserProfile();
     }
 
 
 }
 
-//    //유저정보 수정기능
-//    public UserModifyResponseDTO modify(UserModifyRequestDTO dto){
-//
-//        //이메일 값 받아오기
-//        String email = dto.getUserEmail();
-//
-//        //이메일로 유저정보 얻기 (이메일은 유일값이기때문에 ..)
-//        User founduser = userRepository.findByUserEmail(email).orElseThrow(() -> new Exception("회원정보 수정에 실패했습니다!"));
-//
-//        //이메일로 찾은 객체에 dto에 수정하고자 하는 정보들을 뽑아서 새로 집어넣고 다시 저장해준다
-//        founduser.setUserAddress(dto.getUserAddress());
-//        founduser.setUserFullAddress(dto.getUserFullAddress());
-//        founduser.setUserPhone(dto.getUserPhone());
-//        founduser.setUserName(dto.getUsername());
-//
-//        User modiftideuser = userRepository.save(founduser);
-//
-//        return new UserModifyresponseDTO(modiftideuser);
-//    }
-//
-//
-//    //회원탈퇴 기능 구현
-//    public boolean deleteUser(UserDeleteRequestDTO dto) {
-//
-//        User user = userRepository.findById(dto.getUserId()).orElseThrow(
-//                () -> new RuntimeException("가입된 회원이 아닙니다.")
-//        );
-//
-//        String encodedPassword = user.getUserPassword(); //db저장 비번
-//        if (!encoder.matches(dto.getUserPassword(),encodedPassword)){
-//            throw new RuntimeException("비밀번호가 일치하지않아 회원탈퇴를 진행할 수 없습니다");
-//        }
-//
-//        userRepository.deleteById(dto.getUserId());
-//        return true;
-//    }
 
 
 
