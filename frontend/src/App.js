@@ -23,10 +23,12 @@ import QnaDetail from "./component/qna/QnaDetail";
 import QnaWrite from "./component/qna/QnaWrite";
 import QnaModify from "./component/qna/QnaModify";
 import ProjectsModify from "./component/projects/ProjectsModify";
+import ReviewList from "./component/review/ReviewList";
 import ReviewTemplate from "./component/review/ReviewTemplate";
 import ReviewDetail from "./component/review/ReviewDetail";
 import ReviewWrite from "./component/review/ReviewWrite";
 import OAuth2RedirectHandler from "./component/snslogin/OAuth2RedirectHandler";
+import UserFindPassword from "./component/user/UserFindPassword";
 import MypageMain from "./component/mypage/MypageMain";
 import MypageTemplate from "./component/mypage/MypageTemplate";
 import CompanyTemplate from "./component/Company/CompanyTemplate";
@@ -83,6 +85,7 @@ function App() {
 
                 {/*마이페이지*/}
                 <Route path={'/mypage'} element={<MypageTemplate/>}></Route>
+                <Route path={'/mypage/password'} element={<UserFindPassword/>}></Route>
 
                 {/*로그인*/}
                 <Route path={'/login'} element={<UserLogin/>} />
