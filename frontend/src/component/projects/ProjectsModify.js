@@ -3,21 +3,26 @@ import Common from "../common/Common";
 import ProjectsTitle from "./mainpage/ProjectsTitle";
 import {PROJECT} from "../common/config/HostConfig";
 import {Link, useLocation, useNavigate} from 'react-router-dom';
-import {fetchProjectDetail} from './ProjectsDetail';
-import {handleInputChange} from "./ProjectsWrite"
-
 import './scss/ProjectsWrite.scss';
-import {Grid} from "@mui/material";
+import {getToken} from "../common/util/login-util";
 
 
 const ProjectsModify = () => {
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const projectIdx = searchParams.get('projectIdx');
   const navigate = useNavigate(); // useNavigate 훅 사용
-
   const [updatedFormData, setUpdatedFormData] = useState([]);
 
+  const ACCESS_TOKEN = getToken();
+
+  const headerInfo = {
+    'Authorization': 'Bearer ' + ACCESS_TOKEN
+  }
+
+
+  // 기존 데이터 불러오기
   useEffect(() => {
     fetch(PROJECT + `/${projectIdx}`, {
       method: 'GET',
@@ -32,9 +37,7 @@ const ProjectsModify = () => {
       .then(data => {
         setUpdatedFormData(data.payload);
 
-        console.log('수정전 데이터');
         console.log(data.payload);
-        console.log(data);
 
         console.log(' 이미지 사진 불러오기 : ')
         console.log(data.payload.boardImg)
@@ -71,20 +74,19 @@ const ProjectsModify = () => {
 
 
     // 작성완료 버튼을 눌렀을 때 실행되는 함수
-    // formData를 컨트롤러로 보내는 로직을 작성하세요.
     const res = fetch(PROJECT, {
       method: 'PATCH',
+      headers : headerInfo,
       body: projectFormData
-      // JSON.stringify(updatedFormData),
     }).then(response => response.json())
       .then(data => {
-        // setUpdatedFormData(data.formData);
+        setUpdatedFormData(data.formData);
         console.log(data); // Handle the response data
 
         navigate(`/projects/detail?projectIdx=${projectIdx}`)
       })
       .catch(error => {
-        console.error(error); // Handle errors
+        console.error(error);
       });
     console.log(updatedFormData); // 예시: 콘솔에 데이터 출력
   };
@@ -101,7 +103,7 @@ const ProjectsModify = () => {
       setImgFile(reader.result);
     };
   };
-      console.log("img파일 업로드"+imgFile)
+      console.log('img file upload : '+imgFile)
 
   return (
     <>

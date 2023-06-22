@@ -31,16 +31,19 @@ public class ProjectCreationApiController {
      * @param projectIdx : 좋아요 누른 게시글 번호
      */
 
-    @PostMapping("/like/{userIdx}/{projectIdx}")
+    @PostMapping("/like/{projectIdx}")
     public ApplicationResponse<?> handleLike(
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             @PathVariable Long projectIdx
     ) {
+        log.info("like token : {} ",tokenUserInfo);
+
         try {
             log.info("좋아요 click : userIdx={}, projectIdx={}", tokenUserInfo.getUserIdx(), projectIdx);
             boolean isLiked = projectLikeService.checkIfLiked(tokenUserInfo, projectIdx);
 
             projectLikeService.handleLike(tokenUserInfo, projectIdx);
+            System.out.println("isLiked = " + isLiked);
             if (isLiked) {
                 return ApplicationResponse.ok("좋아요가 취소되었습니다.");
             } else {
