@@ -48,6 +48,7 @@
     align-items: center;
     width: 100%;
     padding: 20px 0px;
+    position: relative;
 
     .d-day,
     .company-career,
@@ -112,5 +113,20 @@
 
   .company-list:nth-of-type(2n-1){
     background-color: white;
+  }
+
+  .go-worknet{
+    position: absolute;
+    left: 0;
+    top: 0;
+    //width: 1180px;
+    //height: 78px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: rgba(41, 40, 52, 0.9);
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
   }
 }
