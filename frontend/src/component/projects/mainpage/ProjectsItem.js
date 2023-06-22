@@ -16,7 +16,7 @@ const ProjectsItem = forwardRef((
 
     const [projects, setProjects] = useState([]);
     const [pageNation, setPageNation] = useState([]);
-    const [projectImgUrl, setProjectImgUrl] = useState(''); // 새로운 상태 추가
+    const [projectImgUrls, setProjectImgUrls] = useState([]);
 
     useImperativeHandle(ref, () => ({
       fetchData
@@ -36,11 +36,15 @@ const ProjectsItem = forwardRef((
         })
         .then(result => {
           if (!!result) {
-            setProjects(result.payload.projects);
-            result.map(result => {
-              let projectIdx = result.payload.projectIdx;
-              fetchFileImage(projectIdx)
-            })
+            let res = result.payload.projects;
+            setProjects(res);
+            console.log('결과')
+            console.log(res)
+            setProjects(res)
+            for (let i = 0; i < res.length; i++) {
+              console.log(res[i].boardIdx)
+              fetchFileImage(res[i].boardIdx, i)
+            }
           }
         });
     };
@@ -49,7 +53,7 @@ const ProjectsItem = forwardRef((
     }, []);
     const file_URL = '//localhost:8181/api/ddamddam/load-file'
 
-    const fetchFileImage = async (projectIdx) => {
+    const fetchFileImage = async (projectIdx, index) => {
       const res = await fetch(
         `${file_URL}?projectIdx=${projectIdx}&boardType=project`, {
           method: 'GET',
@@ -57,11 +61,19 @@ const ProjectsItem = forwardRef((
       if (res.status === 200) {
         const fileBlob = await res.blob();
         const imgUrl = window.URL.createObjectURL(fileBlob);
-        setProjectImgUrl(imgUrl);
-        console.log("프로젝트 디테일 - 이미지 : " + imgUrl)
+        setProjectImgUrls((prevUrls) => {
+          const updatedUrls = [...prevUrls];
+          updatedUrls[index] = imgUrl;
+          return updatedUrls;
+        });
+        console.log(`프로젝트 디테일 - 이미지 (${index}): ${imgUrl}`);
       } else {
         const err = await res.text();
-        setProjectImgUrl(null);
+        setProjectImgUrls((prevUrls) => {
+          const updatedUrls = [...prevUrls];
+          updatedUrls[index] = null;
+          return updatedUrls;
+        });
       }
     };
 
@@ -69,7 +81,7 @@ const ProjectsItem = forwardRef((
       <Common className={'project-list-wrapper'}>
         <h2 className={'sort-title'}>{sortTitle}</h2>
         <div className="project-list-container">
-          {projects.map((p) => {
+          {projects.map((p, index) => {
             // 현재 날짜와 게시글 작성일 간의 차이를 계산합니다
             const currentDate = new Date();
             const writeDate = new Date(p.projectDate);
@@ -85,10 +97,10 @@ const ProjectsItem = forwardRef((
                 <div className={'project-wrapper'}>
                   <div className={'project-img'}>
                     <img
-                      src={projectImgUrl}
+                      src={projectImgUrls[index]}
                       alt="Project Image" className={'project-img'}
                       style={{
-                        height: 350
+                        height: 120
                       }}
                     />
                   </div>
