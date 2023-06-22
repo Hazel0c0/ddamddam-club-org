@@ -1,14 +1,11 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {TfiClose} from 'react-icons/tfi';
 import Common from '../common/Common';
-import {useNavigate, useNavigation, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {CHAT, MENTOR} from '../common/config/HostConfig';
 import './scss/MentorChat.scss';
 import {
-    getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
-    getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
-    getUserRole, isLogin
-} from '../common/util/login-util';
+    getToken, getUserIdx, getUserEmail, getUserName, getUserNickname} from '../common/util/login-util';
 import {Window} from '@mui/icons-material';
 
 const MentorsChat = () => {

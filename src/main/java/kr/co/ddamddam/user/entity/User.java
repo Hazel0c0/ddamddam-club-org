@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 @Setter
 @Getter
-@ToString
+@ToString(exclude = {"mentor", "mentee", "qna", "review", "projects", "likedProjects"})
 @EqualsAndHashCode(of = "userIdx")
 @NoArgsConstructor
 @AllArgsConstructor
