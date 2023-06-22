@@ -34,7 +34,7 @@ public class ProjectListResponseDTO {
     this.boardContent =project.getProjectContent();
     this.likeCount =project.getLikeCount();
     this.projectType = project.getProjectType();
-    this.completion = (project.getMaxFront() - project.getApplicantOfFronts().size()) == 0;
+    this.completion = (project.getMaxFront() - project.getApplicantOfFronts().size()) == 0 && (project.getMaxBack() - project.getApplicantOfBacks().size()) == 0;
     this.projectDate =project.getProjectDate();
     this.offerPeriod =project.getOfferPeriod();
   }
