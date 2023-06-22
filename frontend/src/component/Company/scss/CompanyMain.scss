@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@100;200;300;400;500&display=swap');
+
+@mixin content-center {
+  display: flex;
+  justify-content: center;
+}
+
+.company-top-wrapper {
+  width: 1920px;
+  padding: 160px 370px 0;
+
+  .title-wrapper {
+    .main-title {
+      font-family: 'IBM Plex Mono', sans-serif !important;
+      font-size: 43.2px;
+      font-weight: 500;
+      letter-spacing: -1.5px;
+    }
+
+    .main-sub-title {
+      font-size: 16px;
+      margin-top: 10px;
+      line-height: 1.2;
+    }
+  }
+
+  .top-view-wrapper {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: start;
+  }
+
+  .frontend-filter,
+  .backend-filter,
+  .total-filter {
+    //이미지 찾아서 변경하기
+    background-color: #292834;
+    width: 23%;
+    margin-right: 10px;
+    height: 90px;
+    padding: 20px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    //타이틀 부분
+    .frontend-title,
+    .backend-title,
+    .total-title {
+      height: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: start;
+      color: white;
+
+      .title-text {
+        font-size: 20px;
+      }
+
+      .title-add {
+        font-size: 14px;
+      }
+    }
+
+    .frontend-count,
+    .backend-count,
+    .total-count {
+      font-size: 45px;
+      font-weight: 200;
+      color: white;
+      font-family: 'IBM Plex Mono', sans-serif;
+    }
+  }
+  .total-filter {
+    background-color: white;
+    .total-title{
+      color: #292834;
+    }
+  }
+
+  //검색영역
+  .search-container {
+    display: flex;
+    align-items: end;
+
+    .search-wrapper {
+      margin-top: 40px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      //background-color: #f0f0f0;
+      //padding: 0 5px 0 10px;
+      border-radius: 6px;
+
+      .search-input {
+        background-color: white;
+        padding: 5px 10px;
+        border: 0.5px solid #828282;
+
+        .input-btn {
+          width: 200px;
+          //border-radius: 5px;
+          //padding: 10px 10px;
+          border: none;
+          //background-color: white;
+
+          outline: none;
+
+
+        }
+
+        .input-btn::placeholder {
+          text-align: left;
+        }
+
+        .search-icon {
+          //left: 10px;
+          //transform: translateY(50%);
+          //position: absolute;
+          width: 14px;
+        }
+      }
+    }
+    .select-wrapper{
+      margin-left: 5px;
+      display: flex;
+      flex-direction: column;
+
+      .select-career{
+        padding: 5px 0px;
+        width: 90px;
+      }
+    }
+
+    .reset-btn {
+      //background-color: white;
+      margin-left: 5px;
+      padding: 7px 8px;
+      //border: none;
+      //border-radius: 5px;
+      background-color: #e6e6e6;
+      color: white;
+      font-size: 14px;
+      border: 0.5px solid #e6e6e6;
+      cursor: pointer;
+    }
+
+  }
+}
+
+.search-title {
+  font-family: 'IBM Plex Mono', sans-serif;
+  font-size: 14px;
+  margin-bottom: 5px;
+}

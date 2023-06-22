@@ -24,6 +24,7 @@ import ReviewDetail from "./component/review/ReviewDetail";
 import ReviewWrite from "./component/review/ReviewWrite";
 import OAuth2RedirectHandler from "./component/snslogin/OAuth2RedirectHandler";
 import MypageMain from "./component/mypage/MypageMain";
+import CompanyTemplate from "./component/Company/CompanyTemplate";
 
 
 function App() {
@@ -35,57 +36,57 @@ function App() {
             <Header/>
             <Routes>
                 {/*메인*/}
-                <Route path={'/'} element={<MainTemplate/>}></Route>
+                <Route path={'/'} element={<MainTemplate/>} />
                 {/*<Route path="/board/:idx" element={<BoardDetail/>}/>*/}
 
                 {/*멘토,멘티*/}
-                <Route path={'/mentors'} element={<MentorsTemplate/>}></Route>
-                <Route path={'/mentors/write'} element={<MentorsWrite/>}></Route>
-                <Route path={'/mentors/modify/:idx'} element={<MentorsModify/>}></Route>
+                <Route path={'/mentors'} element={<MentorsTemplate/>} />
+                <Route path={'/mentors/write'} element={<MentorsWrite/>} />
+                <Route path={'/mentors/modify/:idx'} element={<MentorsModify/>} />
 
                 {/*<Route path="/mentors/detail/mentorIdx/:idx" element={<MentorsDetail />} />*/}
                 {/*멘토 멘티 채팅방*/}
-                <Route path={'/mentors/detail/chat/:chatPageIdx/:roomId'} element={<MentorsChat/>}></Route>
+                <Route path={'/mentors/detail/chat/:chatPageIdx/:roomId'} element={<MentorsChat/>} />
 
                 {/*프로젝트 모집*/}
-                <Route path={'/projects'} element={<ProjectsTemplate/>}></Route>
-                <Route path={'/projects/write'} element={<ProjectsWrite/>}></Route>
-                <Route path={'/projects/detail'} element={<ProjectsDetail/>}></Route>
-                <Route path={'/projects/modify'} element={<ProjectsModify/>}></Route>
+                <Route path={'/projects'} element={<ProjectsTemplate/>} />
+                <Route path={'/projects/write'} element={<ProjectsWrite/>} />
+                <Route path={'/projects/detail'} element={<ProjectsDetail/>} />
+                <Route path={'/projects/modify'} element={<ProjectsModify/>} />
 
-                {/*채용공고 - not yet */}
-                <Route></Route>
+                {/*채용공고*/}
+                <Route path={'/companies'} element={<CompanyTemplate />} />
 
                 {/*프로젝트 공유  - not yet*/}
                 <Route></Route>
 
                 {/*Q&A*/}
-                <Route path={'/qna'} element={<QnaTemplate/>}></Route>
+                <Route path={'/qna'} element={<QnaTemplate/>} />
                 {/*Q&A/상세보기*/}
-                <Route path={'/api/ddamddam/qna/:boardIdx'} element={<QnaDetail/>}></Route>
+                <Route path={'/api/ddamddam/qna/:boardIdx'} element={<QnaDetail/>} />
                 {/*Q&A/글작성*/}
-                <Route path={'/api/ddamddam/qna/write'} element={<QnaWrite/>}></Route>
+                <Route path={'/api/ddamddam/qna/write'} element={<QnaWrite/>} />
                 {/*Q&A/글수정*/}
-                <Route path={'api/ddamddam/qna/modify/:boardIdx'} element={<QnaModify/>}></Route>
+                <Route path={'api/ddamddam/qna/modify/:boardIdx'} element={<QnaModify/>} />
 
                 {/*REVIEW*/}
-                <Route path={'/reviews'} element={<ReviewTemplate/>}></Route>
+                <Route path={'/reviews'} element={<ReviewTemplate/>} />
                 {/*Reiview/상세보기*/}
-                <Route path={'/reviews/detail/:reviewIdx'} element={<ReviewDetail/>}></Route>
+                <Route path={'/reviews/detail/:reviewIdx'} element={<ReviewDetail/>} />
                 {/*Review/글작성*/}
-                <Route path={'/reviews/write'} element={<ReviewWrite/>}></Route>
+                <Route path={'/reviews/write'} element={<ReviewWrite/>} />
 
                 {/*마이페이지*/}
-                <Route path={'/mypage'} element={<MypageMain/>}></Route>
+                <Route path={'/mypage'} element={<MypageMain/>} />
 
                 {/*로그인*/}
-                <Route path={'/login'} element={<UserLogin/>}></Route>
+                <Route path={'/login'} element={<UserLogin/>} />
 
                 {/*회원가입*/}
-                <Route path={'/join'} element={<UserJoin/>}></Route>
+                <Route path={'/join'} element={<UserJoin/>} />
 
                 {/*카카오로그인*/}
-                <Route path={`/oauth/callback/kakao`} element={<OAuth2RedirectHandler/>}></Route>
+                <Route path={`/oauth/callback/kakao`} element={<OAuth2RedirectHandler/>} />
 
             </Routes>
             <Footer/>

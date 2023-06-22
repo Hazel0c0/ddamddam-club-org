@@ -130,6 +130,7 @@ public class CompanyService {
             wantedList.add(dto);
 
             for (CompanyRequestDTO dto2 : wantedList) {
+                /*
                 System.out.println("Title: " + dto2.getCompanyTitle());
                 System.out.println("Company: " + dto2.getCompanyName());
                 System.out.println("Career: " + dto2.getCompanyCareer());
@@ -140,6 +141,8 @@ public class CompanyService {
                 System.out.println("Registration Date: " + dto2.getCompanyDate());
                 System.out.println("Closing Date: " + dto2.getCompanyEndDate());
                 System.out.println("----------------------------------");
+
+                 */
             }
         }
     }

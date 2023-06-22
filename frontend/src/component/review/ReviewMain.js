@@ -3,7 +3,6 @@ import Common from "../common/Common";
 import './scss/ReviewMain.scss';
 import {QNA, REVIEW} from "../common/config/HostConfig";
 import {Link} from "react-router-dom";
-import {Star} from "@mui/icons-material";
 import ReviewStar from "./StartRating/ReviewStar";
 
 const QnaMain = () => {
