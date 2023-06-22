@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -157,6 +158,7 @@ public class ProjectService {
             currProject.setOfferPeriod(dto.getOfferPeriod());
             currProject.setProjectIdx(dto.getBoardIdx());
             currProject.setProjectImg(uploadedFilePath);
+            currProject.setProjectDate(LocalDateTime.now());
 
             Project modifiedProject = projectRepository.save(currProject);
 
