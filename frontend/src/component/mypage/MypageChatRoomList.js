@@ -32,7 +32,7 @@ const MypageChatRoom = props => {
 
     console.log(`ACCESS_TOKEN : ${ACCESS_TOKEN}`); // 토큰 잘 나옴;;
 
-    const res = await fetch(API_BASE_URL + `/project-list`, {
+    const res = await fetch(API_BASE_URL + `/chat-list`, {
       method: 'GET',
       headers: headerInfo,
     });

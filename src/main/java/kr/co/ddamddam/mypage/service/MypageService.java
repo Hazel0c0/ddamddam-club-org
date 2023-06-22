@@ -35,7 +35,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,17 +64,19 @@ public class MypageService {
 
 
     /**
-     마이페이지의 <내가 참여한 멘티 채팅방> 채팅방 조회 및 페이징
-     * @param pageDTO - 클라이언트에서 요청한 페이지 번호
+     * 마이페이지의 <내가 참여한 멘티 채팅방> 채팅방 조회 및 페이징
+     *
+     * @param tokenUserInfo
+     * @param pageDTO       - 클라이언트에서 요청한 페이지 번호
      * @return 페이지 정보, 페이징 처리 된 로그인 유저가 참여한 멘티의 채팅방 리스트
      */
     public MypageChatPageResponseDTO getChatList(
 //            TokenUserInfo tokenUserInfo,
-            PageDTO pageDTO
+            TokenUserInfo tokenUserInfo, PageDTO pageDTO
     ){
-        // Long userIdx = tokenUserInfo.getUserIdx();
-
-        Long userIdx = 44L;
+         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
+//
+//        Long userIdx = 44L;
 
         List<ChatRoom> chatRoomList = chatRoomRepository.findBySenderUserIdx(userIdx);
 
