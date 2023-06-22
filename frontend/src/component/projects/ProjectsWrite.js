@@ -29,7 +29,6 @@ const ProjectsWrite = () => {
   const ACCESS_TOKEN = getToken();
 
   const headerInfo = {
-    'content-type': 'application/json',
     'Authorization': 'Bearer ' + ACCESS_TOKEN
   }
 
