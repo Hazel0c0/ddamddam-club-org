@@ -2,13 +2,11 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {getToken, getUserIdx} from "../common/util/login-util";
 import {BASE_URL, MYPAGE} from "../common/config/HostConfig";
-import {Link, useNavigate} from "react-router-dom";
-import Common from "../common/Common";
+import {useNavigate} from "react-router-dom";
 
-const MypageProjectList = props => {
+const MypageChatRoom = props => {
 
   const ACCESS_TOKEN = getToken();
-  const USER_IDX = getUserIdx();
   const API_BASE_URL = BASE_URL + MYPAGE;
   const redirection = useNavigate();
 
@@ -18,7 +16,7 @@ const MypageProjectList = props => {
     'Authorization': 'Bearer ' + ACCESS_TOKEN
   }
 
-  const [projectList, setProjectList] = useState([]);
+  const [chatRoomList, setChatRoomList] = useState([]);
 
   // 로그인 상태 검증 핸들러
   const loginCheckHandler = (e) => {
@@ -33,7 +31,6 @@ const MypageProjectList = props => {
   const asyncProjectList = async () => {
 
     console.log(`ACCESS_TOKEN : ${ACCESS_TOKEN}`); // 토큰 잘 나옴;;
-    console.log(`USER_IDX : ${USER_IDX}`);
 
     const res = await fetch(API_BASE_URL + `/project-list`, {
       method: 'GET',
@@ -59,35 +56,24 @@ const MypageProjectList = props => {
 
     // 오류 없이 값을 잘 받아왔다면
     const result = await res.json();
-    console.log(`result : ${result[0]}`);
-    setProjectList(result);
+    // console.log(`result : ${result[0].boardTitle}`);
+    setChatRoomList(result);
   };
 
   // 첫 렌더링 시 작성 게시글 전체 출력
   useEffect(() => {
     asyncProjectList();
   }, []);
-
-  // [
-  //   {
-  //     "boardTitle": "제목9이다",
-  //     "boardWriter": null,
-  //     "writerPosition": "BACKEND",
-  //     "front": [],
-  //     "back": []
-  //   } + 게시글 눌러서 프로젝트 상세보기로 이동해야하기때문에 boardIdx 필요함!!!
-  // ]
-
+  
   return (
-    <Common className={'mypage-list-wrapper'}>
+    <div>
 
-      {projectList.map((project) => (
-        <>
-        </>
-      ))}
-
-    </Common>
+    </div>
   );
 };
 
-export default MypageProjectList;
+MypageChatRoom.propTypes = {
+
+};
+
+export default MypageChatRoom;
