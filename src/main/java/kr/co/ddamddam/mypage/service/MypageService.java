@@ -80,8 +80,8 @@ public class MypageService {
     public MypageChatPageResponseDTO getChatList(
             TokenUserInfo tokenUserInfo, PageDTO pageDTO
     ){
-        Long userIdx = 1L;
-//         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
+//        Long userIdx = 1L;
+         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
         Pageable pageable = PageRequest.of(
                 pageDTO.getPage() - 1,
