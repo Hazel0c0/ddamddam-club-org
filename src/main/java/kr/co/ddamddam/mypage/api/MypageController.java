@@ -55,20 +55,19 @@ public class MypageController {
     }
 
     // 회원 정보 수정
-//    @PostMapping("/modify")
-//    public ResponseEntity<?> modify(
-////            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
-//            @RequestBody MypageModifyRequestDTO dto
-//    ){
-//
-//        Long userIdx = 44L;
-//
-//        log.info("modify: {}",dto);
-//
-//        myPageService.myPageModify(dto, userIdx);
-//
-//        return ResponseEntity.ok().body("회원정보 수정완료!");
-//    }
+    @PostMapping("/modify")
+    public ResponseEntity<?> modify(
+            @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
+            @RequestBody MypageModifyRequestDTO dto
+    ){
+
+
+        log.info("modify: {}",dto);
+
+        myPageService.myPageModify(dto, tokenUserInfo);
+
+        return ResponseEntity.ok().body("회원정보 수정완료!");
+    }
 
     @GetMapping("/project-list")
     public ResponseEntity<?> getProjectList(

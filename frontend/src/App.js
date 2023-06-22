@@ -30,6 +30,7 @@ import ReviewWrite from "./component/review/ReviewWrite";
 import OAuth2RedirectHandler from "./component/snslogin/OAuth2RedirectHandler";
 import MypageMain from "./component/mypage/MypageMain";
 import MypageTemplate from "./component/mypage/MypageTemplate";
+import MypageUserModify from './component/mypage/MypageUserModify';
 
 
 function App() {
@@ -83,6 +84,7 @@ function App() {
 
                 {/*마이페이지*/}
                 <Route path={'/mypage'} element={<MypageTemplate/>}></Route>
+                <Route path={'/mypage/modify'} element={<MypageUserModify/>}></Route>
 
                 {/*로그인*/}
                 <Route path={'/login'} element={<UserLogin/>}></Route>
