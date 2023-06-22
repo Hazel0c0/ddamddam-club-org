@@ -91,7 +91,7 @@ const MentorsList = ({selectedSubjects}) => {
 
     const handleShow = (e) => {
         setShow(true)
-        const detailIdx = e.target.closest('.mentors-list').querySelector('.member-idx').value
+        const detailIdx = e.target.closest('.mentors-list').querySelector('.member-idx').value;
 
         fetch(MENTOR + '/detail?mentorIdx=' + detailIdx, {
             method : 'GET',
@@ -210,7 +210,7 @@ const MentorsList = ({selectedSubjects}) => {
                         <ul className={'category'}>
                             <li>{mentor.subject}</li>
                         </ul>
-                        <div className={'career'} >경력 : {mentor.career}</div>
+                        <div className={'mentor-career'} >경력 : {mentor.career}</div>
                     </div>
                     {/*</Link>*/}
                 </div>

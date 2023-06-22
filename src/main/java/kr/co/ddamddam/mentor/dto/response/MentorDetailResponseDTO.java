@@ -24,6 +24,7 @@ public class MentorDetailResponseDTO {
     private String subject;
     private String current;
     private int mentee;
+    private int completeMentee;
     private String nickName;
     private String profile;
     @JsonFormat(pattern = "yyyy/MM/dd")

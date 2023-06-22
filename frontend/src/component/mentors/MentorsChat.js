@@ -80,7 +80,8 @@ const MentorsChat = () => {
 
   // 멘티 확정 시 렌더링
   const menteeCountUp = e => {
-    fetch(MENTOR + '/mentee/' + chatPageIdx, {
+    if(detailMember.userIdx === enterUserIdx && selectChatRoomId !== undefined){
+    fetch(MENTOR + '/mentee/' + chatPageIdx+"/"+ selectChatRoomId, {
         method: 'PUT',
         headers: headerInfo
     })
@@ -88,7 +89,26 @@ const MentorsChat = () => {
         .then((result) => {
             setMenteeCount(result);
         });
+    }
   };
+
+  const delChatRoom = (e) => {
+
+    const delRoomIdx = e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value;
+
+    if(window.confirm('채팅방을 삭제하시겠습니까?')){
+        fetch(CHAT+"/"+delRoomIdx+"/"+chatPageIdx,{
+            method : 'DELETE',
+            headers : headerInfo
+        })
+        .then((res) =>{
+            return res.json();
+        })
+        .then((result) =>{
+            setChatRoom(result);
+        });
+    }
+  }
 
 
   // 멘토가 채팅방 선택 렌더링
@@ -100,6 +120,7 @@ const MentorsChat = () => {
         <span className={'mentee-nick-name'}>{item.sender.userName}</span>
         <span className={'mentee-msg-content'}>{item.message}</span>
         <span className={'mentee-date'}>{item.sentAt}</span>
+        <button className={'chatroom-delbtn'} onClick={delChatRoom}>삭제</button>
       </div>
     ));
   
@@ -117,6 +138,7 @@ const menteeMsgBox = chat.map((item, idx) => {
 
 // 멘토가 채팅방 입장 후 메세지 렌더링
     const mentorMsgBox = chat.map((item, idx) => {
+        document.querySelector('.application-btn').textContent = '멘토 확정';
         if (+item.roomId === +selectChatRoomId) {
             return (
                 <div className={item.senderId === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'}
@@ -126,6 +148,7 @@ const menteeMsgBox = chat.map((item, idx) => {
                         className={item.senderId === enterUserIdx ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
                 </div>
             );
+            
         }
         return null;
     });
@@ -156,7 +179,9 @@ const menteeMsgBox = chat.map((item, idx) => {
         return res.json();
       })
       .then((result) => {
+        console.log(result.completeMentee);
         setDetailMember(result);
+        setMenteeCount(result.completeMentee)
         console.log(result);
         if(result.userIdx !== enterUserIdx){
           fetch(CHAT + '/mentee/list/' + chatPageIdx
@@ -345,7 +370,7 @@ const menteeMsgBox = chat.map((item, idx) => {
                                 {mentee}명 모집
                                
                             </div>
-                            <div className={'career'}>
+                            <div className={'mentor-career'}>
                                 <p className={'detail-sub-text'}>모집완료</p>
                                 {menteeCount} 명
                             </div>
@@ -368,7 +393,7 @@ const menteeMsgBox = chat.map((item, idx) => {
                 <div className={'btn-wrapper'}>
                     <button
                         className={'application-btn'} onClick={menteeCountUp}>
-                            {detailMember.userIdx === enterUserIdx ? '멘티 확정' : '멘토링중'}
+                            멘토링중
                     </button>
                     <button className={'mentor-back-room'} onClick={backChatRoomList}>채팅방 돌아가기</button>
                 </div>
