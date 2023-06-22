@@ -1,10 +1,10 @@
-import React, { useState, useEffect,useRef  } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import ProjectsItem from "./ProjectsItem";
 import Common from "../../common/Common";
 import {PROJECT} from "../../common/config/HostConfig";
-import { Link, useNavigate } from "react-router-dom";
-
-
+import {Link, useNavigate} from "react-router-dom";
+import less from "../../../src_assets/less.png";
+import than from "../../../src_assets/than.png";
 
 const ProjectsMain = ({headerInfo}) => {
 
@@ -27,7 +27,7 @@ const ProjectsMain = ({headerInfo}) => {
 
   const handleLikeClick = (projectId) => {
     // 서버에 좋아요 처리를 위한 POST 요청을 보냅니다
-    fetch(PROJECT+`/like/${projectId}`, {
+    fetch(PROJECT + `/like/${projectId}`, {
       method: 'POST',
       headers: headerInfo
     })
@@ -46,35 +46,35 @@ const ProjectsMain = ({headerInfo}) => {
   const handleShowDetails = (projectIdx) => {
     console.log('게시판 번호: ', projectIdx);
 
-    navigate(`/projects/detail?projectIdx=${projectIdx}`, { state: { headerInfo } });
+    navigate(`/projects/detail?projectIdx=${projectIdx}`, {state: {headerInfo}});
   };
 
   return (
-      <>
-        <Link to={'/projects/write'} className={'projects-write-btn'}>
-          작성하기
-        </Link>
+    <>
+      <Link to={'/projects/write'} className={'projects-write-btn'}>
+        작성하기
+      </Link>
 
-        <div className={'sort-button-box'}>
-          <div className={'front'} onClick={handleFrontClick}>front</div>
-          <div className={'back'} onClick={handleBackClick}>back</div>
-        </div>
+      <ProjectsItem
+        url={popularity}
+        sortTitle={'인기 프로젝트'}
+        handleLikeClick={handleLikeClick}
+        handleShowDetails={handleShowDetails}
+        ref={childRef}
+      />
 
-        <ProjectsItem
-          url={popularity}
-          sortTitle={'인기 프로젝트'}
-          handleLikeClick={handleLikeClick}
-          handleShowDetails={handleShowDetails}
-          ref={childRef}
-        />
-        <ProjectsItem
-          url={currentUrl}
-          sortTitle={'최신 프로젝트'}
-          handleLikeClick={handleLikeClick}
-          handleShowDetails={handleShowDetails}
-          ref={childRef}
-        />
-      </>
+      <div className={'sort-button-box'}>
+        <div className={'front'} onClick={handleFrontClick}>front</div>
+        <div className={'back'} onClick={handleBackClick}>back</div>
+      </div>
+      <ProjectsItem
+        url={currentUrl}
+        sortTitle={'최신 프로젝트'}
+        handleLikeClick={handleLikeClick}
+        handleShowDetails={handleShowDetails}
+        ref={childRef}
+      />
+    </>
   );
 };
 export default ProjectsMain;
