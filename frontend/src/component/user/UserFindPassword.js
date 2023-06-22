@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+// import {useNavigate} from "react-router-dom";
 import {BASE_URL, AUTH} from "../common/config/HostConfig";
-import {Link, useNavigate} from "react-router-dom";
+import '../user/scss/UserFindPassword.scss';
 
 const UserFindPassword = () => {
 
   const REQUEST_URL = BASE_URL + AUTH + '/modify-password';
-  const redirection = useNavigate();
+  // const redirection = useNavigate();
 
 
   const [userIdx, setUserIdx] = useState('');
@@ -21,7 +21,6 @@ const UserFindPassword = () => {
       setNewPassword(value);
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -35,30 +34,51 @@ const UserFindPassword = () => {
   };
 
 
+
+
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        User Index:
-        <input
-          type="text"
-          name="userIdx"
-          value={userIdx}
-          onChange={handleInputChange}
-        />
-      </label>
-      <br/>
-      <label>
-        New Password:
-        <input
-          type="password"
-          name="newPassword"
-          value={newPassword}
-          onChange={handleInputChange}
-        />
-      </label>
-      <br/>
-      <button type="submit">Change Password</button>
-    </form>
+    <div className={'form-container'}>
+      <form className={'find-form'} onSubmit={handleSubmit}>
+        <h1 className={'password-title'}>👻비밀번호 변경👽</h1>
+        <br/>
+        ** 분실하지 않도록 신중하게 설정하세요 ! **
+        <br/><br/><br/>
+        <label className={'id'}>
+          사용자 아이디(이메일) :
+          <input
+            type="text"
+            name="userIdx"
+            className={'email-input'}
+            value={userIdx}
+            onChange={handleInputChange}
+          />
+        </label>
+        <br/><br/>
+        {/*<label className={'oldpw'}>*/}
+        {/*  기존 비밀번호:*/}
+        {/*  <input*/}
+        {/*    type="password"*/}
+        {/*    name="newPassword"*/}
+        {/*    className={'oldpassword-input'}*/}
+        {/*    value={newPassword}*/}
+        {/*    onChange={handleInputChange}*/}
+        {/*  />*/}
+        {/*</label>*/}
+        {/*<br/><br/>*/}
+        <label className={'newpw'}>
+          새로운 비밀번호 :
+          <input
+            type="password"
+            name="newPassword"
+            className={'newpassword-input'}
+            value={newPassword}
+            onChange={handleInputChange}
+          />
+        </label>
+        <br/><br/>
+        <button className={'changebtn'} type="submit">변경하기</button>
+      </form>
+    </div>
   );
 };
 

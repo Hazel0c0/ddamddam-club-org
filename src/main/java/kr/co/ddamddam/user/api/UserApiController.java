@@ -38,6 +38,7 @@ public class UserApiController {
     // GET: /api/auth/check?email=zzzz@xxx.com
     @GetMapping("/check")
     public ResponseEntity<?> check(String email) {
+        log.info("/api/auth/check?email={}", email);
 
         if (email.trim().isEmpty()) {
             return ResponseEntity.badRequest()
@@ -47,6 +48,20 @@ public class UserApiController {
         log.info("{} 중복?? - {}", email, resultFlag);
 
         return ResponseEntity.ok().body(resultFlag);
+    }
+
+    //닉네임 중복확인 요청처리
+    @GetMapping("/checknickname")
+    public ResponseEntity<?> checknick(String nickname) {
+        log.info("/api/auth/checknickname?nickname={}", nickname);
+
+        if(nickname.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("닉네임이 없습니다");
+        }
+        boolean resultFlag = userSingUpService.isNicknameExist(nickname);
+        log.info("{} 중복?? - {}", nickname, resultFlag);
+
+        return  ResponseEntity.ok().body(resultFlag);
     }
 
     // 회원가입 요청처리
