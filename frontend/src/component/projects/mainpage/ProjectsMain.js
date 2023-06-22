@@ -3,20 +3,17 @@ import ProjectsItem from "./ProjectsItem";
 import Common from "../../common/Common";
 import {PROJECT} from "../../common/config/HostConfig";
 import { Link, useNavigate } from "react-router-dom";
-import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
-  getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
-  getUserRole, isLogin } from '../../common/util/login-util';
 
 
-const ProjectsMain = () => {
+
+const ProjectsMain = ({headerInfo}) => {
+
+  console.log(headerInfo)
 
   const [currentUrl, setCurrentUrl] = useState(PROJECT);
   const popularity = PROJECT + '?sort=like&size=3';
   const navigate = useNavigate();
-
   const childRef = useRef(null);
-  const ACCESS_TOKEN = getToken(); // 토큰
-
 
   const handleFrontClick = () => {
     console.log("프론트")
@@ -28,10 +25,6 @@ const ProjectsMain = () => {
     setCurrentUrl(PROJECT + '?position=back');
   };
 
-  const headerInfo = {
-    'content-type': 'application/json',
-    'Authorization': 'Bearer ' + ACCESS_TOKEN
-  }
   const handleLikeClick = (projectId) => {
     // 서버에 좋아요 처리를 위한 POST 요청을 보냅니다
     fetch(PROJECT+`/like/${projectId}`, {
@@ -51,11 +44,9 @@ const ProjectsMain = () => {
   };
 
   const handleShowDetails = (projectIdx) => {
-    console.log('게시판 번호 : ');
-    console.log(projectIdx);
+    console.log('게시판 번호: ', projectIdx);
 
-    // 선택된 요소 처리
-    navigate(`/projects/detail?projectIdx=${projectIdx}`);
+    navigate(`/projects/detail?projectIdx=${projectIdx}`, { state: { headerInfo } });
   };
 
   return (

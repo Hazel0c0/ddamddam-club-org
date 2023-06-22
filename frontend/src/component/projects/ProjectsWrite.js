@@ -25,7 +25,13 @@ const ProjectsWrite = () => {
     projectImg:'',
   });
   const navigate = useNavigate();
+
   const ACCESS_TOKEN = getToken();
+
+  const headerInfo = {
+    'content-type': 'application/json',
+    'Authorization': 'Bearer ' + ACCESS_TOKEN
+  }
 
   const handleInputChange = (e) => {
     const {name, value} = e.target;
@@ -41,9 +47,6 @@ const ProjectsWrite = () => {
         [JSON.stringify(formData)],
         { type: 'application/json' }
     );
-    const headerInfo = {
-      'Authorization': 'Bearer ' + ACCESS_TOKEN
-    }
 
     const projectFormData = new FormData();
     projectFormData.append('project', projectJsonBlob);
