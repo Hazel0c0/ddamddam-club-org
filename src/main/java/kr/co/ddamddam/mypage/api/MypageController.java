@@ -47,6 +47,8 @@ public class MypageController {
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             PageDTO pageDTO
     ){
+
+        // {?page=1&size=3}
         MypageChatPageResponseDTO chatRoomList = myPageService.getChatList(tokenUserInfo, pageDTO);
 
         return ResponseEntity.ok().body(chatRoomList);

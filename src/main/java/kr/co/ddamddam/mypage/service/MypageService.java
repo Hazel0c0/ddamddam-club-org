@@ -3,8 +3,11 @@ package kr.co.ddamddam.mypage.service;
 import kr.co.ddamddam.chat.entity.ChatRoom;
 import kr.co.ddamddam.chat.repository.ChatRoomRepository;
 import kr.co.ddamddam.common.common.ValidateToken;
+import kr.co.ddamddam.common.exception.custom.ErrorCode;
+import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
 import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.UserUtil;
+import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
 import kr.co.ddamddam.mentor.entity.Mentor;
 import kr.co.ddamddam.mentor.repository.MentorRepository;
 import kr.co.ddamddam.mypage.dto.page.PageDTO;
@@ -30,6 +33,10 @@ import kr.co.ddamddam.user.entity.UserPosition;
 import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -71,29 +78,30 @@ public class MypageService {
      * @return 페이지 정보, 페이징 처리 된 로그인 유저가 참여한 멘티의 채팅방 리스트
      */
     public MypageChatPageResponseDTO getChatList(
-//            TokenUserInfo tokenUserInfo,
             TokenUserInfo tokenUserInfo, PageDTO pageDTO
     ){
-         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
-//
-//        Long userIdx = 44L;
+        Long userIdx = 1L;
+//         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
-        List<ChatRoom> chatRoomList = chatRoomRepository.findBySenderUserIdx(userIdx);
+        Pageable pageable = PageRequest.of(
+                pageDTO.getPage() - 1,
+                pageDTO.getSize(),
+                Sort.by(Sort.Direction.ASC, "roomId")
+        );
 
-        PageMaker maker = new PageMaker(pageDTO, chatRoomList.size());
-        int pageStart = getPageStart(pageDTO);
-        int pageEnd = getPageEnd(pageStart, pageDTO.getSize(), chatRoomList.size());
+        Page<ChatRoom> pageChatRoomList = chatRoomRepository.findBySenderUserIdx(userIdx, pageable);
+        List<ChatRoom> chatRoomList = pageChatRoomList.getContent();
 
-        List<ChatRoom> sliceChatRoomList = chatRoomList.subList(pageStart, pageEnd);
 
-        List<ChatRoomResponseDTO> collect = sliceChatRoomList.stream().map(chatRoom ->
+
+        List<ChatRoomResponseDTO> collect = chatRoomList.stream().map(chatRoom ->
                         convertChatRoomToMypageDto(chatRoom))
                 .collect(Collectors.toList());
 
         return MypageChatPageResponseDTO.builder()
                 .chatRoomList(collect)
-                .count(sliceChatRoomList.size())
-                .pageInfo(maker)
+                .count(collect.size())
+                .pageInfo(new PageResponseDTO<ChatRoom>(pageChatRoomList))
                 .build();
 
     }
@@ -259,10 +267,19 @@ public class MypageService {
      */
     private ChatRoomResponseDTO convertChatRoomToMypageDto(ChatRoom chatRoom) {
 
+        Mentor mentor = mentorRepository.findById(chatRoom.getMentor().getMentorIdx()).orElseThrow(
+                () -> {
+                    throw new NotFoundBoardException(ErrorCode.NOT_FOUND_BOARD, chatRoom.getMentor().getMentorIdx());
+                }
+        );
+
         return ChatRoomResponseDTO.builder()
                 .chatType(MENTEE_CHAT_ROOM)
                 .mentorIdx(chatRoom.getMentor().getMentorIdx())
                 .roomIdx(chatRoom.getRoomId())
+                .current(mentor.getMentorCareer())
+                .title(mentor.getMentorTitle())
+                .subject(mentor.getMentorSubject())
                 .build();
     }
 
