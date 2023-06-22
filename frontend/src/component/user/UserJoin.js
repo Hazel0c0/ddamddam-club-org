@@ -33,6 +33,8 @@ const UserJoin = () => {
     const emailCodeCheck = useRef();
     const [emailCodeResult, setEmailCodeResult] = useState(false);
 
+    //이미지 업로드
+    const [imgData, setImageData] = useState([]);
 
     // 상태변수로 회원가입 입력값 관리
     const [userValue, setUserValue] = useState({
@@ -42,8 +44,8 @@ const UserJoin = () => {
         userNickName: '',
         userBirth: '',
         userPosition: 'FRONTEND',
-        userCareer: '',
-        userProfile: '0'
+        userCareer: ''
+        // userProfile: '0'
     });
 
     // 검증 메세지에 대한 상태변수 관리
@@ -67,7 +69,7 @@ const UserJoin = () => {
         userName: false,
         userNickName: false,
         userBirth: true,
-        userPosition: true,
+        userPosition: false,
         userCareer: true
     });
 
@@ -384,11 +386,17 @@ const UserJoin = () => {
         // 이미지파일과 회원정보 JSON을 하나로 묶어야 함
         const userFormData = new FormData();
         userFormData.append('user', userJsonBlob);
+        userFormData.append('user', userJsonBlob);
+        // userFormData.append('profileImage', $fileTag.current.files[0],{ type: `image/jpeg`});
         userFormData.append('profileImage', $fileTag.current.files[0]);
+
+        console.log(`userFormData : `,userFormData)
 
         const res = await fetch(`${BASE_URL}/signup`, {
             method: 'POST',
             headers: {'content-type': 'application/json'},
+            body: userFormData
+            // headers: {'content-type': 'application/json'},
             body: userFormData
         });
 
@@ -410,10 +418,11 @@ const UserJoin = () => {
         // const $nameInput = document.getElementsByName('name');
         console.log(userValue)
         console.log(isValid)
+        console.log(`imgFile의 값 : `,imgFile)
         // 회원가입 서버 요청
         if (isValid()) {
             fetchSignUpPost();
-            // alert('회원가입 정보를 서버에 전송합니다.')
+            alert('회원가입 정보를 서버에 전송합니다.')
         } else {
             alert('입력란을 다시 확인해주세요!');
         }

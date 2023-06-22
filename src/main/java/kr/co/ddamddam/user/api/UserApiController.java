@@ -106,10 +106,14 @@ public class UserApiController {
             String filePath
                     = userSingUpService.getProfilePath(Long.valueOf(userInfo.getUserIdx()));
 
+            System.out.println("filePath = " + filePath);
             // 2. 얻어낸 파일 경로를 통해서 실제 파일데이터 로드하기
             File profileFile = new File(filePath);
-
+            System.out.println("\n\n\n");
+            System.out.println("profileFile 실패 전 값 : "+profileFile);
+            System.out.println("\n\n\n");
             if (!profileFile.exists()) {
+                System.out.println("profileFile = " + profileFile);
                 return ResponseEntity.notFound().build();
             }
 
@@ -120,16 +124,19 @@ public class UserApiController {
             HttpHeaders headers = new HttpHeaders();
             MediaType contentType = findExtensionAndGetMediaType(filePath);
             if (contentType == null) {
+                System.out.println("여기서 탈락!");
                 return ResponseEntity.internalServerError()
                         .body("발견된 파일은 이미지 파일이 아닙니다.");
             }
             headers.setContentType(contentType);
 
+            System.out.println("get profile true1");
             return ResponseEntity.ok()
                     .headers(headers)
                     .body(fileData);
 
         } catch (IOException e) {
+            System.out.println("get profile false");
             e.printStackTrace();
             return ResponseEntity.internalServerError()
                     .body("파일을 찾을 수 없습니다.");
@@ -143,6 +150,7 @@ public class UserApiController {
         // D:/todo_upload/kfdslfjhsdkjhf_abc.jpg
         String ext
                 = filePath.substring(filePath.lastIndexOf(".") + 1);
+
         //. 다음글자 부터 끝까지 자르기
 
         switch (ext.toUpperCase()) {
