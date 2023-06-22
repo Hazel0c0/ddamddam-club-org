@@ -6,6 +6,8 @@ import {IoIosArrowForward} from "react-icons/io";
 import viewIcon from "../../../src_assets/view-icon.png";
 import PageNation from "../../common/pageNation/PageNation";
 import {RxCalendar} from "react-icons/rx"
+import {parseString} from "react-native-xml2js"
+import axios from "axios";
 
 const CompanyTotal = () => {
     const [companyList, setReviewList] = useState([]);
@@ -15,14 +17,33 @@ const CompanyTotal = () => {
     //워크넷 링크 상태관리
     const [goWorknet, setGoWorknet] = useState([]);
 
+    // const res = `?authKey=WNLIS5RDCEK7WOBRD73GA2VR1HJ&&callTp=L&returnType=XML&startPage=1&display=10`
+    const res = `http://openapi.work.go.kr/opi/opi/opia/wantedApi.doauthKey=WNLIS5RDCEK7WOBRD73GA2VR1HJ&&callTp=L&returnType=XML&startPage=1&display=10`
+
     useEffect(() => {
         asyncCompanyTotalList();
 
-    // }, [clickCurrentPage,goWorknet])
+        const fetchData = async () => {
+            try {
+                const response = await fetch(res, {
+                    mode: 'no-cors'
+                });
+                const data = await response.text(); // 또는 response.json() 등으로 데이터 처리
+                console.log(data);
+            } catch (e) {
+                console.log(e);
+            }
+        };
+        fetchData()
+
+        // }, [clickCurrentPage,goWorknet])
     }, [clickCurrentPage])
 
+
+
+
     const asyncCompanyTotalList = async () => {
-        console.log(`asyncCompanyTotalList 실행`)
+        // console.log(`asyncCompanyTotalList 실행`)
         // const responseUrl = `/list?page=${clickCurrentPage}&size=10`
         const res = await fetch(`${COMPANY}/list`, {
             method: 'GET',
@@ -35,7 +56,7 @@ const CompanyTotal = () => {
         }
 
         const result = await res.json();
-        console.log(`전체 result : `, result)
+        // console.log(`전체 result : `, result)
 
         setPageNation(result.pageInfo);
 
@@ -61,9 +82,9 @@ const CompanyTotal = () => {
         //     goWorknet[i] = false
         // }
 
-        console.log(goWorknet)
+        // console.log(goWorknet)
         setReviewList(modifyCompanyList);
-        console.log(`modifyCompanyList의 값 : `, modifyCompanyList)
+        // console.log(`modifyCompanyList의 값 : `, modifyCompanyList)
     }
 
     //d-day계산
@@ -116,8 +137,8 @@ const CompanyTotal = () => {
                     <section
                         key={index}
                         className={'company-list'}
-                        onMouseEnter={()=>showLinkHandler(index)}
-                        onMouseLeave={()=>hiddenLinkHandler(index)}
+                        onMouseEnter={() => showLinkHandler(index)}
+                        onMouseLeave={() => hiddenLinkHandler(index)}
                     >
                         <div className={'d-day'}>{company.dDay}</div>
                         <div className={'company-career'}>{company.companyCareer}</div>
