@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,7 +65,7 @@ public class ProjectService {
                 .build();
     }
 
-    private static Pageable getPageable(
+    private Pageable getPageable(
             PageDTO dto,
             ProjectSearchRequestDto searchDto) {
         Pageable pageable = null;
@@ -104,8 +105,7 @@ public class ProjectService {
         return projectPage;
     }
 
-    public ProjectDetailResponseDTO getDetail(TokenUserInfo tokenUserInfo, Long projectIdx) {
-        validateToken.validateToken(tokenUserInfo);
+    public ProjectDetailResponseDTO getDetail(Long projectIdx) {
 
         Project foundProject = getProject(projectIdx);
 
@@ -128,7 +128,7 @@ public class ProjectService {
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
         User user = userRepository.findById(userIdx)
-                .orElseThrow(() -> new RuntimeException("존재하지 않습니다!"));
+                .orElseThrow(() -> new RuntimeException(userIdx+"회원이 존재하지 않습니다!"));
 
         Project saved = projectRepository.save(dto.toEntity(user, uploadedFilePath));
 
@@ -141,22 +141,31 @@ public class ProjectService {
             ProjectModifyRequestDTO dto,
             String uploadedFilePath
     ) {
-        validateDTO(tokenUserInfo, dto.getProjectIdx());
+        validateDTO(tokenUserInfo, dto.getBoardIdx());
 
-        Project currProject = getProject(dto.getProjectIdx());
+        Project currProject = getProject(dto.getBoardIdx());
 
-        currProject.setProjectTitle(dto.getBoardTitle());
-        currProject.setProjectContent(dto.getBoardContent());
-        currProject.setProjectType(dto.getProjectType());
-        currProject.setMaxFront(dto.getMaxFront());
-        currProject.setMaxBack(dto.getMaxBack());
-        currProject.setOfferPeriod(dto.getOfferPeriod());
-        currProject.setProjectIdx(dto.getProjectIdx());
-      currProject.setProjectImg(uploadedFilePath);
+        if (currProject.getUser().getUserEmail().equals(
+            tokenUserInfo.getUserEmail())
+        ) {
+            log.info("이 게시글 작성자와 현재 로그인 사용자가 일치합니다");
 
-    Project modifiedProject = projectRepository.save(currProject);
+            currProject.setProjectTitle(dto.getBoardTitle());
+            currProject.setProjectContent(dto.getBoardContent());
+            currProject.setProjectType(dto.getProjectType());
+            currProject.setMaxFront(dto.getMaxFront());
+            currProject.setMaxBack(dto.getMaxBack());
+            currProject.setOfferPeriod(dto.getOfferPeriod());
+            currProject.setProjectIdx(dto.getBoardIdx());
+            currProject.setProjectImg(uploadedFilePath);
+            currProject.setProjectDate(LocalDateTime.now());
 
-    return new ProjectDetailResponseDTO(modifiedProject);
+            Project modifiedProject = projectRepository.save(currProject);
+
+            return new ProjectDetailResponseDTO(modifiedProject);
+        } else {
+            throw new UnauthorizationException(ErrorCode.ACCESS_FORBIDDEN, tokenUserInfo.getUserEmail());
+        }
   }
 
   public void delete(Long id) {
