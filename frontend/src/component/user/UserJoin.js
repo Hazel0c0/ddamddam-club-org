@@ -44,7 +44,7 @@ const UserJoin = () => {
         userNickName: '',
         userBirth: '',
         userPosition: 'FRONTEND',
-        userCareer: ''
+        userCareer: '',
         // userProfile: '0'
     });
 
@@ -69,7 +69,7 @@ const UserJoin = () => {
         userName: false,
         userNickName: false,
         userBirth: true,
-        userPosition: false,
+        userPosition: true,
         userCareer: true
     });
 
@@ -386,15 +386,14 @@ const UserJoin = () => {
         // 이미지파일과 회원정보 JSON을 하나로 묶어야 함
         const userFormData = new FormData();
         userFormData.append('user', userJsonBlob);
-        userFormData.append('user', userJsonBlob);
-        // userFormData.append('profileImage', $fileTag.current.files[0],{ type: `image/jpeg`});
         userFormData.append('profileImage', $fileTag.current.files[0]);
+        // userFormData.append('profileImage', $fileTag.current.files[0],{ type: `image/jpeg`});
 
         console.log(`userFormData : `,userFormData)
 
         const res = await fetch(`${BASE_URL}/signup`, {
             method: 'POST',
-            headers: {'content-type': 'application/json'},
+            // headers: {'content-type': 'application/json'},
             // headers: {'content-type': 'application/json'},
             body: userFormData
         });
@@ -417,7 +416,7 @@ const UserJoin = () => {
         // const $nameInput = document.getElementsByName('name');
         console.log(userValue)
         console.log(isValid)
-        console.log(`imgFile의 값 : `,imgFile)
+        // console.log(`imgFile의 값 : `,imgFile)
         // 회원가입 서버 요청
         if (isValid()) {
             fetchSignUpPost();
