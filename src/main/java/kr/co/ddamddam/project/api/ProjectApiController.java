@@ -140,7 +140,7 @@ public class ProjectApiController {
             value = "projectImage",
             required = false) MultipartFile projectImg
     ) {
-        log.info("/api/ddamddam modify - dto {} !!, token {}, img", dto,tokenUserInfo.getUserIdx(),projectImg);
+        log.info("/api/ddamddam modify - dto {} !!, 유저no {}, img {}", dto,tokenUserInfo.getUserIdx(),projectImg);
 
         try {
             String uploadedFilePath = fileUpload(projectImg);

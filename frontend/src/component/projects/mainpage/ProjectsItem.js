@@ -16,6 +16,7 @@ const ProjectsItem = forwardRef((
 
     const [projects, setProjects] = useState([]);
     const [pageNation, setPageNation] = useState([]);
+    const [projectImgUrl, setProjectImgUrl] = useState(''); // 새로운 상태 추가
 
     useImperativeHandle(ref, () => ({
       fetchData
@@ -35,15 +36,34 @@ const ProjectsItem = forwardRef((
         })
         .then(result => {
           if (!!result) {
-            // 데이터 업데이트
             setProjects(result.payload.projects);
+            result.map(result => {
+              let projectIdx = result.payload.projectIdx;
+              fetchFileImage(projectIdx)
+            })
           }
         });
     };
     useEffect(() => {
       fetchData();
     }, []);
+    const file_URL = '//localhost:8181/api/ddamddam/load-file'
 
+    const fetchFileImage = async (projectIdx) => {
+      const res = await fetch(
+        `${file_URL}?projectIdx=${projectIdx}&boardType=project`, {
+          method: 'GET',
+        });
+      if (res.status === 200) {
+        const fileBlob = await res.blob();
+        const imgUrl = window.URL.createObjectURL(fileBlob);
+        setProjectImgUrl(imgUrl);
+        console.log("프로젝트 디테일 - 이미지 : " + imgUrl)
+      } else {
+        const err = await res.text();
+        setProjectImgUrl(null);
+      }
+    };
 
     return (
       <Common className={'project-list-wrapper'}>
@@ -63,6 +83,15 @@ const ProjectsItem = forwardRef((
                 onClick={() => handleShowDetails(p.boardIdx)}
               >
                 <div className={'project-wrapper'}>
+                  <div className={'project-img'}>
+                    <img
+                      src={projectImgUrl}
+                      alt="Project Image" className={'project-img'}
+                      style={{
+                        height: 350
+                      }}
+                    />
+                  </div>
                   <div className={'text-title'}>{p.boardTitle}</div>
                   <div className={'text-content'}>{p.boardContent}</div>
                   <div className={'project-type'}>{p.projectType}</div>
@@ -87,7 +116,8 @@ const ProjectsItem = forwardRef((
                   )}
                 </div>
               </section>
-            );
+            )
+              ;
           })}
         </div>
       </Common>
