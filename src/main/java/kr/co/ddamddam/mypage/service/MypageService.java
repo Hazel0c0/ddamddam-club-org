@@ -7,6 +7,7 @@ import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.UserUtil;
 import kr.co.ddamddam.mentor.entity.Mentor;
 import kr.co.ddamddam.mentor.repository.MentorRepository;
+import kr.co.ddamddam.mypage.dto.MypageProjectPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.page.PageDTO;
 import kr.co.ddamddam.mypage.dto.page.PageMaker;
 import kr.co.ddamddam.mypage.dto.request.MypageModifyRequestDTO;
@@ -15,6 +16,7 @@ import kr.co.ddamddam.mypage.dto.response.MypageBoardPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageChatPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageProjectResponseDTO;
+import kr.co.ddamddam.project.dto.page.PageResponseDTO;
 import kr.co.ddamddam.project.dto.request.ProjectSearchRequestDto;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
@@ -347,15 +349,16 @@ public class MypageService {
         log.info("user : {}  , 포지션 : {} !!",user ,userPosition);
 
         List<Project> arrayProjects = new ArrayList<>();
+            Page<T> page;
         if (userPosition == UserPosition.FRONTEND) {
-            Page<ApplicantOfFront> page = frontRepository.findByUser(user, pageable);
+            page = frontRepository.findByUser(user, pageable);
             List<ApplicantOfFront> content = page.getContent();
             List<Project> frontCollect = content.stream()
                 .map(ApplicantOfFront::getProject)
                 .collect(Collectors.toList());
             arrayProjects.addAll(frontCollect);
         } else {
-            Page<ApplicantOfBack> page = backRepository.findByUser(user, pageable);
+            page = backRepository.findByUser(user, pageable);
             List<ApplicantOfBack> content = page.getContent();
             List<Project> backCollect = content.stream()
                 .map(ApplicantOfBack::getProject)
@@ -363,8 +366,14 @@ public class MypageService {
             arrayProjects.addAll(backCollect);
         }
 
+        List<MypageProjectResponseDTO> dtoList = toDtoList(arrayProjects);
 
-        return toDtoList(arrayProjects);
+        MypageProjectPageResponseDTO.builder()
+            .count(dtoList.size()) // 총게시물 수가 아니라 조회된 게시물 수
+            .pageInfo(new PageResponseDTO<ApplicantOfBack>(page))
+            .posts(dtoList)
+            .build();
+        return dtoList;
     }
 
     private Pageable getPageable(PageDTO dto) {
