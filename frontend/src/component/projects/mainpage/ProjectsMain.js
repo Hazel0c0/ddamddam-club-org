@@ -10,10 +10,12 @@ const ProjectsMain = ({headerInfo}) => {
 
   console.log(headerInfo)
 
-  const [currentUrl, setCurrentUrl] = useState(PROJECT);
-  const popularity = PROJECT + '?sort=like&size=3';
   const navigate = useNavigate();
   const childRef = useRef(null);
+
+  const [currentUrl, setCurrentUrl]
+    = useState(PROJECT);
+  const popularity = PROJECT + '?sort=like&page=2&size=3';
 
   const handleFrontClick = () => {
     console.log("프론트")
