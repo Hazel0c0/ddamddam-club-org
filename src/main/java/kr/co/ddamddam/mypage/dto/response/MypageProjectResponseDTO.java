@@ -24,7 +24,7 @@ public class MypageProjectResponseDTO {
           프로젝트 개최자
           프로젝트 참가자 - 백/프론트
      */
-    // TODO idx 담기
+    private Long boardIdx;
     private String boardTitle;
     private String boardWriter;
     private UserPosition writerPosition;
@@ -32,6 +32,7 @@ public class MypageProjectResponseDTO {
     private List<String> back;
 
     public MypageProjectResponseDTO(Project p, UserPosition writerPosition) {
+        this.boardIdx = p.getProjectIdx();
         this.boardTitle = p.getProjectTitle();
         this.boardWriter = p.getUserNickname();
         this.writerPosition = writerPosition;

@@ -1,0 +1,113 @@
+// TODO : 챗룸scss랑 똑같아서 리팩토링 필요
+.mypage-pj-wrapper {
+  width: 100%;
+  margin-bottom: 100px;
+
+  .pj-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pj-box {
+    background-color: #ffffff;
+    width: 340px;
+    height: 220px;
+    margin: 0px 10px;
+    padding: 15px;
+    border: 1px solid #D4D4D4;
+    border-radius: 10px;
+  }
+
+  .pj-title {
+    font-weight: 700;
+    font-size: 1.1em;
+    padding: 10px 0;
+  }
+
+  .pj-title:hover {
+    color: #1e4fff;
+  }
+
+  .small-text {
+    font-size: 0.9em;
+  }
+
+  .writer {
+    display: flex;
+    align-items: center;
+  }
+
+  .participants-list {
+    display: flex;
+    justify-content: space-around;
+
+    > div {
+      width: 50%;
+    }
+
+    .list-box {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .pj-sub-title {
+      width: 80px;
+      margin: 10px 0;
+      padding: 5px;
+      background-color: #292834;
+      color: #fff;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .participants-box {
+      overflow: auto hidden;
+
+      > p {
+        margin-bottom: 5px;
+      }
+    }
+
+    .participants-box::-webkit-scrollbar {
+      width: 5px; /* 수직 스크롤 막대의 너비 */
+    }
+
+    .participants-box::-webkit-scrollbar-track {
+      background-color: #f1f1f1; /* 스크롤 트랙의 배경색 */
+    }
+
+    .participants-box::-webkit-scrollbar-thumb {
+      background-color: rgba(130, 130, 130, 0.5); /* 스크롤 막대의 색상 */
+      border-radius: 4px; /* 스크롤 막대의 모서리 반경 */
+    }
+
+    .participants-box::-webkit-scrollbar-thumb:hover {
+      background-color: #555; /* 스크롤 막대에 마우스 호버시의 색상 */
+    }
+
+  }
+
+
+}
+
+//화살표 아이콘
+.less-icon,
+.than-icon {
+  position: absolute;
+  right: 0;
+  width: 35px;
+}
+
+.less-icon:hover,
+.than-icon:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 2px 2px rgba(100, 100, 100, 0.1);
+  border-radius: 50px;
+}
+
+.less-icon {
+  left: 0;
+}

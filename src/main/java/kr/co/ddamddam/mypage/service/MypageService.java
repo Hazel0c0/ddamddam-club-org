@@ -19,7 +19,7 @@ import kr.co.ddamddam.mypage.dto.response.MypageBoardPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageChatPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageProjectResponseDTO;
-import kr.co.ddamddam.project.dto.page.PageResponseDTO;
+//import kr.co.ddamddam.project.dto.page.PageResponseDTO; // TODO : 페이징 통일해야합니다...ㅋㅋ
 import kr.co.ddamddam.project.dto.request.ProjectSearchRequestDto;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
@@ -46,6 +46,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static kr.co.ddamddam.mypage.dto.MypageProjectPageResponseDTO.*;
 
 @Service
 @Slf4j
@@ -96,9 +98,6 @@ public class MypageService {
 
         Page<ChatRoom> pageChatRoomList = chatRoomRepository.findBySenderUserIdx(userIdx, pageable);
         List<ChatRoom> chatRoomList = pageChatRoomList.getContent();
-
-        List<ChatRoom> sliceChatRoomList = chatRoomList.subList(pageStart, pageEnd);
-
 
         List<ChatRoomResponseDTO> collect = chatRoomList.stream().map(chatRoom ->
                         convertChatRoomToMypageDto(chatRoom))
@@ -379,7 +378,7 @@ public class MypageService {
 
             return MypageProjectPageResponseDTO.builder()
                 .count(dtoList.size()) // 총게시물 수가 아니라 조회된 게시물 수
-                .pageInfo(new PageResponseDTO<ApplicantOfFront>(page))
+                .pageInfo(new kr.co.ddamddam.project.dto.page.PageResponseDTO(page))
                 .posts(dtoList)
                 .build();
 
@@ -395,7 +394,7 @@ public class MypageService {
 
             return MypageProjectPageResponseDTO.builder()
                 .count(dtoList.size()) // 총게시물 수가 아니라 조회된 게시물 수
-                .pageInfo(new PageResponseDTO<ApplicantOfBack>(page))
+                .pageInfo(new kr.co.ddamddam.project.dto.page.PageResponseDTO(page))
                 .posts(dtoList)
                 .build();
         }

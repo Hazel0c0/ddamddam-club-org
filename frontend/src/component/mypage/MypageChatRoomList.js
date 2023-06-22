@@ -111,10 +111,10 @@ const MypageChatRoom = props => {
   return (
     <div className={'mypage-chat-wrapper'}>
 
-      <div className={'chat-wrapper'}>
         {pageNation.prev &&
           <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
         }
+      <div className={'chat-wrapper'}>
         {chatRoomList.map((chatRoom, index) => (
           /* TODO : 멘토멘티 게시글 누르면 어디로 이동시킬건가요..?? */
           <div className={'chat-box'}>
@@ -132,10 +132,10 @@ const MypageChatRoom = props => {
             </div>
           </div>
         ))}
+      </div>
       {pageNation.next &&
         <img src={than} alt={"than-icon"} className={'than-icon'} onClick={handleNext}/>
       }
-      </div>
 
     </div>
   );
