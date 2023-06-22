@@ -1,18 +1,22 @@
+import logo from './logo.svg';
 import './App.css';
 import {useState} from "react";
 import {Route, Routes} from "react-router-dom";
 import {Reset} from "styled-reset";
 import Header from "./component/common/Header";
+import MentorsMain from "./component/mentors/MentorsMain";
 import MainTemplate from "./component/common/MainTemplate";
 import UserLogin from "./component/user/UserLogin";
 import UserJoin from "./component/user/UserJoin";
 import ProjectsTemplate from "./component/projects/mainpage/ProjectsTemplate";
 import ProjectsWrite from "./component/projects/ProjectsWrite";
 import ProjectsDetail from "./component/projects/ProjectsDetail";
+import QnaMain from "./component/qna/QnaMain";
 import Footer from "./component/common/Footer";
 import MentorsTemplate from "./component/mentors/MentorsTemplate";
 import MentorsWrite from "./component/mentors/MentorsWrite";
 import MentorsModify from "./component/mentors/MentorsModify";
+// import MentorsDetail from "./component/mentors/MentorsDetail";
 import MentorsChat from "./component/mentors/MentorsChat";
 import QnaTemplate from "./component/qna/QnaTemplate";
 import QnaDetail from "./component/qna/QnaDetail";
@@ -24,6 +28,7 @@ import ReviewDetail from "./component/review/ReviewDetail";
 import ReviewWrite from "./component/review/ReviewWrite";
 import OAuth2RedirectHandler from "./component/snslogin/OAuth2RedirectHandler";
 import MypageMain from "./component/mypage/MypageMain";
+import MypageTemplate from "./component/mypage/MypageTemplate";
 import CompanyTemplate from "./component/Company/CompanyTemplate";
 
 
@@ -77,7 +82,7 @@ function App() {
                 <Route path={'/reviews/write'} element={<ReviewWrite/>} />
 
                 {/*마이페이지*/}
-                <Route path={'/mypage'} element={<MypageMain/>} />
+                <Route path={'/mypage'} element={<MypageTemplate/>}></Route>
 
                 {/*로그인*/}
                 <Route path={'/login'} element={<UserLogin/>} />

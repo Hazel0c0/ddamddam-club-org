@@ -222,8 +222,6 @@ const QnaDetail = () => {
             } else {
                 alert("채택에 실패하였습니다.")
             }
-
-
         }
 
         const replyAdoptionHandler = (boardAdoption) => {

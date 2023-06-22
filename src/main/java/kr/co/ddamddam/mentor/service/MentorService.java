@@ -1,5 +1,9 @@
 package kr.co.ddamddam.mentor.service;
 
+import kr.co.ddamddam.common.common.ValidateToken;
+import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
+import kr.co.ddamddam.common.exception.custom.NotFoundUserException;
+import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.mentor.dto.page.PageDTO;
 import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorModifyRequestDTO;
@@ -25,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.*;
+import static kr.co.ddamddam.common.exception.custom.ErrorCode.*;
 
 @Service
 @Slf4j
@@ -35,6 +40,7 @@ public class MentorService {
     private final MentorRepository mentorRepository;
     private final UserRepository userRepository;
     private final MenteeRepository menteeRepository;
+    private final ValidateToken validateToken;
 
     public MentorListResponseDTO getList(PageDTO pageDTO) {
         // Pageable 객체생성
@@ -120,10 +126,17 @@ public class MentorService {
     }
 
     // 멘토 게시판 상세 조회
-    public MentorDetailResponseDTO getDetail(Long mentorIdx) {
+    public MentorDetailResponseDTO getDetail(Long mentorIdx, TokenUserInfo tokenUserInfo) {
 
-        Optional<Mentor> mentorOptional = mentorRepository.findById(mentorIdx);
-        Mentor mentor = mentorOptional.get();
+        validateToken.validateToken(tokenUserInfo);
+
+        if (mentorIdx == null) {
+            throw new NotFoundBoardException(INVALID_PARAMETER, mentorIdx);
+        }
+
+        Mentor mentor  = mentorRepository.findById(mentorIdx).orElseThrow(
+                () -> {throw new NotFoundBoardException(NOT_FOUND_BOARD, mentorIdx);});
+
         MentorDetailResponseDTO dto = new MentorDetailResponseDTO();
         dto.setIdx(mentor.getMentorIdx());
         dto.setTitle(mentor.getMentorTitle());
@@ -145,19 +158,33 @@ public class MentorService {
 
     // 게시글 작성
     // user_idx값을 받아와 save하기전에 mentor테이블 user_idx값에 넣기[User]
-    public MentorDetailResponseDTO write(MentorWriteRequestDTO dto, Long userIdx) {
+    public MentorDetailResponseDTO write(MentorWriteRequestDTO dto, TokenUserInfo tokenUserInfo) {
+
+        validateToken.validateToken(tokenUserInfo);
+
+        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
+
         Mentor mentor = dto.toEntity();
-        Optional<User> optionalUser = userRepository.findById(userIdx);
-        mentor.setUser(optionalUser.get());
+        User user = userRepository.findById(userIdx).orElseThrow(
+                () -> {throw new NotFoundUserException(NOT_FOUND_USER, userIdx);
+                }
+        );
+        mentor.setUser(user);
         Mentor saved = mentorRepository.save(mentor);
-        return getDetail(saved.getMentorIdx());
+        return getDetail(saved.getMentorIdx(),tokenUserInfo);
     }
 
     // 게시글 수정
-    public MentorDetailResponseDTO modify(MentorModifyRequestDTO dto, Long userIdx) throws RuntimeException{
+    public MentorDetailResponseDTO modify(MentorModifyRequestDTO dto, TokenUserInfo tokenUserInfo)
+            throws RuntimeException{
 
+        validateToken.validateToken(tokenUserInfo);
 
-        Mentor findByMentor = mentorRepository.findByMentorIdxAndUserUserIdx(dto.getMentorIdx(), userIdx);
+        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
+
+        Mentor findByMentor = mentorRepository.findByMentorIdxAndUserUserIdx(dto.getMentorIdx(), userIdx)
+                .orElseThrow( () -> {throw new NotFoundBoardException(NOT_FOUND_BOARD, dto.getMentorIdx());}
+                );
 
 
 
@@ -173,14 +200,16 @@ public class MentorService {
             throw new RuntimeException("해당 게시판은 없습니다");
         }
 
-        return getDetail(dto.getMentorIdx());
+        return getDetail(dto.getMentorIdx(),tokenUserInfo);
     }
 
     // 게시판 삭제
 
     public MentorListResponseDTO delete(Long mentorIdx, Long userIdx) throws RuntimeException{
 
-        Mentor targetMentor = mentorRepository.findByMentorIdxAndUserUserIdx(mentorIdx,userIdx);
+        Mentor targetMentor = mentorRepository.findByMentorIdxAndUserUserIdx(mentorIdx,userIdx)
+                .orElseThrow( () -> {throw new NotFoundBoardException(NOT_FOUND_BOARD, mentorIdx);}
+        );
         if (targetMentor != null){
             mentorRepository.delete(targetMentor);
         }
@@ -193,7 +222,9 @@ public class MentorService {
 
     // 멘티 테이블 저장
     public void menteeSave(Long mentorIdx, Long menteeIdx, Long enterUserIdx) {
-        Mentor mentor = mentorRepository.findByMentorIdxAndUserUserIdx(mentorIdx,enterUserIdx);
+        Mentor mentor = mentorRepository.findByMentorIdxAndUserUserIdx(mentorIdx,enterUserIdx)
+                .orElseThrow( () -> { throw  new NotFoundBoardException(NOT_FOUND_BOARD,mentorIdx);}
+                );
         Optional<User> optionalUser = userRepository.findById(menteeIdx);
         Mentee mentee = new Mentee();
         mentee.setMentor(mentor);
