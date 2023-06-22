@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
+import "./scss/MypageChatRoomList.scss";
 import {getToken, getUserIdx} from "../common/util/login-util";
 import {BASE_URL, MYPAGE} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import less from "../../src_assets/less.png";
 import than from "../../src_assets/than.png";
-import Common from "../common/Common";
 
 const MypageChatRoom = props => {
 
@@ -110,17 +109,14 @@ const MypageChatRoom = props => {
   }, []);
 
   return (
-    <Common className={'mypage-chat-wrapper'}>
+    <div className={'mypage-chat-wrapper'}>
 
-      {pageNation.prev &&
-        <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
-      }
 
-      {pageNation.next &&
-        <img src={than} alt={"than-icon"} className={'than-icon'} onClick={handleNext}/>
-      }
 
-      <section className={'chat-wrapper'}>
+      <div className={'chat-wrapper'}>
+        {pageNation.prev &&
+          <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
+        }
         {chatRoomList.map((chatRoom, index) => (
           /* TODO : 멘토멘티 게시글 누르면 어디로 이동시킬건가요..?? */
           <div className={'chat-box'}>
@@ -138,9 +134,12 @@ const MypageChatRoom = props => {
             </div>
           </div>
         ))}
-      </section>
+      {pageNation.next &&
+        <img src={than} alt={"than-icon"} className={'than-icon'} onClick={handleNext}/>
+      }
+      </div>
 
-    </Common>
+    </div>
   );
 };
 

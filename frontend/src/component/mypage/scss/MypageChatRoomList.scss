@@ -1,0 +1,18 @@
+.mypage-chat-wrapper {
+  width: 100%;
+
+  .chat-wrapper {
+    background-color: aqua;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .chat-box {
+    width: 330px;
+    height: 200px;
+    padding: 20px;
+    border: 1px solid #D4D4D4;
+    border-radius: 15px;
+  }
+
+}
