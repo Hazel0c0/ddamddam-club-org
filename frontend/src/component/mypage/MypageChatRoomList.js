@@ -111,8 +111,6 @@ const MypageChatRoom = props => {
   return (
     <div className={'mypage-chat-wrapper'}>
 
-
-
       <div className={'chat-wrapper'}>
         {pageNation.prev &&
           <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
@@ -126,11 +124,11 @@ const MypageChatRoom = props => {
                 {chatRoom.title}
               </div>
             </Link>
-            <div className={'chat-subject'}>
-              <p>주제</p>{chatRoom.subject}
+            <div className={'chat-submenu-box'}>
+              <p className={'chat-sub-title'}>주제</p><p>{chatRoom.subject}</p>
             </div>
-            <div className={'chat-current'}>
-              <p>현직</p>{chatRoom.current}
+            <div className={'chat-submenu-box'}>
+              <p className={'chat-sub-title'}>현직</p><p>{chatRoom.current}</p>
             </div>
           </div>
         ))}
