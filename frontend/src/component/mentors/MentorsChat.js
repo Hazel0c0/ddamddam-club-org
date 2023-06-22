@@ -38,8 +38,6 @@ const MentorsChat = () => {
     const ws = useRef(null);
     const chatScroll = useRef(null);
 
-    const history = useNavigate();
-    const [display, setDisplay] = useState(false);
     // 멘토한정 채팅방으로 돌아가기
     const backChatRoomList = () => {
         // const newURL = `/mentors/detail/chat/${chatPageIdx}/${roomId}`;
@@ -57,10 +55,8 @@ const MentorsChat = () => {
             element.style.display = 'none';
         });
 
-        if (!display) {
             document.querySelector('.input-section').style.display = 'block';
             document.querySelector('.mentor-back-room').style.display = 'block';
-        }
 
         fetch(CHAT + `/mentor/chatroom/detail?mentorIdx=${chatPageIdx}&roomIdx=${e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value}&senderIdx=${e.target.closest('.chat-room-list').querySelector('.sender-idx').value}`)
             .then(res => {
@@ -97,15 +93,14 @@ const MentorsChat = () => {
   
     // 멘티 채팅방 입장 후 메세지 렌더링
 const menteeMsgBox = chat.map((item, idx) => {
-  // if (+item.roomId === +selectChatRoomId) {
+  if (+item.roomId === +selectChatRoomId || +item.roomId === +roomId) {
     return (
       <div className={item.senderId === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'} key={`${item.name}-${idx}`}>
         <span className={item.senderId === enterUserIdx ? 'sender' : 'receiver'}>{item.name}</span>
         <span className={item.senderId === enterUserIdx ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
       </div>
     );
-  // }
-  // return null;
+  }
 });
 
 // 멘토가 채팅방 입장 후 메세지 렌더링
@@ -158,9 +153,7 @@ const menteeMsgBox = chat.map((item, idx) => {
             .then((detailResult) => {
               setMessages(detailResult);
               if (detailResult[0] !== undefined) {
-                detailResult.forEach((detail) => {
-                  setSelectChatRoomId(detail.roomId);
-                });
+                  setSelectChatRoomId(detailResult[0].roomId);
               }
             });
             }else{
@@ -273,7 +266,7 @@ const menteeMsgBox = chat.map((item, idx) => {
             const data = {
                 mentorIdx: chatPageIdx,
                 senderId: enterUserIdx,
-                roomId: selectChatRoomId,
+                roomId: selectChatRoomId || roomId,
                 name,
                 msg,
                 date: new Date().toLocaleString('ko-KR', {hour: 'numeric', minute: 'numeric', hour12: true}),
@@ -366,13 +359,24 @@ const menteeMsgBox = chat.map((item, idx) => {
             <div className={'mentor-chat-room'}>
 
                 <section className={'chating-list'} ref={chatScroll}>
-                    {/*채팅방*/}
-                    {mentorsChatRoom}
-                    {menteeMsgRender}
-                    {mentorMsgBox}
-                    {menteeMsgBox}
 
+                     {/*디비 메세지 렌더링 */}
+                     {menteeMsgRender}
 
+                    {/*멘토 채팅방*/}
+                    {detailMember.userIdx === enterUserIdx &&
+                        <>
+                          {mentorsChatRoom}
+                          {mentorMsgBox}
+                        </>
+                    }
+
+                    {/*멘토 채팅방*/}
+                    {detailMember.userIdx !== enterUserIdx &&
+                      <>
+                        {menteeMsgBox}
+                      </>
+                    }
                 </section>
 
                 <section className={'input-section'}>

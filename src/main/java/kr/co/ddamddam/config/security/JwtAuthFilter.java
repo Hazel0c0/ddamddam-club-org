@@ -53,9 +53,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 TokenUserInfo userInfo
                         = tokenProvider.validateAndGetTokenUserInfo(token);
 
+                System.out.println("userInfo = " + userInfo);
+
+                log.info("doFilterInternal...1");
+
                 // 인가 정보 리스트
                 List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
                 authorityList.add(new SimpleGrantedAuthority(userInfo.getUserRole().toString()));
+
+                log.info("doFilterInternal...2");
 
                 // 인증 완료 처리 - 스프링 시큐리티에 인증정보를 전달해서 전역적으로 앱에서 인증 정보를 활용할 수 있게 설정
                 AbstractAuthenticationToken auth
@@ -65,14 +71,22 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         authorityList // 인가 정보
                 );
 
+                log.info("doFilterInternal...3");
+
                 // 인증 완료 처리 시 클라이언트의 요청정보 세팅
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                log.info("doFilterInternal...4");
+
                 // 스프링 시큐리티 컨테이너에 인증정보 객체 등록
                 SecurityContextHolder.getContext().setAuthentication(auth);
+
+                log.info("doFilterInternal...finish!");
 
             }
         } catch (Exception e) {
 
+            e.printStackTrace();
             throw new UnauthorizationException(UNAUTHENTICATED_USER, parseBearerToken(request));
 
         }
@@ -89,8 +103,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected String parseBearerToken(
             HttpServletRequest request
     ) {
+
+        log.info("pure token:{}", request.getHeader("Authorization"));
+
         // 요청 헤더에서 토큰 가져오기 - "Authorization" : "Bearer {token}"
         String bearerToken = request.getHeader("Authorization");
+
+        log.info("bearerToken:{}", bearerToken);
 
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
