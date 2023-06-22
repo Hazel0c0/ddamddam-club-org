@@ -15,6 +15,7 @@ import java.util.List;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class MypageProjectResponseDTO {
     /*
           프로젝트 명
@@ -24,7 +25,9 @@ public class MypageProjectResponseDTO {
     private String boardTitle;
     private String boardWriter;
     private UserPosition writerPosition;
+    @Builder.Default
     private List<String> front= new ArrayList<>();
+    @Builder.Default
     private List<String> back= new ArrayList<>();
 
     public MypageProjectResponseDTO(Project p, UserPosition writerPosition) {
