@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
+import "./scss/MypageBoardList.scss";
 import {BASE_URL, MYPAGE, QNA, MENTOR, PROJECT, REVIEW} from '../common/config/HostConfig';
 import {getToken} from "../common/util/login-util";
 import PageNation from "../common/pageNation/PageNation";
 import Common from "../common/Common";
 import {Link, useNavigate} from "react-router-dom";
 
+{/* TODO : 큐앤에이만 요청 url 에 api/ddamddam 붙음 수정해주세요 */}
 
 /**
  * 내가 쓴 게시글 목록
@@ -86,7 +87,7 @@ const MypageBoardList = () => {
   }, [setCarouselIndex]);
 
   return (
-    <Common className={'mypage-list-wrapper'}>
+    <div className={'mypage-list-wrapper'}>
       {boardList.map((board) => (
         <section className={'board-list'} key={board.boardIdx}>
           <div className={'board-type'} key={board.boardType}>{board.boardType}</div>
@@ -130,7 +131,7 @@ const MypageBoardList = () => {
           clickCurrentPage={clickCurrentPage}/>
       </ul>
 
-    </Common>
+    </div>
   );
 };
 
