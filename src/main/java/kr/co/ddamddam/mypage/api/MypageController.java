@@ -51,7 +51,7 @@ public class MypageController {
         // {?page=1&size=3}
         MypageChatPageResponseDTO chatRoomList = myPageService.getChatList(tokenUserInfo, pageDTO);
 
-        log.info("chatRoomList {}", chatRoomList);
+        log.info("chatRoomList!!!!! {}", chatRoomList);
 
         return ResponseEntity.ok().body(chatRoomList);
     }

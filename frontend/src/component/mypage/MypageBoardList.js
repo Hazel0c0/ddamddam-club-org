@@ -100,7 +100,7 @@ const MypageBoardList = () => {
             {
               /* TODO : 멘토멘티 게시글 누르면 어디로 이동시킬건가요..?? */
               board.boardType === '멘토/멘티' &&
-              <Link to={`/api/ddamddam/mentor/detail/${board.boardIdx}`} onClick={loginCheckHandler}>
+              <Link to={`/mentor/detail/${board.boardIdx}`} onClick={loginCheckHandler}>
                 {board.boardTitle}
               </Link>
             }

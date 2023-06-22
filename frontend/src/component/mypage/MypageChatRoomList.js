@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {getToken, getUserIdx} from "../common/util/login-util";
 import {BASE_URL, MYPAGE} from "../common/config/HostConfig";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import less from "../../src_assets/less.png";
 import than from "../../src_assets/than.png";
 import Common from "../common/Common";
@@ -67,8 +67,12 @@ const MypageChatRoom = props => {
         method: 'GET',
         headers: headerInfo,
       });
-    console.log(`res : `,res);
-    console.log(`res : ${res}`);
+
+    // let result = await res.json();
+    // console.log(`res : `, res);
+    // console.log(`result : ${result}`);
+
+    console.log(`res: `, res);
 
     if (res.status === 400) {
       alert('잘못된 요청 값 입니다.')
@@ -87,10 +91,16 @@ const MypageChatRoom = props => {
       return;
     }
 
-    // 오류 없이 값을 잘 받아왔다면
     const result = await res.json();
-    console.log(`result : ${result[0]}`);
-    setChatRoomList(result);
+
+    console.log(`result : `, result);
+
+    setChatRoomList(result.chatRoomList);
+    setPageNation(result.pageInfo);
+
+    console.log(`chatRoomList : ${chatRoomList}`);
+    console.log(`pagenation : ${pageNation}`);
+
   };
 
 
@@ -105,10 +115,30 @@ const MypageChatRoom = props => {
       {pageNation.prev &&
         <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
       }
-      {/*{nextBtn &&*/}
+
       {pageNation.next &&
         <img src={than} alt={"than-icon"} className={'than-icon'} onClick={handleNext}/>
       }
+
+      <section className={'chat-wrapper'}>
+        {chatRoomList.map((chatRoom, index) => (
+          /* TODO : 멘토멘티 게시글 누르면 어디로 이동시킬건가요..?? */
+          <div className={'chat-box'}>
+            <input type={'hidden'} value={chatRoom.roomIdx} className={'chat-room-idx'}/>
+            <Link to={`/mentor/detail/chat/${chatRoom.mentorIdx}/${chatRoom.roomIdx}`}>
+              <div className={'chat-title'}>
+                {chatRoom.title}
+              </div>
+            </Link>
+            <div className={'chat-subject'}>
+              <p>주제</p>{chatRoom.subject}
+            </div>
+            <div className={'chat-current'}>
+              <p>현직</p>{chatRoom.current}
+            </div>
+          </div>
+        ))}
+      </section>
 
     </Common>
   );
