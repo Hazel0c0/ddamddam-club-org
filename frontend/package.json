@@ -27,6 +27,7 @@
     "sass": "^1.62.1",
     "socket.io": "^4.6.2",
     "socket.io-client": "^4.6.2",
+    "styled-components": "^6.0.0-rc.3",
     "styled-reset": "^4.4.7",
     "typeit-react": "^2.6.4",
     "web-vitals": "^2.1.4"
