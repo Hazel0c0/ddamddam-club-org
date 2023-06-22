@@ -342,7 +342,7 @@ public class MypageService {
     /**
      * @return : 내가 신청한 프로젝트 목록 조회
      */
-    public List<MypageProjectResponseDTO> getArrayProjectList(Long userIdx) {
+    public List<MypageProjectResponseDTO> getArrayProjectList(PageDTO pageDTO, Long userIdx) {
 
         // 로그인한 유저 객체 가져오기
         User user = userUtil.getUser(userIdx);
