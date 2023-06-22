@@ -18,7 +18,6 @@ const ProjectsModify = () => {
   const ACCESS_TOKEN = getToken();
 
   const headerInfo = {
-    'content-type': 'application/json',
     'Authorization': 'Bearer ' + ACCESS_TOKEN
   }
 
@@ -67,7 +66,7 @@ const ProjectsModify = () => {
 
     const projectJsonBlob = new Blob(
       [JSON.stringify(updatedFormData)],
-      // { type: 'application/json' }
+      { type: 'application/json' }
     );
     const projectFormData = new FormData();
     projectFormData.append('project', projectJsonBlob);
