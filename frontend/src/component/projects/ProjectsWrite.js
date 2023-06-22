@@ -39,7 +39,7 @@ const ProjectsWrite = () => {
     );
 
     const projectFormData = new FormData();
-    projectFormData.appenda('project', projectJsonBlob);
+    projectFormData.append('project', projectJsonBlob);
     projectFormData.append('projectImage', $fileTag.current.files[0]);
 
     fetch(PROJECT, {
