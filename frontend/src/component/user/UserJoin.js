@@ -69,7 +69,7 @@ const UserJoin = () => {
         userName: false,
         userNickName: false,
         userBirth: true,
-        userPosition: false,
+        userPosition: true,
         userCareer: true
     });
 

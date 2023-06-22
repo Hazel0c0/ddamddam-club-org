@@ -28,3 +28,5 @@ export const EMAIL = "//localhost:8181/api/ddamddam/email"
 export const REVIEW = "//localhost:8181/api/ddamddam/reviews"
 
 export const MYPAGE = "/mypage"
+
+export const COMPANY = "//localhost:8181/api/ddamddam/companies"

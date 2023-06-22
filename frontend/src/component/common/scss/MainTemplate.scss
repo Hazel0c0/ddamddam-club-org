@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+
 @mixin content-center {
   display: flex;
   justify-content: center;
@@ -24,7 +26,6 @@
     height: 120px;
     line-height: 70px;
     font-size: 60px;
-    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
     font-family: 'IBM Plex Mono', sans-serif !important;
   }
 

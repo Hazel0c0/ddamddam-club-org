@@ -173,7 +173,7 @@ const Header = () => {
                     </ul>
                     <ul>
                         <li><Link to={'/reviews'}>취업 후기</Link></li>
-                        <li><Link to={'/'}>채용공고</Link></li>
+                        <li><Link to={'/companies'}>채용공고</Link></li>
                     </ul>
                     <ul>
                         <li><Link to={'/'}>프로젝트 공유</Link></li>
