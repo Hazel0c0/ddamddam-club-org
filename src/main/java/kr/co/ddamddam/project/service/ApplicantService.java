@@ -35,9 +35,9 @@ public class ApplicantService {
 
     private final ProjectService projectService;
     private final ValidateToken validateToken;
-  private final UserUtil userUtil;
+    private final UserUtil userUtil;
 
-    public ProjectDetailResponseDTO apply(TokenUserInfo tokenUserInfo, Long projectIdx) {
+    public ProjectDetailResponseDTO apply(TokenUserInfo tokenUserInfo, Long projectIdx) throws IllegalStateException{
         log.info("apply service");
 
         validateToken.validateToken(tokenUserInfo);
@@ -46,44 +46,46 @@ public class ApplicantService {
 
         // 게시글 정보 가져오기
         Project currProject = projectService.getProject(projectIdx);
+        // 유저 객체
+        User foundUser = userUtil.getUser(userIdx);
 
-    // 유저 객체
-    User foundUser = userUtil.getUser(userIdx);
         // 게시글 작성자와 로그인 한 유저가 동일할 경우 예외처리 - 이메일로 검사합니다.
-        // TODO : 테스트 필요 - 예원
         if (currProject.getUser().getUserEmail().equals(
-                tokenUserInfo.getUserEmail())
+            tokenUserInfo.getUserEmail())
         ) {
             throw new UnauthorizationException(ErrorCode.ACCESS_FORBIDDEN, tokenUserInfo.getUserEmail());
         }
 
-    //유저 포지션별 분류
-    if (foundUser.getUserPosition() == UserPosition.BACKEND) {
-      System.out.println("이 유저는 backend 다");
-      if (currProject.getApplicantOfBacks().size() < currProject.getMaxBack()) {
-        currProject.addBack(backRepository.save(
-            ApplicantOfBack.builder()
-                .user(foundUser)
-                .project(currProject)
-                .build()
-        ));
-      }else {
-        // 최대 백엔드 지원자 수를 초과한 경우 예외 처리
-        throw new IllegalStateException("백엔드 지원자 정원 마감");
-      }
-    } else {
-      System.out.println("이 유저는 front 다");
-      if (currProject.getApplicantOfFronts().size() < currProject.getMaxFront()) {
-        currProject.addFront(frontRepository.save(
-            ApplicantOfFront.builder()
-                .user(foundUser)
-                .project(currProject)
-                .build()
-        ));
-      } else {
-        throw new IllegalStateException("프론트 지원자 정원 마감");
-      }
-    }
+        //유저 포지션별 분류
+        if (foundUser.getUserPosition() == UserPosition.BACKEND) {
+            System.out.println("이 유저는 backend 다");
+            if (currProject.getApplicantOfBacks().size() < currProject.getMaxBack()) {
+                log.info("남은자리 {}, MaxBack {}",currProject.getApplicantOfBacks().size() ,currProject.getMaxBack());
+
+                currProject.addBack(backRepository.save(
+                    ApplicantOfBack.builder()
+                        .user(foundUser)
+                        .project(currProject)
+                        .build()
+                ));
+            } else {
+                // 최대 백엔드 지원자 수를 초과한 경우 예외 처리
+                throw new IllegalStateException("백엔드 지원자 정원 마감");
+            }
+        } else {
+            System.out.println("이 유저는 front 다");
+            if (currProject.getApplicantOfFronts().size() < currProject.getMaxFront()) {
+                log.info("남은자리 {}, maxFront {}",currProject.getApplicantOfFronts().size() ,currProject.getMaxFront());
+                currProject.addFront(frontRepository.save(
+                    ApplicantOfFront.builder()
+                        .user(foundUser)
+                        .project(currProject)
+                        .build()
+                ));
+            } else {
+                throw new IllegalStateException("프론트 지원자 정원 마감");
+            }
+        }
 
         log.info("백/프론트 currProject : {}", currProject);
 
@@ -92,11 +94,11 @@ public class ApplicantService {
 
     private User getUser(Long userIdx) {
         User foundUser = userRepository.findById(userIdx)
-                .orElseThrow(
-                        () -> new RuntimeException(
-                                userIdx + "번 유저 없음!"
-                        )
-                );
+            .orElseThrow(
+                () -> new RuntimeException(
+                    userIdx + "번 유저 없음!"
+                )
+            );
         log.info("foundUser : {}", foundUser);
         return foundUser;
     }
@@ -109,16 +111,16 @@ public class ApplicantService {
 
         Project currProject = projectService.getProject(projectIdx);
 
-    User foundUser = userUtil.getUser(userIdx);
+        User foundUser = userUtil.getUser(userIdx);
 
-    //유저 포지션별 분류
-    if (foundUser.getUserPosition() == UserPosition.BACKEND) {
-      System.out.println("이 유저는 backend 다");
-      backRepository.deleteById(userIdx);
-    } else {
-      frontRepository.deleteById(userIdx);
+        //유저 포지션별 분류
+        if (foundUser.getUserPosition() == UserPosition.BACKEND) {
+            System.out.println("이 유저는 backend 다");
+            backRepository.deleteById(userIdx);
+        } else {
+            frontRepository.deleteById(userIdx);
+        }
     }
-  }
 
 
 }

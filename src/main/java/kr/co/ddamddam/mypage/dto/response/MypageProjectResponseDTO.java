@@ -22,6 +22,7 @@ public class MypageProjectResponseDTO {
           프로젝트 개최자
           프로젝트 참가자 - 백/프론트
      */
+    // TODO idx 담기
     private String boardTitle;
     private String boardWriter;
     private UserPosition writerPosition;
