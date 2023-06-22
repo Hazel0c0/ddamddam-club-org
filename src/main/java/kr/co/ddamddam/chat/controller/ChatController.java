@@ -104,14 +104,17 @@ public class ChatController {
     }
 
     // 채팅방 삭제
-    @DeleteMapping("/{roomId}")
+    @DeleteMapping("/{roomId}/{mentorIdx}")
     public ResponseEntity<?> delete(
             @PathVariable Long roomId
+            ,@PathVariable Long mentorIdx
+            ,@AuthenticationPrincipal TokenUserInfo tokenUserInfo
     ){
 
-        chatService.delete(roomId);
+        chatService.delete(roomId,tokenUserInfo);
+        List<ChatMessageResponseDTO> list = chatService.getList(mentorIdx);
 
-        return ResponseEntity.ok().body("삭제 성공!");
+        return ResponseEntity.ok().body(list);
     }
 
 

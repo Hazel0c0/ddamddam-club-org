@@ -140,6 +140,10 @@ public class MentorService {
         Mentor mentor  = mentorRepository.findById(mentorIdx).orElseThrow(
                 () -> {throw new NotFoundBoardException(NOT_FOUND_BOARD, mentorIdx);});
 
+        List<Mentee> menteeList = menteeRepository.findByMentorMentorIdx(mentorIdx);
+
+        log.info("chatRoomList : {}",menteeList.size());
+
         MentorDetailResponseDTO dto = new MentorDetailResponseDTO();
         dto.setIdx(mentor.getMentorIdx());
         dto.setTitle(mentor.getMentorTitle());
@@ -148,6 +152,7 @@ public class MentorService {
         dto.setCurrent(mentor.getMentorCurrent());
         dto.setDate(mentor.getMentorDate());
         dto.setMentee(mentor.getMentorMentee());
+        dto.setCompleteMentee(menteeList.size());
         dto.setCareer(mentor.getMentorCareer());
 
         User user = mentor.getUser();
@@ -224,7 +229,7 @@ public class MentorService {
     }
 
     // 멘티 테이블 저장
-    public int menteeSave(Long mentorIdx, TokenUserInfo tokenUserInfo) {
+    public int menteeSave(Long mentorIdx, Long roomId , TokenUserInfo tokenUserInfo) {
 
         validateToken.validateToken(tokenUserInfo);
 
@@ -245,7 +250,11 @@ public class MentorService {
             User user = userRepository.findById(enterUserIdx).orElseThrow(
                     () -> {throw  new NotFoundUserException(NOT_FOUND_USER, enterUserIdx);}
             );
-            ChatRoom chatRoom = chatRoomRepository.findByMentorMentorIdxAndSenderUserIdx(mentorIdx, enterUserIdx);
+            ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(
+                    () -> {
+                        throw new NotFoundBoardException(NOT_FOUND_BOARD, roomId);
+                    }
+            );
             Mentee mentee = new Mentee();
             mentee.setMentor(mentor);
             mentee.setUser(user);

@@ -223,9 +223,13 @@ public class ChatService {
     }
 
     // 채팅방 삭제
-    public void delete(Long roomId) {
+    public void delete(Long roomId, TokenUserInfo tokenUserInfo) {
 
-        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow();
+        validateToken.validateToken(tokenUserInfo);
+
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(
+                () -> {throw new NotFoundBoardException(ErrorCode.NOT_FOUND_BOARD, roomId);}
+        );
 
         chatRoomRepository.delete(chatRoom);
     }
