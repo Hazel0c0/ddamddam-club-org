@@ -12,8 +12,13 @@ const CompanyTotal = () => {
     const [pageNation, setPageNation] = useState([]);
     const [clickCurrentPage, setClickCurrentPage] = useState(1);
 
+    //워크넷 링크 상태관리
+    const [goWorknet, setGoWorknet] = useState([]);
+
     useEffect(() => {
         asyncCompanyTotalList();
+
+    // }, [clickCurrentPage,goWorknet])
     }, [clickCurrentPage])
 
     const asyncCompanyTotalList = async () => {
@@ -36,19 +41,32 @@ const CompanyTotal = () => {
 
         const companyLists = result.companyList
 
+        //list가공
         const modifyCompanyList = companyLists.map((list) => {
             let endDate = list.companyEnddate;
             if (list.companyEnddate.includes('채용시까지')) {
                 endDate = endDate.split("채용시까지")[1].trim();
             }
             const formattedEndDate = convertToEndDate(endDate);
-            return {...list, dDay: formattedEndDate}
-        });
 
+            let modifyLocation = list.companyArea.split(" ");
+            let setModifyLocation = modifyLocation[0] + " " + modifyLocation[1];
+
+            return {...list, companyEnddate: endDate, dDay: formattedEndDate, companyArea: setModifyLocation}
+
+        });
+        setGoWorknet(new Array(companyLists.length).fill(false))
+        // goWorknet.length = companyList.length;
+        // for (let i = 0; i < goWorknet.length; i++) {
+        //     goWorknet[i] = false
+        // }
+
+        console.log(goWorknet)
         setReviewList(modifyCompanyList);
         console.log(`modifyCompanyList의 값 : `, modifyCompanyList)
     }
 
+    //d-day계산
     const convertToEndDate = (endDate) => {
         const currentYear = new Date().getFullYear();
         const [endYear, endMonth, endDay] = endDate.split('-');
@@ -65,7 +83,6 @@ const CompanyTotal = () => {
         const dateDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
         const formattedDdayDate = `D-${dateDiff}`
 
-        // console.log(`formattedDdayDate 값 : `,formattedDdayDate);
         return formattedDdayDate;
     }
 
@@ -76,62 +93,16 @@ const CompanyTotal = () => {
     }
 
     const redirection = useNavigate();
+    const showLinkHandler = (index) => {
+        const updatedGoWorknet = goWorknet.map((item, i) => (i === index ? true : false));
+        setGoWorknet(updatedGoWorknet);
 
+        console.log(updatedGoWorknet)
+    }
+    const hiddenLinkHandler = (index) => {
+        setGoWorknet(new Array(goWorknet.length).fill(false));
+    }
     return (
-        /*
-        <>
-            {reviewList.map((review) => (
-                <section className={'review-list'}>
-
-                    <div className={'company-info-wrapper'}>
-                        <span className={'company'}>{review.reviewCompanyName}</span>
-                        <ReviewStar starCount={review.reviewRating}/>
-                    </div>
-                    <section className={'text-wrapper'}>
-                        <div className={'main-content'}>
-                            <div className={'text-title'}>{review.reviewTitle}</div>
-                            <div className={'detail-wrapper'}>
-                                <div className={'detail-reviewJob'}><span
-                                    className={'sub-title'}>직무</span> {review.reviewJob}</div>
-                                <div className={'detail-reviewJob'}><span
-                                    className={'sub-title'}>근속년수</span>{review.reviewTenure}년
-                                </div>
-                                <div className={'detail-reviewJob'}><span
-                                    className={'sub-title'}>위치</span>{review.reviewLocation}</div>
-                            </div>
-
-                        </div>
-                        <div className={'text-content'}>{review.reviewContent}</div>
-                    </section>
-                    <div className={'right-section'}>
-                        <Link to={`/reviews/detail/${review.reviewIdx}`} className={'text'} onClick={loginCheckHandler}>
-                            <div className={'go-detail'}>
-                                <div className={'go-detail-text'}>더보기</div>
-                                <i className={'go-detail-icon'}><IoIosArrowForward/></i>
-                            </div>
-                        </Link>
-
-                        <section className={'review-info'}>
-                            <div className={'icon-wrapper'}>
-                                <div className={'view-count-wrapper'}>
-                                    <img src={viewIcon} alt={'view-count'} className={'view-count-icon'}/>
-                                    <span>{review.reviewView}</span>
-                                </div>
-                            </div>
-                            <div className={'write-date'}>{review.reviewDate}</div>
-                        </section>
-                    </div>
-                </section>
-            ))}
-
-            <ul>
-                <PageNation
-                    pageNation={pageNation}
-                    currentPageHandler={currentPageHandler}
-                    clickCurrentPage={clickCurrentPage} />
-            </ul>
-        </>
-         */
         <>
             <section className={'sort-wrapper'}>
                 <span className={'sort-dDay'}>D-day</span>
@@ -140,58 +111,48 @@ const CompanyTotal = () => {
                 <span className={'sort-title'}>채용내용</span>
                 <span className={'sort-date'}>날짜</span>
             </section>
+            {companyList.map((company, index) => (
+                <>
+                    <section
+                        key={index}
+                        className={'company-list'}
+                        onMouseEnter={()=>showLinkHandler(index)}
+                        onMouseLeave={()=>hiddenLinkHandler(index)}
+                    >
+                        <div className={'d-day'}>{company.dDay}</div>
+                        <div className={'company-career'}>{company.companyCareer}</div>
+                        <div className={'companyName'}>{company.companyName}</div>
+                        <section className={'title-wrapper'}>
+                            <div className={'title'}>{company.companyTitle}</div>
 
-            <section className={'company-list'}>
-                <div className={'d-day'}>D-23</div>
-                <div className={'company-career'}>신입</div>
-                <div className={'companyName'}>토탈QA마케팅</div>
-                <section className={'title-wrapper'}>
-                    <div className={'title'}>홈페이지 제작 신입사원 및 팀장님 모십니다.</div>
+                            <div className={'info-wrapper'}>
+                                <div className={'info-salary-text'}>
+                                    <span className={'info-title'}>월급</span>
+                                    <span className={'info-content'}>{company.companySal}</span>
+                                </div>
+                                <div className={'info-location-text'}>
+                                    <span className={'info-title'}>위치</span>
+                                    <span className={'info-content'}>{company.companyArea}</span>
+                                </div>
+                            </div>
+                        </section>
 
-                    <div className={'info-wrapper'}>
-                        <div className={'info-salary-text'}>
-                            <span className={'info-title'}>월급</span>
-                            <span className={'info-content'}>220만원 ~ 500만원</span>
+                        <div className={'date-wrapper'}>
+                            <RxCalendar className={'date-icon'}/>
+                            <span className={'date'}>{company.companyDate} ~ {company.companyEnddate}</span>
                         </div>
-                        <div className={'info-location-text'}>
-                            <span className={'info-title'}>위치</span>
-                            <span className={'info-content'}>경기도 수원시</span>
-                        </div>
-                    </div>
-                </section>
+                        {goWorknet[index] &&
+                            <button onClick={() => window.open(`${company.companyUrl}`, '_blank')}
+                                    className={'go-worknet'}>
+                                클릭시 워크넷 채용정보 페이지로 이동합니다.
+                            </button>
+                        }
 
-                <div className={'date-wrapper'}>
-                    <RxCalendar className={'date-icon'}/>
-                    <span className={'date'}>2023-06-21 ~ 2023-07-07</span>
-                </div>
-            </section>
+                    </section>
 
-            <section className={'company-list'}>
-                <div className={'d-day'}>D-23</div>
-                <div className={'company-career'}>신입</div>
-                <div className={'companyName'}>토탈QA마케팅</div>
-                <section className={'title-wrapper'}>
-                    <div className={'title'}>홈페이지 제작 신입사원 및 팀장님 모십니다.</div>
-
-                    <div className={'info-wrapper'}>
-                        <div className={'info-salary-text'}>
-                            <span className={'info-title'}>월급</span>
-                            <span className={'info-content'}>220만원 ~ 500만원</span>
-                        </div>
-                        <div className={'info-location-text'}>
-                            <span className={'info-title'}>위치</span>
-                            <span className={'info-content'}>경기도 수원시</span>
-                        </div>
-                    </div>
-                </section>
-
-                <div className={'date-wrapper'}>
-                    <RxCalendar className={'date-icon'}/>
-                    <span className={'date'}>2023-06-21 ~ 2023-07-07</span>
-                </div>
-            </section>
-
-
+                </>
+            ))}
+            <button className={'go-worknet2'}>wfeqfeqwfawfaw</button>
         </>
     );
 };
