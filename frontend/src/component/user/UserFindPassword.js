@@ -3,6 +3,7 @@ import axios from "axios";
 // import {useNavigate} from "react-router-dom";
 import {BASE_URL, AUTH} from "../common/config/HostConfig";
 import '../user/scss/UserFindPassword.scss';
+import {getToken} from "../common/util/login-util";
 
 const UserFindPassword = () => {
 
@@ -21,15 +22,28 @@ const UserFindPassword = () => {
       setNewPassword(value);
     }
   };
+  const tokne = getToken()
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    /*
+    console.log(REQUEST_URL)
     const response = await axios.post(`${REQUEST_URL}`, {
       tokenUserInfo: {userIdx},
       requestDTO: {newUserPassword: newPassword},
     });
-
-    console.log(response.date);
+     */
+    const res = await fetch(REQUEST_URL,{
+      method : 'POST',
+      headers : {
+        'content-type' : 'application/json',
+        'Authorization' : 'Bearer '+ tokne
+      },
+      body : JSON.stringify({
+        newUserPassword: newPassword
+      })
+    })
+    console.log(`비밀번호 변경 ,`,res)
+    // console.log(response.date);
 
   };
 
