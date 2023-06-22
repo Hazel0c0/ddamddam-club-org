@@ -23,7 +23,8 @@ import ReviewTemplate from "./component/review/ReviewTemplate";
 import ReviewDetail from "./component/review/ReviewDetail";
 import ReviewWrite from "./component/review/ReviewWrite";
 import OAuth2RedirectHandler from "./component/snslogin/OAuth2RedirectHandler";
-import MypageMain from "./component/mypage/MypageMain";
+// import MypageMain from "./component/mypage/MypageMain";
+import UserFindPassword from "./component/user/UserFindPassword";
 
 
 function App() {
@@ -76,7 +77,8 @@ function App() {
                 <Route path={'/reviews/write'} element={<ReviewWrite/>}></Route>
 
                 {/*마이페이지*/}
-                <Route path={'/mypage'} element={<MypageMain/>}></Route>
+                {/*<Route path={'/mypage'} element={<MypageMain/>}></Route>*/}
+                <Routes path={'/auth/modify-password'} element={<UserFindPassword/>}></Routes>
 
                 {/*로그인*/}
                 <Route path={'/login'} element={<UserLogin/>}></Route>
