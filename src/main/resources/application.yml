@@ -58,3 +58,11 @@ upload:
     project: /Users/taegeun/Desktop/
 #    profile: D:/ddam_upload/profile
     profile: /Users/taegeun/Desktop/
+
+#s3 접근 설정
+aws:
+  credentials:
+    accessKey: AKIAT645DVCKZ2LKNK4W #복사해서 받은 키 붙여넣기
+    secretKey: /OguNMlB4MrhQ8XERRhuKcZ0mWOdGRqjGJYyX3v7
+  region: ap-northeast-2   #서울 코드값
+  bucketName: todo-app-upload-file-bucket4145
