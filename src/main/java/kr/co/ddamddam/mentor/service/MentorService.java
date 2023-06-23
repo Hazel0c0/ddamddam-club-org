@@ -10,6 +10,7 @@ import kr.co.ddamddam.mentor.dto.page.PageDTO;
 import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorModifyRequestDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorWriteRequestDTO;
+import kr.co.ddamddam.mentor.dto.response.MenteeResponseDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorDetailResponseDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorListResponseDTO;
 import kr.co.ddamddam.mentor.entity.Mentee;
@@ -142,6 +143,16 @@ public class MentorService {
 
         List<Mentee> menteeList = menteeRepository.findByMentorMentorIdx(mentorIdx);
 
+        List<MenteeResponseDTO> menteeResponseDTOList = menteeList.stream().map(
+                        mentee -> {
+                            MenteeResponseDTO dto = new MenteeResponseDTO();
+                            dto.setMenteeIdx(mentee.getMenteeIdx());
+                            dto.setRoomId(mentee.getChatRoom().getRoomId());
+
+                            return dto;
+                        })
+                .collect(toList());
+
         log.info("chatRoomList : {}",menteeList.size());
 
         MentorDetailResponseDTO dto = new MentorDetailResponseDTO();
@@ -152,6 +163,7 @@ public class MentorService {
         dto.setCurrent(mentor.getMentorCurrent());
         dto.setDate(mentor.getMentorDate());
         dto.setMentee(mentor.getMentorMentee());
+        dto.setMenteeList(menteeResponseDTOList);
         dto.setCompleteMentee(menteeList.size());
         dto.setCareer(mentor.getMentorCareer());
 
