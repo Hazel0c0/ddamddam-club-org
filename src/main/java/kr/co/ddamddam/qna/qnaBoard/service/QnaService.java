@@ -15,7 +15,6 @@ import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaListPageResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.dto.response.QnaTopListResponseDTO;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
-import kr.co.ddamddam.qna.qnaBoard.entity.QnaAdoption;
 import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
 import kr.co.ddamddam.qna.qnaHashtag.entity.Hashtag;
 import kr.co.ddamddam.qna.qnaHashtag.repository.HashtagRepository;
@@ -29,10 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -123,13 +120,13 @@ public class QnaService {
         return qnaDetailResponseDTO;
     }
 
-    public QnaListPageResponseDTO getKeywordList(String keyword, PageDTO pageDTO) {
+    public QnaListPageResponseDTO getKeywordList(String keyword, String sort, PageDTO pageDTO) {
 
         log.info("[Qna/Service] QNA 게시글 검색 - {}", keyword);
 
         PageRequest pageable = getPageable(pageDTO);
 
-        Page<Qna> qnas = qnaRepository.findByKeyword(keyword, pageable);
+        Page<Qna> qnas = qnaRepository.findByKeywordAndSort(keyword, sort, pageable);
 
         System.out.println("qnas = " + qnas);
         List<QnaListResponseDTO> qnaList = getQnaDtoListByKeyword(qnas);
