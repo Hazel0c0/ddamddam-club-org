@@ -85,10 +85,6 @@ const ProjectsMain = ({headerInfo}) => {
         ref={childRef}
       />
 
-      <div className={'sort-button-box'}>
-        <div className={'front'} onClick={handleFrontClick}>front</div>
-        <div className={'back'} onClick={handleBackClick}>back</div>
-      </div>
       {/*<ProjectsItem*/}
       {/*  url={currentUrl}*/}
       {/*  sortTitle={'최신 프로젝트'}*/}
