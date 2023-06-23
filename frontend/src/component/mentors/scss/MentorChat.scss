@@ -173,41 +173,55 @@
 
       
 
-      .chat-room-list{
+      .chat-room-list {
         width: 100%;
-        margin-bottom: 10px;
         display: flex;
-        flex-direction: row;
-        background: #e6e6e6;
-        border-radius: 5px;
-        justify-content: space-between;
+        align-items: center;
+        justify-content: space-evenly;
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
 
-        .mentee-nick-name{
-          max-width: 60%;
-          width: fit-content;
-          padding: 5px 12px;
-          font-size: 13px;
-          background-color: #ffe06b;
-          border-radius: 5px;
-
-        }
-        .mentee-msg-content{
-          max-width: 60%;
-          width: fit-content;
-          padding: 5px 12px;
-          font-size: 13px;
-          background-color: #ffe06b;
-          border-radius: 5px;
-        }
-        .mentee-date{
-          max-width: 60%;
-          width: fit-content;
-          padding: 5px 12px;
-          font-size: 10px;
-          background-color: #ffe06b;
-          border-radius: 5px;
-        }
       }
+      
+      .profile-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+  
+      .mentee-nick-name {
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #333;
+      }
+      
+      .mentee-msg-content {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        color: #888;
+      }
+      
+      .mentee-date {
+        font-size: 12px;
+        color: #888;
+        margin-right: 10px;
+      }
+      
+      .chatroom-delbtn {
+        background-color: transparent;
+        border: none;
+        color: #888;
+        font-size: 12px;
+        
+        cursor: pointer;
+      }
+      
 
       .sender-wrapper{
         width: 100%;

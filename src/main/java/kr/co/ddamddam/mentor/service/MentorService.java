@@ -1,5 +1,7 @@
 package kr.co.ddamddam.mentor.service;
 
+import kr.co.ddamddam.chat.entity.ChatRoom;
+import kr.co.ddamddam.chat.repository.ChatRoomRepository;
 import kr.co.ddamddam.common.common.ValidateToken;
 import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
 import kr.co.ddamddam.common.exception.custom.NotFoundUserException;
@@ -8,6 +10,7 @@ import kr.co.ddamddam.mentor.dto.page.PageDTO;
 import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorModifyRequestDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorWriteRequestDTO;
+import kr.co.ddamddam.mentor.dto.response.MenteeResponseDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorDetailResponseDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorListResponseDTO;
 import kr.co.ddamddam.mentor.entity.Mentee;
@@ -40,6 +43,7 @@ public class MentorService {
     private final MentorRepository mentorRepository;
     private final UserRepository userRepository;
     private final MenteeRepository menteeRepository;
+    private final ChatRoomRepository chatRoomRepository;
     private final ValidateToken validateToken;
 
     public MentorListResponseDTO getList(PageDTO pageDTO) {
@@ -137,6 +141,20 @@ public class MentorService {
         Mentor mentor  = mentorRepository.findById(mentorIdx).orElseThrow(
                 () -> {throw new NotFoundBoardException(NOT_FOUND_BOARD, mentorIdx);});
 
+        List<Mentee> menteeList = menteeRepository.findByMentorMentorIdx(mentorIdx);
+
+        List<MenteeResponseDTO> menteeResponseDTOList = menteeList.stream().map(
+                        mentee -> {
+                            MenteeResponseDTO dto = new MenteeResponseDTO();
+                            dto.setMenteeIdx(mentee.getMenteeIdx());
+                            dto.setRoomId(mentee.getChatRoom().getRoomId());
+
+                            return dto;
+                        })
+                .collect(toList());
+
+        log.info("chatRoomList : {}",menteeList.size());
+
         MentorDetailResponseDTO dto = new MentorDetailResponseDTO();
         dto.setIdx(mentor.getMentorIdx());
         dto.setTitle(mentor.getMentorTitle());
@@ -145,6 +163,8 @@ public class MentorService {
         dto.setCurrent(mentor.getMentorCurrent());
         dto.setDate(mentor.getMentorDate());
         dto.setMentee(mentor.getMentorMentee());
+        dto.setMenteeList(menteeResponseDTOList);
+        dto.setCompleteMentee(menteeList.size());
         dto.setCareer(mentor.getMentorCareer());
 
         User user = mentor.getUser();
@@ -221,14 +241,42 @@ public class MentorService {
     }
 
     // 멘티 테이블 저장
-    public void menteeSave(Long mentorIdx, Long menteeIdx, Long enterUserIdx) {
+    public int menteeSave(Long mentorIdx, Long roomId , TokenUserInfo tokenUserInfo) {
+
+        validateToken.validateToken(tokenUserInfo);
+
+        Long enterUserIdx = Long.valueOf(tokenUserInfo.getUserIdx());
+
+        // 멘티 몇 명 확정했는지
+        List<Mentee> findByMenteeList = menteeRepository.findByMentorMentorIdx(mentorIdx);
+
+        // 멘티 제한 인원이 다 찼는지 확인하기
         Mentor mentor = mentorRepository.findByMentorIdxAndUserUserIdx(mentorIdx,enterUserIdx)
                 .orElseThrow( () -> { throw  new NotFoundBoardException(NOT_FOUND_BOARD,mentorIdx);}
                 );
-        Optional<User> optionalUser = userRepository.findById(menteeIdx);
-        Mentee mentee = new Mentee();
-        mentee.setMentor(mentor);
-        mentee.setUser(optionalUser.get());
-        menteeRepository.save(mentee);
+        if (findByMenteeList.size() == mentor.getMentorMentee()){
+            return mentor.getMentorMentee();
+        }
+        // 제한인원이 다 안 찼으면 멘티 확정하기
+        else if (findByMenteeList.size() < mentor.getMentorMentee()){
+            User user = userRepository.findById(enterUserIdx).orElseThrow(
+                    () -> {throw  new NotFoundUserException(NOT_FOUND_USER, enterUserIdx);}
+            );
+            ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(
+                    () -> {
+                        throw new NotFoundBoardException(NOT_FOUND_BOARD, roomId);
+                    }
+            );
+            Mentee mentee = new Mentee();
+            mentee.setMentor(mentor);
+            mentee.setUser(user);
+            mentee.setChatRoom(chatRoom);
+            menteeRepository.save(mentee);
+
+            // 멘티 확정인원 리턴
+            return menteeRepository.findByMentorMentorIdx(mentorIdx).size();
+        }
+
+        return mentor.getMentorMentee();
     }
 }

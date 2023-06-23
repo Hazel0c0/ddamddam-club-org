@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.io.PipedReader;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -24,6 +25,8 @@ public class MentorDetailResponseDTO {
     private String subject;
     private String current;
     private int mentee;
+    private List<MenteeResponseDTO> menteeList;
+    private int completeMentee;
     private String nickName;
     private String profile;
     @JsonFormat(pattern = "yyyy/MM/dd")

@@ -14,10 +14,12 @@ public class UserResponseDTO {
     private Long userIdx;
     private String userName;
     private String userNickname;
+    private String userProfile;
 
     public UserResponseDTO(User user){
         this.userIdx = user.getUserIdx();
         this.userName = user.getUserName();
         this.userNickname = user.getUserNickname();
+        this.userProfile = user.getUserProfile();
     }
 }

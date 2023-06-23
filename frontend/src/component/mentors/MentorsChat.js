@@ -4,8 +4,7 @@ import Common from '../common/Common';
 import {useParams} from 'react-router-dom';
 import {CHAT, MENTOR} from '../common/config/HostConfig';
 import './scss/MentorChat.scss';
-import {
-    getToken, getUserIdx, getUserEmail, getUserName, getUserNickname} from '../common/util/login-util';
+import {getToken, getUserIdx, getUserNickname, getUserRegdate} from '../common/util/login-util';
 import {Window} from '@mui/icons-material';
 
 const MentorsChat = () => {
@@ -14,16 +13,15 @@ const MentorsChat = () => {
     const [messages, setMessages] = useState([]); // 디비 저장된 메세지
     const [chkLog, setChkLog] = useState(false);
     const [socketData, setSocketData] = useState();
-    const [chat, setChat] = useState([]);
-    const [msg, setMsg] = useState("");
+    const [chat, setChat] = useState([]); // 멘토,멘티 해당 채팅룸 메세지 렌더링
+    const [msg, setMsg] = useState(""); // 소켓 메세지
     const name = getUserNickname(); // 접속한 유저의 닉네임
-    const [chatRoom, setChatRoom] = useState([]);
-
+    const [chatRoom, setChatRoom] = useState([]); // 멘토가 선택한 채팅룸 정보
     const [selectChatRoomId, setSelectChatRoomId] = useState(); // 멘토가 선택한 채팅방 idx
-
     const enterUserIdx = +getUserIdx(); // 접속한 유저의 idx
-
     const ACCESS_TOKEN = getToken(); // 토큰
+    const [menteeCount, setMenteeCount] = useState(0); // 멘티 확정 시 멘티 숫자 올리기
+    const [menteeCountList, setMenteeCountList] = useState([]);
 
     // headers
     const headerInfo = {
@@ -42,6 +40,7 @@ const MentorsChat = () => {
         // setDisplay(true);
         document.querySelector('.mentor-back-room').style.display = 'none';
         window.location.assign('http://localhost:3000/mentors/detail/chat/' + chatPageIdx+'/'+roomId);
+        // redirection(`/mentors/detail/chat/${chatPageIdx}/${roomId}`);
     };
 
     // 멘토가 멘티들의 채팅방 선택
@@ -52,10 +51,15 @@ const MentorsChat = () => {
             element.style.display = 'none';
         });
 
-            document.querySelector('.input-section').style.display = 'block';
+            document.querySelector('.input-section').style.display = 'flex';
             document.querySelector('.mentor-back-room').style.display = 'block';
 
-        fetch(CHAT + `/mentor/chatroom/detail?mentorIdx=${chatPageIdx}&roomIdx=${e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value}&senderIdx=${e.target.closest('.chat-room-list').querySelector('.sender-idx').value}`)
+            document.querySelector('.application-btn').textContent = '멘토 확정';
+
+        fetch(CHAT + `/mentor/chatroom/detail?mentorIdx=${chatPageIdx}&roomIdx=${e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value}&senderIdx=${e.target.closest('.chat-room-list').querySelector('.sender-idx').value}`,{
+            method : 'GET',
+            headers : headerInfo
+        })
             .then(res => {
                 if (res.status === 500) {
                     return;
@@ -73,6 +77,42 @@ const MentorsChat = () => {
   // 멘티 확정 시 렌더링
   const menteeCountUp = e => {
 
+    // menteeCountList.forEach((mentee) => {
+    //     if (mentee.userIdx === chatRoom[0].sender.userIdx) {
+    //       console.log(`Found user: ${mentee}`);
+    //     }
+    //   });
+
+    if(window.confirm(chatRoom[0].sender.userNickname+'님을 멘티로 확정하시겠습니까?')){
+        if(detailMember.userIdx === enterUserIdx && selectChatRoomId !== undefined){
+            fetch(MENTOR + '/mentee/' + chatPageIdx+"/"+ selectChatRoomId, {
+            method: 'PUT',
+            headers: headerInfo
+        })
+            .then((res) => res.json())
+            .then((result) => {
+                setMenteeCount(result);
+            });
+        }
+    }
+  };
+
+  const delChatRoom = (e) => {
+
+    const delRoomIdx = e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value;
+
+    if(window.confirm('채팅방을 삭제하시겠습니까?')){
+        fetch(CHAT+"/"+delRoomIdx+"/"+chatPageIdx,{
+            method : 'DELETE',
+            headers : headerInfo
+        })
+        .then((res) =>{
+            return res.json();
+        })
+        .then((result) =>{
+            setChatRoom(result);
+        });
+    }
   };
 
 
@@ -82,9 +122,11 @@ const MentorsChat = () => {
       <div className={'chat-room-list'} key={`${item.name}-${idx}`} onClick={handleSelectRoom}>
         <input type={'hidden'} value={item.sender.userIdx} className={'sender-idx'}/>
         <input type={'hidden'} value={item.roomId} className={'chatRoom-idx'}/>
+        <img src={item.sender.userProfile} alt={'profileImg'}className={'profile-img'}/>
         <span className={'mentee-nick-name'}>{item.sender.userName}</span>
         <span className={'mentee-msg-content'}>{item.message}</span>
         <span className={'mentee-date'}>{item.sentAt}</span>
+        <button className={'chatroom-delbtn'} onClick={delChatRoom}>삭제</button>
       </div>
     ));
   
@@ -102,6 +144,7 @@ const menteeMsgBox = chat.map((item, idx) => {
 
 // 멘토가 채팅방 입장 후 메세지 렌더링
     const mentorMsgBox = chat.map((item, idx) => {
+
         if (+item.roomId === +selectChatRoomId) {
             return (
                 <div className={item.senderId === enterUserIdx ? 'sender-wrapper' : 'receiver-wrapper'}
@@ -111,6 +154,7 @@ const menteeMsgBox = chat.map((item, idx) => {
                         className={item.senderId === enterUserIdx ? 'sender-content' : 'receiver-content'}>{item.msg}</span>
                 </div>
             );
+
         }
         return null;
     });
@@ -130,7 +174,10 @@ const menteeMsgBox = chat.map((item, idx) => {
 // 렌더링
   useEffect(() => {
     // 멘토 상세 정보 조회
-    fetch(MENTOR + '/detail?mentorIdx=' + chatPageIdx).then((res) => {
+    fetch(MENTOR + '/detail?mentorIdx=' + chatPageIdx,{
+        method : 'GET',
+        headers : headerInfo
+    }).then((res) => {
         if (res.status === 500) {
           alert('잠시 후 다시 접속해주세요.[서버오류]');
           return;
@@ -138,7 +185,10 @@ const menteeMsgBox = chat.map((item, idx) => {
         return res.json();
       })
       .then((result) => {
+        console.log(result.completeMentee);
         setDetailMember(result);
+        setMenteeCount(result.completeMentee)
+        setMenteeCountList(result.menteeList);
         console.log(result);
         if(result.userIdx !== enterUserIdx){
           fetch(CHAT + '/mentee/list/' + chatPageIdx
@@ -326,13 +376,13 @@ const menteeMsgBox = chat.map((item, idx) => {
                                 <p className={'detail-sub-text'}>인원</p>
                                 {mentee}명 모집
                             </div>
+                            <div className={'mentor-career'}>
+                                <p className={'detail-sub-text'}>모집완료</p>
+                                {menteeCount} 명
+                            </div>
                             <div className={'subject'}>
                                 <p className={'detail-sub-text'}>주제</p>
                                 {subject}
-                            </div>
-                            <div className={'career'}>
-                                <p className={'detail-sub-text'}>경력</p>
-                                {career}
                             </div>
                             <div className={'current'}>
                                 <p className={'detail-sub-text'}>현직</p>
@@ -348,7 +398,10 @@ const menteeMsgBox = chat.map((item, idx) => {
 
                 <div className={'btn-wrapper'}>
                     <button
-                        className={'application-btn'}>{detailMember.userIdx === enterUserIdx ? '멘티 확정' : '멘토링중'}</button>
+                        className={'application-btn'} onClick={menteeCountUp}>
+                            {/* {detailMember.userIdx === enterUserIdx ? '멘티 확정' : '멘토링중'} */}
+                            멘토링중
+                    </button>
                     <button className={'mentor-back-room'} onClick={backChatRoomList}>채팅방 돌아가기</button>
                 </div>
             </div>

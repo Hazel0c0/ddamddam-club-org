@@ -142,17 +142,17 @@ public class MentorApiController {
     }
 
     // 멘티 확정 시 생성
-    @RequestMapping(value = "/mentee/{mentorIdx}/{menteeIdx}",method = {RequestMethod.PUT,RequestMethod.PATCH})
+    @RequestMapping(value = "/mentee/{mentorIdx}/{roomId}",method = {RequestMethod.PUT,RequestMethod.PATCH})
     public ResponseEntity<?> menteeSave(
             @PathVariable Long mentorIdx
-            ,@PathVariable Long menteeIdx
-            ,@AuthenticationPrincipal TokenUserInfo userInfo
+            ,@PathVariable Long roomId
+            ,@AuthenticationPrincipal TokenUserInfo tokenUserInfo
     ){
-        Long enterUserIdx = Long.valueOf(userInfo.getUserIdx());
+//        Long enterUserIdx = Long.valueOf(userInfo.getUserIdx());
+//        log.info("들옴");
+        int menteeSave = mentorService.menteeSave(mentorIdx, roomId, tokenUserInfo);
 
-        mentorService.menteeSave(mentorIdx,menteeIdx, enterUserIdx);
-
-        return null;
+        return ResponseEntity.ok().body(menteeSave);
     }
 
     // 좋아요 기능 만들기(멘토에 대한 좋아요인지 게시판에 대한 좋아요인지)
