@@ -17,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -53,12 +52,12 @@ public class MypageController {
         // {?page=1&size=3}
         MypageChatPageResponseDTO chatRoomList = myPageService.getChatList(tokenUserInfo, pageDTO);
 
-        log.info("chatRoomList {}", chatRoomList);
+        log.info("chatRoomList!!!!! {}", chatRoomList);
 
         return ResponseEntity.ok().body(chatRoomList);
     }
 
-    // 회원 정보 수정
+
     @PostMapping("/modify")
     public ResponseEntity<?> modify(
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,

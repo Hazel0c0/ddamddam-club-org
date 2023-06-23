@@ -91,17 +91,17 @@ public class MypageService {
 //        Long userIdx = 44L;
 
         Pageable pageable = PageRequest.of(
-                pageDTO.getPage() - 1,
-                pageDTO.getSize(),
-                Sort.by(Sort.Direction.ASC, "roomId")
+            pageDTO.getPage() - 1,
+            pageDTO.getSize(),
+            Sort.by(Sort.Direction.ASC, "roomId")
         );
 
         Page<ChatRoom> pageChatRoomList = chatRoomRepository.findBySenderUserIdx(userIdx, pageable);
         List<ChatRoom> chatRoomList = pageChatRoomList.getContent();
 
         List<ChatRoomResponseDTO> collect = chatRoomList.stream().map(chatRoom ->
-                        convertChatRoomToMypageDto(chatRoom))
-                .collect(Collectors.toList());
+                convertChatRoomToMypageDto(chatRoom))
+            .collect(Collectors.toList());
 
         return MypageChatPageResponseDTO.builder()
                 .chatRoomList(collect)

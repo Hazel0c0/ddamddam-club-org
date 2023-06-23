@@ -1,0 +1,17 @@
+.quick-wrapper{
+  position: fixed;
+  width: 120px;
+  height: 70px;
+  right: 0;
+  //left: 0;
+  top: 80%;
+  cursor: pointer;
+
+  .quick-btn{
+    font-weight: 700;
+    font-size: 1.5em;
+    color: white;
+    text-align: center;
+    line-height: 70px;
+  }
+}
