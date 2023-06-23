@@ -1,7 +1,7 @@
 package kr.co.ddamddam.mypage.dto;
 
+import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageProjectResponseDTO;
-import kr.co.ddamddam.project.dto.page.PageResponseDTO;
 import lombok.*;
 
 import java.util.List;
