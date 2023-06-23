@@ -34,7 +34,7 @@ public class UserFindPasswordController {
      * 유저가 존재하는지 검증 후 이메일로 임시비밀번호를 발송합니다.
      *
      * @param requestDTO - 익명사용자가 입력한 유저이메일, 유저이름
-     * @return - 발송 성공시 SUCCESS, 실패시 FAIL
+     * @return - 발송 성공시 SUCCESS
      */
     @PostMapping("/find-password")
     public ResponseEntity<ResponseMessage> findPassword(
@@ -44,10 +44,7 @@ public class UserFindPasswordController {
 
         ResponseMessage result = userFindPasswordService.findPassword(requestDTO);
 
-        if (result == FAIL) {
-            return ResponseEntity.ok().body(FAIL);
-        }
-        return ResponseEntity.ok().body(SUCCESS);
+        return ResponseEntity.ok().body(result);
     }
 
 }
