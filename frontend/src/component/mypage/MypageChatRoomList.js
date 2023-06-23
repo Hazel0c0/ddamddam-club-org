@@ -125,7 +125,7 @@ const MypageChatRoom = props => {
           /* TODO : 멘토멘티 게시글 누르면 어디로 이동시킬건가요..?? */
           <div className={'chat-box'} key={`${chatRoom.roomIdx}-${index}`}>
             <input type={'hidden'} value={chatRoom.roomIdx} className={'chat-room-idx'}/>
-            <Link to={`/mentors/detail/chat/${chatRoom.mentorIdx}/${0}`} onClick={loginCheckHandler}>
+            <Link to={`/mentors/detail/chat/${chatRoom.mentorIdx}/${chatRoom.roomIdx}`} onClick={loginCheckHandler}>
               <div className={'chat-title'}>
                 {subStringContent(chatRoom.title, 35)}
               </div>
