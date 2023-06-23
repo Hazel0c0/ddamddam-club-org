@@ -54,26 +54,26 @@ public class UserModifyPasswordController {
     }
 
 
-    // TODO : 아래는 미완성
-
-    /**
-     * 비밀번호 찾기 요청 시 이메일을 입력받고, 해당 이메일로 인증코드를 발송합니다.
-     *
-     * @param requestDTO - 유저 이메일
-     * @return 발송된 인증코드
-     * @throws MessagingException - 메일 전송 관련 예외
-     */
-    @PostMapping("/find-password")
-    public ResponseEntity<UserCodeResponseDTO> findPassword(
-            @Valid @RequestBody UserEmailCheckRequestDTO requestDTO
-    ) throws MessagingException {
-        log.info("POST : findPassword - userEmail : {}", requestDTO);
-
-        UserCodeResponseDTO userCodeResponseDTO
-                = emailService.sendEmailByFindPassword(requestDTO.getEmail());
-
-        return ResponseEntity.ok().body(userCodeResponseDTO);
-    }
+//    // TODO : 아래는 미완성
+//
+//    /**
+//     * 비밀번호 찾기 요청 시 이메일을 입력받고, 해당 이메일로 인증코드를 발송합니다.
+//     *
+//     * @param requestDTO - 유저 이메일
+//     * @return 발송된 인증코드
+//     * @throws MessagingException - 메일 전송 관련 예외
+//     */
+//    @PostMapping("/find-password")
+//    public ResponseEntity<UserCodeResponseDTO> findPassword(
+//            @Valid @RequestBody UserEmailCheckRequestDTO requestDTO
+//    ) throws MessagingException {
+//        log.info("POST : findPassword - userEmail : {}", requestDTO);
+//
+//        UserCodeResponseDTO userCodeResponseDTO
+//                = emailService.sendEmailByFindPassword(requestDTO.getEmail());
+//
+//        return ResponseEntity.ok().body(userCodeResponseDTO);
+//    }
 
     /**
      * 비밀번호 찾기 시, 발급한 인증코드와 클라이언트에서 입력한 인증코드가 동일한지 확인합니다.
