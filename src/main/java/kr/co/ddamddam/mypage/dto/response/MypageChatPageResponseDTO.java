@@ -1,6 +1,7 @@
 package kr.co.ddamddam.mypage.dto.response;
 
 import kr.co.ddamddam.chat.entity.ChatRoom;
+import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
 import kr.co.ddamddam.mypage.dto.page.PageMaker;
 import lombok.*;
 
@@ -15,6 +16,6 @@ import java.util.List;
 public class MypageChatPageResponseDTO {
 
     private int count;
-    private PageMaker pageInfo;
+    private PageResponseDTO pageInfo;
     private List<ChatRoomResponseDTO> chatRoomList;
 }

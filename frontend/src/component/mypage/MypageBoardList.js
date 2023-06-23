@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {BASE_URL, MYPAGE, QNA, MENTOR, PROJECT,REVIEW} from '../common/config/HostConfig';
+import {BASE_URL, MYPAGE, QNA, MENTOR, PROJECT, REVIEW} from '../common/config/HostConfig';
 import {getToken} from "../common/util/login-util";
 import PageNation from "../common/pageNation/PageNation";
 import Common from "../common/Common";
@@ -33,7 +33,7 @@ const MypageBoardList = () => {
 
   const loginCheckHandler = (e) => {
     console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
-    if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null){
+    if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null) {
       alert('로그인 후 이용가능합니다.')
       e.preventDefault();
       redirection('/login');
@@ -41,7 +41,7 @@ const MypageBoardList = () => {
   }
 
   //현재 페이지 설정
-  const currentPageHandler = (clickPageNum) =>{
+  const currentPageHandler = (clickPageNum) => {
     console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
     setClickCurrentPage(clickPageNum);
   }
@@ -55,7 +55,7 @@ const MypageBoardList = () => {
       method: 'GET',
       headers: headerInfo,
     });
-    
+
     if (res.status === 400) {
       alert('잘못된 요청 값 입니다.')
       return;
@@ -91,10 +91,31 @@ const MypageBoardList = () => {
         <section className={'board-list'} key={board.boardIdx}>
           <div className={'board-type'} key={board.boardType}>{board.boardType}</div>
           <div className={'board-title'} key={board.boardTitle}>
-            {board.boardType === 'Q&A'}
-            <Link to={`/api/ddamddam/qna/${board.boardIdx}`} onClick={loginCheckHandler}>
-              {board.boardTitle}
-            </Link>
+            {
+              board.boardType === 'Q&A' &&
+              <Link to={`/api/ddamddam/qna/${board.boardIdx}`} onClick={loginCheckHandler}>
+                {board.boardTitle}
+              </Link>
+            }
+            {
+              /* TODO : 멘토멘티 게시글 누르면 어디로 이동시킬건가요..?? */
+              board.boardType === '멘토/멘티' &&
+              <Link to={`/mentor/detail/${board.boardIdx}`} onClick={loginCheckHandler}>
+                {board.boardTitle}
+              </Link>
+            }
+            {
+              board.boardType === '프로젝트 모집' &&
+              <Link to={`/projects/detail?projectIdx=${board.boardIdx}`} onClick={loginCheckHandler}>
+                {board.boardTitle}
+              </Link>
+            }
+            {
+              board.boardType === '취업후기' &&
+              <Link to={`/reviews/detail/${board.boardIdx}`} onClick={loginCheckHandler}>
+                {board.boardTitle}
+              </Link>
+            }
           </div>
           <div className={'board-date'} key={board.boardDate}>{board.boardDate}</div>
         </section>
@@ -106,9 +127,9 @@ const MypageBoardList = () => {
         <PageNation
           pageNation={pageNation}
           currentPageHandler={currentPageHandler}
-          clickCurrentPage={clickCurrentPage} />
+          clickCurrentPage={clickCurrentPage}/>
       </ul>
-      
+
     </Common>
   );
 };
