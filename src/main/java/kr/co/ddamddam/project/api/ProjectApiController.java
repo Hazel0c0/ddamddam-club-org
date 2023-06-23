@@ -49,7 +49,6 @@ public class ProjectApiController {
      * <p>
      * 기본 조회 (조회순) - keyword 입력 없음
      * 좋아요 순 조회 - keyword : like
-     * 프론트 / 백 조회 : keyword : front/back
      */
     @GetMapping
     private ApplicationResponse<ProjectListPageResponseDTO> getList(
