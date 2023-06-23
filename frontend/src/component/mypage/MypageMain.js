@@ -45,20 +45,20 @@ const MypageMain = props => {
   const [allBoardList, setAllBoardList] = useState([]);
 
   // 첫 렌더링 시 작성 게시글 전체 출력
-  useEffect(() => {
-
-    fetch(`${MYPAGE}/board-list?page=${carouselIndex}&size=10`, {
-      method: 'GET',
-      // headers : headerInfo
-    })
-      .then(res => res.json())
-      .then(result => {
-        // 백엔드에서 보낸 데이터 useState로 생성 후 받기
-        setAllBoardList(result);
-      })
-
-
-  });
+  // useEffect(() => {
+  //
+  //   // fetch(`${MYPAGE}/board-list?page=${carouselIndex}&size=10`, {
+  //   //   method: 'GET',
+  //   //   // headers : headerInfo
+  //   // })
+  //   //   .then(res => res.json())
+  //   //   .then(result => {
+  //   //     // 백엔드에서 보낸 데이터 useState로 생성 후 받기
+  //   //     setAllBoardList(result);
+  //   //   })
+  //
+  //
+  // });
 
   return (
     <>

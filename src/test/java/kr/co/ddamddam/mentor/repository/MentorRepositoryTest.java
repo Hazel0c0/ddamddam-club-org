@@ -30,8 +30,8 @@ class MentorRepositoryTest {
         for (int i = 1; i < 10; i++) {
             mentorRepository.save(
                     Mentor.builder()
-                            .mentorTitle("백엔드 너무 어려워요" + i)
-                            .mentorContent("안녕하세요 반갑습니다 ㅣㅅㅂㅅㅂㅅㅂㅆㅂ"+i)
+                            .mentorTitle("백엔드 너무 어려워요zzzzzzzzzzzzzzzzzzzzzzzzzz" + i)
+                            .mentorContent("안녕하세요 반갑습니다 ㅣㅅㅂㅅㅂㅅㅂㅆㅂzzzzzzzzzzzzzzzzzzzzzzzzz"+i)
                             .mentorSubject("백엔드")
                             .mentorCurrent(i+"년")
                             .mentorCareer("배구")
