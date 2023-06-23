@@ -4,7 +4,7 @@ import ProjectsTitle from "./mainpage/ProjectsTitle";
 import {PROJECT} from "../common/config/HostConfig";
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import './scss/ProjectDetail.scss';
-import {getToken,getUserIdx,getUserNickname} from "../common/util/login-util";
+import {getToken, getUserIdx, getUserNickname} from "../common/util/login-util";
 
 const ProjectsDetail = () => {
   const navigate = useNavigate();
@@ -95,12 +95,17 @@ const ProjectsDetail = () => {
     })
       .then((response) => {
         if (response.status === 400) {
-          alert("정원이 마감되었습니다");
+          return response.text();
         }
         console.log('신청 성공')
         console.log(response.json())
         // 성공적으로 요청을 보냈을 때 처리할 코드를 추가합니다.
         fetchProjectDetail(); // 변경된 정보로 다시 가져오기
+      })
+      .then((errorMessage) => {
+        if (errorMessage) {
+          alert(errorMessage);
+        }
       })
       .catch((error) => {
         console.error(error);
@@ -131,13 +136,13 @@ const ProjectsDetail = () => {
 
                     {(getUserNickname() === de.boardWriter) && (
                       <div className={'category'}>
-                      <Link to={`/projects/modify?projectIdx=${projectIdx}`}
-                            className={'modify-btn'}>
-                        수정
-                      </Link>
-                      <span className={'delete-btn'}
-                            onClick={() => handleDelete(projectIdx)}>삭제</span>
-                    </div>
+                        <Link to={`/projects/modify?projectIdx=${projectIdx}`}
+                              className={'modify-btn'}>
+                          수정
+                        </Link>
+                        <span className={'delete-btn'}
+                              onClick={() => handleDelete(projectIdx)}>삭제</span>
+                      </div>
                     )}
 
                     <div className={'category'}>
