@@ -45,7 +45,11 @@ public class ProjectService {
 
     public ProjectListPageResponseDTO getList(PageDTO dto, ProjectSearchRequestDto searchDto) {
 
-        Pageable pageable = getPageable(dto, searchDto);
+        Pageable pageable = PageRequest.of(
+            dto.getPage() - 1,
+            dto.getSize(),
+            Sort.by(Sort.Order.asc("projectDate"))
+        );
 
         Page<Project> projectPage = search(pageable, searchDto);
 
@@ -55,53 +59,54 @@ public class ProjectService {
     private static ProjectListPageResponseDTO getProjectList(Page<Project> projectPage) {
         List<Project> projects = projectPage.getContent();
         List<ProjectListResponseDTO> projectList = projects.stream()
-                .map(project -> new ProjectListResponseDTO(project))
-                .collect(Collectors.toList());
+            .map(project -> new ProjectListResponseDTO(project))
+            .collect(Collectors.toList());
 
         return ProjectListPageResponseDTO.builder()
-                .count(projectList.size())
-                .pageInfo(new PageResponseDTO<Project>(projectPage))
-                .projects(projectList)
-                .build();
+            .count(projectList.size())
+            .pageInfo(new PageResponseDTO<Project>(projectPage))
+            .projects(projectList)
+            .build();
     }
 
     private Pageable getPageable(
-            PageDTO dto,
-            ProjectSearchRequestDto searchDto) {
+        PageDTO dto,
+        ProjectSearchRequestDto searchDto) {
         Pageable pageable = null;
 
         // 최신순, 인기순 정렬
         if (StringUtils.isEmpty(searchDto.getSort())) {
             pageable = PageRequest.of(
-                    dto.getPage() - 1,
-                    dto.getSize(),
-                    Sort.by("projectDate").descending()
+                dto.getPage() - 1,
+                dto.getSize(),
+                Sort.by("projectDate").descending()
             );
         } else if ("like".equals(searchDto.getSort())) {
             pageable = PageRequest.of(
-                    dto.getPage() - 1,
-                    dto.getSize(),
-                    Sort.by("likeCount").descending()
+                dto.getPage() - 1,
+                dto.getSize(),
+                Sort.by("likeCount").descending()
             );
         }
         return pageable;
     }
 
     private Page<Project> search(Pageable pageable, ProjectSearchRequestDto searchDto) {
-        // 포지션별 조회
         Page<Project> projectPage;
+
+        // 포지션별 조회 : 포지션별 남은자리 적은 순 정렬
         if ("front".equals(searchDto.getPosition())) {
-            projectPage = projectRepository.findByFrontNotZero(pageable);
+            projectPage = projectRepository.frontQuickSort(pageable);
         } else if ("back".equals(searchDto.getPosition())) {
-            projectPage = projectRepository.findByBackNotZero(pageable);
-        } else {
-            projectPage = projectRepository.findAll(pageable);
-        }
+            projectPage = projectRepository.backQuickSort(pageable);
+        } 
 
         // 검색어 조회
         if ("search".equals(searchDto.getSearch())) {
             projectPage = projectRepository.findProjectsBySearchWord(pageable, searchDto.getKeyword());
         }
+        
+        projectPage = projectRepository.findAll(pageable);
         return projectPage;
     }
 
@@ -114,21 +119,21 @@ public class ProjectService {
 
     public Project getProject(Long projectIdx) {
         return projectRepository.findById(projectIdx)
-                .orElseThrow(() -> new RuntimeException(projectIdx + "번 게시물이 존재하지 않습니다!"));
+            .orElseThrow(() -> new RuntimeException(projectIdx + "번 게시물이 존재하지 않습니다!"));
     }
 
     // 글 작성
     public ProjectDetailResponseDTO write(
-            final TokenUserInfo tokenUserInfo,
-            final ProjectWriteDTO dto,
-            final String uploadedFilePath
+        final TokenUserInfo tokenUserInfo,
+        final ProjectWriteDTO dto,
+        final String uploadedFilePath
     ) {
         validateToken.validateToken(tokenUserInfo);
 
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
         User user = userRepository.findById(userIdx)
-                .orElseThrow(() -> new RuntimeException(userIdx+"회원이 존재하지 않습니다!"));
+            .orElseThrow(() -> new RuntimeException(userIdx + "회원이 존재하지 않습니다!"));
 
         Project saved = projectRepository.save(dto.toEntity(user, uploadedFilePath));
 
@@ -137,9 +142,9 @@ public class ProjectService {
 
 
     public ProjectDetailResponseDTO modify(
-            TokenUserInfo tokenUserInfo,
-            ProjectModifyRequestDTO dto,
-            String uploadedFilePath
+        TokenUserInfo tokenUserInfo,
+        ProjectModifyRequestDTO dto,
+        String uploadedFilePath
     ) {
         validateDTO(tokenUserInfo, dto.getBoardIdx());
 
@@ -166,42 +171,43 @@ public class ProjectService {
         } else {
             throw new UnauthorizationException(ErrorCode.ACCESS_FORBIDDEN, tokenUserInfo.getUserEmail());
         }
-  }
-
-  public void delete(Long id) {
-    projectRepository.deleteById(id);
-  }
-
-  // 퀵 매칭
-  // select : 오래된 순 / 내 포지션 / 남은자리가 작은것 부터
-  public ProjectListPageResponseDTO quickMatching(TokenUserInfo tokenUserInfo, PageDTO dto, ProjectSearchRequestDto searchDto) {
-    Pageable pageable = null;
-
-    if (StringUtils.isEmpty(searchDto.getSort())) {
-      if ("front".equals(searchDto.getPosition())) {
-        pageable = PageRequest.of(
-            dto.getPage() - 1,
-            dto.getSize(),
-            Sort.by(
-                Sort.Order.asc("applicantOfFronts.size"),
-                Sort.Order.asc("projectDate")
-            )
-        );
-      } else if ("back".equals(searchDto.getPosition())) {
-        pageable = PageRequest.of(
-            dto.getPage() - 1,
-            dto.getSize(),
-            Sort.by(
-                Sort.Order.asc("applicantOfBacks.size"),
-                Sort.Order.asc("projectDate")
-            )
-        );
-      }
     }
-    Page<Project> projectPage = search(pageable, searchDto);
 
-    return getProjectList(projectPage);
-  }
+    public void delete(Long id) {
+        projectRepository.deleteById(id);
+    }
+
+    // 퀵 매칭
+    // select : 오래된 순 / 내 포지션 / 남은자리가 작은것 부터
+    public ProjectListPageResponseDTO quickMatching(TokenUserInfo tokenUserInfo, PageDTO dto, ProjectSearchRequestDto searchDto) {
+        Pageable pageable = getPageable(dto, searchDto);
+
+//    if (StringUtils.isEmpty(searchDto.getSort())) {
+//      if ("FRONTEND".equals(searchDto.getPosition())) {
+//          log.info("user position = {}",searchDto.getPosition());
+//        pageable = PageRequest.of(
+//            dto.getPage() - 1,
+//            dto.getSize(),
+//            Sort.by(
+//                Sort.Order.asc("projectDate")
+//            )
+//        );
+//      } else if ("BACKEND".equals(searchDto.getPosition())) {
+//          log.info("user position = {}",searchDto.getPosition());
+//        pageable = PageRequest.of(
+//            dto.getPage() - 1,
+//            dto.getSize(),
+//            Sort.by(
+//                Sort.Order.asc("maxBackApplicantCount"),
+//                Sort.Order.asc("projectDate")
+//            )
+//        );
+//      }
+//    }
+        Page<Project> projectPage = search(pageable, searchDto);
+
+        return getProjectList(projectPage);
+    }
 
     /**
      * 토큰 유효성을 검사합니다.

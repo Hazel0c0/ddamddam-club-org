@@ -74,6 +74,7 @@ public class Project {
   @Builder.Default
   private List<ApplicantOfFront> applicantOfFronts = new ArrayList<>();
 
+  // 모집 된 백엔드 인원 정보
   @OneToMany(mappedBy = "project", orphanRemoval = true)
   @Builder.Default
   private List<ApplicantOfBack> applicantOfBacks = new ArrayList<>();
@@ -97,4 +98,5 @@ public class Project {
     }
       applicantOfBacks.add(back);
   }
+
 }
