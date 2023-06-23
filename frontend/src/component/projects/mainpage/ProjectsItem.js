@@ -13,8 +13,7 @@ const ProjectsItem = forwardRef((
       sortTitle,
       handleLikeClick,
       handleShowDetails,
-      onCarouselIndexChange,
-      pageSize
+      pageChange,
     },
     ref
   ) => {
@@ -22,7 +21,7 @@ const ProjectsItem = forwardRef((
     const [projects, setProjects] = useState([]);
     const [projectImgUrls, setProjectImgUrls] = useState([]);
 
-    const [pageNation, setPageNation] = useState([]);
+    const [pageNation, setPageNation] = useState({});
     const [prevBtn, setPrevBtn] = useState(false);
     const [nextBtn, setNextBtn] = useState(false);
     //캐러셀
@@ -46,16 +45,19 @@ const ProjectsItem = forwardRef((
         })
         .then(result => {
           if (!!result) {
-            console.log(`result의 값 : `, result)
-            setPageNation(result.payload.pageInfo);
+            console.log(`result의 값 : `, result);
+            if (result.payload.pageInfo) {
+              setPageNation(result.payload.pageInfo);
+              setPrevBtn(!!result.payload.pageInfo.prev);
+              setNextBtn(!!result.payload.pageInfo.next);
+            }
             let res = result.payload.projects;
             setProjects(res);
-            console.log('결과')
+            console.log(`결과 `);
             console.log(res)
-            setProjects(res)
             for (let i = 0; i < res.length; i++) {
-              // console.log(res[i].boardIdx)
-              fetchFileImage(res[i].boardIdx, i)
+              console.log(res[i].boardIdx)
+              fetchFileImage(res[i].boardIdx, i);
             }
           }
         });
@@ -63,9 +65,10 @@ const ProjectsItem = forwardRef((
 
     useEffect(() => {
       fetchData();
-      onCarouselIndexChange(carouselIndex);
-      console.log(`렌더링 될 때 carouselIndex : `, carouselIndex)
+      console.log(`item page index `, carouselIndex)
+      pageChange(carouselIndex);
     }, [carouselIndex]);
+
     const file_URL = '//localhost:8181/api/ddamddam/load-file'
 
     const fetchFileImage = async (projectIdx, index) => {
@@ -94,27 +97,30 @@ const ProjectsItem = forwardRef((
 
 
     const handlePrevious = () => {
-      if (pageNation.prev === true) {
-        setCarouselIndex(prevIndex => prevIndex - 1);
+      if (prevBtn) {
+      setCarouselIndex(prevIndex => prevIndex - 1);
       }
     };
 
 
     const handleNext = () => {
-      // 마지막 페이지 일 때 다시 페이지 설정을 해줘야 정상작동
-      // ex 마지막 페이지가 13인데 carouselIndex가 14일 때
-      // 마지막 페이지의 값이 필요
-
-      //마지막 페이지 값
-      const lastPage = Math.ceil(pageNation.totalCount / 3);
-
-      if (lastPage === carouselIndex) {
-        setCarouselIndex((prevIndex) => prevIndex - 1)
-        return;
-      }
-      console.log(`렌더링 1단계 전 carouselIndex = `, carouselIndex)
-      if (pageNation.next === true) {
-        setCarouselIndex(prevIndex => prevIndex + 1);
+      // // 마지막 페이지 일 때 다시 페이지 설정을 해줘야 정상작동
+      // // ex 마지막 페이지가 13인데 carouselIndex가 14일 때
+      // // 마지막 페이지의 값이 필요
+      //
+      // //마지막 페이지 값
+      // const lastPage = Math.ceil(pageNation.totalCount / 3);
+      //
+      // if (lastPage === carouselIndex) {
+      //   setCarouselIndex((prevIndex) => prevIndex - 1)
+      //   return;
+      // }
+      // console.log(`렌더링 1단계 전 carouselIndex = `, carouselIndex)
+      // if (pageNation.next === true) {
+      //   setCarouselIndex(prevIndex => prevIndex + 1);
+      // }
+      if (nextBtn) {
+        setCarouselIndex((prevIndex) => prevIndex + 1);
       }
     };
 

@@ -52,6 +52,8 @@ public class UploadController {
       }
       headers.setContentType(contentType);
 
+      log.info("file data !! {}",fileData);
+
       return ResponseEntity.ok()
           .headers(headers)
           .body(fileData);

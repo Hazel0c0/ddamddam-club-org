@@ -29,14 +29,18 @@ const ProjectsMain = () => {
   // 인기프로젝트 페이지
   const [likePage, setLikePage] = useState(1);
   const LIKE_PAGE_SIZE = 3;
+  const popularityUrl = `${PROJECT}?page=${likePage}&size=${LIKE_PAGE_SIZE}&like=true`;
+  const [popularity, setPopularity] = useState(popularityUrl);
 
-  const handleCarouselIndexChange = (currentPage) => {
+  // 페이지 처리
+  const handlePageChange = (currentPage) => {
     setLikePage(currentPage);
-    console.log(`현재 main의 페이지 번호 : `, currentPage)
+    console.log(`main 현재 페이지 번호 : ${currentPage}`)
   }
-  const popularity = PROJECT + `?sort=like&page=${likePage}&size=${LIKE_PAGE_SIZE}`;
 
   useEffect(() => {
+    handlePageChange(likePage);
+    // setPopularity(popularityUrl);
   }, [likePage, popularity])
 
   // 퀵 매칭 모달창
@@ -110,18 +114,18 @@ const ProjectsMain = () => {
         sortTitle={'인기 프로젝트'}
         handleLikeClick={handleLikeClick}
         handleShowDetails={handleShowDetails}
-        onCarouselIndexChange={handleCarouselIndexChange}
-        pageSize={LIKE_PAGE_SIZE}
+        pageChange={handlePageChange}
         ref={childRef}
       />
 
-      {/*<ProjectsItem*/}
-      {/*  url={currentUrl}*/}
-      {/*  sortTitle={'최신 프로젝트'}*/}
-      {/*  handleLikeClick={handleLikeClick}*/}
-      {/*  handleShowDetails={handleShowDetails}*/}
-      {/*  ref={childRef}*/}
-      {/*/>*/}
+      <ProjectsItem
+        url={currentUrl}
+        sortTitle={'최신 프로젝트'}
+        handleLikeClick={handleLikeClick}
+        handleShowDetails={handleShowDetails}
+        pageChange={handlePageChange}
+        ref={childRef}
+      />
 
       {/* 퀵매칭 */}
       <div className={'quick-wrapper'}>
