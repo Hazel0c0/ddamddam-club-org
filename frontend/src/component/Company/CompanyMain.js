@@ -6,7 +6,7 @@ import {GrPowerReset} from "react-icons/gr";
 import {Link, useNavigate} from "react-router-dom";
 import {getToken} from "../common/util/login-util";
 
-const CompanyMain = (onSearchChange, onSearchKeywordChange) => {
+const CompanyMain = ({onSearchChange, onSearchKeywordChange}) => {
     // const [selectedBtn, setSelectedBtn] = useState('전체');
     const inputVal = useRef();
 
@@ -21,7 +21,17 @@ const CompanyMain = (onSearchChange, onSearchKeywordChange) => {
     }
 
     //검색엔터
+    const test = setTimeout(()=>{
+        onSearchKeywordChange(e.target.value);
+    },1000)
     const searchHandler = (e) => {
+        onSearchKeywordChange(e.target.value);
+        //단어마다 실행되게
+        // if (e.target.value.contains(" ")){
+        // }
+
+
+        //엔터
         if (e.keyCode === 13) {
             onSearchKeywordChange(e.target.value);
         }
@@ -30,15 +40,9 @@ const CompanyMain = (onSearchChange, onSearchKeywordChange) => {
         }
     }
 
-    //검색버튼
-    const submitHandler = () => {
-        const inputValue = inputVal.current.value;
-        onSearchKeywordChange(inputValue);
-    }
     //리셋버튼
     const resetHandler = () => {
         inputVal.current.value = '';
-
         onSearchKeywordChange('');
     }
 
@@ -84,8 +88,14 @@ const CompanyMain = (onSearchChange, onSearchKeywordChange) => {
                     <span className={'search-title'}>Search Keyword</span>
                     <div className={'search-input'}>
                         <img src={searchIcon} alt={'search-icon'} className={'search-icon'}/>
-                        <input className={'input-btn'} placeholder={'검색창'} name={'search'} onKeyUp={searchHandler}
-                               ref={inputVal}></input>
+                        <input
+                            className={'input-btn'}
+                            placeholder={'검색창'}
+                            name={'search'}
+                            // onKeyUp={searchHandler}
+                            {test}
+                            ref={inputVal}>
+                        </input>
                     </div>
                 </div>
 
