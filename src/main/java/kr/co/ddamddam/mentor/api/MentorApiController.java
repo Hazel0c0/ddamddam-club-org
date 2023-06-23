@@ -2,7 +2,7 @@ package kr.co.ddamddam.mentor.api;
 
 
 import kr.co.ddamddam.config.security.TokenUserInfo;
-import kr.co.ddamddam.mentor.dto.page.PageDTO;
+import kr.co.ddamddam.mentor.dto.page.MentorPageDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorModifyRequestDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorWriteRequestDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorDetailResponseDTO;
@@ -12,11 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,11 +37,11 @@ public class MentorApiController {
     // 멘토페이지 전체 목록 조회
     @GetMapping("/list")
     public ResponseEntity<?> list(
-            PageDTO pageDTO
+            MentorPageDTO mentorPageDTO
     ){
 //        log.info("/api/ddamddam/mentors/list?page{}&size={}", pageDTO.getPage(), pageDTO.getSize());
 
-        MentorListResponseDTO dto = mentorService.getList(pageDTO);
+        MentorListResponseDTO dto = mentorService.getList(mentorPageDTO);
 
         return ResponseEntity.ok().body(dto);
     }
@@ -51,13 +49,13 @@ public class MentorApiController {
     // 멘토페이지 주제검색 목록 조회
     @GetMapping("/sublist")
     public ResponseEntity<?> list(
-            PageDTO pageDTO, @RequestParam(required = false) String[] subjects
+            MentorPageDTO mentorPageDTO, @RequestParam(required = false) String[] subjects
     ){
 //        log.info("/api/ddamddam/mentors/list?page{}&size={}&subjects={a,b}", pageDTO.getPage(), pageDTO.getSize(),subjects);
 
         List<String> subjectList = subjects != null ? Arrays.asList(subjects) : Collections.emptyList();
 
-        MentorListResponseDTO dto = mentorService.getSubList(pageDTO, subjectList);
+        MentorListResponseDTO dto = mentorService.getSubList(mentorPageDTO, subjectList);
 
         return ResponseEntity.ok().body(dto);
     }
@@ -134,7 +132,7 @@ public class MentorApiController {
         try {
             mentorService.delete(mentorIdx,userIdx);
             List<String> subjects = new ArrayList<>();
-                MentorListResponseDTO list = mentorService.getSubList(new PageDTO(),subjects);
+                MentorListResponseDTO list = mentorService.getSubList(new MentorPageDTO(),subjects);
             return ResponseEntity.ok().body(list);
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body("해당 게시판은 존재하지 않습니다");

@@ -17,7 +17,7 @@ public class PageMaker {
     private boolean prev, next;
 
     // 현재 요청 페이지 정보
-    private PageDTO page;
+    private MyPagePageDTO page;
 
     // 총 게시물 수
     private int totalCount;
@@ -26,7 +26,7 @@ public class PageMaker {
     // 1 ~ 5, 6 ~ 10
     private static final int PAGE_COUNT = 10; // 한번에 10페이지씩 보여주겠다
 
-    public PageMaker(PageDTO page, int totalCount) {
+    public PageMaker(MyPagePageDTO page, int totalCount) {
         this.page = page;
         this.totalCount = totalCount;
         makePageInfo(page.getPage());

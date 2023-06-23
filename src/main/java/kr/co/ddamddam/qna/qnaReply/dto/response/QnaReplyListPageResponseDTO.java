@@ -1,6 +1,6 @@
 package kr.co.ddamddam.qna.qnaReply.dto.response;
 
-import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
+import kr.co.ddamddam.mentor.dto.page.MentorPageResponseDTO;
 import lombok.*;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 public class QnaReplyListPageResponseDTO {
 
     private int count;
-    private PageResponseDTO pageInfo;
+    private MentorPageResponseDTO pageInfo;
     private List<QnaReplyListResponseDTO> replyList;
 
 }

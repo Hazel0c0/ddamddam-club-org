@@ -7,20 +7,16 @@ import kr.co.ddamddam.common.exception.custom.ErrorCode;
 import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
 import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.UserUtil;
-import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
+import kr.co.ddamddam.mentor.dto.page.MentorPageResponseDTO;
 import kr.co.ddamddam.mentor.entity.Mentor;
 import kr.co.ddamddam.mentor.repository.MentorRepository;
 import kr.co.ddamddam.mypage.dto.MypageProjectPageResponseDTO;
-import kr.co.ddamddam.mypage.dto.page.PageDTO;
+import kr.co.ddamddam.mypage.dto.page.MyPagePageDTO;
 import kr.co.ddamddam.mypage.dto.page.PageMaker;
 import kr.co.ddamddam.mypage.dto.request.MypageModifyRequestDTO;
-import kr.co.ddamddam.mypage.dto.response.ChatRoomResponseDTO;
-import kr.co.ddamddam.mypage.dto.response.MypageBoardPageResponseDTO;
-import kr.co.ddamddam.mypage.dto.response.MypageBoardResponseDTO;
-import kr.co.ddamddam.mypage.dto.response.MypageChatPageResponseDTO;
-import kr.co.ddamddam.mypage.dto.response.MypageProjectResponseDTO;
+import kr.co.ddamddam.mypage.dto.response.*;
 //import kr.co.ddamddam.project.dto.page.PageResponseDTO; // TODO : 페이징 통일해야합니다...ㅋㅋ
-import kr.co.ddamddam.project.dto.request.ProjectSearchRequestDto;
+import kr.co.ddamddam.project.dto.page.ProjectPageResponseDTO;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfFront;
@@ -46,8 +42,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static kr.co.ddamddam.mypage.dto.MypageProjectPageResponseDTO.*;
 
 @SuppressWarnings("unchecked")
 @Service
@@ -79,20 +73,20 @@ public class MypageService {
      * 마이페이지의 <내가 참여한 멘티 채팅방> 채팅방 조회 및 페이징
      *
      * @param tokenUserInfo
-     * @param pageDTO       - 클라이언트에서 요청한 페이지 번호
+     * @param myPagePageDTO       - 클라이언트에서 요청한 페이지 번호
      * @return 페이지 정보, 페이징 처리 된 로그인 유저가 참여한 멘티의 채팅방 리스트
      */
     public MypageChatPageResponseDTO getChatList(
 //            TokenUserInfo tokenUserInfo,
-        TokenUserInfo tokenUserInfo, PageDTO pageDTO
+        TokenUserInfo tokenUserInfo, MyPagePageDTO myPagePageDTO
     ) {
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 //
 //        Long userIdx = 44L;
 
         Pageable pageable = PageRequest.of(
-            pageDTO.getPage() - 1,
-            pageDTO.getSize(),
+            myPagePageDTO.getPage() - 1,
+            myPagePageDTO.getSize(),
             Sort.by(Sort.Direction.ASC, "roomId")
         );
 
@@ -106,7 +100,7 @@ public class MypageService {
         return MypageChatPageResponseDTO.builder()
                 .chatRoomList(collect)
                 .count(collect.size())
-                .pageInfo(new PageResponseDTO<ChatRoom>(pageChatRoomList))
+                .pageInfo(new MentorPageResponseDTO<ChatRoom>(pageChatRoomList))
                 .build();
 
     }
@@ -115,12 +109,12 @@ public class MypageService {
     /**
      * 마이페이지의 <내가 쓴 게시글> 목록 조회 및 페이징
      *
-     * @param pageDTO - 클라이언트에서 요청한 페이지 번호
+     * @param myPagePageDTO - 클라이언트에서 요청한 페이지 번호
      * @return 페이지 정보, 페이징 처리 된 로그인 유저가 작성한 게시글 목록 리스트
      */
     public MypageBoardPageResponseDTO getBoardList(
         TokenUserInfo tokenUserInfo,
-        PageDTO pageDTO
+        MyPagePageDTO myPagePageDTO
     ) {
         // 토큰 유효성 검사
         validateToken.validateToken(tokenUserInfo);
@@ -137,9 +131,9 @@ public class MypageService {
         List<MypageBoardResponseDTO> mypageBoardList
             = getMypageDtoList(qnaList, mentorList, reviewList, projectList);
 
-        PageMaker maker = new PageMaker(pageDTO, mypageBoardList.size());
-        int pageStart = getPageStart(pageDTO);
-        int pageEnd = getPageEnd(pageStart, pageDTO.getSize(), mypageBoardList.size());
+        PageMaker maker = new PageMaker(myPagePageDTO, mypageBoardList.size());
+        int pageStart = getPageStart(myPagePageDTO);
+        int pageEnd = getPageEnd(pageStart, myPagePageDTO.getSize(), mypageBoardList.size());
 
         System.out.println("pageStart = " + pageStart);
         System.out.println("pageEnd = " + pageEnd);
@@ -301,8 +295,8 @@ public class MypageService {
     /**
      * 페이징 - 클라이언트의 페이지번호 요청에 따른 시작페이지를 계산합니다.
      */
-    private int getPageStart(PageDTO pageDTO) {
-        return (pageDTO.getPage() - 1) * pageDTO.getSize();
+    private int getPageStart(MyPagePageDTO myPagePageDTO) {
+        return (myPagePageDTO.getPage() - 1) * myPagePageDTO.getSize();
     }
 
     /**
@@ -363,8 +357,8 @@ public class MypageService {
     /**
      * @return : 내가 신청한 프로젝트 목록 조회
      */
-    public MypageProjectPageResponseDTO getArrayProjectList(Long userIdx, PageDTO pageDTO) {
-        Pageable pageable = getPageable(pageDTO);
+    public MypageProjectPageResponseDTO getArrayProjectList(Long userIdx, MyPagePageDTO myPagePageDTO) {
+        Pageable pageable = getPageable(myPagePageDTO);
 
         // 로그인한 유저 객체 가져오기
         User user = userUtil.getUser(userIdx);
@@ -385,7 +379,8 @@ public class MypageService {
 
             return MypageProjectPageResponseDTO.builder()
                 .count(dtoList.size()) // 총게시물 수가 아니라 조회된 게시물 수
-                .pageInfo(new kr.co.ddamddam.project.dto.page.PageResponseDTO(page))
+                .pageInfo(new MyPagePageResponseDTO(page))
+//            new ProjectPageResponseDTO(page)
                 .posts(dtoList)
                 .build();
 
@@ -401,7 +396,7 @@ public class MypageService {
 
             return MypageProjectPageResponseDTO.builder()
                 .count(dtoList.size()) // 총게시물 수가 아니라 조회된 게시물 수
-                .pageInfo(new kr.co.ddamddam.project.dto.page.PageResponseDTO(page))
+                .pageInfo(new MyPagePageResponseDTO(page))
                 .posts(dtoList)
                 .build();
         }
@@ -409,7 +404,7 @@ public class MypageService {
 
     }
 
-    private Pageable getPageable(PageDTO dto) {
+    private Pageable getPageable(MyPagePageDTO dto) {
         Pageable pageable = PageRequest.of(
             dto.getPage() - 1,
             dto.getSize()
