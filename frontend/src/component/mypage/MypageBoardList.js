@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import "./scss/MypageBoardList.scss";
-import {BASE_URL, MYPAGE, QNA, MENTOR, PROJECT, REVIEW} from '../common/config/HostConfig';
+import {BASE_URL, MYPAGE} from '../common/config/HostConfig';
 import {getToken} from "../common/util/login-util";
 import PageNation from "../common/pageNation/PageNation";
-import Common from "../common/Common";
 import {Link, useNavigate} from "react-router-dom";
 
 {/* TODO : 큐앤에이만 요청 url 에 api/ddamddam 붙음 수정해주세요 */}
@@ -49,10 +48,10 @@ const MypageBoardList = () => {
 
   // 내가 쓴 게시글 목록 뿌려주기
   const asyncBoardList = async () => {
-
+    setBoardList([]); // 중복 렌더링 방지
     console.log(`ACCESS_TOKEN : ${ACCESS_TOKEN}`); // 토큰 잘 나옴;;
 
-    const res = await fetch(API_BASE_URL + `/board-list?page=${carouselIndex}&size=10`, {
+    const res = await fetch(API_BASE_URL + `/board-list?page=${clickCurrentPage}&size=10`, {
       method: 'GET',
       headers: headerInfo,
     });
@@ -76,7 +75,9 @@ const MypageBoardList = () => {
 
     // 오류 없이 값을 잘 받아왔다면
     const result = await res.json();
-    // console.log(`pageInfo : ${result.pageInfo}`);
+    const pageInfo = result.pageInfo;
+    console.log(`boardList pageInfo : `, pageInfo);
+    console.log(`result.boardList  : `, result.boardList);
     setBoardList(result.boardList);
     setPageNation(result.pageInfo);
   };
@@ -84,7 +85,7 @@ const MypageBoardList = () => {
   // 첫 렌더링 시 작성 게시글 전체 출력
   useEffect(() => {
     asyncBoardList();
-  }, [setCarouselIndex]);
+  }, [clickCurrentPage]);
 
   return (
     <div className={'mypage-list-wrapper'}>
@@ -101,7 +102,7 @@ const MypageBoardList = () => {
             {
               /* TODO : 멘토멘티 게시글 누르면 어디로 이동시킬건가요..?? */
               board.boardType === '멘토/멘티' &&
-              <Link to={`/mentor/detail/${board.boardIdx}`} onClick={loginCheckHandler}>
+              <Link to={`/mentor/detail?mentorIdx=${board.boardIdx}`} onClick={loginCheckHandler}>
                 {board.boardTitle}
               </Link>
             }
@@ -123,7 +124,6 @@ const MypageBoardList = () => {
       ))}
 
       {/* 페이징 */}
-      {/* TODO : 페이징 어떠케하나요 ... ? */}
       <ul>
         <PageNation
           pageNation={pageNation}

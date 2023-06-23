@@ -49,6 +49,7 @@ import java.util.stream.Collectors;
 
 import static kr.co.ddamddam.mypage.dto.MypageProjectPageResponseDTO.*;
 
+@SuppressWarnings("unchecked")
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -140,6 +141,9 @@ public class MypageService {
         PageMaker maker = new PageMaker(pageDTO, mypageBoardList.size());
         int pageStart = getPageStart(pageDTO);
         int pageEnd = getPageEnd(pageStart, pageDTO.getSize(), mypageBoardList.size());
+
+        System.out.println("pageStart = " + pageStart);
+        System.out.println("pageEnd = " + pageEnd);
 
         List<MypageBoardResponseDTO> slicedMypageBoardList = mypageBoardList.subList(pageStart, pageEnd);
 
