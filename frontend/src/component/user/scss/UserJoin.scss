@@ -259,7 +259,7 @@
 //.position-select{
 //  padding-right: 20px;
 //}
-.check-btn {
+.check-btn{
   background-color: white;
   width: 17%;
   padding: 12px 20px;
@@ -275,9 +275,16 @@
   }
 }
 .endCheck-btn{
+  background-color: white;
+  width: 17%;
+  padding: 12px 20px;
+  border-radius: 5.3px;
+  color: #828282;
+  font-size: 14px;
+  font-weight: 600;
   border: solid 1px #828282;
-  //outline: #1e4fff;
 }
+
 
 .check-btn:hover {
   transition: 0.2s;

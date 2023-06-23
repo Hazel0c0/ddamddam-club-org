@@ -1,9 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Common from "../common/Common";
 import logo from "../../src_assets/logo(white).png";
-import profile from "../../src_assets/IMG_4525.JPG";
 import './scss/UserJoin.scss';
-import {LocalDate, MathUtil as Integer} from 'js-joda';
 import {BsCheckLg} from "react-icons/bs"
 
 // 리다이렉트 사용하기
@@ -22,9 +20,9 @@ const UserJoin = () => {
     const BASE_URL = JOININ;
 
     //이메일 주소 선택 값
-    // const [emailValue,setEmailValue]
     const emailValue = useRef();
-
+    //도메인 선택 값
+    const [emailDomain,setEmailDomain]= useState(emailValue.current.value);
     const [certification, setCertification] = useState(false);
     const [showCertificationBtn, setShowCertificationBtn] = useState(false);
 
@@ -45,7 +43,6 @@ const UserJoin = () => {
         userBirth: '',
         userPosition: 'FRONTEND',
         userCareer: '',
-        // userProfile: '0'
     });
 
     // 검증 메세지에 대한 상태변수 관리
@@ -152,16 +149,12 @@ const UserJoin = () => {
             flag = true;
         }
 
-
-
-        console.log(msg)
         saveInputState({
             key: 'userNickName',
             inputVal,
             msg,
             flag
         })
-
     };
 
     // 이메일 중복체크 서버 통신 함수
@@ -281,10 +274,10 @@ const UserJoin = () => {
         const inputEmail = e.target.value;
 
         //이메일 주소 선택
-        const emailDomainValue = emailValue.current.value;
-        console.log(emailDomainValue);
+        //         console.log(emailDomainValue);
 
-        const inputVal = `${inputEmail}@${emailDomainValue}`;
+        // const inputVal = `${inputEmail}@${emailDomainValue}`;
+        const inputVal = `${inputEmail}@${emailDomain}`;
         console.log(`emailResult Value : ${inputVal}`);
         // const emailRegex = /^[a-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/;
         const emailRegex = /^[a-z0-9\.\-_]+/;
@@ -299,6 +292,13 @@ const UserJoin = () => {
         });
 
     };
+
+    //이메일 도메인 선택
+    const handleEmailChange = () =>{
+        const emailDomainValue = emailDomain.current.value;
+        setSelectedPosition(emailDomainValue);
+        console.log(`emailDomainValue의 값 : `,emailDomainValue)
+    }
 
 
 // 패스워드 입력창 체인지 이벤트 핸들러
@@ -366,14 +366,6 @@ const UserJoin = () => {
     const birthHandler = (event) => {
         const inputDate = event.target.value; // 입력받은 문자열
         console.log(inputDate)
-        /*
-        const year = parseInt(inputDate.substring(0, 4));
-        const month = parseInt(inputDate.substring(4, 6));
-        const day = parseInt(inputDate.substring(6, 8));
-
-        const localDate = new Date(year, month - 1, day); // JavaScript의 Date 객체 생성
- */
-
 
         setUserValue(prevValue => ({
             ...prevValue,
@@ -410,6 +402,7 @@ const UserJoin = () => {
     const fetchSignUpPost = async () => {
         console.log(`fetchSignUpPost의 userValue : ${userValue}`);
 
+        /*
         // JSON을 Blob타입으로 변경 후 FormData에 넣기
         const userJsonBlob = new Blob(
           [JSON.stringify(userValue)],
@@ -439,6 +432,8 @@ const UserJoin = () => {
         } else {
             alert('서버와의 통신이 원활하지 않습니다.');
         }
+
+         */
     };
 
 
@@ -506,16 +501,14 @@ const UserJoin = () => {
                 <div className={'input-email'}>
                     <input type={"text"} className={'email-input'} id={'userEmail'} name={'userEmail'}
                            placeholder={'이메일'} onChange={emailHandler}/>
-                    <select className={'email-select'} defaultValue={''} ref={emailValue}>
+                    <select className={'email-select'} defaultValue={''} ref={emailValue} onChange={handleEmailChange}>
                         <option value={'gmail.com'}>@gmail.com</option>
                         <option value={'naver.com'}>@naver.com</option>
                     </select>
-                    {/*<span style={*/}
-                    {/*    correct.userEmail ? {color: 'green'} : {color: 'red'} //입력값검증시에 글씨 색깔*/}
-                    {/*}>{message.userEmail}</span>*/}
+
                     {showCertificationBtn
                         ?
-                        <button className={'check-btn endCheck-btn'} onClick={fetchDuplicateCheck}>
+                        <button className={'endCheck-btn'} disabled={true}>
                             <div className={'endCheck-email'}>중복완료</div>
                         </button>
                         :
