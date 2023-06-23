@@ -8,14 +8,28 @@ import than from "../../../src_assets/than.png";
 
 const ProjectsMain = ({headerInfo}) => {
 
+    //인기프로젝트 페이지 값
+    const [mainCurrentPage, setMainCurrentPage] = useState(1);
+    const handleCarouselIndexChange= (currentPage)=>{
+        setMainCurrentPage(currentPage);
+        console.log(`현재 main의 페이지 번호 : `,currentPage)
+    }
   console.log(headerInfo)
+
 
   const navigate = useNavigate();
   const childRef = useRef(null);
 
+  const pageSize = 3;
+
   const [currentUrl, setCurrentUrl]
     = useState(PROJECT);
-  const popularity = PROJECT + '?sort=like&page=2&size=3';
+  const popularity = PROJECT + `?sort=like&page=${mainCurrentPage}&size=${pageSize}`;
+  // const popularity = PROJECT + `?sort=like&page=1&size=3`;
+    useEffect(()=>{
+
+    },[mainCurrentPage,popularity])
+
 
   const handleFrontClick = () => {
     console.log("프론트")
@@ -45,11 +59,15 @@ const ProjectsMain = ({headerInfo}) => {
       });
   };
 
+
+
   const handleShowDetails = (projectIdx) => {
     console.log('게시판 번호: ', projectIdx);
 
     navigate(`/projects/detail?projectIdx=${projectIdx}`, {state: {headerInfo}});
   };
+
+
 
   return (
     <>
@@ -62,6 +80,8 @@ const ProjectsMain = ({headerInfo}) => {
         sortTitle={'인기 프로젝트'}
         handleLikeClick={handleLikeClick}
         handleShowDetails={handleShowDetails}
+        onCarouselIndexChange = {handleCarouselIndexChange}
+        pageSize = {pageSize}
         ref={childRef}
       />
 
@@ -69,13 +89,13 @@ const ProjectsMain = ({headerInfo}) => {
         <div className={'front'} onClick={handleFrontClick}>front</div>
         <div className={'back'} onClick={handleBackClick}>back</div>
       </div>
-      <ProjectsItem
-        url={currentUrl}
-        sortTitle={'최신 프로젝트'}
-        handleLikeClick={handleLikeClick}
-        handleShowDetails={handleShowDetails}
-        ref={childRef}
-      />
+      {/*<ProjectsItem*/}
+      {/*  url={currentUrl}*/}
+      {/*  sortTitle={'최신 프로젝트'}*/}
+      {/*  handleLikeClick={handleLikeClick}*/}
+      {/*  handleShowDetails={handleShowDetails}*/}
+      {/*  ref={childRef}*/}
+      {/*/>*/}
     </>
   );
 };

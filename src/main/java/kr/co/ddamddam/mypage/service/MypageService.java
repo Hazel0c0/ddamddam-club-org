@@ -342,6 +342,7 @@ public class MypageService {
     /**
      * @return : 내가 신청한 프로젝트 목록 조회
      */
+    /*
     public List<MypageProjectResponseDTO> getArrayProjectList(PageDTO pageDTO, Long userIdx) {
 
         // 로그인한 유저 객체 가져오기
@@ -350,7 +351,7 @@ public class MypageService {
 
         List<Project> arrayProjects = new ArrayList<>();
         if (userPosition == UserPosition.FRONTEND) {
-            List<Project> frontProjects  = frontRepository.findByUser(user)
+            List<Project> frontProjects  = frontRepository.findByUser(user, pageDTO)
                 .stream().map(ApplicantOfFront::getProject)
                 .collect(Collectors.toList());
             arrayProjects.addAll(frontProjects);
@@ -363,7 +364,7 @@ public class MypageService {
 
         return toDtoList(arrayProjects);
     }
-
+*/
     private static List<MypageProjectResponseDTO> toDtoList(List<Project> myProjects) {
         List<MypageProjectResponseDTO> dtoList = myProjects.stream()
             .map(project -> {
@@ -377,4 +378,6 @@ public class MypageService {
             .collect(Collectors.toList());
         return dtoList;
     }
+
+
 }

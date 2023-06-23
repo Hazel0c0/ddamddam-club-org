@@ -17,25 +17,8 @@ const CompanyTotal = () => {
     //워크넷 링크 상태관리
     const [goWorknet, setGoWorknet] = useState([]);
 
-    // const res = `?authKey=WNLIS5RDCEK7WOBRD73GA2VR1HJ&&callTp=L&returnType=XML&startPage=1&display=10`
-    const res = `http://openapi.work.go.kr/opi/opi/opia/wantedApi.doauthKey=WNLIS5RDCEK7WOBRD73GA2VR1HJ&&callTp=L&returnType=XML&startPage=1&display=10`
-
     useEffect(() => {
         asyncCompanyTotalList();
-
-        const fetchData = async () => {
-            try {
-                const response = await fetch(res, {
-                    mode: 'no-cors'
-                });
-                const data = await response.text(); // 또는 response.json() 등으로 데이터 처리
-                console.log(data);
-            } catch (e) {
-                console.log(e);
-            }
-        };
-        fetchData()
-
         // }, [clickCurrentPage,goWorknet])
     }, [clickCurrentPage])
 
@@ -118,7 +101,7 @@ const CompanyTotal = () => {
         const updatedGoWorknet = goWorknet.map((item, i) => (i === index ? true : false));
         setGoWorknet(updatedGoWorknet);
 
-        console.log(updatedGoWorknet)
+        // console.log(updatedGoWorknet)
     }
     const hiddenLinkHandler = (index) => {
         setGoWorknet(new Array(goWorknet.length).fill(false));
@@ -173,7 +156,6 @@ const CompanyTotal = () => {
 
                 </>
             ))}
-            <button className={'go-worknet2'}>wfeqfeqwfawfaw</button>
         </>
     );
 };

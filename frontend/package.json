@@ -56,6 +56,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "proxy": "https://openapi.work.go.kr/opi/opi/opia/wantedApi.do"
+  }
 }
