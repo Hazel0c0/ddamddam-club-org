@@ -55,7 +55,8 @@ public class ProjectService {
     private Pageable getPageable(ProjectPageDTO dto, ProjectSearchRequestDto searchDto) {
         Pageable pageable = null;
 
-        if  (searchDto.isLike()) {
+        if (searchDto.isLike()) {
+            log.info("좋아요 순 정렬 !!");
             pageable = PageRequest.of(
                 dto.getPage() - 1,
                 dto.getSize(),
@@ -68,14 +69,14 @@ public class ProjectService {
                 dto.getSize(),
                 Sort.by("projectDate").ascending()
             );
+        } else {
+            // 최신순 정렬 : 기본값
+            pageable = PageRequest.of(
+                dto.getPage() - 1,
+                dto.getSize(),
+                Sort.by("projectDate").descending()
+            );
         }
-
-        // 최신순 정렬 : 기본값
-        pageable = PageRequest.of(
-            dto.getPage() - 1,
-            dto.getSize(),
-            Sort.by("projectDate").descending()
-        );
 
         return pageable;
     }
@@ -99,17 +100,21 @@ public class ProjectService {
 
         // 포지션별 조회 : 포지션별 남은자리 적은 순 정렬
         if ("FRONTEND".equals(searchDto.getPosition())) {
+            log.info("position FRONTEND search !!");
             projectPage = projectRepository.frontQuickSort(pageable);
         } else if ("BACKEND".equals(searchDto.getPosition())) {
+            log.info("position BACKEND search !!");
             projectPage = projectRepository.backQuickSort(pageable);
         }
 
         // 검색어 조회
         if (StringUtils.isNotEmpty(searchDto.getKeyword())) {
+            log.info("KEYWORD search !!");
             projectPage = projectRepository.findProjectsBySearchWord(pageable, searchDto.getKeyword());
         }
 
         // 조건 X
+        log.info("search !!");
         projectPage = projectRepository.findAll(pageable);
         return projectPage;
     }
