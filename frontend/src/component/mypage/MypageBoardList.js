@@ -48,7 +48,7 @@ const MypageBoardList = () => {
 
   // 내가 쓴 게시글 목록 뿌려주기
   const asyncBoardList = async () => {
-    setBoardList([]); // 중복 렌더링 방지
+    // setBoardList([]); // 중복 렌더링 방지
     console.log(`ACCESS_TOKEN : ${ACCESS_TOKEN}`); // 토큰 잘 나옴;;
 
     const res = await fetch(API_BASE_URL + `/board-list?page=${clickCurrentPage}&size=10`, {
@@ -89,10 +89,10 @@ const MypageBoardList = () => {
 
   return (
     <div className={'mypage-list-wrapper'}>
-      {boardList.map((board) => (
-        <section className={'board-list'} key={board.boardIdx}>
-          <div className={'board-type'} key={board.boardType}>{board.boardType}</div>
-          <div className={'board-title'} key={board.boardTitle}>
+      {boardList.map((board, i) => (
+        <section className={'board-list'} key={i}>
+          <div className={'board-type'}>{board.boardType}</div>
+          <div className={'board-title'}>
             {
               board.boardType === 'Q&A' &&
               <Link to={`/api/ddamddam/qna/${board.boardIdx}`} onClick={loginCheckHandler}>
@@ -119,7 +119,7 @@ const MypageBoardList = () => {
               </Link>
             }
           </div>
-          <div className={'board-date'} key={board.boardDate}>{board.boardDate}</div>
+          <div className={'board-date'}>{board.boardDate}</div>
         </section>
       ))}
 
