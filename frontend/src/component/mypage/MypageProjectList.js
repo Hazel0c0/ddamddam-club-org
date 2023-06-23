@@ -21,14 +21,13 @@ const MypageProjectList = props => {
 
   const [projectList, setProjectList] = useState([]);
   const [pageNation, setPageNation] = useState([]);
-  const [prevBtn, setPrevBtn] = useState(false);
-  const [nextBtn, setNextBtn] = useState(false);
-
-  //로그인 판별
-  const [checkLogin, setCheckLogin] = useState(false);
-
-  // 캐러셀
   const [carouselIndex, setCarouselIndex] = useState(1);
+
+  const subStringContent = (str, n) => {
+    return str?.length > n
+      ? str.substr(0, n - 1) + "..."
+      : str;
+  }
 
   const handlePrevious = () => {
     if (pageNation.prev === true) {
@@ -90,19 +89,19 @@ const MypageProjectList = props => {
   // 첫 렌더링 시 작성 게시글 전체 출력
   useEffect(() => {
     asyncProjectList();
-  }, []);
+  }, [carouselIndex]);
 
   return (
     <div className={'mypage-pj-wrapper'}>
 
-      <div className={'pj-wrapper'}>
         {pageNation.prev &&
           <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
         }
+      <div className={'pj-wrapper'}>
         {projectList.map((project, index) => (
           <div className={'pj-box'}>
             <Link to={`/projects/detail?projectIdx=${project.boardIdx}`} onClick={loginCheckHandler}>
-              <div className={'pj-title'}>{project.boardTitle}</div>
+              <div className={'pj-title'}>{subStringContent(project.boardTitle, 35)}</div>
             </Link>
             <div className={'pj-writer small-text'}>
             </div>
@@ -142,10 +141,10 @@ const MypageProjectList = props => {
             </div>
           </div>
         ))}
-        {pageNation.next &&
-          <img src={than} alt={"than-icon"} className={'than-icon'} onClick={handleNext}/>
-        }
       </div>
+      {pageNation.next &&
+        <img src={than} alt={"than-icon"} className={'than-icon'} onClick={handleNext}/>
+      }
 
     </div>
   );

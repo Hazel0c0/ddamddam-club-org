@@ -29,6 +29,12 @@ const MypageChatRoom = props => {
   // 캐러셀
   const [carouselIndex, setCarouselIndex] = useState(1);
 
+  const subStringContent = (str, n) => {
+    return str?.length > n
+      ? str.substr(0, n - 1) + "..."
+      : str;
+  }
+
   const handlePrevious = () => {
     if (pageNation.prev === true) {
       setCarouselIndex(prevIndex => prevIndex - 1);
@@ -106,22 +112,22 @@ const MypageChatRoom = props => {
   // 첫 렌더링 시 작성 게시글 전체 출력
   useEffect(() => {
     asyncProjectList();
-  }, []);
+  }, [carouselIndex]);
 
   return (
     <div className={'mypage-chat-wrapper'}>
 
-        {pageNation.prev &&
-          <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
-        }
+      {pageNation.prev &&
+        <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
+      }
       <div className={'chat-wrapper'}>
         {chatRoomList.map((chatRoom, index) => (
           /* TODO : 멘토멘티 게시글 누르면 어디로 이동시킬건가요..?? */
           <div className={'chat-box'}>
             <input type={'hidden'} value={chatRoom.roomIdx} className={'chat-room-idx'}/>
-            <Link to={`/mentor/detail/chat/${chatRoom.mentorIdx}/${chatRoom.roomIdx}`}>
+            <Link to={`/mentor/detail/chat/${chatRoom.mentorIdx}/${chatRoom.roomIdx}`} onClick={loginCheckHandler}>
               <div className={'chat-title'}>
-                {chatRoom.title}
+                {subStringContent(chatRoom.title, 35)}
               </div>
             </Link>
             <div className={'chat-submenu-box'}>

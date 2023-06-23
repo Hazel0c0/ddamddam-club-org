@@ -1,6 +1,10 @@
 .mypage-chat-wrapper {
   width: 100%;
   margin-bottom: 100px;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 
   // 채팅방
   .chat-wrapper {
@@ -12,7 +16,7 @@
 
   .chat-box {
     background-color: #ffffff;
-    width: 340px;
+    width: 364.3px;
     height: 220px;
     margin: 0px 10px;
     padding: 20px;
@@ -20,9 +24,10 @@
     border-radius: 10px;
 
     .chat-title {
+      height: 50px;
       font-weight: 700;
       font-size: 1.1em;
-      padding: 10px 0;
+      line-height: 140%;
     }
 
     .chat-title:hover {
@@ -40,9 +45,8 @@
 
     .chat-sub-title {
       margin-right: 10px;
-      padding: 9px;
+      padding: 7px 15px;
       text-align: center;
-      font-weight: 700;
       background-color: #292834;
       color: #fff;
       border-radius: 5px;
