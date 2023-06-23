@@ -25,7 +25,7 @@ const UserFindPassword = () => {
       setNewPassword(value);
     }
   };
-  const tokne = getToken()
+  const token = getToken()
   const handleSubmit = async (e) => {
     e.preventDefault();
     /*
@@ -39,7 +39,7 @@ const UserFindPassword = () => {
       method : 'POST',
       headers : {
         'content-type' : 'application/json',
-        'Authorization' : 'Bearer '+ tokne
+        'Authorization' : 'Bearer '+ token
       },
       body : JSON.stringify({
         newUserPassword: newPassword
@@ -60,61 +60,43 @@ const UserFindPassword = () => {
         <div className={'main-title'}>HI,WE ARE<br/>DDAMDDAM CLUB</div>
       </section>
       <div className={'background'}></div>
-      <div className={'form-container'}>
-        <section className={'form-wrapper'} onSubmit={handleSubmit}>
-          <br/>
-          ** 분실하지 않도록 신중하게 설정하세요 ! **
-          <br/><br/><br/>
-          <div className={'input-nickname'}>
-            <label className={'id'}>
-              사용자 아이디(이메일) :
-              <input
-                type="text"
-                name="nickname"
-                className={'nickname'}
-                value={userIdx}
-                onChange={handleInputChange}
-              />
-              <span className={correct.userNickName ? 'correct' : 'not-correct'}>{message.userNickName}</span>
-            </label>
+      <section className={'form-wrapper'}>
+        <h1 className={'title'}>비밀번호 변경</h1>
+        <br/><br/>
+        <div className={'input-detail'}>
+          {/*기존 비밀번호*/}
+          <div className={'input-oldpw'}>
+            <input type={"text"} className={'oldpw'} id={'oldpw'} name={'oldpw'}
+                   onChange={handleInputChange}/>
+            {/*<span className={correct.userName ? 'correct' : 'not-correct'}>{message.userName}</span>*/}
+            {/*{correct.userName &&*/}
+            {/*  <BsCheckLg className={'check'}/>*/}
+            {/*}*/}
           </div>
           <br/><br/>
-          <label className={'oldpw'}>
-            기존 비밀번호 :
-            <input
-              type="password"
-              name="newPassword"
-              className={'oldpassword-input'}
-              value={newPassword}
-              onChange={handleInputChange}
-            />
-          </label>
+          {/* 새로운 비밀번호*/}
+          <div className={'input-newpw'}>
+            <input type={"text"} className={'newpw'} id={'newpw'} name={'newpw'}
+                   onChange={handleInputChange}/>
+            {/*<span className={correct.userName ? 'correct' : 'not-correct'}>{message.userName}</span>*/}
+            {/*{correct.userName &&*/}
+            {/*  <BsCheckLg className={'check'}/>*/}
+            {/*}*/}
+          </div>
           <br/><br/>
-          <label className={'newpw'}>
-            새로운 비밀번호 :
-            <input
-              type="password"
-              name="newPassword"
-              className={'newpassword-input'}
-              value={newPassword}
-              onChange={handleInputChange}
-            />
-          </label>
-          <br/><br/>
-          <label className={'newpw-check'}>
-            비밀번호 확인 :
-            <input
-              type="password"
-              name="newPassword"
-              className={'passwordcheck-input'}
-              value={newPassword}
-              onChange={handleInputChange}
-            />
-          </label>
-          <br/><br/>
-          <button className={'changebtn'} type="submit">변경하기</button>
-        </section>
-      </div>
+          {/*새로운 비밀번호 확인*/}
+          <div className={'input-checkpw'}>
+            <input type={"text"} className={'checkpw'} id={'checkpw'} name={'checkpw'}
+                   onChange={handleInputChange}/>
+            {/*<span className={correct.userNickName ? 'correct' : 'not-correct'}>{message.userNickName}</span>*/}
+            {/*{correct.userNickName &&*/}
+            {/*  <BsCheckLg className={'check'}/>*/}
+            {/*}*/}
+          </div>
+        </div>
+
+        <button type={'submit'} className={'submit-btn'} onClick={handleSubmit}>변경하기</button>
+      </section>
     </Common>
 
   );
