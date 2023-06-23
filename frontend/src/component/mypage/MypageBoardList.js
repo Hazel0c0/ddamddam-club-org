@@ -89,39 +89,42 @@ const MypageBoardList = () => {
 
   return (
     <div className={'mypage-list-wrapper'}>
+      {boardList.length === 0 ? (
+        <div>작성한 게시글이 없습니다.</div>
+      ) : null}
+
       {boardList.map((board, i) => (
-        <section className={'board-list'} key={i}>
-          <div className={'board-type'}>{board.boardType}</div>
-          <div className={'board-title'}>
-            {
-              board.boardType === 'Q&A' &&
-              <Link to={`/api/ddamddam/qna/${board.boardIdx}`} onClick={loginCheckHandler}>
-                {board.boardTitle}
-              </Link>
-            }
-            {
-              /* TODO : 멘토멘티 게시글 누르면 어디로 이동시킬건가요..?? */
-              board.boardType === '멘토/멘티' &&
-              <Link to={`/mentor/detail?mentorIdx=${board.boardIdx}`} onClick={loginCheckHandler}>
-                {board.boardTitle}
-              </Link>
-            }
-            {
-              board.boardType === '프로젝트 모집' &&
-              <Link to={`/projects/detail?projectIdx=${board.boardIdx}`} onClick={loginCheckHandler}>
-                {board.boardTitle}
-              </Link>
-            }
-            {
-              board.boardType === '취업후기' &&
-              <Link to={`/reviews/detail/${board.boardIdx}`} onClick={loginCheckHandler}>
-                {board.boardTitle}
-              </Link>
-            }
-          </div>
-          <div className={'board-date'}>{board.boardDate}</div>
-        </section>
-      ))}
+          <section className={'board-list'} key={i}>
+            <div className={'board-type'}>{board.boardType}</div>
+            <div className={'board-title'}>
+              {
+                board.boardType === 'Q&A' &&
+                <Link to={`/api/ddamddam/qna/${board.boardIdx}`} onClick={loginCheckHandler}>
+                  {board.boardTitle}
+                </Link>
+              }
+              {
+                board.boardType === '멘토/멘티' &&
+                <Link to={`/mentor/detail?mentorIdx=${board.boardIdx}`} onClick={loginCheckHandler}>
+                  {board.boardTitle}
+                </Link>
+              }
+              {
+                board.boardType === '프로젝트 모집' &&
+                <Link to={`/projects/detail?projectIdx=${board.boardIdx}`} onClick={loginCheckHandler}>
+                  {board.boardTitle}
+                </Link>
+              }
+              {
+                board.boardType === '취업후기' &&
+                <Link to={`/reviews/detail/${board.boardIdx}`} onClick={loginCheckHandler}>
+                  {board.boardTitle}
+                </Link>
+              }
+            </div>
+            <div className={'board-date'}>{board.boardDate}</div>
+          </section>
+        ))}
 
       {/* 페이징 */}
       <ul>
