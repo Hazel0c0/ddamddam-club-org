@@ -6,7 +6,6 @@ import {IoIosArrowForward} from "react-icons/io";
 import viewIcon from "../../../src_assets/view-icon.png";
 import PageNation from "../../common/pageNation/PageNation";
 import {RxCalendar} from "react-icons/rx"
-import {parseString} from "react-native-xml2js"
 import axios from "axios";
 
 const CompanyTotal = () => {
