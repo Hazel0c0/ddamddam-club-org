@@ -13,32 +13,32 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange}) => {
     //로그인 검증
     const ACCESS_TOKEN = getToken();
     const redirection = useNavigate();
-    const handleInputChange = (e) => {
-        const value = e.target.textContent;
-        onSearchChange(value);
-        // setSelectedBtn(value);
-        // onClickCurrentPageChange(1);
-    }
+    // const handleInputChange = (e) => {
+    //     const value = e.target.textContent;
+    //     onSearchChange(value);
+    //     // setSelectedBtn(value);
+    //     // onClickCurrentPageChange(1);
+    // }
 
-    //검색엔터
-    const test = setTimeout(()=>{
-        onSearchKeywordChange(e.target.value);
-    },1000)
-    const searchHandler = (e) => {
-        onSearchKeywordChange(e.target.value);
-        //단어마다 실행되게
-        // if (e.target.value.contains(" ")){
-        // }
+    // //검색엔터
+    // const test = setTimeout(()=>{
+    //     onSearchKeywordChange(e.target.value);
+    // },1000)
+    // const searchHandler = (e) => {
+    //     onSearchKeywordChange(e.target.value);
+    //     //단어마다 실행되게
+    //     // if (e.target.value.contains(" ")){
+    //     // }
 
 
-        //엔터
-        if (e.keyCode === 13) {
-            onSearchKeywordChange(e.target.value);
-        }
-        if (e.target.value === '') {
-            onSearchKeywordChange('');
-        }
-    }
+    //     //엔터
+    //     if (e.keyCode === 13) {
+    //         onSearchKeywordChange(e.target.value);
+    //     }
+    //     if (e.target.value === '') {
+    //         onSearchKeywordChange('');
+    //     }
+    // }
 
     //리셋버튼
     const resetHandler = () => {
@@ -93,7 +93,7 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange}) => {
                             placeholder={'검색창'}
                             name={'search'}
                             // onKeyUp={searchHandler}
-                            {test}
+                            // {test}
                             ref={inputVal}>
                         </input>
                     </div>
