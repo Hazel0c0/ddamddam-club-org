@@ -33,6 +33,7 @@ import MypageMain from "./component/mypage/MypageMain";
 import MypageTemplate from "./component/mypage/MypageTemplate";
 import MypageUserModify from './component/mypage/MypageUserModify';
 import CompanyTemplate from "./component/Company/CompanyTemplate";
+import UserFindInfo from "./component/user/UserFindInfo";
 
 
 function App() {
@@ -97,6 +98,9 @@ function App() {
 
                 {/*카카오로그인*/}
                 <Route path={`/oauth/callback/kakao`} element={<OAuth2RedirectHandler/>} />
+
+                {/*비밀번호 찾기*/}
+                <Route path={'/find-password'} element={<UserFindInfo/>} />
 
             </Routes>
             <Footer/>
