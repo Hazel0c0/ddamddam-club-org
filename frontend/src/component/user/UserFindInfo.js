@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Common from "../common/Common";
-import {backendHost, FIND_PASSWORD} from "../common/config/HostConfig";
+import {BASE_URL, FIND_PASSWORD} from "../common/config/HostConfig";
 import {redirect, useNavigate} from "react-router-dom";
 
 /**
@@ -9,7 +9,7 @@ import {redirect, useNavigate} from "react-router-dom";
 const UserFindInfo = () => {
 
   // ddamddam/auth/find-password
-  const API_BASE_URL = backendHost + FIND_PASSWORD;
+  const API_BASE_URL = BASE_URL + FIND_PASSWORD;
   const redirection = useNavigate();
 
   // 사용자에게 입력받은 이메일, 이름
