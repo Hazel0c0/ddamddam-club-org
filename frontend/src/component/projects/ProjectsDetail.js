@@ -42,6 +42,7 @@ const ProjectsDetail = () => {
       });
   };
 
+
   const file_URL = '//localhost:8181/api/ddamddam/load-file'
 
   const fetchFileImage = async () => {
