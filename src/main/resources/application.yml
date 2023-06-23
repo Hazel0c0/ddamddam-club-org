@@ -6,10 +6,10 @@ spring:
   main:
     allow-bean-definition-overriding: true
   datasource:
-    url: jdbc:mariadb://oslobdb.cqd7fh7vsssg.ap-northeast-2.rds.amazonaws.com:3306/ddamddam
-#    url: jdbc:mariadb://localhost:3306/ddamddam
-    username: taegun
-#    username: root
+    #    url: jdbc:mariadb://oslobdb.cqd7fh7vsssg.ap-northeast-2.rds.amazonaws.com:3306/ddamddam
+    url: jdbc:mariadb://localhost:3306/ddamddam
+    #    username: taegun
+    username: root
     password: 1234
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
@@ -22,6 +22,10 @@ spring:
       hibernate:
         format_sql: true # sql? ????? ??? ??
     database: mysql # ?? ?? ??
+  servlet:
+    multipart:
+      max-file-size: 10MB # 1개의 파일의 최대 사이즈
+      max-request-size: 20MB # 전체 요청의 최대 사이즈
   mail:
     host: smtp.gmail.com
     port: 587
@@ -55,4 +59,12 @@ sns:
 upload:
   path:
     project: c:/ddam_upload/project
-    profile: D:/ddam_upload/profile
+    profile: /Users/choyejin   #로컬 경로
+
+#s3 접근 설정
+aws:
+  credentials:
+    accessKey: AKIAT645DVCKZ2LKNK4W #복사해서 받은 키 붙여넣기
+    secretKey: /OguNMlB4MrhQ8XERRhuKcZ0mWOdGRqjGJYyX3v7
+  region: ap-northeast-2   #서울 코드값
+  bucketName: todo-app-upload-file-bucket4145

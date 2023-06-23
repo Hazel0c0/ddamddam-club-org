@@ -1,9 +1,12 @@
 package kr.co.ddamddam.mypage.api;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.mypage.dto.MypageProjectPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.page.PageDTO;
+import kr.co.ddamddam.mypage.dto.request.MypageModifyRequestDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardPageResponseDTO;
+import kr.co.ddamddam.mypage.dto.response.MypageBoardResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageChatPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageProjectResponseDTO;
 import kr.co.ddamddam.mypage.service.MypageService;
@@ -47,7 +50,11 @@ public class MypageController {
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             PageDTO pageDTO
     ){
+        log.info("chattttttttttt {}", tokenUserInfo);
+        // {?page=1&size=3}
         MypageChatPageResponseDTO chatRoomList = myPageService.getChatList(tokenUserInfo, pageDTO);
+
+        log.info("chatRoomList!!!!! {}", chatRoomList);
 
         return ResponseEntity.ok().body(chatRoomList);
     }
