@@ -12,7 +12,6 @@ import kr.co.ddamddam.project.dto.request.ProjectSearchRequestDto;
 import kr.co.ddamddam.project.dto.request.ProjectWriteDTO;
 import kr.co.ddamddam.project.dto.response.ProjectDetailResponseDTO;
 import kr.co.ddamddam.project.dto.response.ProjectListPageResponseDTO;
-import kr.co.ddamddam.project.dto.response.ProjectListResponseDTO;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.repository.ProjectRepository;
 import kr.co.ddamddam.user.entity.User;
@@ -26,7 +25,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,63 +43,74 @@ public class ProjectService {
 
     public ProjectListPageResponseDTO getList(PageDTO dto, ProjectSearchRequestDto searchDto) {
 
+        // 기본(최신순), 좋아요, 퀵 매칭 정렬
         Pageable pageable = getPageable(dto, searchDto);
 
+        // 검색 - F, B, 키워드
         Page<Project> projectPage = search(pageable, searchDto);
 
-        return getProjectList(projectPage);
+        return listPaging(projectPage);
     }
 
-    private static ProjectListPageResponseDTO getProjectList(Page<Project> projectPage) {
-        List<Project> projects = projectPage.getContent();
-        List<ProjectListResponseDTO> projectList = projects.stream()
-                .map(project -> new ProjectListResponseDTO(project))
-                .collect(Collectors.toList());
-
-        return ProjectListPageResponseDTO.builder()
-                .count(projectList.size())
-                .pageInfo(new PageResponseDTO<Project>(projectPage))
-                .projects(projectList)
-                .build();
-    }
-
-    private Pageable getPageable(
-            PageDTO dto,
-            ProjectSearchRequestDto searchDto) {
+    private Pageable getPageable(PageDTO dto, ProjectSearchRequestDto searchDto) {
         Pageable pageable = null;
 
-        // 최신순, 인기순 정렬
-        if (StringUtils.isEmpty(searchDto.getSort())) {
+        if  (searchDto.isLike()) {
             pageable = PageRequest.of(
-                    dto.getPage() - 1,
-                    dto.getSize(),
-                    Sort.by("projectDate").descending()
+                dto.getPage() - 1,
+                dto.getSize(),
+                Sort.by("likeCount").descending()
             );
-        } else if ("like".equals(searchDto.getSort())) {
+            // 퀵 매칭 (포지션) 정렬
+        } else if (StringUtils.isNotEmpty(searchDto.getPosition())) {
             pageable = PageRequest.of(
-                    dto.getPage() - 1,
-                    dto.getSize(),
-                    Sort.by("likeCount").descending()
+                dto.getPage() - 1,
+                dto.getSize(),
+                Sort.by("projectDate").ascending()
             );
         }
+
+        // 최신순 정렬 : 기본값
+        pageable = PageRequest.of(
+            dto.getPage() - 1,
+            dto.getSize(),
+            Sort.by("projectDate").descending()
+        );
+
         return pageable;
     }
 
+    private static ProjectListPageResponseDTO listPaging(Page<Project> projectPage) {
+        List<Project> projects = projectPage.getContent();
+        List<ProjectDetailResponseDTO> projectList = projects.stream()
+            .map(project -> new ProjectDetailResponseDTO(project))
+            .collect(Collectors.toList());
+
+        return ProjectListPageResponseDTO.builder()
+            .count(projectList.size())
+            .pageInfo(new PageResponseDTO<Project>(projectPage))
+            .projects(projectList)
+            .build();
+    }
+
+
     private Page<Project> search(Pageable pageable, ProjectSearchRequestDto searchDto) {
-        // 포지션별 조회
         Page<Project> projectPage;
-        if ("front".equals(searchDto.getPosition())) {
-            projectPage = projectRepository.findByFrontNotZero(pageable);
-        } else if ("back".equals(searchDto.getPosition())) {
-            projectPage = projectRepository.findByBackNotZero(pageable);
-        } else {
-            projectPage = projectRepository.findAll(pageable);
+
+        // 포지션별 조회 : 포지션별 남은자리 적은 순 정렬
+        if ("FRONTEND".equals(searchDto.getPosition())) {
+            projectPage = projectRepository.frontQuickSort(pageable);
+        } else if ("BACKEND".equals(searchDto.getPosition())) {
+            projectPage = projectRepository.backQuickSort(pageable);
         }
 
         // 검색어 조회
-        if ("search".equals(searchDto.getSearch())) {
+        if (StringUtils.isNotEmpty(searchDto.getKeyword())) {
             projectPage = projectRepository.findProjectsBySearchWord(pageable, searchDto.getKeyword());
         }
+
+        // 조건 X
+        projectPage = projectRepository.findAll(pageable);
         return projectPage;
     }
 
@@ -114,21 +123,21 @@ public class ProjectService {
 
     public Project getProject(Long projectIdx) {
         return projectRepository.findById(projectIdx)
-                .orElseThrow(() -> new RuntimeException(projectIdx + "번 게시물이 존재하지 않습니다!"));
+            .orElseThrow(() -> new RuntimeException(projectIdx + "번 게시물이 존재하지 않습니다!"));
     }
 
     // 글 작성
     public ProjectDetailResponseDTO write(
-            final TokenUserInfo tokenUserInfo,
-            final ProjectWriteDTO dto,
-            final String uploadedFilePath
+        final TokenUserInfo tokenUserInfo,
+        final ProjectWriteDTO dto,
+        final String uploadedFilePath
     ) {
         validateToken.validateToken(tokenUserInfo);
 
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
         User user = userRepository.findById(userIdx)
-                .orElseThrow(() -> new RuntimeException(userIdx+"회원이 존재하지 않습니다!"));
+            .orElseThrow(() -> new RuntimeException(userIdx + "회원이 존재하지 않습니다!"));
 
         Project saved = projectRepository.save(dto.toEntity(user, uploadedFilePath));
 
@@ -137,9 +146,9 @@ public class ProjectService {
 
 
     public ProjectDetailResponseDTO modify(
-            TokenUserInfo tokenUserInfo,
-            ProjectModifyRequestDTO dto,
-            String uploadedFilePath
+        TokenUserInfo tokenUserInfo,
+        ProjectModifyRequestDTO dto,
+        String uploadedFilePath
     ) {
         validateDTO(tokenUserInfo, dto.getBoardIdx());
 
@@ -166,42 +175,21 @@ public class ProjectService {
         } else {
             throw new UnauthorizationException(ErrorCode.ACCESS_FORBIDDEN, tokenUserInfo.getUserEmail());
         }
-  }
-
-  public void delete(Long id) {
-    projectRepository.deleteById(id);
-  }
-
-  // 퀵 매칭
-  // select : 오래된 순 / 내 포지션 / 남은자리가 작은것 부터
-  public ProjectListPageResponseDTO quickMatching(TokenUserInfo tokenUserInfo, PageDTO dto, ProjectSearchRequestDto searchDto) {
-    Pageable pageable = null;
-
-    if (StringUtils.isEmpty(searchDto.getSort())) {
-      if ("front".equals(searchDto.getPosition())) {
-        pageable = PageRequest.of(
-            dto.getPage() - 1,
-            dto.getSize(),
-            Sort.by(
-                Sort.Order.asc("applicantOfFronts.size"),
-                Sort.Order.asc("projectDate")
-            )
-        );
-      } else if ("back".equals(searchDto.getPosition())) {
-        pageable = PageRequest.of(
-            dto.getPage() - 1,
-            dto.getSize(),
-            Sort.by(
-                Sort.Order.asc("applicantOfBacks.size"),
-                Sort.Order.asc("projectDate")
-            )
-        );
-      }
     }
-    Page<Project> projectPage = search(pageable, searchDto);
 
-    return getProjectList(projectPage);
-  }
+    public void delete(Long id) {
+        projectRepository.deleteById(id);
+    }
+
+    // 퀵 매칭
+    // select : 오래된 순 / 내 포지션 / 남은자리가 작은것 부터
+    public ProjectListPageResponseDTO quickMatching(TokenUserInfo tokenUserInfo, PageDTO dto, ProjectSearchRequestDto searchDto) {
+        Pageable pageable = getPageable(dto, searchDto);
+
+        Page<Project> projectPage = search(pageable, searchDto);
+
+        return listPaging(projectPage);
+    }
 
     /**
      * 토큰 유효성을 검사합니다.

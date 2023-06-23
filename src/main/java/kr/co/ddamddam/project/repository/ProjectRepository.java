@@ -14,16 +14,18 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Query("SELECT p FROM Project p " +
-            "WHERE p.maxFront - SIZE(p.applicantOfFronts) <> 0")
-    Page<Project> findByFrontNotZero(Pageable pageable);
+        "WHERE p.maxBack - SIZE(p.applicantOfBacks) <> 0 " +
+        "ORDER BY (p.maxBack - SIZE(p.applicantOfBacks))")
+    Page<Project> backQuickSort(Pageable pageable);
 
     @Query("SELECT p FROM Project p " +
-            "WHERE p.maxBack - SIZE(p.applicantOfBacks) <> 0 ")
-    Page<Project> findByBackNotZero(Pageable pageable);
-
+        "WHERE p.maxFront - SIZE(p.applicantOfFronts) <> 0 " +
+        "ORDER BY (p.maxFront - SIZE(p.applicantOfFronts))")
+    Page<Project> frontQuickSort(Pageable pageable);
 
     @Query("SELECT p FROM Project p WHERE LOWER(p.projectTitle) LIKE %:keyword%")
     Page<Project> findProjectsBySearchWord(Pageable pageable, String keyword);
 
     List<Project> findByUserUserIdx(Long userIdx);
+
 }

@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 public class ProjectDetailResponseDTO {
 
     private Long boardIdx;
-
     private String boardWriter;
     private String boardImg;
     private String boardTitle;
@@ -39,9 +38,16 @@ public class ProjectDetailResponseDTO {
     //  @JsonIgnore
     private int applicantOfBack;
 
+    /**
+     *   true - 모집완료
+     *   false - 구인중
+     */
+    private boolean completion;
+
+    private LocalDateTime projectDate; // 게시글 작성 날짜
     private String offerPeriod; //모집기간
 
-    private LocalDateTime projectDate;
+    private int likeCount;
 
     public ProjectDetailResponseDTO(Project project) {
         this.boardWriter = project.getUserNickname();
@@ -52,11 +58,12 @@ public class ProjectDetailResponseDTO {
         this.projectType = project.getProjectType();
         this.maxFront = project.getMaxFront();
         this.maxBack = project.getMaxBack();
-//    this.applicantOfFront=project.getApplicantOfFronts().stream().map(ApplicantOfFront::getUserIdx).collect(Collectors.toList());
         this.applicantOfFront = project.getApplicantOfFronts().size();
         this.applicantOfBack = project.getApplicantOfBacks().size();
+        this.completion = (project.getMaxFront() - project.getApplicantOfFronts().size()) == 0 && (project.getMaxBack() - project.getApplicantOfBacks().size()) == 0;
         this.offerPeriod = project.getOfferPeriod();
         this.projectDate = project.getProjectDate();
+        this.likeCount =project.getLikeCount();
     }
 
 

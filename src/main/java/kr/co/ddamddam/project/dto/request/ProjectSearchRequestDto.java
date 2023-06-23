@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Builder
 public class ProjectSearchRequestDto {
 
-  private String sort;
+  private boolean like;
   private String position;
-  private String search;
   private String keyword;
 }
