@@ -88,7 +88,7 @@ public class MypageController {
 
         log.info("mypage - userIdx {} ", userIdx);
 
-        MypageProjectPageResponseDTO arrayProjectList = myPageService.getArrayProjectList(userIdx, pageDTO);
+        MypageProjectPageResponseDTO arrayProjectList = myPageService.getArrayProjectList(pageDTO,userIdx);
 
         System.out.println("myProjectList = " + arrayProjectList);
 
