@@ -44,22 +44,6 @@ const MypageMain = props => {
   // 모든 게시판
   const [allBoardList, setAllBoardList] = useState([]);
 
-  // 첫 렌더링 시 작성 게시글 전체 출력
-  // useEffect(() => {
-  //
-  //   // fetch(`${MYPAGE}/board-list?page=${carouselIndex}&size=10`, {
-  //   //   method: 'GET',
-  //   //   // headers : headerInfo
-  //   // })
-  //   //   .then(res => res.json())
-  //   //   .then(result => {
-  //   //     // 백엔드에서 보낸 데이터 useState로 생성 후 받기
-  //   //     setAllBoardList(result);
-  //   //   })
-  //
-  //
-  // });
-
   return (
     <>
       <div className={'mypage-top-wrapper'}>
@@ -89,7 +73,7 @@ const MypageMain = props => {
           </div>
           <div className={'email text-box'}>
             <p className={'info-category'}>메일</p>
-            {USER_EMAIL}
+            <p className={'email'}>{USER_EMAIL}</p>
           </div>
           <div className={'career text-box'}>
             <p className={'info-category'}>경력</p>

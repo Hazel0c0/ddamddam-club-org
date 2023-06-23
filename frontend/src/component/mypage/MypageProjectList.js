@@ -56,7 +56,7 @@ const MypageProjectList = props => {
     console.log(`ACCESS_TOKEN : ${ACCESS_TOKEN}`); // 토큰 잘 나옴;;
 
     // http://localhost:8181/api/ddamddam/mypage/project-list?page=1&size=3
-    const res = await fetch(API_BASE_URL + `/project-list?page=${carouselIndex}&size=3`, {
+    const res = await fetch(`${API_BASE_URL}/project-list?page=${carouselIndex}&size=3`, {
       method: 'GET',
       headers: headerInfo,
     });
@@ -92,11 +92,17 @@ const MypageProjectList = props => {
   }, [carouselIndex]);
 
   return (
+
+
     <div className={'mypage-pj-wrapper'}>
 
-        {pageNation.prev &&
-          <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
-        }
+      {projectList.length === 0 ? (
+        <div>작성한 게시글이 없습니다.</div>
+      ) : null}
+
+      {pageNation.prev &&
+        <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
+      }
       <div className={'pj-wrapper'}>
         {projectList.map((project, index) => (
           <div className={'pj-box'}>
