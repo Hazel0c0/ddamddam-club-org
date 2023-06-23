@@ -1,0 +1,58 @@
+.mypage-chat-wrapper {
+  width: 100%;
+  margin-bottom: 100px;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  // 채팅방
+  .chat-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .chat-box {
+    background-color: #ffffff;
+    width: 364.3px;
+    height: 220px;
+    margin: 0px 10px;
+    padding: 20px;
+    border: 1px solid #D4D4D4;
+    border-radius: 10px;
+
+    .chat-title {
+      height: 50px;
+      font-weight: 700;
+      font-size: 1.1em;
+      line-height: 140%;
+    }
+
+    .chat-title:hover {
+      color: #1e4fff;
+    }
+
+    .chat-submenu-box {
+      margin-top: 10px;
+      padding: 10px 0;
+    }
+
+    .chat-submenu-box > p {
+      display: inline-block;
+    }
+
+    .chat-sub-title {
+      margin-right: 10px;
+      padding: 7px 15px;
+      text-align: center;
+      background-color: #292834;
+      color: #fff;
+      border-radius: 5px;
+    }
+
+  }
+
+
+}
