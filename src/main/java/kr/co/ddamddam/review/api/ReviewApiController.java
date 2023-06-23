@@ -59,9 +59,10 @@ public class ReviewApiController {
     //키워드 검색
     @GetMapping("/search")
     public ResponseEntity<?> search(@RequestParam("keyword") String keyword,
+                                    @RequestParam("sort") String sort,
                                     PageDTO pageDTO){
         log.info("api/ddamddam/reviews/search?keyword={}&page{}&size={}&sort={}", keyword,pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort());
-        ReviewListPageResponseDTO reviewList = reviewService.getKeywordList(keyword,pageDTO);
+        ReviewListPageResponseDTO reviewList = reviewService.getKeywordList(keyword,sort,pageDTO);
         return ResponseEntity.ok().body(reviewList);
     }
 
