@@ -29,11 +29,11 @@ public class ChatController {
     @PostMapping("/rooms")
     public ResponseEntity<?> createChatRoom(
             @RequestBody ChatRoomRequestDTO dto
+            , @AuthenticationPrincipal TokenUserInfo tokenUserInfo
     ) {
-//        Long userId = 1L;
         log.info("requestDTO 들어옴: {}",dto);
 
-            ChatRoomResponseDTO responseDTO = chatService.createChatRoom(dto);
+            ChatRoomResponseDTO responseDTO = chatService.createChatRoom(dto,tokenUserInfo);
             log.info("responseDTO 보냄 : {}", responseDTO.getRoomId());
             return ResponseEntity.ok(responseDTO);
     }
@@ -104,14 +104,17 @@ public class ChatController {
     }
 
     // 채팅방 삭제
-    @DeleteMapping("/{roomId}")
+    @DeleteMapping("/{roomId}/{mentorIdx}")
     public ResponseEntity<?> delete(
             @PathVariable Long roomId
+            ,@PathVariable Long mentorIdx
+            ,@AuthenticationPrincipal TokenUserInfo tokenUserInfo
     ){
 
-        chatService.delete(roomId);
+        chatService.delete(roomId,tokenUserInfo);
+        List<ChatMessageResponseDTO> list = chatService.getList(mentorIdx);
 
-        return ResponseEntity.ok().body("삭제 성공!");
+        return ResponseEntity.ok().body(list);
     }
 
 

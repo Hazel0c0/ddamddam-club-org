@@ -33,6 +33,9 @@ const MentorsList = ({selectedSubjects}) => {
     // 접속한 유저 idx
     const enterUserIdx = +getUserIdx();
 
+    // 멘티 모집완료
+    const [menteeCount, setMenteeCount] = useState(0);
+
     //캐러셀
     // const [currentPage, setCurrentPage] = useState(1);
     const [carouselIndex, setCarouselIndex] = useState(1);
@@ -91,7 +94,7 @@ const MentorsList = ({selectedSubjects}) => {
 
     const handleShow = (e) => {
         setShow(true)
-        const detailIdx = e.target.closest('.mentors-list').querySelector('.member-idx').value
+        const detailIdx = e.target.closest('.mentors-list').querySelector('.member-idx').value;
 
         fetch(MENTOR + '/detail?mentorIdx=' + detailIdx, {
             method : 'GET',
@@ -106,6 +109,7 @@ const MentorsList = ({selectedSubjects}) => {
             })
             .then(result => {
                 setDetailMember(result);
+                setMenteeCount(result.completeMentee)
                  //로그인 판별
             if(result.userIdx === +getUserIdx()){
                 setCheckLogin(true)
@@ -125,7 +129,7 @@ const MentorsList = ({selectedSubjects}) => {
 
         fetch(CHAT+'/rooms', {
             method: 'POST',
-            headers: {'content-type': 'application/json'},
+            headers: headerInfo,
             body: JSON.stringify(data)
         })
             .then(res => res.json())
@@ -210,7 +214,7 @@ const MentorsList = ({selectedSubjects}) => {
                         <ul className={'category'}>
                             <li>{mentor.subject}</li>
                         </ul>
-                        <div className={'career'} >경력 : {mentor.career}</div>
+                        <div className={'mentor-career'} >경력 : {mentor.career}</div>
                     </div>
                     {/*</Link>*/}
                 </div>
@@ -248,8 +252,11 @@ const MentorsList = ({selectedSubjects}) => {
                         <h3 className={'detail-sub-title'}>{title}</h3>
                         <div className={'etc-wrapper'}>
                             <div className={'member-count'}><p className={'detail-sub-text'}>인원</p>{mentee}명 모집</div>
+                            <div className={'mentor-career'}>
+                                <p className={'detail-sub-text'}>모집완료</p>
+                                {menteeCount} 명
+                            </div>
                             <div className={'subject'}><p className={'detail-sub-text'}>주제</p>{subject}</div>
-                            <div className={'career'}><p className={'detail-sub-text'}>경력</p>{career}</div>
                             <div className={'current'}><p className={'detail-sub-text'}>현직</p>{current}</div>
                         </div>
                     </div>
