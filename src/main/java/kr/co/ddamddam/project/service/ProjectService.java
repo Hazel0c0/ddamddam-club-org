@@ -12,7 +12,6 @@ import kr.co.ddamddam.project.dto.request.ProjectSearchRequestDto;
 import kr.co.ddamddam.project.dto.request.ProjectWriteDTO;
 import kr.co.ddamddam.project.dto.response.ProjectDetailResponseDTO;
 import kr.co.ddamddam.project.dto.response.ProjectListPageResponseDTO;
-import kr.co.ddamddam.project.dto.response.ProjectListResponseDTO;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.repository.ProjectRepository;
 import kr.co.ddamddam.user.entity.User;
@@ -26,7 +25,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -58,8 +56,8 @@ public class ProjectService {
 
     private static ProjectListPageResponseDTO getProjectList(Page<Project> projectPage) {
         List<Project> projects = projectPage.getContent();
-        List<ProjectListResponseDTO> projectList = projects.stream()
-            .map(project -> new ProjectListResponseDTO(project))
+        List<ProjectDetailResponseDTO> projectList = projects.stream()
+            .map(project -> new ProjectDetailResponseDTO(project))
             .collect(Collectors.toList());
 
         return ProjectListPageResponseDTO.builder()
@@ -182,28 +180,6 @@ public class ProjectService {
     public ProjectListPageResponseDTO quickMatching(TokenUserInfo tokenUserInfo, PageDTO dto, ProjectSearchRequestDto searchDto) {
         Pageable pageable = getPageable(dto, searchDto);
 
-//    if (StringUtils.isEmpty(searchDto.getSort())) {
-//      if ("FRONTEND".equals(searchDto.getPosition())) {
-//          log.info("user position = {}",searchDto.getPosition());
-//        pageable = PageRequest.of(
-//            dto.getPage() - 1,
-//            dto.getSize(),
-//            Sort.by(
-//                Sort.Order.asc("projectDate")
-//            )
-//        );
-//      } else if ("BACKEND".equals(searchDto.getPosition())) {
-//          log.info("user position = {}",searchDto.getPosition());
-//        pageable = PageRequest.of(
-//            dto.getPage() - 1,
-//            dto.getSize(),
-//            Sort.by(
-//                Sort.Order.asc("maxBackApplicantCount"),
-//                Sort.Order.asc("projectDate")
-//            )
-//        );
-//      }
-//    }
         Page<Project> projectPage = search(pageable, searchDto);
 
         return getProjectList(projectPage);
