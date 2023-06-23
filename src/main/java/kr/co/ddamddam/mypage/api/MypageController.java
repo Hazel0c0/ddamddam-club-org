@@ -2,6 +2,7 @@ package kr.co.ddamddam.mypage.api;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import kr.co.ddamddam.config.security.TokenUserInfo;
+import kr.co.ddamddam.mypage.dto.MypageProjectPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.page.PageDTO;
 import kr.co.ddamddam.mypage.dto.request.MypageModifyRequestDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardPageResponseDTO;
@@ -9,6 +10,7 @@ import kr.co.ddamddam.mypage.dto.response.MypageBoardResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageChatPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageProjectResponseDTO;
 import kr.co.ddamddam.mypage.service.MypageService;
+import kr.co.ddamddam.project.dto.request.ProjectSearchRequestDto;
 import kr.co.ddamddam.upload.UploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,9 +49,11 @@ public class MypageController {
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             PageDTO pageDTO
     ){
-
+        log.info("chattttttttttt {}", tokenUserInfo);
         // {?page=1&size=3}
         MypageChatPageResponseDTO chatRoomList = myPageService.getChatList(tokenUserInfo, pageDTO);
+
+        log.info("chatRoomList {}", chatRoomList);
 
         return ResponseEntity.ok().body(chatRoomList);
     }
@@ -71,23 +75,19 @@ public class MypageController {
 
     @GetMapping("/project-list")
     public ResponseEntity<?> getProjectList(
-        @AuthenticationPrincipal TokenUserInfo tokenUserInfo
-//        @PathVariable Long userIdx,
-//        @RequestParam(required = false) String type
+        @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
+        PageDTO pageDTO
     ) {
+        log.info("/api/ddamddam/page={}$size={}", pageDTO.getPage(), pageDTO.getSize());
 
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
         log.info("mypage - userIdx {} ", userIdx);
 
-//        if (type != null && type.equals("arrayProject")) {
-        List<MypageProjectResponseDTO> myProjectList
-                = myPageService.getArrayProjectList(userIdx);
-//        } else {
-//            = myPageService.getProjectList(userIdx);
-//        }
-        System.out.println("myProjectList = " + myProjectList);
+        MypageProjectPageResponseDTO arrayProjectList = myPageService.getArrayProjectList(userIdx, pageDTO);
 
-        return ResponseEntity.ok().body(myProjectList);
+        System.out.println("myProjectList = " + arrayProjectList);
+
+        return ResponseEntity.ok().body(arrayProjectList);
     }
 }

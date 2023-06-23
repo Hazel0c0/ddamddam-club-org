@@ -3,11 +3,13 @@ package kr.co.ddamddam.user.repository;
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.entity.UserPosition;
 import kr.co.ddamddam.user.entity.UserRole;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 
 import java.security.SecureRandom;
@@ -23,21 +25,8 @@ class DdamDdamUserRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
-//    @BeforeEach
-//    void insertUser() {
-//        User user = User.builder()
-//                .userEmail("test@test.com")
-//                .userPassword("1234")
-//                .userName("테스트")
-//                .userNickname("테스트")
-//                .userBirth(LocalDate.of(1990, 5, 15))
-//                .userPosition(UserPosition.BACKEND)
-//                .userCareer(3)
-//                .userRole(UserRole.COMMON)
-//                .build();
-//
-//        userRepository.save(user);
-//    }
+    @Autowired
+    PasswordEncoder encoder;
 
     @Test
     @DisplayName("유저 더미데이터 20명 생성")
@@ -54,9 +43,10 @@ class DdamDdamUserRepositoryTest {
             int career = (int) (Math.random() * 10 + 1); // 1 ~ 10 사이의 랜덤 정수
             UserPosition[] userPosition = {UserPosition.BACKEND, UserPosition.FRONTEND};
             String[] name = {"조예원", "김태근", "최예진", "채지원", "조경훈"};
+            String encoded = encoder.encode("qwer1234!");
 
             User user = User.builder()
-                    .userPassword("qwer1234!")
+                    .userPassword(encoded)
                     .userEmail("test" + i + "@t.t")
                     .userName(name[index2])
                     .userNickname("닉네임" + i)
