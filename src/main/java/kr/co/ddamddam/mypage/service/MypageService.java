@@ -302,24 +302,28 @@ public class MypageService {
      * @param dto
      * @param
      */
-    public void myPageModify(MypageModifyRequestDTO dto, Long userIdx, String uploadedFilePath) {
+    public void myPageModify(MypageModifyRequestDTO dto, TokenUserInfo tokenUserInfo
+//            , String uploadedFilePath
+    ) {
 
-//        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
+        validateToken.validateToken(tokenUserInfo);
 
-        User dupUser = userRepository.findByUserNickname(dto.getUserNickname());
+        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
-        if (dupUser == null){
+//        User dupUser = userRepository.findByUserNickname(dto.getUserNickname());
+
+//        if (dupUser == null){
             User user = userRepository.findById(userIdx)
                     .orElseThrow(() -> new IllegalArgumentException("없는 유저입니다"));
                 user.setUserName(dto.getUserName());
-                user.setUserNickname(dto.getUserNickname());
+                user.setUserNickname(dto.getUserNickName());
                 user.setUserBirth(dto.getUserBirth());
                 user.setUserCareer(dto.getUserCareer());
                 user.setUserPosition(UserPosition.valueOf(dto.getUserPosition()));
-                user.setUserProfile(uploadedFilePath);
+//                user.setUserProfile(uploadedFilePath);
 
                 userRepository.save(user);
-        }
+//        }
 
     }
 

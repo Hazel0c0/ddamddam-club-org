@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Builder
 public class MypageModifyRequestDTO {
 
-    private String userNickname;
+    private String userNickName;
 
     private String userPosition;
     private int userCareer;
