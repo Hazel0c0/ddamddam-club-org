@@ -31,6 +31,7 @@ import OAuth2RedirectHandler from "./component/snslogin/OAuth2RedirectHandler";
 import UserFindPassword from "./component/user/UserFindPassword";
 import MypageMain from "./component/mypage/MypageMain";
 import MypageTemplate from "./component/mypage/MypageTemplate";
+import MypageUserModify from './component/mypage/MypageUserModify';
 import CompanyTemplate from "./component/Company/CompanyTemplate";
 
 
@@ -85,6 +86,7 @@ function App() {
 
                 {/*마이페이지*/}
                 <Route path={'/mypage'} element={<MypageTemplate/>}></Route>
+                <Route path={'/mypage/modify'} element={<MypageUserModify/>}></Route>
                 <Route path={'/mypage/password'} element={<UserFindPassword/>}></Route>
 
                 {/*로그인*/}
