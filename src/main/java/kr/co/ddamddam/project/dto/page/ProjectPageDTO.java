@@ -7,11 +7,11 @@ import lombok.*;
 @Builder
 @ToString
 @EqualsAndHashCode
-public class PageDTO {
+public class ProjectPageDTO {
   private int page;
   public int size;
 
-  public PageDTO() {
+  public ProjectPageDTO() {
     this.page = 1;
     this.size = 9;
   }

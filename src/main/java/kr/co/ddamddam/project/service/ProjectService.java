@@ -5,8 +5,8 @@ import kr.co.ddamddam.common.exception.custom.ErrorCode;
 import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
 import kr.co.ddamddam.common.exception.custom.UnauthorizationException;
 import kr.co.ddamddam.config.security.TokenUserInfo;
-import kr.co.ddamddam.project.dto.page.PageDTO;
-import kr.co.ddamddam.project.dto.page.PageResponseDTO;
+import kr.co.ddamddam.project.dto.page.ProjectPageDTO;
+import kr.co.ddamddam.project.dto.page.ProjectPageResponseDTO;
 import kr.co.ddamddam.project.dto.request.ProjectModifyRequestDTO;
 import kr.co.ddamddam.project.dto.request.ProjectSearchRequestDto;
 import kr.co.ddamddam.project.dto.request.ProjectWriteDTO;
@@ -41,7 +41,7 @@ public class ProjectService {
     private final UserRepository userRepository;
     private final ValidateToken validateToken;
 
-    public ProjectListPageResponseDTO getList(PageDTO dto, ProjectSearchRequestDto searchDto) {
+    public ProjectListPageResponseDTO getList(ProjectPageDTO dto, ProjectSearchRequestDto searchDto) {
 
         // 기본(최신순), 좋아요, 퀵 매칭 정렬
         Pageable pageable = getPageable(dto, searchDto);
@@ -52,7 +52,7 @@ public class ProjectService {
         return listPaging(projectPage);
     }
 
-    private Pageable getPageable(PageDTO dto, ProjectSearchRequestDto searchDto) {
+    private Pageable getPageable(ProjectPageDTO dto, ProjectSearchRequestDto searchDto) {
         Pageable pageable = null;
 
         if  (searchDto.isLike()) {
@@ -88,7 +88,7 @@ public class ProjectService {
 
         return ProjectListPageResponseDTO.builder()
             .count(projectList.size())
-            .pageInfo(new PageResponseDTO<Project>(projectPage))
+            .pageInfo(new ProjectPageResponseDTO<Project>(projectPage))
             .projects(projectList)
             .build();
     }
@@ -183,7 +183,7 @@ public class ProjectService {
 
     // 퀵 매칭
     // select : 오래된 순 / 내 포지션 / 남은자리가 작은것 부터
-    public ProjectListPageResponseDTO quickMatching(TokenUserInfo tokenUserInfo, PageDTO dto, ProjectSearchRequestDto searchDto) {
+    public ProjectListPageResponseDTO quickMatching(TokenUserInfo tokenUserInfo, ProjectPageDTO dto, ProjectSearchRequestDto searchDto) {
         Pageable pageable = getPageable(dto, searchDto);
 
         Page<Project> projectPage = search(pageable, searchDto);

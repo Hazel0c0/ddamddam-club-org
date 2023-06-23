@@ -2,7 +2,7 @@ package kr.co.ddamddam.project.api;
 
 import kr.co.ddamddam.common.response.ApplicationResponse;
 import kr.co.ddamddam.config.security.TokenUserInfo;
-import kr.co.ddamddam.project.dto.page.PageDTO;
+import kr.co.ddamddam.project.dto.page.ProjectPageDTO;
 import kr.co.ddamddam.project.dto.request.ProjectSearchRequestDto;
 import kr.co.ddamddam.project.dto.response.ProjectListPageResponseDTO;
 import kr.co.ddamddam.project.service.ProjectLikeService;
@@ -64,7 +64,7 @@ public class ProjectCreationApiController {
     private ApplicationResponse<?> quickMatchingList(
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             ProjectSearchRequestDto searchDto,
-            PageDTO dto
+            ProjectPageDTO dto
     ) {
         log.info("/api/ddamddam/quick GET !! tokenUserInfo : {} ",tokenUserInfo);
         log.info("/api/ddamddam/quick GET !! dto : {} ",searchDto);

@@ -1,24 +1,18 @@
 package kr.co.ddamddam.mypage.api;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.mypage.dto.MypageProjectPageResponseDTO;
-import kr.co.ddamddam.mypage.dto.page.PageDTO;
+import kr.co.ddamddam.mypage.dto.page.MyPagePageDTO;
 import kr.co.ddamddam.mypage.dto.request.MypageModifyRequestDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardPageResponseDTO;
-import kr.co.ddamddam.mypage.dto.response.MypageBoardResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageChatPageResponseDTO;
-import kr.co.ddamddam.mypage.dto.response.MypageProjectResponseDTO;
 import kr.co.ddamddam.mypage.service.MypageService;
-import kr.co.ddamddam.project.dto.request.ProjectSearchRequestDto;
 import kr.co.ddamddam.upload.UploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -32,12 +26,12 @@ public class MypageController {
     @GetMapping("/board-list")
     public ResponseEntity<?> getBoardList(
         @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
-        PageDTO pageDTO
+        MyPagePageDTO myPagePageDTO
     ) {
         log.info("GET : MypageController/getBoardList - tokenUserInfo : {}", tokenUserInfo);
 //        log.info("GET : MypageController/getBoardList - tokenUserInfo : {}", pageDTO);
 
-        MypageBoardPageResponseDTO boardList = myPageService.getBoardList(tokenUserInfo, pageDTO);
+        MypageBoardPageResponseDTO boardList = myPageService.getBoardList(tokenUserInfo, myPagePageDTO);
 
         return ResponseEntity.ok().body(boardList);
     }
@@ -46,11 +40,11 @@ public class MypageController {
     @GetMapping("/chat-list")
     public ResponseEntity<?> getChatList(
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
-            PageDTO pageDTO
+            MyPagePageDTO myPagePageDTO
     ){
         log.info("chattttttttttt {}", tokenUserInfo);
         // {?page=1&size=3}
-        MypageChatPageResponseDTO chatRoomList = myPageService.getChatList(tokenUserInfo, pageDTO);
+        MypageChatPageResponseDTO chatRoomList = myPageService.getChatList(tokenUserInfo, myPagePageDTO);
 
         log.info("chatRoomList!!!!! {}", chatRoomList);
 
@@ -75,15 +69,15 @@ public class MypageController {
     @GetMapping("/project-list")
     public ResponseEntity<?> getProjectList(
         @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
-        PageDTO pageDTO
+        MyPagePageDTO myPagePageDTO
     ) {
-        log.info("/api/ddamddam/page={}$size={}", pageDTO.getPage(), pageDTO.getSize());
+        log.info("/api/ddamddam/page={}$size={}", myPagePageDTO.getPage(), myPagePageDTO.getSize());
 
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
         log.info("mypage - userIdx {} ", userIdx);
 
-        MypageProjectPageResponseDTO arrayProjectList = myPageService.getArrayProjectList(userIdx, pageDTO);
+        MypageProjectPageResponseDTO arrayProjectList = myPageService.getArrayProjectList(userIdx, myPagePageDTO);
 
         System.out.println("myProjectList = " + arrayProjectList);
 

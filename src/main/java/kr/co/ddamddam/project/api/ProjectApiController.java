@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import kr.co.ddamddam.common.response.ApplicationResponse;
 import kr.co.ddamddam.config.security.TokenUserInfo;
-import kr.co.ddamddam.project.dto.page.PageDTO;
+import kr.co.ddamddam.project.dto.page.ProjectPageDTO;
 import kr.co.ddamddam.project.dto.request.ProjectModifyRequestDTO;
 import kr.co.ddamddam.project.dto.request.ProjectSearchRequestDto;
 import kr.co.ddamddam.project.dto.request.ProjectWriteDTO;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import kr.co.ddamddam.upload.UploadService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @RestController
@@ -44,7 +43,7 @@ public class ProjectApiController {
     /**
      * 게시글 전체 조회
      *
-     * @param pageDTO : 페이지 정보
+     * @param projectPageDTO : 페이지 정보
      * @return : 페이징 처리 된 프로젝트 리스트 정보
      * <p>
      * 기본 조회 (조회순) - keyword 입력 없음
@@ -52,12 +51,12 @@ public class ProjectApiController {
      */
     @GetMapping
     private ApplicationResponse<ProjectListPageResponseDTO> getList(
-        PageDTO pageDTO,
+        ProjectPageDTO projectPageDTO,
         ProjectSearchRequestDto searchRequestDto
     ) {
-        log.info("/api/ddamddam/page={}$size={}", pageDTO.getPage(), pageDTO.getSize());
+        log.info("/api/ddamddam/page={}$size={}", projectPageDTO.getPage(), projectPageDTO.getSize());
 
-        ProjectListPageResponseDTO dto = projectService.getList(pageDTO, searchRequestDto);
+        ProjectListPageResponseDTO dto = projectService.getList(projectPageDTO, searchRequestDto);
 //    log.info("dto의 값 : {}",dto);
         return ApplicationResponse.ok(dto);
     }

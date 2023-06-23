@@ -6,8 +6,8 @@ import kr.co.ddamddam.common.common.ValidateToken;
 import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
 import kr.co.ddamddam.common.exception.custom.NotFoundUserException;
 import kr.co.ddamddam.config.security.TokenUserInfo;
-import kr.co.ddamddam.mentor.dto.page.PageDTO;
-import kr.co.ddamddam.mentor.dto.page.PageResponseDTO;
+import kr.co.ddamddam.mentor.dto.page.MentorPageDTO;
+import kr.co.ddamddam.mentor.dto.page.MentorPageResponseDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorModifyRequestDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorWriteRequestDTO;
 import kr.co.ddamddam.mentor.dto.response.MenteeResponseDTO;
@@ -29,7 +29,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.*;
 import static kr.co.ddamddam.common.exception.custom.ErrorCode.*;
@@ -46,11 +45,11 @@ public class MentorService {
     private final ChatRoomRepository chatRoomRepository;
     private final ValidateToken validateToken;
 
-    public MentorListResponseDTO getList(PageDTO pageDTO) {
+    public MentorListResponseDTO getList(MentorPageDTO mentorPageDTO) {
         // Pageable 객체생성
         Pageable pageable = PageRequest.of(
-                pageDTO.getPage() - 1,
-                pageDTO.getSize()
+                mentorPageDTO.getPage() - 1,
+                mentorPageDTO.getSize()
         );
 
         // 게시글 목록 조회
@@ -80,17 +79,17 @@ public class MentorService {
 
         return MentorListResponseDTO.builder()
                 .count(mentorDetailResponseDTOList.size())
-                .pageInfo(new PageResponseDTO<Mentor>(mentors))
+                .pageInfo(new MentorPageResponseDTO<Mentor>(mentors))
                 .mentors(mentorDetailResponseDTOList)
                 .build();
     }
 
     // 주제 검색
-    public MentorListResponseDTO getSubList(PageDTO pageDTO, List<String> subjects) {
+    public MentorListResponseDTO getSubList(MentorPageDTO mentorPageDTO, List<String> subjects) {
         // Pageable 객체생성
         Pageable pageable = PageRequest.of(
-                pageDTO.getPage() - 1,
-                pageDTO.getSize(),
+                mentorPageDTO.getPage() - 1,
+                mentorPageDTO.getSize(),
                 Sort.by(Sort.Direction.DESC, "mentorDate")
         );
 
@@ -124,7 +123,7 @@ public class MentorService {
 
         return MentorListResponseDTO.builder()
                 .count(mentorDetailResponseDTOList.size())
-                .pageInfo(new PageResponseDTO<Mentor>(mentors))
+                .pageInfo(new MentorPageResponseDTO<Mentor>(mentors))
                 .mentors(mentorDetailResponseDTOList)
                 .build();
     }
