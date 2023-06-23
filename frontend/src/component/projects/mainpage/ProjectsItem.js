@@ -6,6 +6,7 @@ import than from "../../../src_assets/than.png";
 import logo from '../../../src_assets/logo.png'
 
 import '../scss/ProjectsItem.scss';
+import ProjectImage from "./ProjectImage";
 
 const ProjectsItem = forwardRef((
     {
@@ -79,13 +80,15 @@ const ProjectsItem = forwardRef((
       if (res.status === 200) {
         const fileBlob = await res.blob();
         const imgUrl = window.URL.createObjectURL(fileBlob);
+
         setProjectImgUrls((prevUrls) => {
           const updatedUrls = [...prevUrls];
           updatedUrls[index] = imgUrl;
           return updatedUrls;
         });
-        // console.log(`프로젝트 디테일 - 이미지 (${index}): ${imgUrl}`);
+        console.log(`프로젝트 - 이미지 (${index}): ${imgUrl}`);
       } else {
+
         const err = await res.text();
         setProjectImgUrls((prevUrls) => {
           const updatedUrls = [...prevUrls];
@@ -151,17 +154,9 @@ const ProjectsItem = forwardRef((
                 onClick={() => handleShowDetails(p.boardIdx)}
               >
                 <div className={'project-wrapper'}>
-                  <div className={'project-img'}>
-                    <img
-                      src={projectImgUrls[index] || logo}
-                      alt="Project Image" className={'project-img'}
-                      style={{
-                        height: 120,
-                        marginBottom: 20
-                      }}
-                    />
 
-                  </div>
+                  <ProjectImage imageUrl={projectImgUrls[index] || logo} />
+
                   <div className={'text-title'}>{p.boardTitle}</div>
                   <div className={'text-content'}>{p.boardContent}</div>
                   <div className={'project-type'}>{p.projectType}</div>
