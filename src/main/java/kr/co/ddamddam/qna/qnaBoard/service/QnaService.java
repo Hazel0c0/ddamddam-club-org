@@ -30,6 +30,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +43,7 @@ import static kr.co.ddamddam.common.exception.custom.ErrorCode.*;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-//@Transactional
+@Transactional
 public class QnaService {
 
     private final int VIEW_COUNT_UP = 1;

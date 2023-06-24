@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+import java.util.Optional;
 import java.util.Random;
 
 import static kr.co.ddamddam.common.exception.custom.ErrorCode.*;
@@ -40,15 +41,15 @@ public class UserFindPasswordService {
     ) {
         log.info("[UserFindPasswordService] findPassword, dto : {}", requestDTO);
 
+        Optional<User> foundUser = userRepository.findByUserEmail(requestDTO.getUserEmail());
+
         // 1차 검증
-        User user = userRepository.findByUserEmail(requestDTO.getUserEmail()).orElseThrow(() -> {
-            throw new NotFoundUserByEmailException(NOT_FOUND_USER_BY_EMAIL, requestDTO.getUserEmail());
-        });
+        if (foundUser.isEmpty()) return FAIL;
 
         // 2차 검증
-        if (!user.getUserName().equals(requestDTO.getUserName())) {
-            throw new NotFoundUserByEmailException(NOT_FOUND_USER, requestDTO.getUserName());
-        }
+        if (!foundUser.get().getUserName().equals(requestDTO.getUserName())) return FAIL;
+
+        User user = foundUser.get();
 
         // 임시 비밀번호 생성
         temporaryPassword = generateRandomPassword();

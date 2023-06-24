@@ -66,19 +66,24 @@ const UserFindInfo = () => {
 
     const res = await fetch(API_BASE_URL, {
       method: 'POST',
+      headers: {'content-type': 'application/json'},
       body: JSON.stringify(data)
     });
 
     // 오류 발생시 알람
     if (res.status === 400) {
-      alert('잘못된 요청 값 입니다.')
+      alert('회원을 찾을 수 없습니다.');
+      setTextInput((prevTextInput) => ({
+        ...prevTextInput,
+        userEmail: '',
+        userName: ''
+      }));
       return;
     } else if (res.status === 403) {
-      alert('권한이 없습니다.')
+      alert('권한이 없습니다.');
       window.location.href = "/";
     } else if (res.status === 404) {
       alert('요청을 찾을 수 없습니다.');
-      return;
     } else if (res.status === 500) {
       alert('잠시 후 다시 접속해주세요.[서버오류]');
       return;
@@ -95,34 +100,33 @@ const UserFindInfo = () => {
       {/* 타이틀 */}
       <div className={'title-wrapper'}>
         <p className={'main-title'}>비밀번호 찾기</p>
-        <p className={'main-sub-title'}>가입한 이메일로 임시 비밀번호를 발급받을 수 있습니다.</p>
+        <p className={'main-sub-title'}>가입한 이메일로 임시 비밀번호를 발급받으실 수 있습니다.</p>
       </div>
       {/* 메인컨텐츠 */}
       <section className={'find-form-wrapper'}>
-        <div className={'email-input-wrapper'}>
-          <h1 className={'sub-title'}>이메일</h1>
+        <h1 className={'find-form-title'}>비밀번호를 찾고자하는 이메일과 이름을 입력해주세요.</h1>
+        <div className={'email-input-wrapper input-wrapper'}>
           <input
             type="text"
             placeholder={'이메일을 입력하세요'}
-            className={'email-text-input'}
+            className={'input-text'}
             name={'userEmail'}
             value={textInput.userEmail}
             onChange={handleSelect}
           />
         </div>
-        <div className={'name-input-wrapper'}>
-          <h1 className={'sub-title'}>이름</h1>
+        <div className={'name-input-wrapper input-wrapper'}>
           <input
             type="text"
             placeholder={'이름을 입력하세요'}
-            className={'name-text-input'}
+            className={'input-text'}
             name={'userName'}
             value={textInput.userName}
             onChange={handleSelect}
           />
         </div>
         {/*임시비밀번호 발급 버튼*/}
-        <div className={'btn-wrapper'}>
+        <div className={'btn-wrapper input-wrapper'}>
           <button className={'submit-btn'} onClick={handleSubmit}>임시비밀번호 발급</button>
         </div>
       </section>
