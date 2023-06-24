@@ -258,6 +258,39 @@ public class CompanyService {
                 .collect(toList());
     }
 
+    //프론트엔드 불러오기
+    public CompanyListPageResponseDTO getFornt(PageDTO pageDTO){
+
+        PageRequest pageable = getPageable(pageDTO);
+        // 데이터베이스에서 게시글 목록 조회 후 DTO 리스트로 꺼내기
+        Page<Company> companies = companyRepository.findFront(pageable);
+        List<CompanyListResponseDTO> companyListResponseDTOList = getCompanyDTOList(companies);
+
+
+        //JSON 형태로 변형
+        return CompanyListPageResponseDTO.builder()
+                .count(companyListResponseDTOList.size())
+                .pageInfo(new PageResponseDTO<Company>(companies))
+                .companyList(companyListResponseDTOList)
+                .build();
+    }
+
+    //백엔드 불러오기
+    public CompanyListPageResponseDTO getBack(PageDTO pageDTO){
+
+        PageRequest pageable = getPageable(pageDTO);
+        // 데이터베이스에서 게시글 목록 조회 후 DTO 리스트로 꺼내기
+        Page<Company> companies = companyRepository.findBack(pageable);
+        List<CompanyListResponseDTO> companyListResponseDTOList = getCompanyDTOList(companies);
+
+
+        //JSON 형태로 변형
+        return CompanyListPageResponseDTO.builder()
+                .count(companyListResponseDTOList.size())
+                .pageInfo(new PageResponseDTO<Company>(companies))
+                .companyList(companyListResponseDTOList)
+                .build();
+    }
 
 
 
