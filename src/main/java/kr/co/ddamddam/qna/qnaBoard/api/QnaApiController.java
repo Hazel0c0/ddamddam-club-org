@@ -83,6 +83,7 @@ public class QnaApiController {
         return ApplicationResponse.ok(qnaListTop3);
     }
 
+    // TODO : 이거 사용 X, search 메서드로 통일했습니다.
     /**
      * QNA 채택완료 게시글만 정렬 조회
      * [GET] ex) /api/ddamddam/qna/adopts?page=2
@@ -100,6 +101,7 @@ public class QnaApiController {
         return ApplicationResponse.ok(qnaListAdopt);
     }
 
+    // TODO : 이거 사용 X, search 메서드로 통일했습니다.
     /**
      * QNA 미채택 게시글만 정렬 조회
      * [GET] ex) /api/ddamddam/qna/non-adopts?page=3
@@ -185,12 +187,12 @@ public class QnaApiController {
         return ApplicationResponse.ok(result);
     }
 
-    // TODO : 키워드 검색 및 정렬 추가중 - 예원
     /**
      * 게시글 검색 (게시글 제목, 본문, 해시태그로 검색됩니다.)
      * @param keyword - 검색 키워드
+     *             ❗ 검색 키워드 없는 경우 '' 로 보내주세요
      * @param sort - 정렬 키워드 (전체, 미채택, 채택)
-     *             ❗ 전체 : 'ALL', 미채택 : 'N', 채택 : 'Y' 로 보내주세요
+     *             ❗ 전체 : '', 미채택 : 'N', 채택 : 'Y' 로 보내주세요
      * @param pageDTO - 클라이언트에서 보낸 페이지 번호
      * @return
      */
@@ -200,7 +202,7 @@ public class QnaApiController {
             @RequestParam("sort") String sort,
             PageDTO pageDTO
     ){
-        log.info("GET : /qna/search?keyword={}&sort={}&page=1&size=10 - 게시글 제목, 본문, 해시태그로 검색", keyword, sort);
+        log.info("GET : /qna/search?page=1&size=10keyword={}&sort={}& - 게시글 제목, 본문, 해시태그로 검색", keyword, sort);
 
         QnaListPageResponseDTO qnaList = qnaService.getKeywordList(keyword, sort, pageDTO);
 
