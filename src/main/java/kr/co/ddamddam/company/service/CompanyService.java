@@ -28,6 +28,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 import static java.util.stream.Collectors.toList;
 
@@ -82,7 +83,7 @@ public class CompanyService {
         CompanyRequestDTO dto = new CompanyRequestDTO();
         List<CompanyRequestDTO> wantedList = new ArrayList<>();
 
-
+        System.out.println(wantedArray.length());
         for (int i = 0; i < wantedArray.length(); i++) {
 
             JSONObject value = wantedArray.getJSONObject(i);
