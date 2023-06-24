@@ -36,9 +36,12 @@ public class UploadController {
       String filePath
           = uploadService.getFilePath(projectIdx,boardType);
 
+      log.debug("file path : {}",filePath);
+
       File file = new File(filePath);
 
       if (!file.exists()) {
+        log.error("파일을 찾을 수 없습니다 !!");
         return ResponseEntity.notFound().build();
       }
 
