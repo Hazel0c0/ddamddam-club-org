@@ -1,50 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 
 
 const ProjectImage = ({projectIdx}) => {
   console.log(`[ img.js ] P.idx : ${projectIdx}`)
-  const [imgUrl, setImgUrl] = useState([]);
+  const [fileUrl, setFileUrl] = useState([]);
 
-  const file_URL = '//localhost:8181/api/ddamddam/load-file'
+  const fileRequestURL = '//localhost:8181/api/ddamddam/load-file'
 
-  const fetchFileImage = async (index) => {
-    const res = await fetch(
-      `${file_URL}?projectIdx=${projectIdx}&boardType=project`, {
-        method: 'GET',
-      });
-    if (res.status === 200) {
-      const fileBlob = await res.blob();
-      const imgUrl = window.URL.createObjectURL(fileBlob);
-      console.log(`img (${index}): ${imgUrl}`);
-
-      // 이미지 수정
-      setImgUrl((prevUrls) => {
-        const updatedUrls = [...prevUrls];
-        updatedUrls[index] = imgUrl;
-        return updatedUrls;
-      });
-      console.log(`img (${index}): ${imgUrl}`);
-
-    } else {
-      const err = await res.text();
-      console.log('img load error !! '+err);
-
-      setImgUrl((prevUrls) => {
-        const updatedUrls = [...prevUrls];
-        updatedUrls[index] = null;
-        return updatedUrls;
-      });
-    }
-  };
   useEffect(() => {
 
-    fetchFileImage(projectIdx);
-  }, [projectIdx]);
+    (async() => {
+      const res = await fetch(
+        `${fileRequestURL}?projectIdx=${projectIdx}&boardType=project`, {
+          method: 'GET',
+        });
+      if (res.status === 200) {
+        const fileBlob = await res.blob();
+        const imgUrl = window.URL.createObjectURL(fileBlob);
+        console.log(`img (${projectIdx}): ${imgUrl}`);
+        // 이미지 수정
+        // setFileUrl((prevUrls) => {
+        //   const updatedUrls = [...prevUrls];
+        //   updatedUrls[projectIdx] = imgUrl;
+        //   return updatedUrls;
+        // });
+        setFileUrl(imgUrl);
+        console.log(`img (${projectIdx}): ${imgUrl}`);
+      } else {
+        const err = await res.text();
+        console.log('img load error !! ' + err);
+
+        // setFileUrl((prevUrls) => {
+        //   const updatedUrls = [...prevUrls];
+        //   updatedUrls[projectIdx] = null;
+        //   return updatedUrls;
+        // });
+        setFileUrl(null);
+
+      }
+    })();
+
+  }, []);
 
   return (
     <div className={'project-img'}>
       <img
-        src={imgUrl}
+        src={fileUrl}
         alt="Project Image"
         className={'project-img'}
         style={{
