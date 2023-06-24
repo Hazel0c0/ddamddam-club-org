@@ -44,6 +44,9 @@ public class UserFindPasswordController {
 
         ResponseMessage result = userFindPasswordService.findPassword(requestDTO);
 
+        if (result == FAIL) {
+            return ResponseEntity.badRequest().body(result);
+        }
         return ResponseEntity.ok().body(result);
     }
 
