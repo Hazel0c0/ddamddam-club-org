@@ -158,7 +158,7 @@ public class ChatService {
 
         List<ChatRoom> chatRoomList = chatRoomRepository.findByMentorMentorIdx(mentorIdx);
         log.info("chatRoom: {}",chatRoomList);
-        log.info("chatRoom size: {}",chatRoomList.get(chatRoomList.size()-1).getRoomId());
+//        log.info("chatRoom size: {}",chatRoomList.get(chatRoomList.size()-1).getRoomId());
         if (!chatRoomList.isEmpty()){
             List<ChatMessageResponseDTO> collect = chatRoomList.stream().map(room -> {
                 ChatMessageResponseDTO dto = new ChatMessageResponseDTO();

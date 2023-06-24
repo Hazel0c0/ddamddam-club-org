@@ -131,16 +131,6 @@ const MypageChatRoom = props => {
             <div className={'chat-submenu-box'}>
               <p className={'chat-sub-title'}>현직</p><p>{chatRoom.current}</p>
             </div>
-            <div className={'participants-list'}>
-              <div className={'list-box'}>
-                <p className={'small-text'}>참여자</p>
-                <div className={'participants-box'}>
-                  {
-
-                  }
-                </div>
-              </div>
-            </div>
           </div>
         ))}
       </div>
