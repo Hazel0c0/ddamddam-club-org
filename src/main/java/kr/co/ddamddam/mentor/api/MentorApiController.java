@@ -163,7 +163,6 @@ public class MentorApiController {
             @PathVariable Long mentorIdx
             ,@AuthenticationPrincipal TokenUserInfo tokenUserInfo
     ){
-
         MenteeListResponseDTO menteeList = mentorService.getMenteeList(mentorIdx, tokenUserInfo);
 
         log.info("menteeList : {}", menteeList);
