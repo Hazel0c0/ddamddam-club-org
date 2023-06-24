@@ -38,6 +38,7 @@ public class CompanyApiController {
         return ResponseEntity.ok().body(dto);
     }
 
+
     //경력별로 가져오기
     @GetMapping("/career")
     public ResponseEntity<?> listCareer(PageDTO pageDTO) throws IOException {
@@ -70,6 +71,23 @@ public class CompanyApiController {
         CompanyListPageResponseDTO companyList = companyService.getKeywordList(keyword, pageDTO);
         return ResponseEntity.ok().body(companyList);
     }
+
+    //백엔드 리스트 불러오기
+    @GetMapping("/back")
+    public ResponseEntity<?> backlist(PageDTO pageDTO) throws IOException {
+        log.info("api/ddamddam/companies/back?page={}&size={}", pageDTO.getPage(), pageDTO.getSize());
+        CompanyListPageResponseDTO dto = companyService.getBack(pageDTO);
+        return ResponseEntity.ok().body(dto);
+    }
+
+    //프론트 리스트 불러오기
+    @GetMapping("/front")
+    public ResponseEntity<?> frontlist(PageDTO pageDTO) throws IOException {
+        log.info("api/ddamddam/companies/back?page={}&size={}", pageDTO.getPage(), pageDTO.getSize());
+        CompanyListPageResponseDTO dto = companyService.getFornt(pageDTO);
+        return ResponseEntity.ok().body(dto);
+    }
+
 
 
 }
