@@ -13,7 +13,7 @@ const ReviewTotal = ({loginCheck, searchKeyword, searchValue}) => {
 
     useEffect(()=>{
         asyncReviewTotalList();
-    },[clickCurrentPage, , searchValue])
+    },[clickCurrentPage, searchKeyword, searchValue])
 
     const asyncReviewTotalList = async () => {
         const responseUrl = `/search?keyword=${searchKeyword}&page=${clickCurrentPage}&size=10&sort=${searchValue}`

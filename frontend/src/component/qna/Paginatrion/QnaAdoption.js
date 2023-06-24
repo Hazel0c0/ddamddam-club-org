@@ -14,11 +14,11 @@ const QnaNoAdoption = ({loginCheck}) => {
 
     useEffect(()=>{
         asyncQnaNoAdoptionList();
-    },[clickCurrentPage])
+    },[clickCurrentPage, searchKeyword, searchValue])
 
     const asyncQnaNoAdoptionList = async () => {
-        const responseUrl = `/adopts?page=${clickCurrentPage}&size=10`;
-
+        // const responseUrl = `/adopts?page=${clickCurrentPage}&size=10`;
+        const responseUrl = `/search?keyword=${searchKeyword}&page=${clickCurrentPage}&size=10&sort=${searchValue}`
         const res = await fetch(`${QNA}${responseUrl}`, {
             method: 'GET',
             headers: {'content-type': 'application/json'}

@@ -1,0 +1,96 @@
+// TODO : 파일명 변경 필요합니다. UserFindPassword 로...
+
+.find-wrapper {
+  padding: 160px 370px 0;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .title-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: url("../../../src_assets/login-background.png") no-repeat center / cover;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+
+    .title-wrapper {
+      position: relative;
+    }
+
+    .main-title {
+      @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+      font-family: 'IBM Plex Mono', sans-serif !important;
+      font-size: 43.2px;
+      font-weight: 500;
+      letter-spacing: -1.5px;
+      margin-bottom: 50px;
+    }
+  }
+
+  .find-form-wrapper {
+    position: absolute;
+    width: 500px;
+    top: 39%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding:50px 50px 40px;
+    background-color: white;
+    border-radius: 11px;
+    box-shadow: 2px 4px 4px 2px rgba(115, 115, 115, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .find-form-title {
+    margin-bottom: 30px;
+  }
+
+  .input-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .input-text {
+    width: 100%;
+    border-radius: 6px;
+    border: solid 1.1px #e6e6e6;
+    padding: 10px 13px;
+    outline-color: #e6e6e6;
+  }
+
+  .correct{
+    padding-top: 7px;
+    padding-left: 13px;
+    font-size: 15px;
+    color: #1e4fff;
+    margin-bottom: 10px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    font-size: 15px;
+    padding: 13px;
+    margin-top: 30px;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    background-color: #1e4fff;
+    color: white;
+  }
+
+  .submit-btn:hover {
+    transition: 0.1s;
+    background-color: rgba(30, 79, 255, 0.8);
+  }
+}
+
+
