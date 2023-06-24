@@ -22,6 +22,11 @@ const MentorsChat = () => {
     const ACCESS_TOKEN = getToken(); // 토큰
     const [menteeCount, setMenteeCount] = useState(0); // 멘티 확정 시 멘티 숫자 올리기
     const [menteeCountList, setMenteeCountList] = useState([]);
+    const subStringContent = (str, n) => { // 메세지 길이 자르기
+        return str?.length > n
+            ? str.substr(0, n - 1) + "..."
+            : str;
+    } 
 
     // headers
     const headerInfo = {
@@ -124,7 +129,7 @@ const MentorsChat = () => {
         <input type={'hidden'} value={item.roomId} className={'chatRoom-idx'}/>
         <img src={item.sender.userProfile} alt={'profileImg'}className={'profile-img'}/>
         <span className={'mentee-nick-name'}>{item.sender.userName}</span>
-        <span className={'mentee-msg-content'}>{item.message}</span>
+        <span className={'mentee-msg-content'}>{subStringContent(item.message, 5)}</span>
         <span className={'mentee-date'}>{item.sentAt}</span>
         <button className={'chatroom-delbtn'} onClick={delChatRoom}>삭제</button>
       </div>

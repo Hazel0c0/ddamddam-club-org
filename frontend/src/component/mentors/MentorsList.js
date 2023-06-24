@@ -200,7 +200,6 @@ const MentorsList = ({selectedSubjects}) => {
                     <div className={'speech-bubble'} key={mentor.title}>
                         {mentor.title}
                     </div>
-                    {/*Profile 수정 필요*/}
                     {
                         mentor.profile !== 'null'
                         ? <div className={'profile-img'} style={{backgroundImage: `url(${mentor.profile})`}}> 
