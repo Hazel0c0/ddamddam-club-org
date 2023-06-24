@@ -7,18 +7,19 @@ import {getToken} from "../common/util/login-util";
 import Common from "../common/Common";
 import logo from "../../src_assets/logo(white).png";
 import {BsCheckLg} from "react-icons/bs";
+import {useNavigate} from "react-router-dom";
 
 const UserFindPassword = () => {
 
   const REQUEST_URL = BASE_URL + AUTH + '/modify-password';
-  // const redirection = useNavigate();
-
+  const redirection = useNavigate();
 
   const [newPassword, setNewPassword] = useState('');
   const [oldpw, setOldPw] = useState('');
 
   //검증 메세지에 대한 상태변수 관리
   const [message, setMessage] = useState({
+    newpw: '',
     checkpw: ''
   });
 
@@ -57,7 +58,7 @@ const UserFindPassword = () => {
   const passwordHandler = e => {
 
     // 패스워드가 변동되면 확인란을 비우기
-    document.getElementById('newpw').value = '';
+    // document.getElementById('newpw').value = '';
     // document.getElementById('check-span').textContent = '';
 
     setMessage({...message, newpw: ''});
@@ -86,14 +87,13 @@ const UserFindPassword = () => {
       msg,
       flag
     });
-
   };
 
   // 비밀번호 확인란 검증 이벤트 핸들러
   const pwcheckHandler = e => {
     // 검증 시작
     let msg, flag;
-    if (!e.target.value) { // 패스워드 안적은거
+    if (!e.target.value) { // 패스워드 안적었을때
       msg = '비밀번호 확인란은 필수값입니다!';
       flag = false;
     } else if (userValue.newpw !== e.target.value) {
@@ -116,18 +116,23 @@ const UserFindPassword = () => {
 
   const handleInputChange = (e) => {
     const {name, value} = e.target;
-    if (name === 'userIdx') {
-      setUserIdx(value);
-    } else if (name === 'newpw') {
-      setNewPassword(value);
-    }
+    setNewPassword(value);
   };
 
-
+  //입력칸이 모두 검증에 통과했는지 여부 검사
+  const isValid = () => {
+    for (const key in correct) {
+      const flag = correct[key];
+      if (!flag) return false;
+    }
+    return true;
+  };
 
   const token = getToken()
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(`newPassword : `,newPassword);
+
     const res = await fetch(REQUEST_URL,{
       method : 'POST',
       headers : {
@@ -135,10 +140,19 @@ const UserFindPassword = () => {
         'Authorization' : 'Bearer '+ token
       },
       body : JSON.stringify({
-        userPassword : oldpw,
         newUserPassword: newPassword
       })
     })
+
+    const result = await res.json();
+    console.log(`비밀번호 변경 후 result`,result)
+    if (result === 'SUCCESS'){
+      alert("비밀번호 변경이 완료되었습니다!");
+      //비밀번호 변경 후 로그인 페이지로 이동
+      redirection('/login');
+    } else{
+      alert('서버와의 통신이 원활하지 않습니다.')
+    }
     console.log(`비밀번호 변경 ,`,res)
     // console.log(response.date);
 
@@ -162,30 +176,27 @@ const UserFindPassword = () => {
           <div className={'input-oldpw'}>
             <input type={"text"} className={'oldpw'} id={'oldpw'} name={'oldpw'} placeholder={'기존 비밀번호'}
                    onChange={handleInputChange}/>
-            {/*<span className={correct.userName ? 'correct' : 'not-correct'}>{message.userName}</span>*/}
-            {/*{correct.userName &&*/}
-            {/*  <BsCheckLg className={'check'}/>*/}
-            {/*}*/}
           </div>
           <br/><br/>
           {/* 새로운 비밀번호*/}
           <div className={'input-newpw'}>
             <input type={"text"} className={'newpw'} id={'newpw'} name={'newpw'} placeholder={'새로운 비밀번호'}
-                   onChange={handleInputChange}/>
-            {/*<span className={correct.userName ? 'correct' : 'not-correct'}>{message.userName}</span>*/}
-            {/*{correct.userName &&*/}
-            {/*  <BsCheckLg className={'check'}/>*/}
-            {/*}*/}
+                   onChange={handleInputChange}
+                   onChange={passwordHandler}/>
+            <span className={correct.newpw ? 'correct' : 'not-correct'}>{message.newpw}</span>
+            {correct.newpw &&
+              <BsCheckLg className={'check'}/>
+            }
           </div>
           <br/><br/>
           {/*새로운 비밀번호 확인*/}
           <div className={'input-checkpw'}>
             <input type={"text"} className={'checkpw'} id={'checkpw'} name={'checkpw'} placeholder={'비밀번호 확인'}
                    onChange={pwcheckHandler}/>
-            {/*<span className={correct.userNickName ? 'correct' : 'not-correct'}>{message.userNickName}</span>*/}
-            {/*{correct.userNickName &&*/}
-            {/*  <BsCheckLg className={'check'}/>*/}
-            {/*}*/}
+            <span className={correct.checkpw ? 'correct' : 'not-correct'}>{message.checkpw}</span>
+            {correct.checkpw &&
+              <BsCheckLg className={'check'}/>
+            }
           </div>
         </div>
 

@@ -445,9 +445,7 @@ const UserJoin = () => {
     //회원가입 버튼 클릭 이벤트 핸들러
     const joinButtonClickHandler = e => {
         console.log(correct);
-        e.preventDefault();  //submit기능 중단 시키기
-        // const $nameInput = document.getElementsByName('name');
-        console.log(userValue)
+        e.preventDefault();  //submnsole.log(userValue)
         console.log(isValid)
         // console.log(`imgFile의 값 : `,imgFile)
         // 회원가입 서버 요청
