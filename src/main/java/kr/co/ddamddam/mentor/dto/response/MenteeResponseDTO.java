@@ -12,4 +12,7 @@ import lombok.*;
 public class MenteeResponseDTO {
     private Long menteeIdx;
     private Long roomId;
+    private String menteeNickname;
+    private Long menteeUserIdx;
+    private Long mentorIdx;
 }
