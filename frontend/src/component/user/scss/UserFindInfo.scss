@@ -1,0 +1,51 @@
+// TODO : 파일명 변경 필요합니다. UserFindPassword 로...
+
+.find-wrapper {
+  padding: 160px 370px 0;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .find-form-wrapper {
+    position: absolute;
+    width: 500px;
+    top: 39%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 60px 23px 40px;
+    background-color: white;
+    border-radius: 11px;
+    box-shadow: 2px 4px 4px 2px rgba(115, 115, 115, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+.title-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: url("../../../src_assets/login-background.png") no-repeat center / cover;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+
+  .title-wrapper {
+    position: relative;
+  }
+
+  .main-title {
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+    font-family: 'IBM Plex Mono', sans-serif !important;
+    font-size: 43.2px;
+    font-weight: 500;
+    letter-spacing: -1.5px;
+    margin-bottom: 50px;
+  }
+}
+

@@ -19,6 +19,9 @@ public class PasswordGenerator {
     private static final String NUMBERS = "0123456789";
 
     public static String generateRandomPassword() {
+
+        log.info("[PasswordGenerator] generateRandomPassword...");
+
         SecureRandom random = new SecureRandom();
         StringBuilder password = new StringBuilder();
         int length = random.nextInt(12) + 8;

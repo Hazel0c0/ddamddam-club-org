@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
 import static kr.co.ddamddam.common.exception.custom.ErrorCode.*;
@@ -80,9 +82,12 @@ public class UserEmailService {
     // 비밀번호 찾기 시 임시비밀번호 발급 메일 전송
     public MimeMessage createEmailFormByFindPassword(
             String temporaryPassword, String email
-    ) throws MessagingException {
+    ) throws MessagingException, UnsupportedEncodingException {
 
-        String setFrom = "DDAMDDAM CLUB";
+        String setFromName = "DDAMDDAM CLUB";
+        String setFromEmail = "yellowyj39@gmail.com";
+
+//        String setFrom = "yellowyj39@gmail.com";
         String title = "DDAMDDAM CLUB 임시비밀번호가 발급되었습니다.";
 
         MimeMessage message = emailSender.createMimeMessage();
@@ -107,7 +112,9 @@ public class UserEmailService {
         msgOfEmail += temporaryPassword + "</strong><div><br/> ";
         msgOfEmail += "</div>";
 
-        message.setFrom(setFrom);
+        InternetAddress fromAddress = new InternetAddress(setFromEmail, setFromName);
+
+        message.setFrom(fromAddress);
         message.setText(msgOfEmail, "utf-8", "html");
 
         return message;
