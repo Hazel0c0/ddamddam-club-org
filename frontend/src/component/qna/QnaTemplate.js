@@ -8,7 +8,7 @@ const QnaTemplate = () => {
     const [searchKeyword, setSearchKeyword] = useState('');
     const handleSearchChange = (value) => {
         setSearchValue(value);
-        console.log(`Search Page에서 넘어오는 카테고리입력 값 : ${value}`)
+        // console.log(`Search Page에서 넘어오는 카테고리입력 값 : ${value}`)
     }
 
     const handleSearchKeyword = (value) => {

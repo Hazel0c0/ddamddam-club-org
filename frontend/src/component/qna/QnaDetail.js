@@ -210,7 +210,7 @@ const QnaDetail = () => {
 
             const res = await fetch(`${QNAREPLY}/adopts/${replyIdxValue}`, {
                 method: 'PATCH',
-                headers: {'content-type': 'application/json'},
+                headers: requestHeader,
                 body: JSON.stringify({
                     replyIdx: replyIdxValue,
                 })
