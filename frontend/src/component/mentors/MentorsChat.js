@@ -28,6 +28,8 @@ const MentorsChat = () => {
             : str;
     } 
 
+    // const 
+
     // headers
     const headerInfo = {
         'content-type': 'application/json',
@@ -119,6 +121,12 @@ const MentorsChat = () => {
         });
     }
   };
+
+  const menteeRenderList = () => {
+
+  };
+
+  
 
 
   // 멘토가 채팅방 선택 렌더링
@@ -226,6 +234,17 @@ const menteeMsgBox = chat.map((item, idx) => {
                       return;
                 });
             }
+      });
+
+      fetch(MENTOR+'/mentee/list'+{chatPageIdx},{
+        method : 'GET',
+        headers : headerInfo
+      })
+      .then((res) => {
+        return res.json();
+      })
+      .then ((result) => {
+
       });
     
   }, [chatPageIdx]);
@@ -399,6 +418,9 @@ const menteeMsgBox = chat.map((item, idx) => {
                                 {current}
                             </div>
                         </div>
+                    </div>
+                    <div className='mentee-list-wrapper'>
+                        {menteeRenderList}
                     </div>
                 </section>
 
