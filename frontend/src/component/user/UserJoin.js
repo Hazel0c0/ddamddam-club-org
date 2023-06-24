@@ -363,24 +363,59 @@ const UserJoin = () => {
 
 
 // userBirth 입력값 변경 핸들러
-    const birthHandler = (event) => {
-        const inputDate = event.target.value; // 입력받은 문자열
-        console.log(inputDate)
-        /*
-        const year = parseInt(inputDate.substring(0, 4));
-        const month = parseInt(inputDate.substring(4, 6));
-        const day = parseInt(inputDate.substring(6, 8));
+//     const birthHandler = (event) => {
+//         const inputDate = event.target.value; // 입력받은 문자열
+//         console.log(inputDate)
+//         /*
+//         const year = parseInt(inputDate.substring(0, 4));
+//         const month = parseInt(inputDate.substring(4, 6));
+//         const day = parseInt(inputDate.substring(6, 8));
 
-        const localDate = new Date(year, month - 1, day); // JavaScript의 Date 객체 생성
- */
+//         const localDate = new Date(year, month - 1, day); // JavaScript의 Date 객체 생성
+//  */
 
 
-        setUserValue(prevValue => ({
-            ...prevValue,
-            userBirth: inputDate // Date 객체로 입력받음
-        }));
+//         setUserValue(prevValue => ({
+//             ...prevValue,
+//             userBirth: inputDate // Date 객체로 입력받음
+//         }));
 
-    };
+//     };
+const birthHandler = (event) => {
+    const inputDate = event.target.value; // 입력받은 값 (YYYY-MM-DD 형식)
+  
+    // 현재 날짜와 비교
+    const currentDate = new Date();
+    const selectedDate = new Date(inputDate);
+  
+    if (isNaN(selectedDate.getTime())) {
+      // 잘못된 형식인 경우, 다시 입력 요청
+      alert('잘못된 형식입니다. YYYY-MM-DD 형식으로 입력해주세요.');
+      return;
+    }
+  
+    if (selectedDate > currentDate) {
+      // 미래 날짜인 경우, 다시 입력 요청
+      alert('미래 날짜입니다. 올바른 날짜로 다시 입력해주세요.');
+      return;
+    }
+  
+    if (selectedDate.getFullYear() < 1900) {
+      // 1900년 이전인 경우, 다시 입력 요청
+      alert('1900년 이전의 날짜입니다. 올바른 날짜로 다시 입력해주세요.');
+      return;
+    }
+  
+    // YYYY-MM-DD 형식의 날짜를 YYYYMMDD 형식으로 변환
+    // const formattedDate = inputDate.replaceAll('-', '');
+  
+    // 유효한 생년월일로 처리할 경우
+    setUserValue(prevValue => ({
+      ...prevValue,
+      userBirth: inputDate,
+    }));
+  };
+  
 
     // userCareer 입력값 변경 핸들러
     const careerHandler = (event) => {
