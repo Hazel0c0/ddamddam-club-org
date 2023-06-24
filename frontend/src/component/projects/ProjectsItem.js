@@ -1,11 +1,11 @@
 import React, {useEffect, useState, forwardRef, useImperativeHandle} from 'react';
 import {useNavigate} from 'react-router-dom';
-import Common from '../../common/Common';
-import less from "../../../src_assets/less.png";
-import than from "../../../src_assets/than.png";
-import logo from '../../../src_assets/logo.png'
+import Common from '../common/Common';
+import less from "../../src_assets/less.png";
+import than from "../../src_assets/than.png";
+import logo from '../../src_assets/logo.png'
 
-import '../scss/ProjectsItem.scss';
+import './scss/ProjectsItem.scss';
 import ProjectImage from "./ProjectImage";
 
 const ProjectsItem = forwardRef((
