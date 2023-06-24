@@ -10,4 +10,5 @@ import java.util.List;
 public interface MenteeRepository extends JpaRepository<Mentee, Long> {
 
     List<Mentee> findByMentorMentorIdx(Long mentorIdx);
+    List<Mentee> findByMentorMentorIdxAndUserUserIdx(Long mentorIdx,Long userIdx);
 }
