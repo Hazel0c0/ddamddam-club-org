@@ -14,8 +14,8 @@ const UserFindPassword = () => {
   // const redirection = useNavigate();
 
 
-  const [userIdx, setUserIdx] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [oldpw, setOldPw] = useState('');
 
   //검증 메세지에 대한 상태변수 관리
   const [message, setMessage] = useState({
@@ -24,6 +24,8 @@ const UserFindPassword = () => {
 
   // 검증 완료 체크에 대한 상태변수 관리(새 비밀번호 체크하기)
   const [correct, setCorrect] = useState({
+    oldPw: false,
+    newpw: false,
     checkpw: false
   });
 
@@ -133,6 +135,7 @@ const UserFindPassword = () => {
         'Authorization' : 'Bearer '+ token
       },
       body : JSON.stringify({
+        userPassword : oldpw,
         newUserPassword: newPassword
       })
     })
