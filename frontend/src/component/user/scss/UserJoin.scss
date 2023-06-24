@@ -106,6 +106,7 @@
       display: flex;
       flex-direction: column;
       margin-bottom: 50px;
+      position: relative;
 
       .input-name,
       .input-nickname{
@@ -113,6 +114,48 @@
         flex-direction: column;
         position: relative;
       }
+
+      //닉네임 중복확인
+      .input-nickname{
+        .nickname-wrapper{
+          display: flex;
+          justify-content: space-between;
+
+          .nickname{
+            width: 82%;
+          }
+          .check-nickName{
+            background-color: white;
+            width: 17%;
+            padding: 12px 20px;
+            border-radius: 5.3px;
+            color: #1E4FFF;
+            font-size: 14px;
+            font-weight: 600;
+            border: solid 1px #1E4FFF;
+          }
+
+          .check-nickName:hover{
+            transition: 0.3s;
+            background-color: #1E4FFF;
+            width: 17%;
+            padding: 12px 20px;
+            border-radius: 5.3px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+          }
+        }
+        .check{
+          color: #1e4fff;
+          font-size: 18px;
+          position: absolute;
+          right: 110px;
+          top: 30%;
+          transform: translateY(-50%);
+        }
+      }
+
       .input-name{
         .check{
           top: 50%;
@@ -274,16 +317,7 @@
     color: #828282;
   }
 }
-.endCheck-btn{
-  background-color: white;
-  width: 17%;
-  padding: 12px 20px;
-  border-radius: 5.3px;
-  color: #828282;
-  font-size: 14px;
-  font-weight: 600;
-  border: solid 1px #828282;
-}
+
 
 
 .check-btn:hover {
@@ -317,3 +351,13 @@
   top: 30%;
   transform: translateY(-50%);
 }
+.endCheck-btn{
+   background-color: white;
+   width: 17%;
+   padding: 12px 20px;
+   border-radius: 5.3px;
+   color: #828282;
+   font-size: 14px;
+   font-weight: 600;
+   border: solid 1px #828282;
+ }
