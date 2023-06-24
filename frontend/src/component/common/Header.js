@@ -47,6 +47,7 @@ const Header = () => {
         } else{
             const err = await res.text();
             setProfileUrl(null);
+            console.log("이미지 로드 실패")
         }
     } ;
 
