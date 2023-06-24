@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
 import static kr.co.ddamddam.common.exception.custom.ErrorCode.*;
@@ -57,6 +58,7 @@ public class UserFindPasswordService {
 
         // 회원의 현재 비밀번호를 암호화된 임시 비밀번호로 변경
         user.setUserPassword(encoder.encode(temporaryPassword));
+        userRepository.save(user);
 
         return SUCCESS;
     }
@@ -68,11 +70,13 @@ public class UserFindPasswordService {
      */
     private void sendEmail(String userEmail, String temporaryPassword) {
         try {
+            log.info("[UserFindPasswordService] sendEmail, userEmail : {}, temporaryPassword : {}", userEmail, temporaryPassword);
+
             // 임시비밀번호 메일 작성
             MimeMessage emailForm = emailService.createEmailFormByFindPassword(temporaryPassword, userEmail);
             // 메일 발송
             emailSender.send(emailForm);
-        } catch (MessagingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             e.printStackTrace(); // TODO : 테스트 후 삭제
             throw new MessageException(MESSAGE_SEND_ERROR, userEmail);
         }

@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
+import "./scss/UserFindInfo.scss";
 import Common from "../common/Common";
 import {BASE_URL, FIND_PASSWORD} from "../common/config/HostConfig";
 import {redirect, useNavigate} from "react-router-dom";
 
+// TODO : 컴포넌트명 변경 필요합니다. UserFindPassword 로...
 /**
  * 비밀번호 찾기 컴포넌트
  */
@@ -119,11 +121,11 @@ const UserFindInfo = () => {
             onChange={handleSelect}
           />
         </div>
+        {/*임시비밀번호 발급 버튼*/}
+        <div className={'btn-wrapper'}>
+          <button className={'submit-btn'} onClick={handleSubmit}>임시비밀번호 발급</button>
+        </div>
       </section>
-      {/*임시비밀번호 발급 버튼*/}
-      <div className={'btn-wrapper'}>
-        <button className={'submit-btn'} onClick={handleSubmit}>임시비밀번호 발급</button>
-      </div>
     </Common>
   );
 };
