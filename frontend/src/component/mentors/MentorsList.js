@@ -201,7 +201,15 @@ const MentorsList = ({selectedSubjects}) => {
                         {mentor.title}
                     </div>
                     {/*Profile 수정 필요*/}
-                    <div className={'profile-img'}></div>
+                    {
+                        mentor.profile !== 'null'
+                        ? <div className={'profile-img'} style={{backgroundImage: `url(${mentor.profile})`}}> 
+                            </div>
+                        : <div className={'profile-img'}> </div>
+                    }
+
+
+                    
 
                     <div className={'list-text-wrapper'}>
                         <div className={'writer'}>

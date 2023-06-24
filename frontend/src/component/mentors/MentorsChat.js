@@ -367,7 +367,12 @@ const menteeMsgBox = chat.map((item, idx) => {
                 </section>
 
                 <section className={'writer-section'}>
-                    <div className={'detail-profile-img'}></div>
+                    {
+                        profile !== 'null'
+                        ? <div className={'detail-profile-img'} style={{backgroundImage: `url(${profile})`}}> 
+                            </div>
+                        : <div className={'detail-profile-img'}> </div>
+                    }
                     <div className={'writer-text-wrapper'}>
                         <h2 className={'detail-writer'}>{nickName}</h2>
                         <h3 className={'detail-sub-title'}>{title}</h3>
