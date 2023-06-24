@@ -118,9 +118,9 @@ const MypageChatRoom = props => {
       }
       <div className={'chat-wrapper'}>
         {chatRoomList.map((chatRoom, index) => (
-          <div className={'chat-box'}>
+          <div className={'chat-box'} key={`${chatRoom.roomIdx}-${index}`}>
             <input type={'hidden'} value={chatRoom.roomIdx} className={'chat-room-idx'}/>
-            <Link to={`/mentor/detail/chat/${chatRoom.mentorIdx}/${chatRoom.roomIdx}`} onClick={loginCheckHandler}>
+            <Link to={`/mentors/detail/chat/${chatRoom.mentorIdx}/${chatRoom.roomIdx}`} onClick={loginCheckHandler}>
               <div className={'chat-title'}>
                 {subStringContent(chatRoom.title, 35)}
               </div>

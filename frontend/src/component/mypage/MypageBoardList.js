@@ -105,7 +105,7 @@ const MypageBoardList = () => {
               }
               {
                 board.boardType === '멘토/멘티' &&
-                <Link to={`/mentor/detail?mentorIdx=${board.boardIdx}`} onClick={loginCheckHandler}>
+                <Link to={`/mentor/detail?mentorIdx=${board.boardIdx}/0`} onClick={loginCheckHandler}>
                   {board.boardTitle}
                 </Link>
               }
