@@ -20,7 +20,6 @@ const ProjectsItem = forwardRef((
   ) => {
     const navigate = useNavigate();
     const [projects, setProjects] = useState([]);
-    const [projectImgUrls, setProjectImgUrls] = useState([]);
 
     const [pageNation, setPageNation] = useState({});
     const [prevBtn, setPrevBtn] = useState(false);
@@ -58,7 +57,7 @@ const ProjectsItem = forwardRef((
             console.log(res)
             for (let i = 0; i < res.length; i++) {
               console.log(res[i].boardIdx)
-              fetchFileImage(res[i].boardIdx, i);
+              // fetchFileImage(res[i].boardIdx, i);
             }
           }
         });
@@ -70,33 +69,8 @@ const ProjectsItem = forwardRef((
       pageChange(carouselIndex);
     }, [carouselIndex]);
 
-    const file_URL = '//localhost:8181/api/ddamddam/load-file'
 
-    const fetchFileImage = async (projectIdx, index) => {
-      const res = await fetch(
-        `${file_URL}?projectIdx=${projectIdx}&boardType=project`, {
-          method: 'GET',
-        });
-      if (res.status === 200) {
-        const fileBlob = await res.blob();
-        const imgUrl = window.URL.createObjectURL(fileBlob);
 
-        setProjectImgUrls((prevUrls) => {
-          const updatedUrls = [...prevUrls];
-          updatedUrls[index] = imgUrl;
-          return updatedUrls;
-        });
-        console.log(`프로젝트 - 이미지 (${index}): ${imgUrl}`);
-      } else {
-
-        const err = await res.text();
-        setProjectImgUrls((prevUrls) => {
-          const updatedUrls = [...prevUrls];
-          updatedUrls[index] = null;
-          return updatedUrls;
-        });
-      }
-    };
 
 
     const handlePrevious = () => {
@@ -153,9 +127,9 @@ const ProjectsItem = forwardRef((
                 key={p.boardIdx}
                 onClick={() => handleShowDetails(p.boardIdx)}
               >
-                <div className={'project-wrapper'}>
 
-                  <ProjectImage imageUrl={projectImgUrls[index] || logo} />
+                <div className={'project-wrapper'}>
+                  <ProjectImage projectIdx={p.boardIdx} />
 
                   <div className={'text-title'}>{p.boardTitle}</div>
                   <div className={'text-content'}>{p.boardContent}</div>

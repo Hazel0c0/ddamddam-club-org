@@ -55,8 +55,8 @@ sns:
 
 upload:
   path:
-    project: /Users/taegeun/Desktop/
-#    profile: D:/ddam_upload/profile
+#    project: /Users/taegeun/Desktop/
+    project: C:/ddam_upload/project
     profile: /Users/taegeun/Desktop/
 
 #s3 접근 설정
