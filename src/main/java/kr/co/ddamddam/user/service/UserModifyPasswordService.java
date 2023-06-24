@@ -45,6 +45,7 @@ public class UserModifyPasswordService {
 
         // 입력한 새 비밀번호가 현재 비밀번호와 같은지 검증
         if (user.getUserPassword().equals(encodedNewPassword)) {
+            //같으면 FAIL을 리턴
             return FAIL;
         }
 
