@@ -79,14 +79,23 @@ const QnaDetail = () => {
         }, []);
 
         //댓글 작성
-        // const enterUserIdx = getUserIdx();
+        let isRun = false;
+        //TODO 중복클릭 방지 해야함
         const writeReplyHandler = async () => {
+            if (isRun === true) {
+                console.log("여러번 클릭")
+                return;
+            }
             if (detailQna.boardAdoption === 'Y') {
                 alert('이미 채택된 글은 댓글을 작성하실 수 없습니다.');
                 return;
             }
             const inputContent = document.querySelector('.reply-input').value;
-            console.log(`inputContent의 값 ${inputContent}`);
+            if (inputContent.trim() === '') {
+                alert('공백없이 입력해주세요!');
+                return;
+            }
+
             const res = await fetch(`${QNAREPLY}/write`, {
                 method: 'POST',
                 headers: requestHeader,
@@ -101,6 +110,7 @@ const QnaDetail = () => {
                 alert(text);
                 return;
             }
+            isRun = true;
             const replyData = await res.json();
             const replyList = replyData.payload;
 
@@ -114,6 +124,8 @@ const QnaDetail = () => {
 
             //임시방편 데이터에 무리갈듯
             asyncDetail();
+
+
         }
 
         //댓글 수정
