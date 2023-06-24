@@ -8,7 +8,7 @@ import MentorsMain from "./component/mentors/MentorsMain";
 import MainTemplate from "./component/common/MainTemplate";
 import UserLogin from "./component/user/UserLogin";
 import UserJoin from "./component/user/UserJoin";
-import ProjectsTemplate from "./component/projects/mainpage/ProjectsTemplate";
+import ProjectsTemplate from "./component/projects/ProjectsTemplate";
 import ProjectsWrite from "./component/projects/ProjectsWrite";
 import ProjectsDetail from "./component/projects/ProjectsDetail";
 import QnaMain from "./component/qna/QnaMain";

@@ -1,14 +1,14 @@
 import React, {useState, useEffect, useRef} from 'react';
 import ProjectsItem from "./ProjectsItem";
-import Common from "../../common/Common";
-import {PROJECT} from "../../common/config/HostConfig";
+import Common from "../common/Common";
+import {PROJECT} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
-import less from "../../../src_assets/less.png";
-import than from "../../../src_assets/than.png";
+import less from "../../src_assets/less.png";
+import than from "../../src_assets/than.png";
 import {Modal, Button} from 'react-bootstrap';
-import {getToken, getUserPosition} from "../../common/util/login-util";
+import {getToken, getUserPosition} from "../common/util/login-util";
 import 'bootstrap/dist/css/bootstrap.css';
-import '../scss/QuickMatching.scss';
+import './scss/QuickMatching.scss';
 
 const ProjectsMain = () => {
 
@@ -97,9 +97,11 @@ const ProjectsMain = () => {
         return res.json();
       }
     ).then(res => {
+      if (res) {
       console.log('퀵 매칭 데이터 패치');
       console.log(res.payload.projects);
       setQuickDetail(res.payload.projects);
+    }
     })
   };
 
