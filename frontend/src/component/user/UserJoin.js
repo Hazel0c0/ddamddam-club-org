@@ -405,7 +405,7 @@ const UserJoin = () => {
     const fetchSignUpPost = async () => {
         console.log(`fetchSignUpPost의 userValue : ${userValue}`);
 
-        /*
+
         // JSON을 Blob타입으로 변경 후 FormData에 넣기
         const userJsonBlob = new Blob(
           [JSON.stringify(userValue)],
@@ -436,7 +436,7 @@ const UserJoin = () => {
             alert('서버와의 통신이 원활하지 않습니다.');
         }
 
-         */
+
     };
 
 
