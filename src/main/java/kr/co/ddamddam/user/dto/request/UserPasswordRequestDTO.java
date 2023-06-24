@@ -14,8 +14,7 @@ import javax.validation.constraints.Size;
 public class UserPasswordRequestDTO {
 
     @NotBlank
-    @Email
-    @Size(min = 8, max = 15)
+    @Size(min = 8, max = 20)
     private String newUserPassword;
 
 }
