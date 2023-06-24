@@ -7,6 +7,33 @@
   display: flex;
   flex-direction: column;
 
+  .title-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: url("../../../src_assets/login-background.png") no-repeat center / cover;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+
+    .title-wrapper {
+      position: relative;
+    }
+
+    .main-title {
+      @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+      font-family: 'IBM Plex Mono', sans-serif !important;
+      font-size: 43.2px;
+      font-weight: 500;
+      letter-spacing: -1.5px;
+      margin-bottom: 50px;
+    }
+  }
+
   .find-form-wrapper {
     position: absolute;
     width: 500px;
@@ -65,30 +92,5 @@
     background-color: rgba(30, 79, 255, 0.8);
   }
 }
-.title-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: url("../../../src_assets/login-background.png") no-repeat center / cover;
-  height: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
 
-  .title-wrapper {
-    position: relative;
-  }
-
-  .main-title {
-    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
-    font-family: 'IBM Plex Mono', sans-serif !important;
-    font-size: 43.2px;
-    font-weight: 500;
-    letter-spacing: -1.5px;
-    margin-bottom: 50px;
-  }
-}
 
