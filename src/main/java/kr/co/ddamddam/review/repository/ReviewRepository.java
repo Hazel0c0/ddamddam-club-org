@@ -25,8 +25,13 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
     Page<Review> findByDesc(Pageable pageable);
 
     @Query("SELECT r FROM Review r WHERE r.reviewTitle LIKE %:keyword% " +
-            "OR r.reviewContent LIKE %:keyword% OR r.reviewJob LIKE %:keyword%")
-    Page<Review> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
+            "OR r.reviewContent LIKE %:keyword% OR r.reviewJob LIKE %:keyword% OR r.reviewLocation LIKE %:keyword% OR r.reviewCompany LIKE %:keyword% " +
+            "ORDER BY " +
+            "CASE WHEN :sort = 'RATING' THEN r.reviewRating " +
+            "     WHEN :sort = 'VIEW' THEN r.reviewView " +
+            "     ElSE r.reviewDate " +
+            "END DESC")
+    Page<Review> findByKeyword(@Param("keyword") String keyword,@Param("sort") String sort, Pageable pageable);
 
 
     @Query("SELECT r from Review r ORDER BY r.reviewDate DESC")

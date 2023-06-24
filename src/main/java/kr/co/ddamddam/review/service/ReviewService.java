@@ -152,10 +152,10 @@ public class ReviewService {
     }
 
     //키워드 검색기능 구현하기
-    public ReviewListPageResponseDTO getKeywordList(String keyword, PageDTO pageDTO){
+    public ReviewListPageResponseDTO getKeywordList(String keyword,String sort,PageDTO pageDTO){
 
         PageRequest pageable = getPageable(pageDTO);
-        Page<Review> reviews = reviewRepository.findByKeyword(keyword,pageable);
+        Page<Review> reviews = reviewRepository.findByKeyword(keyword,sort,pageable);
         List<ReviewListResponseDTO> reviewListResponseDTOS = getReviewListKeyword(reviews);
 
         return ReviewListPageResponseDTO.builder()
