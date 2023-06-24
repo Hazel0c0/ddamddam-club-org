@@ -422,19 +422,24 @@ const QnaDetail = () => {
                                                                             disabled>채택불가</button>
                                                                 )
                                                             ) : (
-                                                                enterUserNickName === detailQna.boardWriter
+                                                                enterUserNickName === detailQna.boardWriter && enterUserNickName !== reply.replyWriter
                                                                     ? (
                                                                         <button className="adoption-btn"
                                                                                 onClick={adoptHandler}>채택하기</button>
                                                                     )
                                                                     : (
-                                                                        <div className={'speechBubbleText-wrapper'}>
-                                                                            <img src={speechBubbleText} alt={"말풍선"}
-                                                                                 className={'speechBubbleText-icon'}/>
-                                                                            <div className="speechBubbleText"
-                                                                            >채택 대기중
+                                                                        enterUserNickName !== reply.replyWriter ?
+                                                                            <div className={'speechBubbleText-wrapper'}>
+                                                                                <img src={speechBubbleText} alt={"말풍선"}
+                                                                                     className={'speechBubbleText-icon'}/>
+                                                                                <div className="speechBubbleText"
+                                                                                >채택 대기중
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
+                                                                            :
+                                                                            null
+
+
                                                                     )
 
                                                             )}
