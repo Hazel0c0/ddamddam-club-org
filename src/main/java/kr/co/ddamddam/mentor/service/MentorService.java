@@ -259,13 +259,13 @@ public class MentorService {
         }
         // 제한인원이 다 안 찼으면 멘티 확정하기
         else if (findByMenteeList.size() < mentor.getMentorMentee()){
-            User user = userRepository.findById(enterUserIdx).orElseThrow(
-                    () -> {throw  new NotFoundUserException(NOT_FOUND_USER, enterUserIdx);}
-            );
             ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(
                     () -> {
                         throw new NotFoundBoardException(NOT_FOUND_BOARD, roomId);
                     }
+            );
+            User user = userRepository.findById(chatRoom.getSender().getUserIdx()).orElseThrow(
+                    () -> {throw  new NotFoundUserException(NOT_FOUND_USER, enterUserIdx);}
             );
             Mentee mentee = new Mentee();
             mentee.setMentor(mentor);

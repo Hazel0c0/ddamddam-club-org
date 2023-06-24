@@ -236,16 +236,16 @@ const menteeMsgBox = chat.map((item, idx) => {
             }
       });
 
-      fetch(MENTOR+'/mentee/list'+{chatPageIdx},{
-        method : 'GET',
-        headers : headerInfo
-      })
-      .then((res) => {
-        return res.json();
-      })
-      .then ((result) => {
+    //   (MENTOR+'/mentee/list'+{chatPageIdx},{
+    //     method : 'GET',
+    //     headers : headerInfo
+    //   })
+    //   .then((res) => {
+    //     return res.json();
+    //   })
+    //   .then ((rfetchesult) => {
 
-      });
+    //   });
     
   }, [chatPageIdx]);
 
