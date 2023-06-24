@@ -3,6 +3,7 @@ import './scss/QnaDetail.scss';
 import Common from "../common/Common";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import viewIcon from "../../src_assets/view-icon.png";
+import speechBubbleText from "../../src_assets/speech-bubble(text).png";
 import speechBubble from "../../src_assets/speech-bubble.png";
 import {QNA, QNAREPLY} from "../common/config/HostConfig";
 import {getToken, getUserNickname} from "../common/util/login-util";
@@ -128,7 +129,7 @@ const QnaDetail = () => {
         };
 
         //댓글 수정 취소
-        const replyModifyCancleHandler = (index) =>{
+        const replyModifyCancleHandler = (index) => {
             setReplyModifyShow((prev) => {
                 const updatedState = {
                     ...prev,
@@ -179,11 +180,7 @@ const QnaDetail = () => {
             // console.log(`inputContent의 값 ${inputContent}`);
             const res = await fetch(`${QNAREPLY}/delete/${replyIdx}`, {
                 method: 'DELETE',
-                headers: requestHeader,
-                // body: JSON.stringify({
-                //     replyIdx : replyIdx,
-                //     replyContent: replyContent,
-                // })
+                headers: requestHeader
             })
             console.log(`댓글 삭제 res ${JSON.stringify(res)}`)
             alert("댓글이 삭제 되었습니다.");
@@ -278,7 +275,7 @@ const QnaDetail = () => {
             }
             const res = fetch(`${QNA}/delete/${boardIdx}`, {
                 method: 'DELETE',
-                headers: {'content-type': 'application/json'},
+                headers: requestHeader,
                 body: JSON.stringify({
                     boardIdx: boardIdx
                 })
@@ -381,7 +378,8 @@ const QnaDetail = () => {
                                                     </>
                                                 }
                                             </div>
-
+                                            {/*현재 index 값 : {index} ///*/}
+                                            {/*현재 댓글 번호 {replyModifyShow[index] ? '트루' : '폴스'}*/}
                                             {/*수정 버튼 누르면 수정 폼 뛰워주기*/}
                                             <div className={'reply-content-wrapper'} key={index}>
                                                 {replyModifyShow[index] ?
@@ -402,7 +400,7 @@ const QnaDetail = () => {
                                                     <>
                                                         <input type={"hidden"} value={reply.replyIdx} name={"replyIdx"}
                                                                className={'replyIdx'}/>
-                                                        <div>{reply.replyContent}</div>
+                                                        <div className={'reply-content-text'}>{reply.replyContent}</div>
                                                         <div>
                                                             {detailQna.boardAdoption === 'Y' ? (
                                                                 checkedReplyAdoption && checkedReplyAdoption[index].replyAdoption === 'Y' ? (
@@ -412,10 +410,21 @@ const QnaDetail = () => {
                                                                             disabled>채택불가</button>
                                                                 )
                                                             ) : (
-                                                                enterUserNickName !== reply.replyWriter && (
-                                                                    <button className="adoption-btn"
-                                                                            onClick={adoptHandler}>채택하기</button>
-                                                                )
+                                                                enterUserNickName === detailQna.boardWriter
+                                                                    ? (
+                                                                        <button className="adoption-btn"
+                                                                                onClick={adoptHandler}>채택하기</button>
+                                                                    )
+                                                                    : (
+                                                                        <div className={'speechBubbleText-wrapper'}>
+                                                                            <img src={speechBubbleText} alt={"말풍선"}
+                                                                                 className={'speechBubbleText-icon'}/>
+                                                                            <div className="speechBubbleText"
+                                                                            >채택 대기중
+                                                                            </div>
+                                                                        </div>
+                                                                    )
+
                                                             )}
                                                         </div>
                                                     </>

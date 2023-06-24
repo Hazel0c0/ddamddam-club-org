@@ -235,7 +235,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-
+        position: relative;
 
         .reply-modify-content{
           width: 670px;
@@ -264,6 +264,26 @@
           border-radius: 5px;
           background-color: #e6e6e6;
         }
+
+        //작성자 답변 채택 기다리는 말풍선
+        .speechBubbleText-wrapper{
+          position: relative;
+
+          .speechBubbleText-icon{
+            width: 80px;
+          }
+
+          .speechBubbleText{
+            color: white;
+            text-align: center;
+            font-size: 13px;
+            top: 23%;
+            left: 12%;
+            position: absolute;
+            //width: 90px;
+          }
+        }
+
 
         .reply-modify-btn{
           margin-left: 0;
@@ -304,6 +324,11 @@
           color: white;
           font-weight: 600;
         }
+
+        .reply-content-text{
+          line-height: 1.4;
+          width: 85%;
+        }
       }
     }
 
@@ -329,6 +354,7 @@
         //border-color: #dcdcdc;
         border : none;
         outline-color: #dcdcdc;
+        line-height: 1.4;
       }
       .input-submit-btn{
         border: none;
