@@ -9,6 +9,7 @@ import {Modal, Button} from 'react-bootstrap';
 import {getToken, getUserPosition} from "../common/util/login-util";
 import 'bootstrap/dist/css/bootstrap.css';
 import './scss/QuickMatching.scss';
+import ProjectsQuickMatching from "./ProjectsQuickMatching";
 
 const ProjectsMain = () => {
 
@@ -79,10 +80,10 @@ const ProjectsMain = () => {
     setShow(true);
     quickMatchingFetchData();
   };
-
   const handleClose = () => {
     setShow(false)
   };
+
 
   const quick = PROJECT + `/quick?position=${USER_POSITION}&size=5`;
   const quickMatchingFetchData = () => {
@@ -138,45 +139,10 @@ const ProjectsMain = () => {
 
         <Modal show={show} onHide={handleClose} id="modal-container">
 
-          {quickDetail.map((q) => (
+          {quickDetail.map((quick) => (
             <>
-              <Modal.Header closeButton>
-                <Modal.Title>{q.boardTitle}</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <div>나의 포지션 : {USER_POSITION}</div>
-                <div>제목 : {q.boardContent}</div>
-                <div>
-                  {Array(q.maxFront - q.applicantOfFront)
-                    .fill()
-                    .map((_, index) => (
-                      <img
-                        src="https://cdn-icons-png.flaticon.com/128/4552/4552960.png"
-                        alt="front"
-                        style={{height: 60}}
-                        key={index}
-                      />
-                    ))}
-                  {Array(q.maxBack - q.applicantOfBack)
-                    .fill()
-                    .map((_, index) => (
-                      <img
-                        src="https://cdn-icons-png.flaticon.com/128/4552/4552941.png"
-                        alt="front"
-                        style={{height: 60}}
-                        key={index}
-                      />
-                    ))}
-                </div>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                  닫기
-                </Button>
-                <Button variant="primary" onClick={handleClose}>
-                  저장
-                </Button>
-              </Modal.Footer>
+              <ProjectsQuickMatching quick={quick}
+                                     handleClose={handleClose}/>
             </>
           ))}
 
