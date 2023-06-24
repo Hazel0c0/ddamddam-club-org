@@ -238,7 +238,7 @@
 
 
         .reply-modify-content{
-          width: 700px;
+          width: 670px;
           resize: none;
           background: white;
           height: 50px;
@@ -255,7 +255,8 @@
         }
         .adoption-btn,
         .adoption-btn-checked,
-        .adoption-btn-disabled{
+        .adoption-btn-disabled,
+        .reply-modify-btn{
           margin-left: auto;
           border: none;
           width: 100px;
@@ -263,6 +264,33 @@
           border-radius: 5px;
           background-color: #e6e6e6;
         }
+
+        .reply-modify-btn{
+          margin-left: 0;
+        }
+
+        .reply-modify-cancel-btn{
+          border: none;
+          width: 50px;
+          height: 30px;
+          border-radius: 5px;
+          background-color: white;
+          //background-color: #292834;
+          margin-right: 5px;
+          margin-left: 5px;
+        }
+
+        .reply-modify-cancel-btn:hover{
+          border: none;
+          width: 50px;
+          height: 30px;
+          border-radius: 5px;
+          //background-color: ;
+          background-color: #292834;
+          color: white;
+          margin-right: 5px;
+        }
+
         .adoption-btn-checked{
           background-color: #1e4fff;
           color: white;
@@ -270,7 +298,8 @@
         .adoption-btn-disabled{
           text-decoration: line-through ;
         }
-        .adoption-btn:hover{
+        .adoption-btn:hover,
+        .reply-modify-btn:hover{
           background-color:#1e4fff;
           color: white;
           font-weight: 600;

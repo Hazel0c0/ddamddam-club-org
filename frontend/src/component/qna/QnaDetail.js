@@ -24,7 +24,7 @@ const QnaDetail = () => {
         };
 
         //수정버튼 누르면 수정할 수 있게
-        const [replyModifyShow, setReplyModifyShow] = useState(false);
+        const [replyModifyShow, setReplyModifyShow] = useState([]);
 
 
         const asyncDetail = async () => {
@@ -63,6 +63,14 @@ const QnaDetail = () => {
 
             // console.log(modifiedReplyList);
             console.log(result.payload);
+
+            //배열만큼 수정폼 반복
+            const updateModifiedBtn = result.payload.replyList.map((list, index) => {
+                return false;
+            });
+
+            setReplyModifyShow(updateModifiedBtn);
+            //
         }
 
         useEffect(() => {
@@ -108,10 +116,28 @@ const QnaDetail = () => {
         }
 
         //댓글 수정
-        const replyModifyShowHandler = async () => {
-            setReplyModifyShow(true);
-        }
+        const replyModifyShowHandler = (index) => {
+            setReplyModifyShow((prev) => {
+                const updatedState = {
+                    ...prev,
+                    [index]: true
+                };
+                console.log('replyModifyShow:', updatedState);
+                return updatedState;
+            });
+        };
 
+        //댓글 수정 취소
+        const replyModifyCancleHandler = (index) =>{
+            setReplyModifyShow((prev) => {
+                const updatedState = {
+                    ...prev,
+                    [index]: false
+                };
+                console.log('replyModifyShow:', updatedState);
+                return updatedState;
+            });
+        }
 
         const replyModifyHandler = async (replyIdx) => {
 
@@ -127,7 +153,7 @@ const QnaDetail = () => {
                 method: 'PATCH',
                 headers: requestHeader,
                 body: JSON.stringify({
-                    replyIdx : replyIdx,
+                    replyIdx: replyIdx,
                     replyContent: modifyContent,
                 })
             })
@@ -270,7 +296,6 @@ const QnaDetail = () => {
 
         }
 
-
         return (
             <Common className={'qna-detail-wrapper'}>
                 <div className={'title-wrapper'}>
@@ -341,9 +366,6 @@ const QnaDetail = () => {
                                 </p>
                                 {replyList.map((reply, index) => {
 
-                                    // setOrderIndex(index);
-
-                                    console.log('index in replyList: ', index);
                                     return (
                                         <div className={'reply-list'} key={index}>
                                             <div className={'reply-top-wrapper'}>
@@ -353,7 +375,7 @@ const QnaDetail = () => {
                                                 {enterUserNickName === reply.replyWriter &&
                                                     <>
                                                         <span className={'reply-modify'}
-                                                              onClick={replyModifyShowHandler}>수정</span>
+                                                              onClick={() => replyModifyShowHandler(index)}>수정</span>
                                                         <span className={'reply-delete'}
                                                               onClick={() => replyDeleteHandler(reply.replyIdx)}>삭제</span>
                                                     </>
@@ -361,15 +383,20 @@ const QnaDetail = () => {
                                             </div>
 
                                             {/*수정 버튼 누르면 수정 폼 뛰워주기*/}
-                                            <div className={'reply-content-wrapper'}>
-                                                {replyModifyShow ?
+                                            <div className={'reply-content-wrapper'} key={index}>
+                                                {replyModifyShow[index] ?
                                                     <>
-                                                        <textarea name={"replyContent"} className={'reply-modify-content'}
-                                                                  // autoFocus={true}
+                                                        <textarea name={"replyContent"}
+                                                                  className={'reply-modify-content'}
                                                                   defaultValue={reply.replyContent}/>
-                                                        <button className="adoption-btn"
+                                                        <button className="reply-modify-cancel-btn"
+                                                                onClick={() => replyModifyCancleHandler(index)}>취소
+                                                        </button>
+
+                                                        <button className="reply-modify-btn"
                                                                 onClick={() => replyModifyHandler(reply.replyIdx)}>수정완료
                                                         </button>
+
                                                     </>
                                                     :
                                                     <>
@@ -386,7 +413,8 @@ const QnaDetail = () => {
                                                                 )
                                                             ) : (
                                                                 enterUserNickName !== reply.replyWriter && (
-                                                                    <button className="adoption-btn" onClick={adoptHandler}>채택하기</button>
+                                                                    <button className="adoption-btn"
+                                                                            onClick={adoptHandler}>채택하기</button>
                                                                 )
                                                             )}
                                                         </div>
