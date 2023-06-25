@@ -26,9 +26,13 @@ const PopularProjects = forwardRef((
       const [nextBtn, setNextBtn] = useState(false);
       //캐러셀
       const [carouselIndex, setCarouselIndex] = useState(1);
+      const [clickCurrentPage, setClickCurrentPage] = useState(1);
 
       const LIKE_PAGE_SIZE = 3;
-
+      const currentPageHandler = (clickPageNum) => {
+        console.log(`페이지 클릭 시 현재 페이지 번호: ${clickPageNum}`);
+        setClickCurrentPage(clickPageNum);
+      }
       useImperativeHandle(ref, () => ({
         fetchData
       }));
@@ -63,9 +67,9 @@ const PopularProjects = forwardRef((
 
       // 페이지 처리
       const handlePrevious = () => {
-        if (pageNation.currentPage >1) {
+        if (pageNation.currentPage > 1) {
+          console.log(`pageNation.currentPage : ${pageNation.currentPage}`)
           setCarouselIndex(prevIndex => prevIndex - 1);
-          console.log(`main 현재 페이지 번호 : ${carouselIndex}`)
         }
       };
 
@@ -75,14 +79,13 @@ const PopularProjects = forwardRef((
 
         if (pageNation.next === true) {
           setCarouselIndex(prevIndex => prevIndex + 1);
-          console.log(`main 현재 페이지 번호 : ${carouselIndex}`)
-        }
+          console.log(`pageNation.currentPage : ${pageNation.currentPage}`)        }
       };
 
 
       return (
           <Common className={'project-list-wrapper'}>
-            {pageNation.prev &&
+            {pageNation.currentPage >1 &&
                 <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
             }
 

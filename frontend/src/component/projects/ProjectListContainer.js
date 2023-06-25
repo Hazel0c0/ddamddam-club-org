@@ -9,7 +9,10 @@ import './scss/ProjectsItem.scss';
 import ProjectImage from './ProjectImage';
 import { PROJECT } from '../common/config/HostConfig';
 
-const ProjectListContainer = ({ projects, handleShowDetails, handleLikeClick }) => {
+const ProjectListContainer = ({ projects, handleShowDetails
+                                , handleLikeClick  }) => {
+
+
   return (
       <div className="project-list-container">
         {projects.map((p, index) => {
