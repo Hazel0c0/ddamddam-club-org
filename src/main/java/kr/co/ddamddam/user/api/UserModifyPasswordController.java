@@ -37,7 +37,9 @@ public class UserModifyPasswordController {
      * 패스워드 변경 요청을 처리
      * @param tokenUserInfo - 로그인 중인 회원의 정보
      * @param requestDTO - newUserPassword : 새 비밀번호
-     * @return 변경 성공시 SUCCESS, 변경 실패시 FAIL
+     * @return 변경 성공시 SUCCESS
+     *          입력한 기존 비밀번호가 유저의 비밀번호와 다를 경우 401 상태코드 리턴
+     *          입력한 새 비밀번호가 유저의 비밀번호와 같을 경우 400 상태코드 리턴
      */
     @PostMapping("/modify-password")
     public ResponseEntity<?> modifyPassword(
