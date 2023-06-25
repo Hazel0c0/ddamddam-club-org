@@ -69,7 +69,7 @@ public class CompanyApiController {
     public ResponseEntity<?> search(@RequestParam("keyword") String keyword,
                                     @RequestParam("sort") String  sort ,
                                     PageDTO pageDTO) {
-        log.info("api/ddamddam/companies/search?keyword={}&page={}&size={}$sort={}",keyword,pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort()) ;
+        log.info("api/ddamddam/companies/search?keyword={}&page={}&size={}&sort={}",keyword,pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort()) ;
         CompanyListPageResponseDTO companyList = companyService.getKeywordList(keyword,sort,pageDTO);
         return ResponseEntity.ok().body(companyList);
     }
