@@ -24,20 +24,6 @@ const ProjectsMain = () => {
   const navigate = useNavigate();
   const childRef = useRef(null);
 
-  // url
-  const [currentUrl, setCurrentUrl] = useState(PROJECT);
-
-  // 인기프로젝트 페이지
-  // const [likePage, setLikePage] = useState(1);
-  // const LIKE_PAGE_SIZE = 3;
-  // const popularityUrl = `${PROJECT}?page=${likePage}&size=${LIKE_PAGE_SIZE}&like=true`;
-  // const [popularity, setPopularity] = useState(popularityUrl);
-
-  // 페이지 처리
-  // const handlePageChange = (currentPage) => {
-  //   setLikePage(currentPage);
-  //   console.log(`main 현재 페이지 번호 : ${currentPage}`)
-  // }
 
   // useEffect(() => {
   //   handlePageChange(likePage);
