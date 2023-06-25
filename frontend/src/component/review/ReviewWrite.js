@@ -71,7 +71,7 @@ const MentorsWrite = () => {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
-                // 'Authorization': 'Bearer ' + ACCESS_TOKEN
+                'Authorization': 'Bearer ' + ACCESS_TOKEN
             },
             body: JSON.stringify(data)
         });

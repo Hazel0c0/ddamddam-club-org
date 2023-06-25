@@ -56,7 +56,6 @@ const PageNation = ({pageNation, currentPageHandler, clickCurrentPage}) => {
 
     return (
         <ul className={'pagination-wrapper'}>
-            {/*{clickCurrentPage}*/}
             {pageAmount()}
         </ul>
     );
