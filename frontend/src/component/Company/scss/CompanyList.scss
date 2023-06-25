@@ -1,7 +1,9 @@
 .company-list-wrapper {
   width: 1920px;
   padding: 60px 370px 50px;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   .sort-wrapper {
     display: flex;
