@@ -341,14 +341,14 @@ public class MypageService {
      * @param
      */
     public void myPageModify(MypageModifyRequestDTO dto, TokenUserInfo tokenUserInfo
-//            , String uploadedFilePath
+            , String uploadedFilePath
     ) {
 
         validateToken.validateToken(tokenUserInfo);
 
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
-//        User dupUser = userRepository.findByUserNickname(dto.getUserNickname());
+//        dto.toEntity()
 
 //        if (dupUser == null){
             User user = userRepository.findById(userIdx)
@@ -358,7 +358,7 @@ public class MypageService {
                 user.setUserBirth(dto.getUserBirth());
                 user.setUserCareer(dto.getUserCareer());
                 user.setUserPosition(UserPosition.valueOf(dto.getUserPosition()));
-//                user.setUserProfile(uploadedFilePath);
+                user.setUserProfile(uploadedFilePath);
 
                 userRepository.save(user);
 //        }
