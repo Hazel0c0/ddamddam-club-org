@@ -28,6 +28,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 import static java.util.stream.Collectors.toList;
 
@@ -82,7 +83,7 @@ public class CompanyService {
         CompanyRequestDTO dto = new CompanyRequestDTO();
         List<CompanyRequestDTO> wantedList = new ArrayList<>();
 
-
+        System.out.println(wantedArray.length());
         for (int i = 0; i < wantedArray.length(); i++) {
 
             JSONObject value = wantedArray.getJSONObject(i);
@@ -257,6 +258,39 @@ public class CompanyService {
                 .collect(toList());
     }
 
+    //프론트엔드 불러오기
+    public CompanyListPageResponseDTO getFornt(PageDTO pageDTO){
+
+        PageRequest pageable = getPageable(pageDTO);
+        // 데이터베이스에서 게시글 목록 조회 후 DTO 리스트로 꺼내기
+        Page<Company> companies = companyRepository.findFront(pageable);
+        List<CompanyListResponseDTO> companyListResponseDTOList = getCompanyDTOList(companies);
+
+
+        //JSON 형태로 변형
+        return CompanyListPageResponseDTO.builder()
+                .count(companyListResponseDTOList.size())
+                .pageInfo(new PageResponseDTO<Company>(companies))
+                .companyList(companyListResponseDTOList)
+                .build();
+    }
+
+    //백엔드 불러오기
+    public CompanyListPageResponseDTO getBack(PageDTO pageDTO){
+
+        PageRequest pageable = getPageable(pageDTO);
+        // 데이터베이스에서 게시글 목록 조회 후 DTO 리스트로 꺼내기
+        Page<Company> companies = companyRepository.findBack(pageable);
+        List<CompanyListResponseDTO> companyListResponseDTOList = getCompanyDTOList(companies);
+
+
+        //JSON 형태로 변형
+        return CompanyListPageResponseDTO.builder()
+                .count(companyListResponseDTOList.size())
+                .pageInfo(new PageResponseDTO<Company>(companies))
+                .companyList(companyListResponseDTOList)
+                .build();
+    }
 
 
 

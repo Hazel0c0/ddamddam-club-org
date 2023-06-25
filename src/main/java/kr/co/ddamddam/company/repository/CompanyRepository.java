@@ -29,6 +29,13 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query("SELECT c FROM Company c WHERE c.companyCareer = '관계없음'")
     Page<Company> findNoExperience(Pageable pageable);
 
+    @Query("SELECT c FROM Company c WHERE c.companyTitle LIKE %:프론트% OR c.companyTitle LIKE %:front% OR c.companyTitle LIKE %:Front%")
+    Page<Company> findFront(Pageable pageable);
+
+    @Query("SELECT c FROM Company c WHERE c.companyTitle LIKE %:백엔드% OR c.companyTitle LIKE %:back% OR c.companyTitle LIKE %:Back%")
+    Page<Company> findBack(Pageable pageable);
+
+
 
 
 
