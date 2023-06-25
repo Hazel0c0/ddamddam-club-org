@@ -30,6 +30,7 @@ import kr.co.ddamddam.review.repository.ReviewRepository;
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.entity.UserPosition;
 import kr.co.ddamddam.user.repository.UserRepository;
+import kr.co.ddamddam.user.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -37,10 +38,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked")
@@ -55,6 +59,8 @@ public class MypageService {
     private final String MENTOR = "멘토/멘티";
     private final String REVIEW = "취업후기";
     private final String MENTEE_CHAT_ROOM = "멘티 채팅방";
+
+    private final S3Service s3Service;
 
     // 레포지토리
     private final UserRepository userRepository;
@@ -304,6 +310,28 @@ public class MypageService {
      */
     private int getPageEnd(int pageStart, int pageSize, int totalCount) {
         return Math.min(pageStart + pageSize, totalCount);
+    }
+
+
+    /**
+     * 업로드된 파일을 서버에 저장하고 저장 경로를 리턴
+     * @param originalFile - 업로드된 파일의 정보
+     * @return 실제로 저장된 이미지의 경로
+     */
+    //AWS적용하기
+    public String uploadProfileImage(MultipartFile originalFile) throws IOException {
+        // 파일명을 유니크하게 변경
+        String uniqueFileName = UUID.randomUUID()
+                + "_" + originalFile.getOriginalFilename();
+        //파일을 s3 버킷에 저장
+        String uploadUrl = s3Service.uploadToS3Bucket(originalFile.getBytes(), uniqueFileName);
+        return uploadUrl;
+    }
+
+    public String getProfilePath(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow();
+        return user.getUserProfile();
     }
 
     /**
