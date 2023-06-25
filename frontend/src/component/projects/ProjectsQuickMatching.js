@@ -3,7 +3,7 @@ import {getUserPosition} from "../common/util/login-util";
 import {Button, Modal} from "react-bootstrap";
 
 const ProjectsQuickMatching = ({
-                                 quick,
+                                 board,
                                  handleClose
                                }) => {
   const USER_POSITION = getUserPosition();
@@ -28,20 +28,20 @@ const ProjectsQuickMatching = ({
   return (
     <>
       <Modal.Header closeButton>
-        <Modal.Title>{quick.boardTitle}</Modal.Title>
+        <Modal.Title>{board.boardTitle}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div>나의 포지션: {USER_POSITION}</div>
-        <div>제목: {quick.boardTitle}</div>
+        <div>제목: {board.boardTitle}</div>
 
         <div>
-          {renderApplicantImages(quick.applicantOfFront
+          {renderApplicantImages(board.applicantOfFront
             , "https://cdn-icons-png.flaticon.com/128/5226/5226066.png", "front")}
-          {renderApplicantImages(quick.maxFront-quick.applicantOfFront
+          {renderApplicantImages(board.maxFront-board.applicantOfFront
             , "https://cdn-icons-png.flaticon.com/128/5226/5226057.png", "front")}
-          {renderApplicantImages(quick.applicantOfBack
+          {renderApplicantImages(board.applicantOfBack
             , "https://cdn-icons-png.flaticon.com/128/1353/1353491.png", "back")}
-          {renderApplicantImages(quick.maxBack-quick.applicantOfBack
+          {renderApplicantImages(board.maxBack-board.applicantOfBack
             , "https://cdn-icons-png.flaticon.com/128/1353/1353367.png", "back")}
         </div>
       </Modal.Body>
