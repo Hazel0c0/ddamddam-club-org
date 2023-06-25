@@ -7,38 +7,36 @@ import {Link, useNavigate} from "react-router-dom";
 import {getToken} from "../common/util/login-util";
 
 const CompanyMain = ({onSearchChange, onSearchKeywordChange}) => {
-    // const [selectedBtn, setSelectedBtn] = useState('전체');
+    const [selectedBtn, setSelectedBtn] = useState('전체');
     const inputVal = useRef();
 
     //로그인 검증
     const ACCESS_TOKEN = getToken();
     const redirection = useNavigate();
-    // const handleInputChange = (e) => {
-    //     const value = e.target.textContent;
-    //     onSearchChange(value);
-    //     // setSelectedBtn(value);
-    //     // onClickCurrentPageChange(1);
-    // }
+    const handleInputChange = (e) => {
+        const value = e.target.className;
+        if (value === "frontend-filter"){
+            onSearchChange("");
+            setSelectedBtn("FRONTEND");
+        }else if(value === "backend-filter"){
+            onSearchChange("RATING");
+            setSelectedBtn("BACKEND");
+        }else if(value === "total-filter"){
+            onSearchChange("VIEW");
+            setSelectedBtn("");
+        }
+    }
+    const searchHandler = (e) => {
+        onSearchKeywordChange(e.target.value);
 
-    // //검색엔터
-    // const test = setTimeout(()=>{
-    //     onSearchKeywordChange(e.target.value);
-    // },1000)
-    // const searchHandler = (e) => {
-    //     onSearchKeywordChange(e.target.value);
-    //     //단어마다 실행되게
-    //     // if (e.target.value.contains(" ")){
-    //     // }
-
-
-    //     //엔터
-    //     if (e.keyCode === 13) {
-    //         onSearchKeywordChange(e.target.value);
-    //     }
-    //     if (e.target.value === '') {
-    //         onSearchKeywordChange('');
-    //     }
-    // }
+        //엔터
+        if (e.keyCode === 13) {
+            onSearchKeywordChange(e.target.value);
+        }
+        if (e.target.value === '') {
+            onSearchKeywordChange('');
+        }
+    }
 
     //리셋버튼
     const resetHandler = () => {
@@ -57,7 +55,7 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange}) => {
                 </p>
             </div>
 
-            <section className={'top-view-wrapper'}>
+            <section className={'select-view-wrapper'}>
                 <div className={'frontend-filter'}>
                     <div className={'frontend-title'}>
                         <span className={'title-text'}>프론트엔드</span>
@@ -83,6 +81,7 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange}) => {
                 </div>
             </section>
 
+            {/*------------------------------------------------------------------------*/}
             <section className={'search-container'}>
                 <div className={'search-wrapper'}>
                     <span className={'search-title'}>Search Keyword</span>
@@ -101,7 +100,8 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange}) => {
 
                 <div className={'select-wrapper'}>
                     <span className={'search-title'}>경력</span>
-                    <select className={'select-career'} name={'userCareer'} defaultValue={'0'}>
+                    <select className={'select-career'} name={'userCareer'} defaultValue={'전체'}>
+                        <option value={'전체'}>전체</option>
                         <option value={'신입'}>신입</option>
                         <option value={'경력'}>경력</option>
                         <option value={'경력무관'}>경력무관</option>

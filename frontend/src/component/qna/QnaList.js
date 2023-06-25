@@ -72,7 +72,7 @@ const QnaList = ({searchValue, searchKeyword}) => {
 
     return (
         <Common className={'qna-list-wrapper'}>
-            {searchValue === 'ALL' && <QnaTotal loginCheck={loginCheck} searchKeyword={searchKeyword} searchValue={searchValue}/>}
+            {searchValue === '' && <QnaTotal loginCheck={loginCheck} searchKeyword={searchKeyword} searchValue={searchValue}/>}
             {searchValue === 'N' && <QnaNoAdoption loginCheck={loginCheck} searchKeyword={searchKeyword} searchValue={searchValue}/>}
             {searchValue === 'Y' && <QnaAdoption loginCheck={loginCheck} searchKeyword={searchKeyword} searchValue={searchValue}/>}
             {/*{pageTrue.total && <QnaTotal loginCheck={loginCheck}/>}*/}

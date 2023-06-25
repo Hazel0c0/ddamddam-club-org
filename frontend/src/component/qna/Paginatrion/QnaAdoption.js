@@ -7,7 +7,7 @@ import PageNation from "../../common/pageNation/PageNation";
 import {QNA} from "../../common/config/HostConfig";
 import {getToken} from "../../common/util/login-util";
 
-const QnaNoAdoption = ({loginCheck}) => {
+const QnaNoAdoption =({loginCheck, searchKeyword, searchValue}) => {
     const [qnaList, setQnaList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
     const [clickCurrentPage, setClickCurrentPage] = useState(1);

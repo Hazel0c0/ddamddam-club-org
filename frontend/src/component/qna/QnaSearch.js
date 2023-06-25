@@ -7,7 +7,7 @@ import {getToken} from "../common/util/login-util";
 import {GrPowerReset} from "react-icons/gr";
 // import {GrPowerReset} from '/react-icons/gr';
 const QnaSearch = ({onSearchChange, onSearchKeywordChange}) => {
-    const [selectedBtn, setSelectedBtn] = useState('ALL');
+    const [selectedBtn, setSelectedBtn] = useState('');
     const inputVal = useRef();
 
     //로그인 검증
@@ -25,7 +25,7 @@ const QnaSearch = ({onSearchChange, onSearchKeywordChange}) => {
     const handleInputChange = (e) => {
         const value = e.target.textContent;
         if (value === "전체"){
-            onSearchChange("ALL");
+            onSearchChange("");
             setSelectedBtn("");
         }else if(value === "미채택"){
             onSearchChange("N");
@@ -68,7 +68,7 @@ const QnaSearch = ({onSearchChange, onSearchKeywordChange}) => {
             <ul className={'sort-btn'}>
                 <li
                     onClick={handleInputChange}
-                    className={selectedBtn === 'ALL' ? 'selected' : ''}
+                    className={selectedBtn === '' ? 'selected' : ''}
                 >
                     전체
                 </li>
