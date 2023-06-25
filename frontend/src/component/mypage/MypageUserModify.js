@@ -42,7 +42,7 @@ const MypageUserModify = props => {
     userBirth: USER_BIRTH,
     userPosition: USER_POSITION,
     userCareer: USER_CAREER,
-    userProfile: USER_PROFILE
+    // userProfile: USER_PROFILE
 });
     // 검증 메세지에 대한 상태변수 관리
     const [message, setMessage] = useState({
@@ -276,7 +276,10 @@ const isValid = () => {
 
     
     console.log(`fetchSignUpPost의 userValue : ${userValue}`);
-    console.log(userValue.userNickName);
+    // console.log(userValue.userNickName);
+
+      const headerModify = new Headers();
+      headerModify.append('Authorization', 'Bearer ' + ACCESS_TOKEN);
 
     // JSON을 Blob타입으로 변경 후 FormData에 넣기
     const userJsonBlob = new Blob(
@@ -289,12 +292,17 @@ const isValid = () => {
     userFormData.append('user', userJsonBlob);
     userFormData.append('profileImage', $fileTag.current.files[0]);
 
+      console.log('userFormData:', userFormData);
+      console.log(`$fileTag.current.files[0] : `,$fileTag.current.files[0])
+
     const res = await fetch(`${API_BASE_URL}/modify`, {
+    // const res = await fetch(`//localhost:8181/api/ddamddam/mypage/modify`, {
         method: 'POST',
-        headers: headerInfo,
-        body: JSON.stringify(userFormData)
+        headers: headerModify,
+        body: userFormData
     });
 
+      console.log(res)
     if (res.status === 200) {
         alert('회원 정보 수정에 성공했습니다!');
 
