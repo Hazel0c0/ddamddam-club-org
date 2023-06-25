@@ -4,6 +4,7 @@ import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.mypage.dto.MypageProjectPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.page.MyPagePageDTO;
 import kr.co.ddamddam.mypage.dto.request.MypageModifyRequestDTO;
+import kr.co.ddamddam.mypage.dto.response.MypageAfterModifyResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageBoardPageResponseDTO;
 import kr.co.ddamddam.mypage.dto.response.MypageChatPageResponseDTO;
 import kr.co.ddamddam.mypage.service.MypageService;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @Slf4j
@@ -64,6 +66,23 @@ public class MypageController {
         myPageService.myPageModify(dto, tokenUserInfo);
 
         return ResponseEntity.ok().body("회원정보 수정완료!");
+    }
+
+    /**
+     * 회원정보 수정 성공 후, 수정된 정보만 DB 에서 가져와서 리턴합니다.
+     * @param tokenUserInfo - 로그인 한 유저 정보 
+     * @return 수정된 유저의 일부 정보
+     */
+    @GetMapping("/after-modify")
+    public ResponseEntity<?> afterModify(
+            @AuthenticationPrincipal TokenUserInfo tokenUserInfo
+    ) {
+        log.info("MypageController - /mypage/after-modify, token : {}, userProfile : {}", tokenUserInfo);
+
+        MypageAfterModifyResponseDTO afterModifyUserInfo
+                = myPageService.mypageAfterModify(tokenUserInfo);
+
+        return ResponseEntity.ok().body(afterModifyUserInfo);
     }
 
     @GetMapping("/project-list")
