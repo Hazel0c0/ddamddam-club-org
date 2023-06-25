@@ -16,6 +16,7 @@ public class DataProcessingService {
     private final CompanyRepository companyRepository;
     private static final long INTERVAL_MS = 24 * 60 * 60 * 1000; // 24시간
 
+
     public DataProcessingService(CompanyService companyService,CompanyRepository companyRepository) {
         this.companyService = companyService;
 
