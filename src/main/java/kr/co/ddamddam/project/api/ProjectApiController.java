@@ -112,19 +112,32 @@ public class ProjectApiController {
 
     }
 
-
     /**
      * 파일 업로드
      */
     private String fileUpload(MultipartFile projectImg) throws IOException {
         String uploadedFilePath = null;
-        String boardType = "project";
 
         if (projectImg != null) {
             log.info("projectImage file name: {}", projectImg.getOriginalFilename());
-            uploadedFilePath = uploadService.uploadFileImage(projectImg, boardType);
+            uploadedFilePath = uploadService.uploadFileImage(projectImg);
         }
         return uploadedFilePath;
+    }
+
+    @GetMapping("/load-s3")
+    public ResponseEntity<?> loadS3(
+        Long projectIdx
+    ) {
+        log.info("/api/auth/load-s3 GET - projectIdx : {}", projectIdx);
+
+        try {
+            String profilePath = uploadService.getProjectFilePath(projectIdx);
+            return ResponseEntity.ok().body(profilePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 

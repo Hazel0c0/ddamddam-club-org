@@ -1,13 +1,10 @@
 package kr.co.ddamddam.upload;
 
-import kr.co.ddamddam.project.api.ProjectApiController;
-import kr.co.ddamddam.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,15 +23,14 @@ public class UploadController {
   // 이미지파일 데이터를 클라이언트에게 응답처리
   @GetMapping("/load-file")
   public ResponseEntity<?> loadFile(
-      @RequestParam("projectIdx") Long projectIdx,
-      @RequestParam("boardType") String boardType
+      @RequestParam("projectIdx") Long projectIdx
   ) {
 
-    log.info("/load-file?projectIdx = {} & boardType = {} ", projectIdx,boardType);
+    log.info("/load-file?projectIdx = {} & boardType = {} ", projectIdx);
 
     try {
       String filePath
-          = uploadService.getFilePath(projectIdx,boardType);
+          = uploadService.getProjectFilePath(projectIdx);
 
       log.debug("file path : {}",filePath);
 
