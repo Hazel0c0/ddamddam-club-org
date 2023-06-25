@@ -7,10 +7,10 @@ spring:
     allow-bean-definition-overriding: true
   datasource:
     url: jdbc:mariadb://oslobdb.cqd7fh7vsssg.ap-northeast-2.rds.amazonaws.com:3306/ddamddam
-#    url: jdbc:mariadb://localhost:3306/ddamddam
-#    username: taegun
-    username: jiwon
+    username: taegun
     password: 1234
+#    url: jdbc:mariadb://localhost:3306/ddamddam
+#    username: root
 #    password: 1111
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
@@ -55,8 +55,8 @@ sns:
 
 upload:
   path:
-#    project: /Users/taegeun/Desktop/
-    project: C:/ddam_upload/project
+    project: /Users/taegeun/Desktop/
+#    profile: D:/ddam_upload/profile
     profile: /Users/taegeun/Desktop/
 
 #s3 접근 설정
