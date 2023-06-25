@@ -3,7 +3,7 @@ import axios from "axios";
 // import {useNavigate} from "react-router-dom";
 import {BASE_URL, AUTH} from "../common/config/HostConfig";
 import '../user/scss/UserFindPassword.scss';
-import {getToken} from "../common/util/login-util";
+import {deleteSession, getToken} from "../common/util/login-util";
 import Common from "../common/Common";
 import logo from "../../src_assets/logo(white).png";
 import {BsCheckLg} from "react-icons/bs";
@@ -15,7 +15,7 @@ const UserFindPassword = () => {
   const redirection = useNavigate();
 
   const [newPassword, setNewPassword] = useState('');
-  const [oldpw, setOldPw] = useState('');
+  // const [oldpw, setOldPw] = useState('');
 
   //검증 메세지에 대한 상태변수 관리
   const [message, setMessage] = useState({
@@ -32,7 +32,7 @@ const UserFindPassword = () => {
 
   //상태변수로 회원값 입력 관리
   const [userValue, setUserValue] = useState({
-    oldpw:'',
+    // oldpw:'',
     newpw:''
   });
 
@@ -114,10 +114,13 @@ const UserFindPassword = () => {
   };
 
 
+  /*
   const handleInputChange = (e) => {
-    const {name, value} = e.target;
+    const value = e.target.value;
+    // const {name, value} = e.target;
     setNewPassword(value);
   };
+   */
 
   //입력칸이 모두 검증에 통과했는지 여부 검사
   const isValid = () => {
@@ -132,7 +135,7 @@ const UserFindPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(`newPassword : `,newPassword);
-
+    console.log(`userValue : `,userValue.newpw);
     const res = await fetch(REQUEST_URL,{
       method : 'POST',
       headers : {
@@ -140,7 +143,7 @@ const UserFindPassword = () => {
         'Authorization' : 'Bearer '+ token
       },
       body : JSON.stringify({
-        newUserPassword: newPassword
+        newUserPassword: userValue.newpw
       })
     })
 
@@ -148,14 +151,12 @@ const UserFindPassword = () => {
     console.log(`비밀번호 변경 후 result`,result)
     if (result === 'SUCCESS'){
       alert("비밀번호 변경이 완료되었습니다!");
+      deleteSession();
       //비밀번호 변경 후 로그인 페이지로 이동
-      redirection('/login');
+      window.location.href='/login';
     } else{
       alert('서버와의 통신이 원활하지 않습니다.')
     }
-    console.log(`비밀번호 변경 ,`,res)
-    // console.log(response.date);
-
   };
 
 
@@ -174,14 +175,15 @@ const UserFindPassword = () => {
         <div className={'input-detail'}>
           {/*기존 비밀번호*/}
           <div className={'input-oldpw'}>
-            <input type={"text"} className={'oldpw'} id={'oldpw'} name={'oldpw'} placeholder={'기존 비밀번호'}
-                   onChange={handleInputChange}/>
+            {/*<input type={"text"} className={'oldpw'} id={'oldpw'} name={'oldpw'} placeholder={'기존 비밀번호'}*/}
+            {/*       onChange={handleInputChange}/>*/}
+            <input type={"text"} className={'oldpw'} id={'oldpw'} name={'oldpw'} placeholder={'기존 비밀번호'}/>
           </div>
           <br/><br/>
           {/* 새로운 비밀번호*/}
           <div className={'input-newpw'}>
             <input type={"text"} className={'newpw'} id={'newpw'} name={'newpw'} placeholder={'새로운 비밀번호'}
-                   onChange={handleInputChange}
+                   // onChange={handleInputChange}
                    onChange={passwordHandler}/>
             <span className={correct.newpw ? 'correct' : 'not-correct'}>{message.newpw}</span>
             {correct.newpw &&

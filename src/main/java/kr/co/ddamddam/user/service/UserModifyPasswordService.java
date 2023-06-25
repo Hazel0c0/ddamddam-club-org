@@ -1,6 +1,8 @@
 package kr.co.ddamddam.user.service;
 
 import kr.co.ddamddam.common.common.ValidateToken;
+import kr.co.ddamddam.common.exception.custom.ErrorCode;
+import kr.co.ddamddam.common.exception.custom.LoginException;
 import kr.co.ddamddam.common.exception.custom.NotFoundUserException;
 import kr.co.ddamddam.common.response.ResponseMessage;
 import kr.co.ddamddam.config.security.TokenUserInfo;
@@ -40,13 +42,26 @@ public class UserModifyPasswordService {
             throw new NotFoundUserException(NOT_FOUND_USER, userIdx);
         });
 
-        // 패스워드 인코딩
+        // 클라이언트에서 입력받은 패스워드 인코딩
+        String encodedOldPassword = encoder.encode(requestDTO.getOldUserPassword());
         String encodedNewPassword = encoder.encode(requestDTO.getNewUserPassword());
 
-        // 입력한 새 비밀번호가 현재 비밀번호와 같은지 검증
-        if (user.getUserPassword().equals(encodedNewPassword)) {
-            //같으면 FAIL을 리턴
-            return FAIL;
+        // 입력한 기존 비밀번호가 현재 비밀번호와 같은지 검증 (같아야합니다)
+        if (!encoder.matches(requestDTO.getOldUserPassword(), user.getUserPassword())) {
+            // 다르면 401 에러 리턴
+            log.info("userPassword : {}", user.getUserPassword());
+            log.info("encodedOldPassword : {}", encodedOldPassword);
+            log.warn("INVALID_PASSWORD");
+            throw new LoginException(INVALID_PASSWORD, requestDTO.getOldUserPassword());
+        }
+
+        // 입력한 새 비밀번호가 현재 비밀번호와 같은지 검증 (달라야합니다)
+        if (encoder.matches(requestDTO.getNewUserPassword(), user.getUserPassword())) {
+            // 같으면 400 에러 리턴
+            log.info("userPassword : {}", user.getUserPassword());
+            log.info("encodedOldPassword : {}", encodedNewPassword);
+            log.warn("INVALID_PARAMETER");
+            throw new LoginException(INVALID_PARAMETER, requestDTO.getNewUserPassword());
         }
 
         user.setUserPassword(encodedNewPassword);

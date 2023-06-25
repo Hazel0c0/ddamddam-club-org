@@ -15,6 +15,10 @@ public class UserPasswordRequestDTO {
 
     @NotBlank
     @Size(min = 8, max = 20)
+    private String oldUserPassword;
+
+    @NotBlank
+    @Size(min = 8, max = 20)
     private String newUserPassword;
 
 }

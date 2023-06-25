@@ -7,17 +7,17 @@ import PageNation from "../../common/pageNation/PageNation";
 import {QNA} from "../../common/config/HostConfig";
 import {getToken} from "../../common/util/login-util";
 
-const QnaTotal = ({loginCheck}) => {
+const QnaTotal =({loginCheck, searchKeyword, searchValue}) => {
     const [qnaList, setQnaList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
     const [clickCurrentPage, setClickCurrentPage] = useState(1);
 
     useEffect(()=>{
         asyncQnaTotalList();
-    },[clickCurrentPage])
+    },[clickCurrentPage, searchKeyword, searchValue])
     const asyncQnaTotalList = async () => {
-        const responseUrl = `?page=${clickCurrentPage}&size=10`
-
+        // const responseUrl = `?page=${clickCurrentPage}&size=10`
+        const responseUrl = `/search?keyword=${searchKeyword}&page=${clickCurrentPage}&size=10&sort=${searchValue}`
         const res = await fetch(`${QNA}${responseUrl}`, {
             method: 'GET',
             headers: {'content-type': 'application/json'}

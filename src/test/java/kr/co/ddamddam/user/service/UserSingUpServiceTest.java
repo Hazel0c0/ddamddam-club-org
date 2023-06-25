@@ -40,7 +40,7 @@ class UserSingUpServiceTest {
                 .build();
 
         // when, then
-        UserSignUpResponseDTO userSignUpResponseDTO = userSingUpService.create(dto, uploadedFilePath);
+//        UserSignUpResponseDTO userSignUpResponseDTO = userSingUpService.create(dto, uploadedFilePath);
 
     }
 

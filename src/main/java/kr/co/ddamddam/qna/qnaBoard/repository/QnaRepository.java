@@ -22,10 +22,16 @@ public interface QnaRepository extends JpaRepository<Qna, Long> {
 
     @Query("SELECT DISTINCT q FROM Qna q " +
             "JOIN q.hashtagList h " +
-            "WHERE q.qnaTitle LIKE %:keyword% " +
+            "WHERE ((:keyword IS NULL OR :keyword = '') OR (q.qnaTitle LIKE %:keyword% " +
             "OR q.qnaContent LIKE %:keyword% " +
-            "OR h.hashtagContent LIKE %:keyword%")
-    Page<Qna> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
+            "OR h.hashtagContent LIKE %:keyword%)) " +
+            "AND ((:sort IS NULL OR :sort = '') OR q.qnaAdoption = :sort)" +
+            "ORDER BY q.qnaDate DESC")
+    Page<Qna> findByKeywordAndSort(
+            @Param("keyword") String keyword,
+            @Param("sort")String sort,
+            Pageable pageable
+    );
 
     List<Qna> findByUserUserIdx(@Param("userIdx") Long UserIdx);
 

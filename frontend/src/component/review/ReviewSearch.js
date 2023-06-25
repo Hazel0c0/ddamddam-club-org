@@ -7,7 +7,7 @@ import {getToken} from "../common/util/login-util";
 import {GrPowerReset} from "react-icons/gr";
 
 const ReviewSearch = ({onSearchChange, onSearchKeywordChange}) => {
-    const [selectedBtn, setSelectedBtn] = useState('전체');
+    const [selectedBtn, setSelectedBtn] = useState('');
     const inputVal = useRef();
 
     //로그인 검증
@@ -22,10 +22,21 @@ const ReviewSearch = ({onSearchChange, onSearchKeywordChange}) => {
             // return;
         }
     }
+
     const handleInputChange = (e) => {
         const value = e.target.textContent;
-        onSearchChange(value);
-        setSelectedBtn(value);
+        if (value === "전체"){
+            onSearchChange("");
+            setSelectedBtn("");
+        }else if(value === "평점순"){
+            onSearchChange("RATING");
+            setSelectedBtn("RATING");
+        }else if(value === "조회순"){
+            onSearchChange("VIEW");
+            setSelectedBtn("VIEW");
+        }
+        // onSearchChange(value);
+        // setSelectedBtn(value);
         // onClickCurrentPageChange(1);
     }
 
@@ -37,6 +48,7 @@ const ReviewSearch = ({onSearchChange, onSearchKeywordChange}) => {
         if (e.target.value === ''){
             onSearchKeywordChange('');
         }
+        onSearchKeywordChange(e.target.value);
     }
 
     //검색버튼
@@ -56,21 +68,21 @@ const ReviewSearch = ({onSearchChange, onSearchKeywordChange}) => {
             <ul className={'sort-btn'}>
                 <li
                     onClick={handleInputChange}
-                    className={selectedBtn === '전체' ? 'selected' : ''}
+                    className={selectedBtn === '' ? 'selected' : ''}
                 >
                     전체
                 </li>
 
                 <li
                     onClick={handleInputChange}
-                    className={selectedBtn === '평점순' ? 'selected' : ''}
+                    className={selectedBtn === 'RATING' ? 'selected' : ''}
                 >
                     평점순
                 </li>
 
                 <li
                     onClick={handleInputChange}
-                    className={selectedBtn === '조회순' ? 'selected' : ''}
+                    className={selectedBtn === 'VIEW' ? 'selected' : ''}
                 >
                     조회순
                 </li>
