@@ -27,27 +27,12 @@ public class UploadService {
    * @return 실제로 저장된 이미지의 경로
    */
   public String uploadFileImage(MultipartFile originalFile) throws IOException {
-    String uploadRootPath;
-
-//    if ("project".equals(boardType)) {
-//      uploadRootPath = projectUploadRootPath;
-//    } else if ("profile".equals(boardType)) {
-//      uploadRootPath = qnaUploadRootPath;
-//    } else {
-//      throw new IllegalArgumentException("Unsupported board type: " + boardType);
-//    }
-
-//    File rootDir = new File(uploadRootPath);
-//    if (!rootDir.exists()) rootDir.mkdirs();
 
     String uniqueFileName = UUID.randomUUID()
         + "_" + originalFile.getOriginalFilename();
 
     // file s3 bucket save
     String uploadUrl = s3Service.uploadToS3Bucket(originalFile.getBytes(), uniqueFileName);
-
-//    File uploadFile = new File(uploadRootPath + "/" + uniqueFileName);
-//    originalFile.transferTo(uploadFile);
 
 
     return uploadUrl;
