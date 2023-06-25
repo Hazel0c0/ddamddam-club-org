@@ -3,7 +3,7 @@ import logo from '../../src_assets/logo.png';
 import './scss/Header.scss';
 import Common from "./Common";
 import {Link} from "react-router-dom";
-import {getToken, isLogin} from "./util/login-util";
+import {deleteSession, getToken, isLogin} from "./util/login-util";
 import profileImg from "../../src_assets/IMG_4525.JPG"
 import {BASE_URL, AUTH} from "../../component/common/config/HostConfig";
 
@@ -65,32 +65,7 @@ const Header = () => {
     const logoutHandler = () => {
         const confirmBtn  = window.confirm("정말 로그아웃 하시겠습니까?")
         if (confirmBtn){
-            sessionStorage.removeItem('ACCESS_TOKEN');
-            sessionStorage.removeItem('LOGIN_USER_IDX');
-            sessionStorage.removeItem('LOGIN_USER_EMAIL');
-            sessionStorage.removeItem('LOGIN_USER_NAME');
-            sessionStorage.removeItem('LOGIN_USER_NICKNAME');
-            sessionStorage.removeItem('LOGIN_USER_REGDATE');
-            sessionStorage.removeItem('LOGIN_USER_BIRTH');
-            sessionStorage.removeItem('LOGIN_USER_POSITION');
-            sessionStorage.removeItem('LOGIN_USER_CAREER');
-            sessionStorage.removeItem('LOGIN_USER_POINT');
-            sessionStorage.removeItem('LOGIN_USER_PROFILE');
-            sessionStorage.removeItem('LOGIN_USER_ROLE');
-            // 자동 ㅗ
-            localStorage.removeItem('ACCESS_TOKEN');
-            localStorage.removeItem('LOGIN_USER_IDX');
-            localStorage.removeItem('LOGIN_USER_EMAIL');
-            localStorage.removeItem('LOGIN_USER_NAME');
-            localStorage.removeItem('LOGIN_USER_NICKNAME');
-            localStorage.removeItem('LOGIN_USER_REGDATE');
-            localStorage.removeItem('LOGIN_USER_BIRTH');
-            localStorage.removeItem('LOGIN_USER_POSITION');
-            localStorage.removeItem('LOGIN_USER_CAREER');
-            localStorage.removeItem('LOGIN_USER_POINT');
-            localStorage.removeItem('LOGIN_USER_PROFILE');
-            localStorage.removeItem('LOGIN_USER_ROLE');
-
+            deleteSession();
             window.location.href='/';
         }else {
             return;
@@ -142,7 +117,7 @@ const Header = () => {
               >
                   <li>모집</li>
                   <li>취업게시판</li>
-                  <li>프로젝트 공유</li>
+                  {/*<li>프로젝트 공유</li>*/}
                   <li>Q&A</li>
               </ul>
 
@@ -179,11 +154,11 @@ const Header = () => {
                 </ul>
                 <ul>
                     <li><Link to={'/reviews'}>취업 후기</Link></li>
-                    <li><Link to={'/'}>채용공고</Link></li>
+                    <li><Link to={'/companies'}>채용공고</Link></li>
                 </ul>
-                <ul>
-                    <li><Link to={'/'}>프로젝트 공유</Link></li>
-                </ul>
+                {/*<ul>*/}
+                {/*    <li><Link to={'/'}>프로젝트 공유</Link></li>*/}
+                {/*</ul>*/}
                 <ul>
                     <li><Link to={'/qna'}>Q&A</Link></li>
                 </ul>

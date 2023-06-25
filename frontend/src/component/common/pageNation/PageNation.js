@@ -38,7 +38,8 @@ const PageNation = ({pageNation, currentPageHandler, clickCurrentPage}) => {
             )
         }
         // const finalPage = Math.ceil(PageNation.endPage)
-        if (pageNation.currentPage !== pageNation.endPage) {
+        const finalPage = Math.ceil(pageNation.totalCount/10);
+        if (pageNation.currentPage !== finalPage) {
             pageList.push(
                 <li className="page-item" onClick={() => currentPageHandler(Math.floor((pageNation.totalCount) / 10 + 1))}>
                     <div className="page-link end"

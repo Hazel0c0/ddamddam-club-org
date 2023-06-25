@@ -25,7 +25,8 @@
     }
 
     .sort-career {
-      //width: 10%;
+      width: 6%;
+      //text-align: center;
     }
 
     .sort-companyName {
@@ -59,7 +60,6 @@
       text-align: center;
     }
 
-    //각 부분 영역
     .d-day {
       width: 10%;
       font-family: 'IBM Plex Mono', sans-serif;
@@ -68,11 +68,13 @@
     }
 
     .company-career {
-      //width: 10%;
+      width: 6%;
       padding: 5px 7px;
       background-color: #1e4fff;
       border-radius: 3px;
       color : white;
+      display: flex;
+      justify-content: center;
     }
 
     .companyName {

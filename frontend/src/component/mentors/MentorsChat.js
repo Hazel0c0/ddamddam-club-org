@@ -122,6 +122,12 @@ const MentorsChat = () => {
     }
   };
 
+  const menteeRenderList = () => {
+
+  };
+
+
+
 
   // 멘토가 채팅방 선택 렌더링
   const mentorsChatRoom =
@@ -129,7 +135,12 @@ const MentorsChat = () => {
       <div className={'chat-room-list'} key={`${item.name}-${idx}`} onClick={handleSelectRoom}>
         <input type={'hidden'} value={item.sender.userIdx} className={'sender-idx'}/>
         <input type={'hidden'} value={item.roomId} className={'chatRoom-idx'}/>
-        <img src={item.sender.userProfile} alt={'profileImg'} className={'profile-img'}/>
+        {
+            item.sender.userProfile !== 'null'
+            ? <img src={item.sender.userProfile} className={'profile-img'}/>
+            : <img className={'profile-img'}/>
+        }
+
         <span className={'mentee-nick-name'}>{item.sender.userName}</span>
         <span className={'mentee-msg-content'}>{subStringContent(item.message, 5)}</span>
         <span className={'mentee-date'}>{item.sentAt}</span>
@@ -255,6 +266,17 @@ const MentorsChat = () => {
             });
         }
       });
+
+    //   (MENTOR+'/mentee/list'+{chatPageIdx},{
+    //     method : 'GET',
+    //     headers : headerInfo
+    //   })
+    //   .then((res) => {
+    //     return res.json();
+    //   })
+    //   .then ((rfetchesult) => {
+
+    //   });
 
   }, [chatPageIdx]);
 
@@ -386,18 +408,15 @@ const MentorsChat = () => {
 
   const {career, content, current, date, idx, mentee, nickName, profile, subject, title} = detailMember;
 
-  return (
-    <Common className={'mentors-chat-wrapper'}>
-      <div className={'mentor-detail-wrapper'}>
-        <section className={'top-section'}>
-          <div className={'top-title'}>
-            <h1 className={'top-title-text'}>멘토 소개</h1>
-            <div className={'write-date'}>{date}</div>
-          </div>
-          <div className={'close-btn'}>
-            <TfiClose/>
-          </div>
-        </section>
+    return (
+        <Common className={'mentors-chat-wrapper'}>
+            <div className={'mentor-detail-wrapper'}>
+                <section className={'top-section'}>
+                    <div className={'top-title'}>
+                        <h1 className={'top-title-text'}>멘토 소개</h1>
+                        <div className={'write-date'}>{date}</div>
+                    </div>
+                </section>
 
         <section className={'writer-section'}>
           {
