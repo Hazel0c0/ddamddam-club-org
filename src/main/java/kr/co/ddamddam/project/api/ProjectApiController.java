@@ -13,6 +13,7 @@ import kr.co.ddamddam.project.dto.response.ProjectListPageResponseDTO;
 import kr.co.ddamddam.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +51,7 @@ public class ProjectApiController {
      * 좋아요 순 조회 - like : true
      */
     @GetMapping
-    private ApplicationResponse<ProjectListPageResponseDTO> getList(
+    private ResponseEntity<ProjectListPageResponseDTO> getList(
         ProjectPageDTO projectPageDTO,
         ProjectSearchRequestDto searchRequestDto
     ) {
@@ -58,7 +59,7 @@ public class ProjectApiController {
 
         ProjectListPageResponseDTO dto = projectService.getList(projectPageDTO, searchRequestDto);
 //    log.info("dto의 값 : {}",dto);
-        return ApplicationResponse.ok(dto);
+        return ResponseEntity.ok(dto);
     }
 
     // 게시글 상세 보기
