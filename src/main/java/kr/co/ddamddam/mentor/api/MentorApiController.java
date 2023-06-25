@@ -5,6 +5,7 @@ import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.mentor.dto.page.MentorPageDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorModifyRequestDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorWriteRequestDTO;
+import kr.co.ddamddam.mentor.dto.response.MenteeListResponseDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorDetailResponseDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorListResponseDTO;
 import kr.co.ddamddam.mentor.service.MentorService;
@@ -155,5 +156,18 @@ public class MentorApiController {
 
     // 좋아요 기능 만들기(멘토에 대한 좋아요인지 게시판에 대한 좋아요인지)
 
+
+    // 멘티 리스트 추가하기
+    @GetMapping("/mentee/list/{mentorIdx}")
+    public ResponseEntity<?> menteeList(
+            @PathVariable Long mentorIdx
+            ,@AuthenticationPrincipal TokenUserInfo tokenUserInfo
+    ){
+        MenteeListResponseDTO menteeList = mentorService.getMenteeList(mentorIdx, tokenUserInfo);
+
+        log.info("menteeList : {}", menteeList);
+
+        return ResponseEntity.ok().body(menteeList);
+    }
 
 }

@@ -60,22 +60,14 @@ const MypageChatRoom = props => {
   const asyncProjectList = async () => {
 
     console.log(`ACCESS_TOKEN : ${ACCESS_TOKEN}`); // 토큰 잘 나옴;;
-    console.log(`API_BASE_URL : ${API_BASE_URL}`); // 토큰 잘 나옴;;
 
     // http://localhost:8181/api/ddamddam/mypage/chat-list?page=1&size=3
-    // http://localhost:8181/api/ddamddam/mypage/chat-list?page=1&size=3
-    // //localhost:8181/api/ddamddam/mypage
     const res = await fetch(
-      // API_BASE_URL + `/chat-list?page=${carouselIndex}&size=3`,
-      `${API_BASE_URL}/chat-list?page=1&size=3`,
+      `${API_BASE_URL}/chat-list?page=${carouselIndex}&size=3`,
       {
         method: 'GET',
         headers: headerInfo,
       });
-
-    // let result = await res.json();
-    // console.log(`res : `, res);
-    // console.log(`result : ${result}`);
 
     console.log(`res: `, res);
 
@@ -117,15 +109,18 @@ const MypageChatRoom = props => {
   return (
     <div className={'mypage-chat-wrapper'}>
 
+      {chatRoomList.length === 0 ? (
+        <div>작성한 게시글이 없습니다.</div>
+      ) : null}
+
       {pageNation.prev &&
         <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
       }
       <div className={'chat-wrapper'}>
         {chatRoomList.map((chatRoom, index) => (
-          /* TODO : 멘토멘티 게시글 누르면 어디로 이동시킬건가요..?? */
-          <div className={'chat-box'}>
+          <div className={'chat-box'} key={`${chatRoom.roomIdx}-${index}`}>
             <input type={'hidden'} value={chatRoom.roomIdx} className={'chat-room-idx'}/>
-            <Link to={`/mentor/detail/chat/${chatRoom.mentorIdx}/${chatRoom.roomIdx}`} onClick={loginCheckHandler}>
+            <Link to={`/mentors/detail/chat/${chatRoom.mentorIdx}/${chatRoom.roomIdx}`} onClick={loginCheckHandler}>
               <div className={'chat-title'}>
                 {subStringContent(chatRoom.title, 35)}
               </div>

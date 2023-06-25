@@ -6,17 +6,19 @@ import PageNation from "../../common/pageNation/PageNation";
 import {REVIEW} from "../../common/config/HostConfig";
 import ReviewStar from "../StartRating/ReviewStar";
 
-const ReviewTotal = ({loginCheck}) => {
+const ReviewTotal = ({loginCheck, searchKeyword, searchValue}) => {
     const [reviewList, setReviewList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
     const [clickCurrentPage, setClickCurrentPage] = useState(1);
 
     useEffect(()=>{
         asyncReviewRatingList();
-    },[clickCurrentPage])
+    },[clickCurrentPage,searchKeyword, searchValue])
 
     const asyncReviewRatingList = async () => {
-        const responseUrl = `/rating?page=${clickCurrentPage}&size=10`
+        const responseUrl = `/search?keyword=${searchKeyword}&page=${clickCurrentPage}&size=10&sort=${searchValue}`
+
+        console.log(`rating의 responseUrl : `,responseUrl)
         const res = await fetch(`${REVIEW}${responseUrl}`, {
             method: 'GET',
             headers: {'content-type': 'application/json'}

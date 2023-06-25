@@ -10,6 +10,7 @@ import kr.co.ddamddam.mentor.dto.page.MentorPageDTO;
 import kr.co.ddamddam.mentor.dto.page.MentorPageResponseDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorModifyRequestDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorWriteRequestDTO;
+import kr.co.ddamddam.mentor.dto.response.MenteeListResponseDTO;
 import kr.co.ddamddam.mentor.dto.response.MenteeResponseDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorDetailResponseDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorListResponseDTO;
@@ -258,13 +259,13 @@ public class MentorService {
         }
         // 제한인원이 다 안 찼으면 멘티 확정하기
         else if (findByMenteeList.size() < mentor.getMentorMentee()){
-            User user = userRepository.findById(enterUserIdx).orElseThrow(
-                    () -> {throw  new NotFoundUserException(NOT_FOUND_USER, enterUserIdx);}
-            );
             ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(
                     () -> {
                         throw new NotFoundBoardException(NOT_FOUND_BOARD, roomId);
                     }
+            );
+            User user = userRepository.findById(chatRoom.getSender().getUserIdx()).orElseThrow(
+                    () -> {throw  new NotFoundUserException(NOT_FOUND_USER, enterUserIdx);}
             );
             Mentee mentee = new Mentee();
             mentee.setMentor(mentor);
@@ -277,5 +278,40 @@ public class MentorService {
         }
 
         return mentor.getMentorMentee();
+    }
+
+    public MenteeListResponseDTO getMenteeList(Long mentorIdx, TokenUserInfo tokenUserInfo) {
+
+        validateToken.validateToken(tokenUserInfo);
+
+        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
+
+//        Long userIdx = 6L;
+        List<Mentee> menteeList = menteeRepository.findByMentorMentorIdxAndUserUserIdx(mentorIdx, userIdx);
+
+        List<MenteeResponseDTO> menteeResponseDTOList = menteeList.stream().map(
+                mentee -> {
+                    MenteeResponseDTO dto = new MenteeResponseDTO();
+                    dto.setRoomId(mentee.getChatRoom().getRoomId());
+                    dto.setMenteeIdx(mentee.getMenteeIdx());
+                    dto.setMenteeNickname(mentee.getUser().getUserNickname());
+                    dto.setMentorIdx(mentee.getMentor().getMentorIdx());
+                    dto.setMenteeUserIdx(mentee.getUser().getUserIdx());
+
+                    return dto;
+                }
+        ).collect(toList());
+
+        Mentor mentor = mentorRepository.findById(mentorIdx).orElseThrow(
+                () -> {
+                    throw new NotFoundBoardException(NOT_FOUND_BOARD, mentorIdx);
+                }
+        );
+
+
+        return MenteeListResponseDTO.builder()
+                .mentorNickname(mentor.getUser().getUserNickname())
+                .menteeResponseDTOList(menteeResponseDTOList)
+                .build();
     }
 }

@@ -19,7 +19,7 @@ const CompanyTemplate = () => {
     return (
         <>
             <CompanyMain onSearchChange={handleSearchChange} onSearchKeywordChange={handleSearchKeyword}/>
-            {/*<CompanyList searchValue = {searchValue} searchKeyword={searchKeyword}/>*/}
+            <CompanyList searchValue = {searchValue} searchKeyword={searchKeyword}/>
         </>
     );
 };

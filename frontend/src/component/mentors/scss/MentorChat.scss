@@ -13,7 +13,7 @@
   position: relative;
 
 
-  .mentor-detail-wrapper{
+  .mentor-detail-wrapper {
     margin-right: 10px;
     width: 500px;
     background-color: #f0f0f0;
@@ -58,12 +58,12 @@
       padding-bottom: 15px;
 
       .detail-profile-img {
-        width: 95px;
-        height: 95px;
-        background-color: #828282;
-        border-radius: 50px;
-        margin-right: 33px;
-        margin-left: 14px;
+        background-image: url("../../../src_assets/IMG_4525.JPG");
+        background-size: 112px;
+        width: 120px;
+        height: 120px;
+        border-radius: 200px;
+        margin-right: 17px;
       }
 
       .writer-text-wrapper {
@@ -84,6 +84,7 @@
         }
 
         .etc-wrapper {
+          padding-bottom: 5px;
           display: flex;
           flex-direction: column;
           font-size: 12px;
@@ -98,7 +99,28 @@
         .etc-wrapper div:not(.current) {
           padding-bottom: 5px;
         }
+
+        // 확정 멘티 리스트
+
+        .mentee-wrapper {
+
+          .mentee-title {
+            padding-bottom: 5px;
+            font-size: 12px;
+            color: #969696;
+          }
+
+          .mentee {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+          }
+
+        }
       }
+
+
+
     }
 
     // main section
@@ -120,11 +142,11 @@
     .btn-wrapper {
       width: 100%;
       display: flex;
-      justify-content:space-evenly;
+      justify-content: space-evenly;
       align-items: start;
     }
 
-    .mentor-back-room{
+    .mentor-back-room {
       border: none;
       font-size: 17px;
       color: white;
@@ -148,7 +170,7 @@
   }
 
   //채팅부분
-  .mentor-chat-room{
+  .mentor-chat-room {
     font-family: Pretendard, sans-serif;
     width: 500px;
     height: 710px;
@@ -161,7 +183,7 @@
     justify-content: end;
 
 
-    .chating-list{
+    .chating-list {
       padding: 15px 30px;
       // padding-top: 15px;
       display: flex;
@@ -171,7 +193,6 @@
       // margin-bottom: 15px;
       overflow: auto;
 
-      
 
       .chat-room-list {
         width: 100%;
@@ -186,57 +207,59 @@
         margin-bottom: 10px;
 
       }
-      
+
       .profile-img {
+        background-image: url("../../../src_assets/IMG_4525.JPG");
+        background-size: 42px;
         width: 50px;
         height: 50px;
         border-radius: 50%;
         margin-right: 10px;
       }
-  
+
       .mentee-nick-name {
         font-weight: bold;
         margin-bottom: 5px;
         color: #333;
       }
-      
+
       .mentee-msg-content {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
         color: #888;
       }
-      
+
       .mentee-date {
         font-size: 12px;
         color: #888;
         margin-right: 10px;
       }
-      
+
       .chatroom-delbtn {
         background-color: transparent;
         border: none;
         color: #888;
         font-size: 12px;
-        
+
         cursor: pointer;
       }
-      
 
-      .sender-wrapper{
+
+      .sender-wrapper {
         width: 100%;
         margin-bottom: 13px;
         font-size: 15px;
         display: flex;
         flex-direction: column;
 
-        .sender{
+        .sender {
           color: white;
           margin-bottom: 3px;
           align-self: flex-end;
         }
 
-        .sender-content{
+        .sender-content {
           max-width: 60%;
           margin-left: auto;
           width: fit-content;
@@ -248,18 +271,19 @@
         }
       }
 
-      .receiver-wrapper{
+      .receiver-wrapper {
         width: 100%;
         margin-bottom: 10px;
         font-size: 15px;
         display: flex;
         flex-direction: column;
 
-        .receiver{
+        .receiver {
           color: white;
           margin-bottom: 3px;
         }
-        .receiver-content{
+
+        .receiver-content {
           width: fit-content;
           padding: 5px 12px;
           font-size: 16px;
@@ -269,7 +293,8 @@
         }
       }
     }
-    .input-section{
+
+    .input-section {
       width: 100%;
       background-color: #e6e6e6;
       padding: 15px 10px;
@@ -279,16 +304,17 @@
       border-bottom-right-radius: 22px;
 
 
-      .text-input{
+      .text-input {
         padding: 10px;
-        border:none;
+        border: none;
         resize: none;
         background-color: #e6e6e6;
         width: 85%;
         height: 70px;
         outline-color: #c0c0c0;
       }
-      .send-btn{
+
+      .send-btn {
         border: none;
         width: 12%;
         border-radius: 10px;
@@ -297,7 +323,8 @@
         background-color: white;
         font-size: 13.5px;
       }
-      .send-btn:hover{
+
+      .send-btn:hover {
         transition: 0.5s;
         background-color: #1e4fff;
         color: white;

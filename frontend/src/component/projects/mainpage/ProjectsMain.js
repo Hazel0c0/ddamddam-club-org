@@ -28,6 +28,7 @@ const ProjectsMain = ({headerInfo}) => {
   // const popularity = PROJECT + `?sort=like&page=1&size=3`;
     useEffect(()=>{
 
+
     },[mainCurrentPage,popularity])
 
 
