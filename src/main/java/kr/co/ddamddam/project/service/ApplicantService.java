@@ -70,7 +70,7 @@ public class ApplicantService {
                 ));
             } else {
                 // 최대 백엔드 지원자 수를 초과한 경우 예외 처리
-                throw new IllegalStateException("백엔드 지원자 정원 마감");
+                throw new IllegalStateException("백엔드 지원자의 정원이 마감되었습니다");
             }
         } else {
             System.out.println("이 유저는 front 다");
@@ -83,7 +83,7 @@ public class ApplicantService {
                         .build()
                 ));
             } else {
-                throw new IllegalStateException("프론트 지원자 정원 마감");
+                throw new IllegalStateException("프론트 지원자의 정원이 마감되었습니다");
             }
         }
 

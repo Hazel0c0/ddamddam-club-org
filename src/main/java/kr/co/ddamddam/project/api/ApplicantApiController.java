@@ -1,5 +1,6 @@
 package kr.co.ddamddam.project.api;
 
+import kr.co.ddamddam.common.exception.custom.UnauthorizationException;
 import kr.co.ddamddam.common.response.ApplicationResponse;
 import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.project.dto.response.ProjectDetailResponseDTO;
@@ -43,12 +44,11 @@ public class ApplicantApiController {
 
             log.info("신청하기 - {}", projectDto);
             return ResponseEntity.ok().body(projectDto);
-        } catch (IllegalStateException e){
+        } catch (UnauthorizationException e){
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("정원 마감");
-        }
-        catch (Exception e) {
-            return ResponseEntity.badRequest().body("다시 신청해주세요");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("자신의 게시글에는 신청을 할 수 없습니다");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
