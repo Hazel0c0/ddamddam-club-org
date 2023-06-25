@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import Common from "../common/Common";
 import logo from "../../src_assets/logo(white).png";
-import {BASE_URL, MYPAGE} from "../common/config/HostConfig";
+import {BASE_URL, MYPAGE, JOININ} from "../common/config/HostConfig";
 import {useNavigate} from "react-router-dom";
 import {getToken, getUserIdx, getUserName, getUserNickname
     , getUserBirth, getUserPosition, getUserCareer, getUserProfile} from "../common/util/login-util";
@@ -24,6 +24,7 @@ const MypageUserModify = props => {
     'content-type': 'application/json',
     'Authorization': 'Bearer ' + ACCESS_TOKEN
   }
+  const [showNickCertificationBtn, setShowNickCertificationBtn] = useState(false); // 닉네임 중복체크
 
   const USER_NICKNAME = getUserNickname();
   const USER_NAME = getUserName();
@@ -36,10 +37,10 @@ const MypageUserModify = props => {
    const [userValue, setUserValue] = useState({
     userName: USER_NAME,
     userNickName: USER_NICKNAME,
-    userBirth: '',
-    userPosition: 'FRONTEND',
-    userCareer: '',
-    userProfile: '0'
+    userBirth: USER_BIRTH,
+    userPosition: USER_POSITION,
+    userCareer: USER_CAREER,
+    userProfile: USER_PROFILE
 });
     // 검증 메세지에 대한 상태변수 관리
     const [message, setMessage] = useState({
@@ -52,8 +53,8 @@ const MypageUserModify = props => {
 
     // 검증 완료 체크에 대한 상태변수 관리
     const [correct, setCorrect] = useState({
-        userName: false,
-        userNickName: false,
+        userName: true,
+        userNickName: true,
         userBirth: true,
         userPosition: true,
         userCareer: true
@@ -126,6 +127,33 @@ const nameHandler = e => {
         msg,
         flag
     });
+};
+
+// 닉네임 중복체크 서버 통신 함수
+const fetchDuplicateNickCheck = async (e) => {
+
+    const inputNickname = userValue.userNickName;
+    console.log(`inputNick : ${inputNickname}`)
+    const res = await fetch(`${JOININ}/checknickname?nickname=${inputNickname}`);
+
+    if (res.status === 200) {
+        const json = await res.json();
+        //true면 중복, false면 사용가능
+        if (json){
+            alert("이미 존재하는 닉네임입니다.")
+            setShowNickCertificationBtn(false);
+            let msg = '이미 존재하는 닉네임입니다. 다시 확인해주세요';
+            setMessage({...message, userNickName: msg});
+            setCorrect({...correct, userNickName: false});
+        }else {
+            alert("사용 가능한 닉네임입니다.")
+            setShowNickCertificationBtn(true);
+
+        }
+
+    } else {
+        alert('서버 통신이 원활하지 않습니다!');
+    }
 };
 
 // 닉네임 입력창 체인지 이벤트 핸들러
@@ -241,8 +269,8 @@ const modifyButtonClickHandler = e => {
     console.log(correct);
     e.preventDefault();  //submit기능 중단 시키기
     // const $nameInput = document.getElementsByName('name');
-    console.log(userValue)
-    console.log(isValid)
+    console.log(userValue);
+    console.log(isValid);
     // 회원수정 서버 요청
     if (isValid()) {
         fetchModifyPost();
@@ -282,7 +310,7 @@ const modifyButtonClickHandler = e => {
                     <div className={'input-name'}>
                         <input type={"text"} className={'name'} id={'username'} name={'username'}
                                onChange={nameHandler}
-                               value={USER_NAME}/>
+                               defaultValue={USER_NAME}/>
                         <span className={correct.userName ? 'correct' : 'not-correct'}>{message.userName}</span>
                         {correct.userName &&
                             <BsCheckLg className={'check'}/>
@@ -291,9 +319,14 @@ const modifyButtonClickHandler = e => {
 
                     {/*닉네임*/}
                     <div className={'input-nickname'}>
-                        <input type={"text"} className={'nickname'} id={'nickname'} name={'nickname'}
-                               onChange={nicknameHandler}
-                               value={USER_NICKNAME}/>
+                        <div className={'nickname-wrapper'}>
+                            <input type={"text"} className={'nickname'} id={'nickname'} name={'nickname'}
+                                onChange={nicknameHandler}
+                                defaultValue={USER_NICKNAME}/>
+                            <button className={'check-btn'} onClick={fetchDuplicateNickCheck}>
+                                    <div className={''}>중복확인</div>
+                            </button>
+                        </div>
                         <span className={correct.userNickName ? 'correct' : 'not-correct'}>{message.userNickName}</span>
 
                         {correct.userNickName &&
@@ -306,18 +339,18 @@ const modifyButtonClickHandler = e => {
 
 
                     <input type={"date"} className={'birth'} id={'userBirth'} name={'userBirth'}
-                           placeholder={'생년월일 8자리 (ex.19960214)'} onChange={birthHandler} value={USER_BIRTH}/>
+                           placeholder={'생년월일 8자리 (ex.19960214)'} onChange={birthHandler} defaultValue={USER_BIRTH}/>
 
-                    <select className={'career'} id={'userCareer'} name={'userCareer'} defaultValue={'0'}
-                            onChange={careerHandler} value={USER_CAREER}>
+                    <select className={'career'} id={'userCareer'} name={'userCareer'} defaultValue={USER_CAREER}
+                            onChange={careerHandler}>
                         <option value={'0'}>신입</option>
                         <option value={'1'}>1년 이상</option>
                         <option value={'3'}>3년 이상</option>
                         <option value={'5'}>5년 이상</option>
                     </select>
 
-                    <select className={'position-select'} id={'userPosition'} defaultValue={'selectedPosition'}
-                            onChange={positionHandler} value={USER_POSITION}>
+                    <select className={'position-select'} id={'userPosition'} defaultValue={USER_POSITION}
+                            onChange={positionHandler}>
                         <option value={'FRONTEND'}>프론트엔드</option>
                         <option value={'BACKEND'}>백엔드</option>
                     </select>
