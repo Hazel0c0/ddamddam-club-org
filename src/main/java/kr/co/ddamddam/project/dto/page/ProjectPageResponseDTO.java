@@ -19,7 +19,7 @@ public class ProjectPageResponseDTO<T> {
     private int totalCount;
 
     // 한페이지에 배치할 페이지 수 (1~10 // 11~20)
-    private static final int PAGE_COUNT = 1;
+    private static final int PAGE_COUNT = 10;
 
     // 게시판 뿐만이 아니라 댓글도 쓰고 싶으면 제너릭을 T로 해줘야 쓸수 있다.
     public ProjectPageResponseDTO(Page<T> pageData) {

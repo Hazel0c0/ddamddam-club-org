@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 
 
 const ProjectImage = ({projectIdx}) => {
-  console.log(`[ img.js ] P.idx : ${projectIdx}`)
+  // console.log(`[ img.js ] P.idx : ${projectIdx}`)
   const [fileUrl, setFileUrl] = useState([]);
 
   const fileRequestURL = '//localhost:8181/api/ddamddam/load-file'
@@ -17,7 +17,6 @@ const ProjectImage = ({projectIdx}) => {
       if (res.status === 200) {
         const fileBlob = await res.blob();
         const imgUrl = window.URL.createObjectURL(fileBlob);
-        console.log(`img (${projectIdx}): ${imgUrl}`);
         // 이미지 수정
         // setFileUrl((prevUrls) => {
         //   const updatedUrls = [...prevUrls];
@@ -25,7 +24,7 @@ const ProjectImage = ({projectIdx}) => {
         //   return updatedUrls;
         // });
         setFileUrl(imgUrl);
-        console.log(`img (${projectIdx}): ${imgUrl}`);
+        // console.log(`img (${projectIdx}): ${imgUrl}`);
       } else {
         const err = await res.text();
         console.log('img load error !! ' + err);

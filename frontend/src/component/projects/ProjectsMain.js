@@ -1,15 +1,15 @@
 import React, {useState, useEffect, useRef} from 'react';
-import ProjectsItem from "./ProjectsItem";
+import PopularProjects from "./PopularProjects";
 import Common from "../common/Common";
 import {PROJECT} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
-import less from "../../src_assets/less.png";
-import than from "../../src_assets/than.png";
+
 import {Modal, Button} from 'react-bootstrap';
 import {getToken, getUserPosition} from "../common/util/login-util";
 import 'bootstrap/dist/css/bootstrap.css';
 import './scss/QuickMatching.scss';
 import ProjectsQuickMatching from "./ProjectsQuickMatching";
+import LatestProjects from "./LatestProjects";
 
 const ProjectsMain = () => {
 
@@ -28,21 +28,21 @@ const ProjectsMain = () => {
   const [currentUrl, setCurrentUrl] = useState(PROJECT);
 
   // 인기프로젝트 페이지
-  const [likePage, setLikePage] = useState(1);
-  const LIKE_PAGE_SIZE = 3;
-  const popularityUrl = `${PROJECT}?page=${likePage}&size=${LIKE_PAGE_SIZE}&like=true`;
-  const [popularity, setPopularity] = useState(popularityUrl);
+  // const [likePage, setLikePage] = useState(1);
+  // const LIKE_PAGE_SIZE = 3;
+  // const popularityUrl = `${PROJECT}?page=${likePage}&size=${LIKE_PAGE_SIZE}&like=true`;
+  // const [popularity, setPopularity] = useState(popularityUrl);
 
   // 페이지 처리
-  const handlePageChange = (currentPage) => {
-    setLikePage(currentPage);
-    console.log(`main 현재 페이지 번호 : ${currentPage}`)
-  }
+  // const handlePageChange = (currentPage) => {
+  //   setLikePage(currentPage);
+  //   console.log(`main 현재 페이지 번호 : ${currentPage}`)
+  // }
 
-  useEffect(() => {
-    handlePageChange(likePage);
-    // setPopularity(popularityUrl);
-  }, [likePage, popularity])
+  // useEffect(() => {
+  //   handlePageChange(likePage);
+  //   // setPopularity(popularityUrl);
+  // }, [likePage, popularity])
 
   // 퀵 매칭 모달창
   const [quickDetail, setQuickDetail] = useState([]);
@@ -69,7 +69,7 @@ const ProjectsMain = () => {
   const handleShowDetails = (projectIdx) => {
     console.log('게시판 번호: ', projectIdx);
 
-    navigate(`/projects/detail?projectIdx=${projectIdx}`, {state: {headerInfo}});
+    navigate(`/projects/detail?projectIdx=${projectIdx}`);
   };
 
   // 퀵 매칭
@@ -112,21 +112,20 @@ const ProjectsMain = () => {
         작성하기
       </Link>
 
-      <ProjectsItem
-        url={popularity}
+      <PopularProjects
+        // url={popularity}
         sortTitle={'인기 프로젝트'}
         handleLikeClick={handleLikeClick}
         handleShowDetails={handleShowDetails}
-        pageChange={handlePageChange}
+        // pageChange={handlePageChange}
         ref={childRef}
       />
 
-      <ProjectsItem
-        url={currentUrl}
+      <LatestProjects
+        // url={currentUrl}
         sortTitle={'최신 프로젝트'}
         handleLikeClick={handleLikeClick}
         handleShowDetails={handleShowDetails}
-        pageChange={handlePageChange}
         ref={childRef}
       />
 
