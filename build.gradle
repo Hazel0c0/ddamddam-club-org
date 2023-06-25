@@ -62,7 +62,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	// -------------- 메일 인증
 
-	implementation 'com.google.code.gson:gson:2.8.7'
+	implementation 'com.google.code.gson:gson:2.8.9'
 
 	//파일업로드 라이브러리
 	implementation 'commons-io:commons-io:2.8.0'

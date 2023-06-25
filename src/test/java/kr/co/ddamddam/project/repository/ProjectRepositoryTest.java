@@ -36,7 +36,8 @@ class ProjectRepositoryTest {
   void bulkInsert() {
     for (int i = 1; i < 20; i++) {
       int index = (int) (Math.random() * 4+1); // 0 ~ 5
-      Long ran = (long) (Math.random() * 20 + 1);
+      Long ran = (long) (Math.random() * 6 + 1);
+      int like = (int) (Math.random() * 100 + 1);
       User user = userRepository.findById(ran).orElseThrow(() -> {
         throw new NotFoundBoardException(ErrorCode.NOT_FOUND_USER, ran);
       });
@@ -44,11 +45,13 @@ class ProjectRepositoryTest {
       projectRepository.save(
           Project.builder()
               .user(user)
-              .projectTitle("11제목" + i + "이다")
-              .projectContent("내용" + i)
+              .userNickname(user.getUserNickname())
+              .projectTitle("사이드 프로젝트" + i )
+              .projectContent("프로젝트 모집 공고" + i)
               .projectType("웹페이지")
               .maxFront(index)
               .maxBack(index)
+              .likeCount(like)
               .build()
       );
     }
