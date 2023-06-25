@@ -277,7 +277,10 @@ const MentorsList = ({selectedSubjects}) => {
 
                 <div className={'btn-wrapper'}>
                     <Link to={`#`} onClick={createChatRoom}>
-                        <button className={'application-btn'}>신청하기</button>
+                        {detailMember.userIdx === enterUserIdx
+                         ? <button className={'application-btn'}>입장</button>
+                         : <button className={'application-btn'}>신청하기</button>
+                        }
                     </Link>
                 </div>
             </Modal>
