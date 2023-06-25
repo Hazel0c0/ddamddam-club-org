@@ -29,7 +29,12 @@ const CompanyTemplate = () => {
                 onSearchKeywordChange={handleSearchKeyword}
                 onSearchCareerChange={handleSearchCareer}
             />
-            <CompanyList searchValue = {searchValue} searchKeyword={searchKeyword}/>
+            <CompanyList
+                searchValue={searchValue}
+                searchKeyword={searchKeyword}
+                searchCareer={searchCareer}
+            />
+
         </>
     );
 };

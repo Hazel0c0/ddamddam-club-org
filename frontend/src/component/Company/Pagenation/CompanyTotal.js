@@ -4,7 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {RxCalendar} from "react-icons/rx"
 import {Spinner} from 'reactstrap';
 
-const CompanyTotal = () => {
+const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
     const [companyList, setCompanyList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -14,14 +14,14 @@ const CompanyTotal = () => {
     //워크넷 링크 상태관리
     const [goWorknet, setGoWorknet] = useState([]);
     useEffect(() => {
-        if (finalPage >= page){
+        if (finalPage >= page) {
             fetchData(page);
         }
-        if (finalPage > 1 && finalPage === page){
-            setIsLoading(false)
+        if (finalPage > 1 && finalPage === page) {
+            setIsLoading(false);
         }
-        console.log(`finalPage : `,finalPage)
-    }, [page]);
+        console.log(`finalPage : `, finalPage)
+    }, [page, searchKeyword, searchValue, searchCareer]);
 
     useEffect(() => {
         // 스크롤 이벤트 리스너 등록
@@ -34,11 +34,12 @@ const CompanyTotal = () => {
     }, []);
 
     const fetchData = async (page) => {
-        console.log(`set 후 현재 page : `,page)
-        console.log(`set 후 현재 finalPage : `,finalPage)
+        console.log(`set 후 현재 page : `, page)
+        console.log(`set 후 현재 finalPage : `, finalPage)
 
         setIsLoading(true)
         // const res = await fetch(`${COMPANY}/search?keyword=&page=${page}&size=10$sort={}`, {
+        // const res = await fetch(`${COMPANY}/list?page=${page}&size=10`, {
         const res = await fetch(`${COMPANY}/list?page=${page}&size=10`, {
             method: 'GET',
             headers: {'content-type': 'application/json'}
@@ -53,7 +54,7 @@ const CompanyTotal = () => {
 
         //마지막 페이지 계산해서 로딩 막기
         const totalCount = result.pageInfo.totalCount;
-        const totalPage = Math.ceil(totalCount/10);
+        const totalPage = Math.ceil(totalCount / 10);
         setFinalPage(totalPage);
 
         const companyLists = result.companyList
@@ -70,12 +71,12 @@ const CompanyTotal = () => {
             let setModifyLocation = modifyLocation[0] + " " + modifyLocation[1];
 
             return {...list, companyEnddate: endDate, dDay: formattedEndDate, companyArea: setModifyLocation}
-
         });
 
         setGoWorknet((prevGoWorknet) => [...prevGoWorknet, ...new Array(companyLists.length).fill(false)]);
         setCompanyList((prevCompanyList) => [...prevCompanyList, ...modifyCompanyList]);
         setIsLoading(false)
+        console.log(`modifyCompanyList : `,modifyCompanyList)
 
     }
 
@@ -119,7 +120,7 @@ const CompanyTotal = () => {
         return formattedDdayDate;
     }
 
-    const showLinkHandler = (index) => {
+    const showLinkHandler = (index,companyName) => {
         const updatedGoWorknet = goWorknet.map((item, i) => (i === index ? true : false));
         setGoWorknet(updatedGoWorknet);
     }
@@ -138,7 +139,7 @@ const CompanyTotal = () => {
             {companyList.map((company, index) => (
                 <>
                     <section
-                        key={index}
+                        key={`${company.companyIdx}-${index}`}
                         className={'company-list'}
                         onMouseEnter={() => showLinkHandler(index)}
                         onMouseLeave={() => hiddenLinkHandler(index)}
@@ -189,50 +190,3 @@ const CompanyTotal = () => {
 };
 
 export default CompanyTotal;
-
-/*
- const asyncCompanyTotalList = async () => {
-     // console.log(`asyncCompanyTotalList 실행`)
-     // const responseUrl = `/list?page=${clickCurrentPage}&size=10`
-     const res = await fetch(`${COMPANY}/list`, {
-         method: 'GET',
-         headers: {'content-type': 'application/json'}
-     });
-
-     if (res.status === 500) {
-         alert('잠시 후 다시 접속해주세요.[서버오류]');
-         return;
-     }
-
-     const result = await res.json();
-     // console.log(`전체 result : `, result)
-
-     setPageNation(result.pageInfo);
-
-     const companyLists = result.companyList
-
-     //list가공
-     const modifyCompanyList = companyLists.map((list) => {
-         let endDate = list.companyEnddate;
-         if (list.companyEnddate.includes('채용시까지')) {
-             endDate = endDate.split("채용시까지")[1].trim();
-         }
-         const formattedEndDate = convertToEndDate(endDate);
-
-         let modifyLocation = list.companyArea.split(" ");
-         let setModifyLocation = modifyLocation[0] + " " + modifyLocation[1];
-
-         return {...list, companyEnddate: endDate, dDay: formattedEndDate, companyArea: setModifyLocation}
-
-     });
-     setGoWorknet(new Array(companyLists.length).fill(false))
-     // goWorknet.length = companyList.length;
-     // for (let i = 0; i < goWorknet.length; i++) {
-     //     goWorknet[i] = false
-     // }
-
-     // console.log(goWorknet)
-     setCompanyList(modifyCompanyList);
-     // console.log(`modifyCompanyList의 값 : `, modifyCompanyList)
- }
-  */

@@ -57,11 +57,13 @@ public class MypageController {
     @PostMapping("/modify")
     public ResponseEntity<?> modify(
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
-            @RequestBody MypageModifyRequestDTO dto
+            @RequestBody MypageModifyRequestDTO dto,
+            @RequestPart(value = "profileImage", required = false) MultipartFile profileImg
     ){
 
 
         log.info("modify: {}",dto);
+
 
         myPageService.myPageModify(dto, tokenUserInfo);
 

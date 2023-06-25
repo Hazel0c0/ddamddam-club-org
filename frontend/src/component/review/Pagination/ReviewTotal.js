@@ -53,7 +53,7 @@ const ReviewTotal = ({loginCheck, searchKeyword, searchValue}) => {
     return (
         <>
             {reviewList.map((review) => (
-                <section className={'review-list'}>
+                <section key={review.reviewIdx} className={'review-list'}>
 
                     <div className={'company-info-wrapper'}>
                         <span className={'company'}>{review.reviewCompanyName}</span>
