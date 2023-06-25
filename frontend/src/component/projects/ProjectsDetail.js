@@ -7,6 +7,12 @@ import './scss/ProjectDetail.scss';
 import {getToken, getUserIdx, getUserNickname} from "../common/util/login-util";
 
 const ProjectsDetail = () => {
+  const ACCESS_TOKEN = getToken();
+  const headerInfo = {
+    'content-type': 'application/json',
+    'Authorization': 'Bearer ' + ACCESS_TOKEN
+  }
+
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -14,12 +20,24 @@ const ProjectsDetail = () => {
   const [projectDetail, setProjectDetail] = useState([]);
   const [projectImgUrl, setProjectImgUrl] = useState(''); // 새로운 상태 추가
 
-  const ACCESS_TOKEN = getToken();
+  const handleLikeClick = (projectId) => {
+    // 서버에 좋아요 처리를 위한 POST 요청을 보냅니다
+    fetch(PROJECT + `/like/${projectId}`, {
+      method: 'POST',
+      headers: headerInfo
+    })
+        .then(res => {
+          if (res.status === 200) return res.json()
+        })
+        .then(data => {
+          console.log(data);
+          fetchProjectDetail();
+        })
+        .catch(error => {
+          console.log('Error:', error);
+        });
+  };
 
-  const headerInfo = {
-    'content-type': 'application/json',
-    'Authorization': 'Bearer ' + ACCESS_TOKEN
-  }
 
   const fetchProjectDetail = () => {
     fetch(PROJECT + `/${projectIdx}`, {
@@ -175,6 +193,15 @@ const ProjectsDetail = () => {
                   </div>
                 </section>
                 <section className={'main-content'}>{de.boardContent}</section>
+
+                <div className={'apply-wrapper'}
+                     onClick={(e) => {
+                       handleLikeClick(projectIdx);
+                     }}
+                >
+                  <div className={'apply-btn'}>♥ {de.likeCount}</div>
+                </div>
+
                 <section className={'apply-wrapper'}>
                   <div className={'apply-btn'} onClick={handleApply}>신청하기</div>
                 </section>
