@@ -33,6 +33,8 @@ const MypageUserModify = props => {
   const USER_CAREER = getUserCareer();
   const USER_BIRTH = getUserBirth();
 
+  
+
    // 상태변수로 회원수정 입력값 관리
    const [userValue, setUserValue] = useState({
     userName: USER_NAME,
@@ -214,7 +216,12 @@ const birthHandler = (event) => {
 const [selectedPosition, setSelectedPosition] = useState('');
 const positionHandler = e => {
     const selectedValue = e.target.value;
+    console.log(selectedValue);
     setSelectedPosition(selectedValue);
+    setUserValue(prevValue =>({
+        ...prevValue,
+        userPosition : e.target.value
+    }));
 };
 
 //입력칸이 모두 검증에 통과했는지 여부를 검사
@@ -266,13 +273,26 @@ const isValid = () => {
 
   // 회원수정 처리 서버 요청
   const fetchModifyPost = async () => {
+
+    
     console.log(`fetchSignUpPost의 userValue : ${userValue}`);
     console.log(userValue.userNickName);
+
+    // JSON을 Blob타입으로 변경 후 FormData에 넣기
+    const userJsonBlob = new Blob(
+        [JSON.stringify(userValue)],
+        { type: 'application/json' }
+      );
+
+ // 이미지파일과 회원정보 JSON을 하나로 묶어야 함
+    const userFormData = new FormData();
+    userFormData.append('user', userJsonBlob);
+    userFormData.append('profileImage', $fileTag.current.files[0]);
 
     const res = await fetch(`${API_BASE_URL}/modify`, {
         method: 'POST',
         headers: headerInfo,
-        body: JSON.stringify(userValue)
+        body: JSON.stringify(userFormData)
     });
 
     if (res.status === 200) {
