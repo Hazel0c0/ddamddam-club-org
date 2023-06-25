@@ -1,15 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import './scss/ReviewDetail.scss';
 import Common from "../common/Common";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {QNA, REVIEW} from "../common/config/HostConfig";
-import {getToken} from "../common/util/login-util";
+import {getToken, getUserNickname} from "../common/util/login-util";
 import ReviewStar from "./StartRating/ReviewStar";
 import back from "../../src_assets/back.png";
 
 const ReviewDetail = () => {
+    const redirection = useNavigate();
     const {reviewIdx} = useParams();
     const [detailReview, setDetailReview] = useState([]);
+
+    const enterUserNickName = getUserNickname();
 
     const ACCESS_TOKEN = getToken();
     const requestHeader = {
@@ -33,6 +36,43 @@ const ReviewDetail = () => {
         console.log(`result = `,result)
         // console.log(`resultJSON = ${JSON.stringify(result)}`)
         setDetailReview(result);
+
+    }
+
+    // 게시글 삭제 핸들러
+    const deleteHandler = async () => {
+        console.log("삭제버튼 클릭");
+        const res = await fetch(`${REVIEW}/delete/${reviewIdx}`, {
+            method: 'DELETE',
+            headers: requestHeader,
+            // body: JSON.stringify({
+            //     reviewIdx: reviewIdx
+            // })
+        });
+
+        if (res.status === 400) {
+            alert('잘못된 요청 값 입니다.')
+            return;
+        } else if (res.status === 401) {
+            alert('로그인이 만료되었습니다.')
+            window.location.href = "/";
+        } else if (res.status === 403) {
+            alert('권한이 없습니다.')
+            window.location.href = "/";
+        } else if (res.status === 404) {
+            alert('요청을 찾을 수 없습니다.');
+            return;
+        } else if (res.status === 500) {
+            alert('잠시 후 다시 접속해주세요.[서버오류]');
+            return;
+        } else if (res.status === 200) {
+            alert('삭제가 완료되었습니다.')
+            redirection(-1);
+        }
+    }
+
+    // 게시글 수정 핸들러
+    const modifyHandler = async () => {
 
     }
 
@@ -60,6 +100,14 @@ const ReviewDetail = () => {
                 </h1>
                 <section className={'info-detail-container'}>
                     <div className={'info-wrapper'}>
+                        {/*{enterUserNickName === detailReview.boardWriter &&*/}
+                          <div className={'category'}>
+                              <Link to={`/api/ddamddam/review/modify/${reviewIdx}`} className={'modify-btn'}
+                                    onClick={modifyHandler}>수정</Link>
+                              <span className={'delete-btn'} onClick={deleteHandler}>삭제</span>
+                          </div>
+                        {/*}*/}
+
                         <div className={'category'}>
                             <span className={'sub-title'}>직무</span>
                             <span className={'sub-content'}>{detailReview.reviewJob}</span>
