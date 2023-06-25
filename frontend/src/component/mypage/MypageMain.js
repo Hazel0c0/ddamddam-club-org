@@ -46,7 +46,7 @@ const MypageMain = props => {
 
   return (
     <>
-      <div className={'mypage-top-wrapper'}>
+      <Common className={'mypage-top-wrapper'}>
 
         <div className={'title-wrapper'}>
           <p className={'main-title'}>My page</p>
@@ -115,7 +115,7 @@ const MypageMain = props => {
           </div>
         </div>
 
-      </div>
+      </Common>
     </>
   );
 };
