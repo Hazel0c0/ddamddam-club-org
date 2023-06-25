@@ -139,9 +139,9 @@ const ProjectsMain = () => {
 
         <Modal show={show} onHide={handleClose} id="modal-container">
 
-          {quickDetail.map((quick) => (
+          {quickDetail.map((board) => (
             <>
-              <ProjectsQuickMatching quick={quick}
+              <ProjectsQuickMatching board={board}
                                      handleClose={handleClose}/>
             </>
           ))}
