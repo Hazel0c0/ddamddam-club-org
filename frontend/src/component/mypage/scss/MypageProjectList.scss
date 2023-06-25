@@ -69,11 +69,12 @@
     }
 
     .participants-box {
+      height: 95px;
       overflow: auto hidden;
 
-      > p {
-        margin-bottom: 5px;
-      }
+      //> p {
+      //  margin-bottom: 5px;
+      //}
     }
 
     .participants-box::-webkit-scrollbar {
