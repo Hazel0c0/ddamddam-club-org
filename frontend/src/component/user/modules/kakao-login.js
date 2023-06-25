@@ -30,7 +30,7 @@ export const kakaoLogin = async (navigate, code) => {
     sessionStorage.setItem('LOGIN_USER_PROFILE', result.userProfile);
     sessionStorage.setItem('LOGIN_USER_ROLE', result.userRole);
 
-    navigate('/'); // 토큰 받고 로그인 성공했으니 메인으로 돌아가기
+    window.location.href = '/'; // 토큰 받고 로그인 성공했으니 메인으로 돌아가기
   } catch (err) {
     console.log('카카오 로그인 에러', err);
     window.alert('로그인에 실패하였습니다.');

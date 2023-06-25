@@ -43,7 +43,7 @@ public class QnaReplyService {
 
         log.info("[Qna/Service] QNA 댓글 전체 조회");
 
-        List<QnaReply> replyDateAsc = qnaReplyRepository.findByQnaQnaIdxOrderByQnaReplyDateAsc(boardIdx);
+        List<QnaReply> replyDateAsc = qnaReplyRepository.findByQnaQnaIdxOrderByQnaReplyAdoptionDescQnaReplyDateAsc(boardIdx);
 
         List<QnaReplyListResponseDTO> qnaReplyDtoList = replyDateAsc.stream()
                 .map(QnaReplyListResponseDTO::new)

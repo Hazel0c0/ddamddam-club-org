@@ -22,7 +22,7 @@ public class ValidateToken {
      * 클라이언트에서 보낸 토큰만 검사하는 메서드
      * @param tokenUserInfo - 유저 정보 (유저 식별번호, 유저 이메일, 토큰)
      */
-    public void validateToken(TokenUserInfo tokenUserInfo) {
+    public User validateToken(TokenUserInfo tokenUserInfo) {
         // 토큰 인증 실패
         if (tokenUserInfo == null) {
             throw new UnauthorizationException(UNAUTHENTICATED_USER, "로그인 후 이용 가능합니다.");
@@ -34,7 +34,9 @@ public class ValidateToken {
         User user = userRepository.findById(userIdx).orElseThrow(() -> {
             throw new NotFoundUserException(NOT_FOUND_USER, userIdx);
         });
-        
+
+        return user;
+
     }
 
     // TODO : 작성자 일치 검증은 각자 서비스에 만들어서 사용해야함
