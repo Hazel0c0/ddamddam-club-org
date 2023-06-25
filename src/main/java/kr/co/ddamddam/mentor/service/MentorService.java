@@ -287,7 +287,9 @@ public class MentorService {
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
 //        Long userIdx = 6L;
-        List<Mentee> menteeList = menteeRepository.findByMentorMentorIdxAndUserUserIdx(mentorIdx, userIdx);
+
+
+        List<Mentee> menteeList = menteeRepository.findByMentorMentorIdx(mentorIdx);
 
         List<MenteeResponseDTO> menteeResponseDTOList = menteeList.stream().map(
                 mentee -> {
