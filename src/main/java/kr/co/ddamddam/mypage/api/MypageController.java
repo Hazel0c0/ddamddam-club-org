@@ -67,6 +67,8 @@ public class MypageController {
     ) throws IOException {
 
 
+
+        log.info("수정요청 발생");
         log.info("modify: {}",dto);
         log.info("inputImg : {}",profileImg);
 
