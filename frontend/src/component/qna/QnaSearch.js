@@ -7,7 +7,7 @@ import {getToken} from "../common/util/login-util";
 import {GrPowerReset} from "react-icons/gr";
 // import {GrPowerReset} from '/react-icons/gr';
 const QnaSearch = ({onSearchChange, onSearchKeywordChange}) => {
-    const [selectedBtn, setSelectedBtn] = useState('전체');
+    const [selectedBtn, setSelectedBtn] = useState('');
     const inputVal = useRef();
 
     //로그인 검증
@@ -24,8 +24,19 @@ const QnaSearch = ({onSearchChange, onSearchKeywordChange}) => {
     }
     const handleInputChange = (e) => {
         const value = e.target.textContent;
-        onSearchChange(value);
-        setSelectedBtn(value);
+        if (value === "전체"){
+            onSearchChange("");
+            setSelectedBtn("");
+        }else if(value === "미채택"){
+            onSearchChange("N");
+            setSelectedBtn("N");
+        }else if(value === "채택완료"){
+            onSearchChange("Y");
+            setSelectedBtn("Y");
+        }
+
+        // onSearchChange(value);
+        // setSelectedBtn(value);
         // onClickCurrentPageChange(1);
     }
 
@@ -37,6 +48,7 @@ const QnaSearch = ({onSearchChange, onSearchKeywordChange}) => {
         if (e.target.value === ''){
             onSearchKeywordChange('');
         }
+        onSearchKeywordChange(e.target.value);
     }
 
     //검색버튼
@@ -56,21 +68,21 @@ const QnaSearch = ({onSearchChange, onSearchKeywordChange}) => {
             <ul className={'sort-btn'}>
                 <li
                     onClick={handleInputChange}
-                    className={selectedBtn === '전체' ? 'selected' : ''}
+                    className={selectedBtn === '' ? 'selected' : ''}
                 >
                     전체
                 </li>
 
                 <li
                     onClick={handleInputChange}
-                    className={selectedBtn === '미채택' ? 'selected' : ''}
+                    className={selectedBtn === 'N' ? 'selected' : ''}
                 >
                     미채택
                 </li>
 
                 <li
                     onClick={handleInputChange}
-                    className={selectedBtn === '채택완료' ? 'selected' : ''}
+                    className={selectedBtn === 'Y' ? 'selected' : ''}
                 >
                     채택완료
                 </li>

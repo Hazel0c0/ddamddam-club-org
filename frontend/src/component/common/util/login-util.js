@@ -108,3 +108,31 @@ export const isLogin = () => {
   return !!getUserEmail();
 };
 
+export const deleteSession = () =>{
+  //일반로그인 sessionStorage 제거
+  sessionStorage.removeItem('ACCESS_TOKEN');
+  sessionStorage.removeItem('LOGIN_USER_IDX');
+  sessionStorage.removeItem('LOGIN_USER_EMAIL');
+  sessionStorage.removeItem('LOGIN_USER_NAME');
+  sessionStorage.removeItem('LOGIN_USER_NICKNAME');
+  sessionStorage.removeItem('LOGIN_USER_REGDATE');
+  sessionStorage.removeItem('LOGIN_USER_BIRTH');
+  sessionStorage.removeItem('LOGIN_USER_POSITION');
+  sessionStorage.removeItem('LOGIN_USER_CAREER');
+  sessionStorage.removeItem('LOGIN_USER_POINT');
+  sessionStorage.removeItem('LOGIN_USER_PROFILE');
+  sessionStorage.removeItem('LOGIN_USER_ROLE');
+  // 자동로그인 localStorage 제거
+  localStorage.removeItem('ACCESS_TOKEN');
+  localStorage.removeItem('LOGIN_USER_IDX');
+  localStorage.removeItem('LOGIN_USER_EMAIL');
+  localStorage.removeItem('LOGIN_USER_NAME');
+  localStorage.removeItem('LOGIN_USER_NICKNAME');
+  localStorage.removeItem('LOGIN_USER_REGDATE');
+  localStorage.removeItem('LOGIN_USER_BIRTH');
+  localStorage.removeItem('LOGIN_USER_POSITION');
+  localStorage.removeItem('LOGIN_USER_CAREER');
+  localStorage.removeItem('LOGIN_USER_POINT');
+  localStorage.removeItem('LOGIN_USER_PROFILE');
+  localStorage.removeItem('LOGIN_USER_ROLE');
+}

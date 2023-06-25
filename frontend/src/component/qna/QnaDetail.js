@@ -3,6 +3,7 @@ import './scss/QnaDetail.scss';
 import Common from "../common/Common";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import viewIcon from "../../src_assets/view-icon.png";
+import speechBubbleText from "../../src_assets/speech-bubble(text).png";
 import speechBubble from "../../src_assets/speech-bubble.png";
 import {QNA, QNAREPLY} from "../common/config/HostConfig";
 import {getToken, getUserNickname} from "../common/util/login-util";
@@ -24,7 +25,7 @@ const QnaDetail = () => {
         };
 
         //수정버튼 누르면 수정할 수 있게
-        const [replyModifyShow, setReplyModifyShow] = useState(false);
+        const [replyModifyShow, setReplyModifyShow] = useState([]);
 
 
         const asyncDetail = async () => {
@@ -63,6 +64,14 @@ const QnaDetail = () => {
 
             // console.log(modifiedReplyList);
             console.log(result.payload);
+
+            //배열만큼 수정폼 반복
+            const updateModifiedBtn = result.payload.replyList.map((list, index) => {
+                return false;
+            });
+
+            setReplyModifyShow(updateModifiedBtn);
+            //
         }
 
         useEffect(() => {
@@ -70,14 +79,23 @@ const QnaDetail = () => {
         }, []);
 
         //댓글 작성
-        // const enterUserIdx = getUserIdx();
+        let isRun = false;
+        //TODO 중복클릭 방지 해야함
         const writeReplyHandler = async () => {
+            if (isRun === true) {
+                console.log("여러번 클릭")
+                return;
+            }
             if (detailQna.boardAdoption === 'Y') {
                 alert('이미 채택된 글은 댓글을 작성하실 수 없습니다.');
                 return;
             }
             const inputContent = document.querySelector('.reply-input').value;
-            console.log(`inputContent의 값 ${inputContent}`);
+            if (inputContent.trim() === '') {
+                alert('공백없이 입력해주세요!');
+                return;
+            }
+
             const res = await fetch(`${QNAREPLY}/write`, {
                 method: 'POST',
                 headers: requestHeader,
@@ -92,6 +110,7 @@ const QnaDetail = () => {
                 alert(text);
                 return;
             }
+            isRun = true;
             const replyData = await res.json();
             const replyList = replyData.payload;
 
@@ -105,13 +124,33 @@ const QnaDetail = () => {
 
             //임시방편 데이터에 무리갈듯
             asyncDetail();
+
+
         }
 
         //댓글 수정
-        const replyModifyShowHandler = async () => {
-            setReplyModifyShow(true);
-        }
+        const replyModifyShowHandler = (index) => {
+            setReplyModifyShow((prev) => {
+                const updatedState = {
+                    ...prev,
+                    [index]: true
+                };
+                console.log('replyModifyShow:', updatedState);
+                return updatedState;
+            });
+        };
 
+        //댓글 수정 취소
+        const replyModifyCancleHandler = (index) => {
+            setReplyModifyShow((prev) => {
+                const updatedState = {
+                    ...prev,
+                    [index]: false
+                };
+                console.log('replyModifyShow:', updatedState);
+                return updatedState;
+            });
+        }
 
         const replyModifyHandler = async (replyIdx) => {
 
@@ -127,7 +166,7 @@ const QnaDetail = () => {
                 method: 'PATCH',
                 headers: requestHeader,
                 body: JSON.stringify({
-                    replyIdx : replyIdx,
+                    replyIdx: replyIdx,
                     replyContent: modifyContent,
                 })
             })
@@ -153,11 +192,7 @@ const QnaDetail = () => {
             // console.log(`inputContent의 값 ${inputContent}`);
             const res = await fetch(`${QNAREPLY}/delete/${replyIdx}`, {
                 method: 'DELETE',
-                headers: requestHeader,
-                // body: JSON.stringify({
-                //     replyIdx : replyIdx,
-                //     replyContent: replyContent,
-                // })
+                headers: requestHeader
             })
             console.log(`댓글 삭제 res ${JSON.stringify(res)}`)
             alert("댓글이 삭제 되었습니다.");
@@ -252,7 +287,7 @@ const QnaDetail = () => {
             }
             const res = fetch(`${QNA}/delete/${boardIdx}`, {
                 method: 'DELETE',
-                headers: {'content-type': 'application/json'},
+                headers: requestHeader,
                 body: JSON.stringify({
                     boardIdx: boardIdx
                 })
@@ -269,7 +304,6 @@ const QnaDetail = () => {
 
 
         }
-
 
         return (
             <Common className={'qna-detail-wrapper'}>
@@ -341,9 +375,6 @@ const QnaDetail = () => {
                                 </p>
                                 {replyList.map((reply, index) => {
 
-                                    // setOrderIndex(index);
-
-                                    console.log('index in replyList: ', index);
                                     return (
                                         <div className={'reply-list'} key={index}>
                                             <div className={'reply-top-wrapper'}>
@@ -353,29 +384,35 @@ const QnaDetail = () => {
                                                 {enterUserNickName === reply.replyWriter &&
                                                     <>
                                                         <span className={'reply-modify'}
-                                                              onClick={replyModifyShowHandler}>수정</span>
+                                                              onClick={() => replyModifyShowHandler(index)}>수정</span>
                                                         <span className={'reply-delete'}
                                                               onClick={() => replyDeleteHandler(reply.replyIdx)}>삭제</span>
                                                     </>
                                                 }
                                             </div>
-
+                                            {/*현재 index 값 : {index} ///*/}
+                                            {/*현재 댓글 번호 {replyModifyShow[index] ? '트루' : '폴스'}*/}
                                             {/*수정 버튼 누르면 수정 폼 뛰워주기*/}
-                                            <div className={'reply-content-wrapper'}>
-                                                {replyModifyShow ?
+                                            <div className={'reply-content-wrapper'} key={index}>
+                                                {replyModifyShow[index] ?
                                                     <>
-                                                        <textarea name={"replyContent"} className={'reply-modify-content'}
-                                                                  // autoFocus={true}
+                                                        <textarea name={"replyContent"}
+                                                                  className={'reply-modify-content'}
                                                                   defaultValue={reply.replyContent}/>
-                                                        <button className="adoption-btn"
+                                                        <button className="reply-modify-cancel-btn"
+                                                                onClick={() => replyModifyCancleHandler(index)}>취소
+                                                        </button>
+
+                                                        <button className="reply-modify-btn"
                                                                 onClick={() => replyModifyHandler(reply.replyIdx)}>수정완료
                                                         </button>
+
                                                     </>
                                                     :
                                                     <>
                                                         <input type={"hidden"} value={reply.replyIdx} name={"replyIdx"}
                                                                className={'replyIdx'}/>
-                                                        <div>{reply.replyContent}</div>
+                                                        <div className={'reply-content-text'}>{reply.replyContent}</div>
                                                         <div>
                                                             {detailQna.boardAdoption === 'Y' ? (
                                                                 checkedReplyAdoption && checkedReplyAdoption[index].replyAdoption === 'Y' ? (
@@ -385,9 +422,26 @@ const QnaDetail = () => {
                                                                             disabled>채택불가</button>
                                                                 )
                                                             ) : (
-                                                                enterUserNickName !== reply.replyWriter && (
-                                                                    <button className="adoption-btn" onClick={adoptHandler}>채택하기</button>
-                                                                )
+                                                                enterUserNickName === detailQna.boardWriter && enterUserNickName !== reply.replyWriter
+                                                                    ? (
+                                                                        <button className="adoption-btn"
+                                                                                onClick={adoptHandler}>채택하기</button>
+                                                                    )
+                                                                    : (
+                                                                        enterUserNickName !== reply.replyWriter ?
+                                                                            <div className={'speechBubbleText-wrapper'}>
+                                                                                <img src={speechBubbleText} alt={"말풍선"}
+                                                                                     className={'speechBubbleText-icon'}/>
+                                                                                <div className="speechBubbleText"
+                                                                                >채택 대기중
+                                                                                </div>
+                                                                            </div>
+                                                                            :
+                                                                            null
+
+
+                                                                    )
+
                                                             )}
                                                         </div>
                                                     </>

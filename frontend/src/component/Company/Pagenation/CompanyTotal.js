@@ -1,28 +1,94 @@
 import React, {useEffect, useState} from 'react';
 import {COMPANY, REVIEW} from "../../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
-import ReviewStar from "../../review/StartRating/ReviewStar";
-import {IoIosArrowForward} from "react-icons/io";
-import viewIcon from "../../../src_assets/view-icon.png";
-import PageNation from "../../common/pageNation/PageNation";
 import {RxCalendar} from "react-icons/rx"
-import axios from "axios";
 
 const CompanyTotal = () => {
-    const [companyList, setReviewList] = useState([]);
+    const [companyList, setCompanyList] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [page, setPage] = useState(1);
+
     const [pageNation, setPageNation] = useState([]);
     const [clickCurrentPage, setClickCurrentPage] = useState(1);
 
     //워크넷 링크 상태관리
     const [goWorknet, setGoWorknet] = useState([]);
 
+    // useEffect(() => {
+    //     asyncCompanyTotalList();
+    //     // }, [clickCurrentPage,goWorknet])
+    // }, [clickCurrentPage])
+
     useEffect(() => {
-        asyncCompanyTotalList();
-        // }, [clickCurrentPage,goWorknet])
-    }, [clickCurrentPage])
+        // 초기 데이터 로드
+        fetchData();
+    }, []);
 
+    useEffect(() => {
+        // 스크롤 이벤트 리스너 등록
+        window.addEventListener('scroll', handleScroll);
 
+        return () => {
+            // 컴포넌트 언마운트 시 스크롤 이벤트 리스너 제거
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
+    const fetchData = async () => {
+        setIsLoading(true)
+        // console.log(`asyncCompanyTotalList 실행`)
+        // const responseUrl = `/list?page=${clickCurrentPage}&size=10`
+        // const res = await fetch(`${COMPANY}/search?keyword=&page=${page}&size=10$sort={}`, {
+        const res = await fetch(`${COMPANY}/search?keyword=&page=${page}&size=10$sort={}`, {
+            method: 'GET',
+            headers: {'content-type': 'application/json'}
+        });
+
+        if (res.status === 500) {
+            alert('잠시 후 다시 접속해주세요.[서버오류]');
+            return;
+        }
+
+        const result = await res.json();
+        // console.log(`전체 result : `, result)
+        // setReviewList()
+        setPageNation(result.pageInfo);
+
+        const companyLists = result.companyList
+
+        //list가공
+        const modifyCompanyList = companyLists.map((list) => {
+            let endDate = list.companyEnddate;
+            if (list.companyEnddate.includes('채용시까지')) {
+                endDate = endDate.split("채용시까지")[1].trim();
+            }
+            const formattedEndDate = convertToEndDate(endDate);
+
+            let modifyLocation = list.companyArea.split(" ");
+            let setModifyLocation = modifyLocation[0] + " " + modifyLocation[1];
+
+            return {...list, companyEnddate: endDate, dDay: formattedEndDate, companyArea: setModifyLocation}
+
+        });
+        setGoWorknet(new Array(companyLists.length).fill(false))
+
+        // console.log(goWorknet)
+        setCompanyList(prevState => [...prevState,...modifyCompanyList]);
+        setPage(prevState => prevState+1)
+        setIsLoading(false)
+        // console.log(`modifyCompanyList의 값 : `, modifyCompanyList)
+    }
+
+    const handleScroll = () =>{
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+
+        // 스크롤 위치가 일정 기준에 도달하면 추가 데이터 로드
+        if (scrollTop + windowHeight >= documentHeight - 200 && !isLoading) {
+            fetchData();
+        }
+    }
 
     const asyncCompanyTotalList = async () => {
         // console.log(`asyncCompanyTotalList 실행`)
@@ -65,9 +131,11 @@ const CompanyTotal = () => {
         // }
 
         // console.log(goWorknet)
-        setReviewList(modifyCompanyList);
+        setCompanyList(modifyCompanyList);
         // console.log(`modifyCompanyList의 값 : `, modifyCompanyList)
     }
+
+
 
     //d-day계산
     const convertToEndDate = (endDate) => {
@@ -99,8 +167,6 @@ const CompanyTotal = () => {
     const showLinkHandler = (index) => {
         const updatedGoWorknet = goWorknet.map((item, i) => (i === index ? true : false));
         setGoWorknet(updatedGoWorknet);
-
-        // console.log(updatedGoWorknet)
     }
     const hiddenLinkHandler = (index) => {
         setGoWorknet(new Array(goWorknet.length).fill(false));
@@ -155,6 +221,7 @@ const CompanyTotal = () => {
 
                 </>
             ))}
+            {isLoading && <div>Loading...</div>}
         </>
     );
 };

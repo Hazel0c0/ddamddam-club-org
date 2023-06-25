@@ -5,6 +5,8 @@ import {MENTOR, QNA} from "../common/config/HostConfig";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import Tags from '@yaireo/tagify/dist/react.tagify';
 import {getWhitelistFromServer, getValue} from './hashTagConfig/mockServer'
+import {getToken} from "../common/util/login-util";
+import header from "../common/Header";
 
 const MentorsWrite = () => {
     const redirection = useNavigate();
@@ -22,38 +24,35 @@ const MentorsWrite = () => {
     const [tagifySettings, setTagifySettings] = useState([]);
     const [tagifyProps, setTagifyProps] = useState({});
 
+    const ACCESS_TOKEN =getToken();
+    const requestHeader = {
+        'content-type': 'application/json',
+        'Authorization': 'Bearer ' + ACCESS_TOKEN
+    };
+
+    const modifiedBoard = async () => {
+
+        const res = await fetch(`${QNA}/${boardIdx}`, {
+            method: 'GET',
+            headers: requestHeader,
+            // body: JSON.stringify({
+            //     boardIdx: boardIdx
+            // })
+        })
+
+        // if (res.status === 500) {
+        //     alert('잠시 후 다시 접속해주세요.[서버오류]');
+        //     return;
+        // }
+        const result = await res.json();
+        setDetailQna(result.payload);
+
+        console.log(`수정할 value의 값: ${JSON.stringify(result.payload)}`);
+    }
+
     useEffect(() => {
-        console.log(boardIdx);
-        fetch(`//localhost:8181/api/ddamddam/qna/${boardIdx}`)
-            .then((res) => {
-                if (res.status === 500) {
-                    alert('잠시 후 다시 접속해주세요.[서버오류]');
-                    return;
-                }
-                return res.json();
-            })
-            .then((result) => {
-                setDetailQna(result.payload);
 
-                console.log(`수정할 value의 값: ${JSON.stringify(result.payload)}`);
-                // const hashTagList = result.payload.hashtagList;
-                // let hashTagToString = hashTagList.join(',');
-                // setHashTag(hashTagToString);
-
-
-                // const hashTagList = result.payload.hashtagList;
-
-                // let hashTagToString = ""
-                // for (let i = 0; i < hashTagList.length; i++) {
-                //     hashTagToString += hashTagList[i];
-                //     if (i !== hashTagList.length - 1) {
-                //         hashTagToString += ",";
-                //     }
-                // }
-                // console.log(hashTagToString);
-                // setHashTag(hashTagToString);
-            });
-
+        modifiedBoard();
 
         setTagifyProps({loading: false});
 
@@ -99,9 +98,9 @@ const MentorsWrite = () => {
     const modifySubmitHandler = async () => {
         console.log(textInput);
         const {boardTitle, boardContent, hashtagList} = textInput;
-        const res = fetch(`${QNA}/modify`, {
+        const res = fetch(`${QNA}/modify/${boardIdx}`, {
             method: 'PATCH',
-            headers: {'content-type': 'application/json'},
+            headers: requestHeader,
             body: JSON.stringify({
                 boardIdx: boardIdx,
                 boardTitle: boardTitle,
@@ -111,7 +110,7 @@ const MentorsWrite = () => {
         });
 
         const result = await res;
-        if (result.status === 200){
+        if (result.status === 200) {
             alert("게시글 수정이 완료되었습니다.");
             redirection(`/api/ddamddam/qna/${boardIdx}`)
 

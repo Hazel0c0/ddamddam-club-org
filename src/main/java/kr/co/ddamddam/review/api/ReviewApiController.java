@@ -144,9 +144,5 @@ public class ReviewApiController {
         return ResponseEntity.ok().body("삭제 성공!");
     }
 
-
-
-
-
-
+//    http://localhost:8181/api/ddamddam/reviews/search?keyword=&page=2&size=9&sort=RATING
 }
