@@ -95,7 +95,7 @@ const ProjectsMain = () => {
   }, []);
 
   return (
-    <>
+    <Common>
       <Link to={'/projects/write'} className={'projects-write-btn'}>
         작성하기
       </Link>
@@ -135,7 +135,7 @@ const ProjectsMain = () => {
 
         </Modal>
       </div>
-    </>
+    </Common>
   );
 };
 export default ProjectsMain;
