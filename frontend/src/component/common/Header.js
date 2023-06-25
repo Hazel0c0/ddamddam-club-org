@@ -117,7 +117,7 @@ const Header = () => {
               >
                   <li>모집</li>
                   <li>취업게시판</li>
-                  <li>프로젝트 공유</li>
+                  {/*<li>프로젝트 공유</li>*/}
                   <li>Q&A</li>
               </ul>
 
@@ -154,11 +154,11 @@ const Header = () => {
                 </ul>
                 <ul>
                     <li><Link to={'/reviews'}>취업 후기</Link></li>
-                    <li><Link to={'/'}>채용공고</Link></li>
+                    <li><Link to={'/companies'}>채용공고</Link></li>
                 </ul>
-                <ul>
-                    <li><Link to={'/'}>프로젝트 공유</Link></li>
-                </ul>
+                {/*<ul>*/}
+                {/*    <li><Link to={'/'}>프로젝트 공유</Link></li>*/}
+                {/*</ul>*/}
                 <ul>
                     <li><Link to={'/qna'}>Q&A</Link></li>
                 </ul>
