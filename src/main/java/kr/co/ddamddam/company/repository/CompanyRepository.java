@@ -11,24 +11,25 @@ import org.springframework.data.repository.query.Param;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
 
-//    @Query("SELECT DISTINCT c FROM Company c " +
-//            "WHERE (:keyword IS NULL OR :keyword = '' OR " +
-//            "c.companyTitle LIKE CONCAT('%', :keyword, '%') OR " +
-//            "c.companyCareer LIKE CONCAT('%', :keyword, '%') OR " +
-//            "c.companyArea LIKE CONCAT('%', :keyword, '%') OR " +
-//            "c.companyName LIKE CONCAT('%', :keyword, '%') OR " +
-//            "c.companySal LIKE CONCAT('%', :keyword, '%')) " +
-//            "AND (:sort IS NULL OR :sort = '' OR c.companyCareer = :sort) " +
-//            "AND (c.companyTitle LIKE '%백엔드%' OR " +
-//            "c.companyTitle LIKE '%back%' OR " +
-//            "c.companyTitle LIKE '%Back%')")
-    //키워드 검색
     @Query("SELECT DISTINCT c FROM Company c " +
-            "WHERE ((:keyword IS NULL OR : keyword = '') OR (c.companyTitle LIKE %:keyword% " +
-            "OR c.companyCareer LIKE %:keyword% OR c.companyArea LIKE %:keyword% " +
-            "OR c.companyName LIKE %:keyword% OR c.companySal LIKE %:keyword%)) " +
-            "AND ((:sort IS NULL OR :sort = '') OR c.companyCareer = :sort)")
+            "WHERE (:keyword IS NULL OR :keyword = '' OR " +
+            "c.companyTitle LIKE CONCAT('%', :keyword, '%') OR " +
+            "c.companyArea LIKE CONCAT('%', :keyword, '%') OR " +
+            "c.companyName LIKE CONCAT('%', :keyword, '%') OR " +
+            "c.companySal LIKE CONCAT('%', :keyword, '%')) " +
+            "AND (:sort IS NULL OR :sort = '' OR c.companyCareer LIKE CONCAT('%', :sort, '%')) " +
+            "AND (c.companyTitle LIKE '%백엔드%' OR c.companyTitle LIKE '%back%' OR c.companyTitle LIKE '%Back%') ")
     Page<Company> findByKeyword(@Param("keyword") String keyword, @Param("sort") String sort, Pageable pageable);
+
+
+
+    //키워드 검색
+//    @Query("SELECT DISTINCT c FROM Company c " +
+//            "WHERE ((:keyword IS NULL OR : keyword = '') OR (c.companyTitle LIKE %:keyword% " +
+//            "OR c.companyCareer LIKE %:keyword% OR c.companyArea LIKE %:keyword% " +
+//            "OR c.companyName LIKE %:keyword% OR c.companySal LIKE %:keyword%)) " +
+//            "AND ((:sort IS NULL OR :sort = '') OR c.companyCareer = :sort)")
+//    Page<Company> findByKeyword(@Param("keyword") String keyword, @Param("sort") String sort, Pageable pageable);
 
 
     @Query("SELECT c FROM Company c WHERE c.companyCareer ='경력' ")

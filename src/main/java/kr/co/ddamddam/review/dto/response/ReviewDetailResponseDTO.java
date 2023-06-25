@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ReviewDetailResponseDTO {
 
+    private Long userIdx;
     private Long reviewIdx;
     private String reviewCompanyName; //회사 이름
     private String reviewTitle;
@@ -31,6 +32,7 @@ public class ReviewDetailResponseDTO {
 
 
     public ReviewDetailResponseDTO(Review review) {
+
         this.reviewIdx = review.getReviewIdx();
         this.reviewCompanyName = review.getReviewCompany();
         this.reviewTitle = review.getReviewTitle();
