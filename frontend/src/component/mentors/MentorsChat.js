@@ -61,7 +61,9 @@ const MentorsChat = () => {
     document.querySelector('.input-section').style.display = 'flex';
     document.querySelector('.mentor-back-room').style.display = 'block';
 
-    document.querySelector('.application-btn').textContent = '멘토 확정';
+    const menteeBtn = document.querySelector('.application-btn');
+    menteeBtn.textContent = '멘토 확정';
+    menteeBtn.style.pointerEvents = 'auto';
 
     fetch(CHAT + `/mentor/chatroom/detail?mentorIdx=${chatPageIdx}&roomIdx=${e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value}&senderIdx=${e.target.closest('.chat-room-list').querySelector('.sender-idx').value}`, {
       method: 'GET',
@@ -89,6 +91,10 @@ const MentorsChat = () => {
     //       console.log(`Found user: ${mentee}`);
     //     }
     //   });
+    if(chatRoom === undefined){
+      alert('return');
+      return;
+    }
 
     if (window.confirm(chatRoom[0].sender.userNickname + '님을 멘티로 확정하시겠습니까?')) {
       if (detailMember.userIdx === enterUserIdx && selectChatRoomId !== undefined) {
@@ -193,17 +199,6 @@ const MentorsChat = () => {
 // 렌더링
   useEffect(() => {
     // 확정 멘티 리스트 조회
-    // fetch(MENTOR + '/mentee/list/' + chatPageIdx, {
-    //   method: 'GET',
-    //   headers: headerInfo,
-    // }).then((res) => {
-    //   return res.json();
-    // }).then((result) => {
-    //   setApplyMenteeList(result.menteeResponseDTOList);
-    //
-    // });
-    //
-    // console.log(`applyMenteeList : ${applyMenteeList}`);
 
     fetch(MENTOR + '/mentee/list/' + chatPageIdx, {
       method: 'GET',
@@ -266,17 +261,6 @@ const MentorsChat = () => {
             });
         }
       });
-
-    //   (MENTOR+'/mentee/list'+{chatPageIdx},{
-    //     method : 'GET',
-    //     headers : headerInfo
-    //   })
-    //   .then((res) => {
-    //     return res.json();
-    //   })
-    //   .then ((rfetchesult) => {
-
-    //   });
 
   }, [chatPageIdx]);
 
@@ -451,11 +435,9 @@ const MentorsChat = () => {
             <div className={'mentee-wrapper'}>
               <div className={'mentee-title'}>확정 멘티</div>
               <div className={'mentee-box'}>
-                {/* TODO : map 으로 실제 배열 가져오게 수정해야함 */}
-                <p className={'mentee'}><BsPersonFill size='20' />닝닝닝닝닝닝닝닝닝닝</p>
-                <p className={'mentee'}><BsPersonFill size='20' />닝닝닝닝닝닝닝닝닝닝</p>
-                <p className={'mentee'}><BsPersonFill size='20' />닝닝닝닝닝닝닝닝닝닝</p>
-                <p className={'mentee'}><BsPersonFill size='20' />닝닝닝닝닝닝닝닝닝닝</p>
+                {applyMenteeList.map((mentee, index) => (
+                  <p className={'mentee'} key={`${mentee.menteeIdx}-${index}`}><BsPersonFill size='20' />{mentee.menteeNickname} </p>
+                ))}
               </div>
             </div>
 

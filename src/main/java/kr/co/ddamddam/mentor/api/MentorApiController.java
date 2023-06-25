@@ -157,7 +157,7 @@ public class MentorApiController {
     // 좋아요 기능 만들기(멘토에 대한 좋아요인지 게시판에 대한 좋아요인지)
 
 
-    // 멘티 리스트 추가하기
+    // 멘티 리스트
     @GetMapping("/mentee/list/{mentorIdx}")
     public ResponseEntity<?> menteeList(
             @PathVariable Long mentorIdx
