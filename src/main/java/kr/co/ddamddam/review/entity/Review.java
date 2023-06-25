@@ -63,4 +63,6 @@ public class Review {
     @JoinColumn(name = "user_idx")
     private User user;
 
+
+
 }
