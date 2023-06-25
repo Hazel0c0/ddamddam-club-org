@@ -91,6 +91,8 @@ const ProjectsMain = () => {
     }
     })
   };
+  useEffect(() => {
+  }, []);
 
   return (
     <>
