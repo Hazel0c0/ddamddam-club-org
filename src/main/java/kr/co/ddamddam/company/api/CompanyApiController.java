@@ -66,25 +66,27 @@ public class CompanyApiController {
 
     //키워드 검색
     @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam("keyword") String keyword, PageDTO pageDTO) {
-        log.info("api/ddamddam/companies/search?keyword={}&page={}&size={}$sort={}", keyword);
-        CompanyListPageResponseDTO companyList = companyService.getKeywordList(keyword, pageDTO);
+    public ResponseEntity<?> search(@RequestParam("keyword") String keyword,
+                                    @RequestParam("sort") String  sort ,
+                                    PageDTO pageDTO) {
+        log.info("api/ddamddam/companies/search?keyword={}&page={}&size={}$sort={}",keyword,pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort()) ;
+        CompanyListPageResponseDTO companyList = companyService.getKeywordList(keyword,sort,pageDTO);
         return ResponseEntity.ok().body(companyList);
     }
 
     //백엔드 리스트 불러오기
     @GetMapping("/back")
-    public ResponseEntity<?> backlist(PageDTO pageDTO) throws IOException {
-        log.info("api/ddamddam/companies/back?page={}&size={}", pageDTO.getPage(), pageDTO.getSize());
-        CompanyListPageResponseDTO dto = companyService.getBack(pageDTO);
+    public ResponseEntity<?> backlist(@RequestParam("keyword") String keyword,PageDTO pageDTO) throws IOException {
+        log.info("api/ddamddam/companies/back?keyword={}&page={}&size={}",keyword, pageDTO.getPage(), pageDTO.getSize());
+        CompanyListPageResponseDTO dto = companyService.getBack(keyword,pageDTO);
         return ResponseEntity.ok().body(dto);
     }
 
     //프론트 리스트 불러오기
     @GetMapping("/front")
-    public ResponseEntity<?> frontlist(PageDTO pageDTO) throws IOException {
-        log.info("api/ddamddam/companies/back?page={}&size={}", pageDTO.getPage(), pageDTO.getSize());
-        CompanyListPageResponseDTO dto = companyService.getFornt(pageDTO);
+    public ResponseEntity<?> frontlist(@RequestParam("keyword") String keyword,PageDTO pageDTO) throws IOException {
+        log.info("api/ddamddam/companies/back?keyword={}&page={}&size={}",keyword,pageDTO.getPage(), pageDTO.getSize());
+        CompanyListPageResponseDTO dto = companyService.getFornt(keyword,pageDTO);
         return ResponseEntity.ok().body(dto);
     }
 
