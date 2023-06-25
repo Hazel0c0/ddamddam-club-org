@@ -201,7 +201,7 @@ public class ReviewService {
 
         if (targetReview.isPresent()){
             Review review = targetReview.get();
-            Company company = companyRepository.findById(dto.getReviewCompany()).get();
+//            Company company = companyRepository.findById(dto.getReviewCompany()).get();
 //            Review review1 = new ReviewModifyRequestDTO().toEntity();
             review.setReviewTitle(dto.getReviewTitle());
             review.setReviewContent(dto.getReviewContent());
