@@ -13,7 +13,6 @@ const CompanyTotal = () => {
 
     //워크넷 링크 상태관리
     const [goWorknet, setGoWorknet] = useState([]);
-
     useEffect(() => {
         if (finalPage >= page){
             fetchData(page);
