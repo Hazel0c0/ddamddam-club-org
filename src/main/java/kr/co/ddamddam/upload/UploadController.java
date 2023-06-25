@@ -36,9 +36,12 @@ public class UploadController {
       String filePath
           = uploadService.getFilePath(projectIdx,boardType);
 
+      log.debug("file path : {}",filePath);
+
       File file = new File(filePath);
 
       if (!file.exists()) {
+        log.error("파일을 찾을 수 없습니다 !!");
         return ResponseEntity.notFound().build();
       }
 
@@ -51,6 +54,8 @@ public class UploadController {
             .body("발견된 파일은 이미지 파일이 아닙니다.");
       }
       headers.setContentType(contentType);
+
+      log.info("file data !! {}",fileData);
 
       return ResponseEntity.ok()
           .headers(headers)
