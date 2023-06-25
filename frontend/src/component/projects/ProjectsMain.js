@@ -28,10 +28,10 @@ const ProjectsMain = () => {
   const [currentUrl, setCurrentUrl] = useState(PROJECT);
 
   // 인기프로젝트 페이지
-  const [likePage, setLikePage] = useState(1);
-  const LIKE_PAGE_SIZE = 3;
-  const popularityUrl = `${PROJECT}?page=${likePage}&size=${LIKE_PAGE_SIZE}&like=true`;
-  const [popularity, setPopularity] = useState(popularityUrl);
+  // const [likePage, setLikePage] = useState(1);
+  // const LIKE_PAGE_SIZE = 3;
+  // const popularityUrl = `${PROJECT}?page=${likePage}&size=${LIKE_PAGE_SIZE}&like=true`;
+  // const [popularity, setPopularity] = useState(popularityUrl);
 
   // 페이지 처리
   // const handlePageChange = (currentPage) => {
@@ -113,7 +113,7 @@ const ProjectsMain = () => {
       </Link>
 
       <PopularProjects
-        url={popularity}
+        // url={popularity}
         sortTitle={'인기 프로젝트'}
         handleLikeClick={handleLikeClick}
         handleShowDetails={handleShowDetails}

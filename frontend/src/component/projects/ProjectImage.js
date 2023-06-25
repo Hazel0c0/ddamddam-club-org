@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 
 
 const ProjectImage = ({projectIdx}) => {
-  console.log(`[ img.js ] P.idx : ${projectIdx}`)
+  // console.log(`[ img.js ] P.idx : ${projectIdx}`)
   const [fileUrl, setFileUrl] = useState([]);
 
   const fileRequestURL = '//localhost:8181/api/ddamddam/load-file'
