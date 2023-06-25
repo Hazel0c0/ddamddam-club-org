@@ -81,8 +81,6 @@ const ReviewDetail = () => {
         asyncDetail();
     },[]);
 
-    // /api/ddamddam/mentors/detail?mentorIdx={}
-    ///api/ddamddam/qna/{boardId}
     return (
         <Common className={'review-detail-wrapper'}>
             <div className={'title-wrapper'}>
@@ -102,8 +100,7 @@ const ReviewDetail = () => {
                     <div className={'info-wrapper'}>
                         {/*{enterUserNickName === detailReview.boardWriter &&*/}
                           <div className={'category'}>
-                              <Link to={`/api/ddamddam/review/modify/${reviewIdx}`} className={'modify-btn'}
-                                    onClick={modifyHandler}>수정</Link>
+                              <Link to={`/reviews/modify/${reviewIdx}`} className={'modify-btn'}>수정</Link>
                               <span className={'delete-btn'} onClick={deleteHandler}>삭제</span>
                           </div>
                         {/*}*/}

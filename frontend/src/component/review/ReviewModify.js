@@ -75,6 +75,7 @@ const ReviewModify = () => {
     }
 
     const data = {
+      reviewIdx: reviewIdx,
       reviewTitle: reviewTitle,
       reviewContent: reviewContent,
       reviewRating: reviewRating,
@@ -86,7 +87,7 @@ const ReviewModify = () => {
 
     console.log(`요청 보낼 data : ${data}`);
 
-    const res = await fetch(`${REVIEW}/modify/${reviewIdx}`, {
+    const res = await fetch(`${REVIEW}/modify`, {
       method: 'PATCH',
       headers: requestHeader,
       body: JSON.stringify(data)
@@ -108,15 +109,13 @@ const ReviewModify = () => {
       alert('잠시 후 다시 접속해주세요.[서버오류]');
       return;
     } else if (res.status === 200) {
-      alert('작성이 완료되었습니다.')
-      redirection('/reviews')
+      alert('수정이 완료되었습니다.');
+      redirection(`/reviews/detail/${reviewIdx}`);
     }
   };
 
   useEffect(() => {
     asyncDetail();
-
-
 
   }, []);
 
@@ -134,7 +133,7 @@ const ReviewModify = () => {
           placeholder={'제목을 입력하세요'}
           className={'title-text-input'}
           name={'reviewTitle'}
-          defaultValue={textInput.reviewTitle}
+          defaultValue={detailReview.reviewTitle}
           onChange={handleSelect}
         />
       </section>
@@ -147,7 +146,7 @@ const ReviewModify = () => {
             placeholder={'ex.땀땀컴퍼니'}
             className={'detail-text-input'}
             name={'companyName'}
-            defaultValue={textInput.companyName}
+            defaultValue={detailReview.reviewCompanyName}
             onChange={handleSelect}/>
         </div>
         <div className={'input-company-job'}>
@@ -157,7 +156,7 @@ const ReviewModify = () => {
             placeholder={'ex.백엔드 개발자'}
             className={'detail-text-input'}
             name={'reviewJob'}
-            defaultValue={textInput.reviewJob}
+            defaultValue={detailReview.reviewJob}
             onChange={handleSelect}/>
         </div>
 
@@ -168,7 +167,7 @@ const ReviewModify = () => {
             placeholder={'ex.강남구 신사동'}
             className={'detail-text-input'}
             name={'reviewLocation'}
-            defaultValue={textInput.reviewLocation}
+            defaultValue={detailReview.reviewLocation}
             onChange={handleSelect}/>
         </div>
 
@@ -179,7 +178,7 @@ const ReviewModify = () => {
             placeholder={''}
             className={'tenure-text-input'}
             name={'reviewTenure'}
-            defaultValue={textInput.reviewTenure}
+            defaultValue={detailReview.reviewTenure}
             onChange={handleSelect}/>
           <span className={'fix-text'}>년</span>
         </div>
@@ -189,7 +188,7 @@ const ReviewModify = () => {
                 <textarea type="text"
                           placeholder={"내용을 입력해주세요"}
                           className={'content'}
-                          defaultValue={textInput.reviewContent}
+                          defaultValue={detailReview.reviewContent}
                           name="reviewContent"
                           onChange={handleSelect}
                 />
