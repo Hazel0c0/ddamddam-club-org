@@ -7,10 +7,10 @@ import logo from '../../src_assets/logo.png'
 
 import './scss/ProjectsItem.scss';
 import ProjectImage from "./ProjectImage";
+import {PROJECT} from "../common/config/HostConfig";
 
 const PopularProjects = forwardRef((
         {
-          url,
           sortTitle,
           handleLikeClick,
           handleShowDetails,
@@ -20,18 +20,24 @@ const PopularProjects = forwardRef((
       const navigate = useNavigate();
       const [projects, setProjects] = useState([]);
 
-      const [pageNation, setPageNation] = useState({});
+      const [pageNation, setPageNation] = useState([]);
       const [prevBtn, setPrevBtn] = useState(false);
       const [nextBtn, setNextBtn] = useState(false);
       //캐러셀
-      // const [carouselIndex, setCarouselIndex] = useState(1);
+      const [carouselIndex, setCarouselIndex] = useState(1);
+
+      const [currentUrl, setCurrentUrl] = useState(PROJECT);
+      const LIKE_PAGE_SIZE = 3;
+      const popularityUrl = `${PROJECT}?page=${carouselIndex}&size=${LIKE_PAGE_SIZE}&like=true`;
+      const [popularity, setPopularity] = useState(popularityUrl);
+
 
       useImperativeHandle(ref, () => ({
         fetchData
       }));
 
       const fetchData = () => {
-        fetch(url, {
+        fetch(popularity, {
           method: 'GET',
           headers: {'content-type': 'application/json'}
         })
@@ -45,26 +51,10 @@ const PopularProjects = forwardRef((
             .then(result => {
               if (!!result) {
                 // console.log(`result의 값 : `, result);
-                // if (result.payload.pageInfo) {
-                //   setPageNation(result.payload.pageInfo);
-                //   setPrevBtn(!!result.payload.pageInfo.prev);
-                //   setNextBtn(!!result.payload.pageInfo.next);
-                // }
-                // let res = result.payload.projects;
-                // setProjects(res);
-                // console.log(`결과 `);
-                // console.log(res)
-                // for (let i = 0; i < res.length; i++) {
-                //   console.log(res[i].boardIdx)
-                //   // fetchFileImage(res[i].boardIdx, i);
-                // }
-                console.log(`result의 값 : `, result);
-                const projects = result.projects;
-                console.log(`projects : `, projects);
-                const pageInfo = result.pageInfo;
-                console.log(`pageInfo : `, pageInfo);
-                setProjects(projects);
-                setPageNation(pageInfo);
+                console.log(`projects : `, result.projects);
+                console.log(`pageInfo : `, result.pageInfo);
+                setProjects(result.projects);
+                setPageNation(result.pageInfo);
               }
             });
       };
@@ -73,18 +63,19 @@ const PopularProjects = forwardRef((
         fetchData();
         // console.log(`item page index `, carouselIndex)
         // pageChange(carouselIndex);
-      // }, [carouselIndex]);
-      }, []);
+        // }, [carouselIndex]);
+      }, [carouselIndex]);
 
 
-      // const handlePrevious = () => {
-      //   if (prevBtn) {
-      //     setCarouselIndex(prevIndex => prevIndex - 1);
-      //   }
-      // };
+      const handlePrevious = () => {
+        if (pageNation.prev === true) {
+          setCarouselIndex(prevIndex => prevIndex - 1);
+        }
+      };
 
 
-      // const handleNext = () => {
+      const handleNext = () => {
+        console.log('handleNext')
         // // 마지막 페이지 일 때 다시 페이지 설정을 해줘야 정상작동
         // // ex 마지막 페이지가 13인데 carouselIndex가 14일 때
         // // 마지막 페이지의 값이 필요
@@ -100,23 +91,24 @@ const PopularProjects = forwardRef((
         // if (pageNation.next === true) {
         //   setCarouselIndex(prevIndex => prevIndex + 1);
         // }
-        // if (nextBtn) {
-        //   setCarouselIndex((prevIndex) => prevIndex + 1);
-        // }
-      // };
+        if (pageNation.next === true) {
+          setCarouselIndex(prevIndex => prevIndex + 1);
+        }
+      };
 
 
       return (
           <Common className={'project-list-wrapper'}>
-            {/*{pageNation.prev &&*/}
-            {/*<img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>*/}
-            {/*}*/}
+            {pageNation.prev &&
+                <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
+            }
 
-            {/*{pageNation.next &&*/}
-            {/*<img src={than} alt={"than-icon"} className={'than-icon'} onClick={handleNext}/>*/}
-            {/*}*/}
+            {pageNation.next &&
+                <img src={than} alt={"than-icon"} className={'than-icon'} onClick={handleNext}/>
+            }
 
             <h2 className={'sort-title'}>{sortTitle}</h2>
+
             <div className="project-list-container">
               {projects.map((p, index) => {
                 // 현재 날짜와 게시글 작성일 간의 차이를 계산합니다
@@ -128,7 +120,7 @@ const PopularProjects = forwardRef((
                 return (
                     <section
                         className={'project-list'}
-                        key={p.boardIdx}
+                        key={`${p.boardIdx}`}
                         onClick={() => handleShowDetails(p.boardIdx)}
                     >
 
