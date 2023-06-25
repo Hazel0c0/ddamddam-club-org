@@ -19,6 +19,8 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         }
         if (finalPage > 1 && finalPage === page) {
             setIsLoading(false);
+            console.log(`page : `,page)
+            console.log(`finalPage : `,finalPage)
         }
         console.log(`finalPage : `, finalPage)
     }, [page, searchKeyword, searchValue, searchCareer]);
@@ -83,6 +85,11 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
     let throttleTimer = null;
     const handleScroll = () => {
         if (throttleTimer !== null) return;
+        if (finalPage > 1 && finalPage === page) {
+            setIsLoading(false);
+           return;
+        }
+
 
         setIsLoading(false)
 
@@ -177,6 +184,7 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
 
                 </>
             ))}
+
             {isLoading &&
                 <div className={'grow-wrapper'}>
                     <Spinner type={"grow"}></Spinner>
