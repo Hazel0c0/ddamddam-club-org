@@ -245,6 +245,25 @@ const isValid = () => {
     }
   }
 
+  // 회원정보 수정 후 스토리지 정보 갱신
+  const updateStorage = (result) => {
+    console.log(`updateStorage : ${result.userName}`);
+    if (localStorage.getItem('ACCESS_TOKEN') !== null) {
+      localStorage.setItem('LOGIN_USER_NAME', result.userName);
+      localStorage.setItem('LOGIN_USER_NICKNAME', result.userNickName);
+      localStorage.setItem('LOGIN_USER_BIRTH', result.userBirth);
+      localStorage.setItem('LOGIN_USER_POSITION', result.userPosition);
+      localStorage.setItem('LOGIN_USER_CAREER', result.userCareer);
+      localStorage.setItem('LOGIN_USER_PROFILE', result.userProfile);
+    }
+    sessionStorage.setItem('LOGIN_USER_NAME', result.userName);
+    sessionStorage.setItem('LOGIN_USER_NICKNAME', result.userNickName);
+    sessionStorage.setItem('LOGIN_USER_BIRTH', result.userBirth);
+    sessionStorage.setItem('LOGIN_USER_POSITION', result.userPosition);
+    sessionStorage.setItem('LOGIN_USER_CAREER', result.userCareer);
+    sessionStorage.setItem('LOGIN_USER_PROFILE', result.userProfile);
+  };
+
   // 회원수정 처리 서버 요청
   const fetchModifyPost = async () => {
     console.log(`fetchSignUpPost의 userValue : ${userValue}`);
@@ -258,7 +277,21 @@ const isValid = () => {
 
     if (res.status === 200) {
         alert('회원 정보 수정에 성공했습니다!');
-        redirection('/mypage');
+
+      // TODO : 회원정보 수정 성공 시, 클라이언트 Storage 도 변경 처리해줘야합니다.
+      // 현재 로그인 된 token 으로 변경된 회원 정보만 가져오기
+      const res = await fetch(`${API_BASE_URL}/after-modify`, {
+        method: 'GET',
+        headers: headerInfo
+      });
+      // const result = await res.text();
+      const result = await res.json();
+      // console.log(`회원정보수정 성공 후에...result :  ${result}`);
+      //
+      // console.log(`updateStorage : ${result.userName}`);
+
+      updateStorage(result);
+      redirection('/mypage');
     } else {
         alert('서버와의 통신이 원활하지 않습니다.');
     }

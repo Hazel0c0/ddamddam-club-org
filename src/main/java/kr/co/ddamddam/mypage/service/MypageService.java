@@ -428,4 +428,22 @@ public class MypageService {
             .collect(Collectors.toList());
         return dtoList;
     }
+
+    public MypageAfterModifyResponseDTO mypageAfterModify(TokenUserInfo tokenUserInfo) {
+
+        log.info("MypageService - mypageAfterModify, token : {}", tokenUserInfo);
+
+        User user = validateToken.validateToken(tokenUserInfo);
+
+        MypageAfterModifyResponseDTO afterModifyUserInfo = MypageAfterModifyResponseDTO.builder()
+                .userName(user.getUserName())
+                .userNickName(user.getUserNickname())
+                .userBirth(user.getUserBirth())
+                .userPosition(user.getUserPosition())
+                .userCareer(user.getUserCareer())
+                .userProfile(user.getUserProfile())
+                .build();
+
+        return afterModifyUserInfo;
+    }
 }
