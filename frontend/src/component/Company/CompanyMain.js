@@ -6,24 +6,28 @@ import {GrPowerReset} from "react-icons/gr";
 import {Link, useNavigate} from "react-router-dom";
 import {getToken} from "../common/util/login-util";
 
-const CompanyMain = ({onSearchChange, onSearchKeywordChange}) => {
+const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChange}) => {
     const [selectedBtn, setSelectedBtn] = useState('전체');
     const inputVal = useRef();
+    const careerVal = useRef();
 
     //로그인 검증
     const ACCESS_TOKEN = getToken();
     const redirection = useNavigate();
     const handleInputChange = (e) => {
-        const value = e.target.className;
-        if (value === "frontend-filter"){
-            onSearchChange("");
-            setSelectedBtn("FRONTEND");
-        }else if(value === "backend-filter"){
-            onSearchChange("RATING");
-            setSelectedBtn("BACKEND");
-        }else if(value === "total-filter"){
-            onSearchChange("VIEW");
-            setSelectedBtn("");
+        const value = e.target.closest('.frontend-filter');
+        if (value) {
+            onSearchChange("front");
+            setSelectedBtn("front");
+        } else {
+            const value = e.target.closest('.backend-filter');
+            if (value) {
+                onSearchChange("back");
+                setSelectedBtn("back");
+            } else {
+                onSearchChange("");
+                setSelectedBtn("");
+            }
         }
     }
     const searchHandler = (e) => {
@@ -42,6 +46,14 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange}) => {
     const resetHandler = () => {
         inputVal.current.value = '';
         onSearchKeywordChange('');
+        careerVal.current.value = '전체';
+    }
+
+    //경력 선택 버튼
+    const careerHandler = (e) => {
+        const careerValue = e.target.value;
+        console.log(careerValue)
+        onSearchCareerChange(careerValue);
     }
 
 
@@ -56,7 +68,7 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange}) => {
             </div>
 
             <section className={'select-view-wrapper'}>
-                <div className={'frontend-filter'}>
+                <div className={'frontend-filter'} onClick={handleInputChange}>
                     <div className={'frontend-title'}>
                         <span className={'title-text'}>프론트엔드</span>
                         <span className={'title-add'}>+채용공고 보러가기</span>
@@ -64,7 +76,7 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange}) => {
                     <span className={'frontend-count'}>12</span>
                 </div>
 
-                <div className={'backend-filter'}>
+                <div className={'backend-filter'} onClick={handleInputChange}>
                     <div className={'backend-title'}>
                         <span className={'title-text'}>백엔드</span>
                         <span className={'title-add'}>+채용공고 보러가기</span>
@@ -72,7 +84,7 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange}) => {
                     <span className={'backend-count'}>12</span>
                 </div>
 
-                <div className={'total-filter'}>
+                <div className={'total-filter'} onClick={handleInputChange}>
                     <div className={'total-title'}>
                         <span className={'title-text'}>개발직군 전체</span>
                         <span className={'title-add'}>+채용공고 보러가기</span>
@@ -91,8 +103,7 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange}) => {
                             className={'input-btn'}
                             placeholder={'검색창'}
                             name={'search'}
-                            // onKeyUp={searchHandler}
-                            // {test}
+                            onKeyUp={searchHandler}
                             ref={inputVal}>
                         </input>
                     </div>
@@ -100,7 +111,8 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange}) => {
 
                 <div className={'select-wrapper'}>
                     <span className={'search-title'}>경력</span>
-                    <select className={'select-career'} name={'userCareer'} defaultValue={'전체'}>
+                    <select className={'select-career'} name={'userCareer'} defaultValue={'전체'} onChange={careerHandler}
+                            ref={careerVal}>
                         <option value={'전체'}>전체</option>
                         <option value={'신입'}>신입</option>
                         <option value={'경력'}>경력</option>

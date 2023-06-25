@@ -5,6 +5,7 @@ import CompanyList from "./CompanyList";
 const CompanyTemplate = () => {
     const [searchValue, setSearchValue] = useState('');
     const [searchKeyword, setSearchKeyword] = useState('');
+    const [searchCareer, setSearchCareer] = useState('');
     // const [searchCareer, setSearchCareer]
     const handleSearchChange = (value) => {
         setSearchValue(value);
@@ -16,9 +17,18 @@ const CompanyTemplate = () => {
         console.log(`Search Page에서 넘어오는 검색입력 값 : ${value}`)
     }
 
+    const handleSearchCareer = (value) => {
+        setSearchCareer(value);
+        console.log(`Search Page에서 넘어오는 경력입력 값 : ${value}`)
+    }
+
     return (
         <>
-            <CompanyMain onSearchChange={handleSearchChange} onSearchKeywordChange={handleSearchKeyword}/>
+            <CompanyMain
+                onSearchChange={handleSearchChange}
+                onSearchKeywordChange={handleSearchKeyword}
+                onSearchCareerChange={handleSearchCareer}
+            />
             <CompanyList searchValue = {searchValue} searchKeyword={searchKeyword}/>
         </>
     );
