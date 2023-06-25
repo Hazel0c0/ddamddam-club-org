@@ -63,7 +63,7 @@ const PopularProjects = forwardRef((
 
       // 페이지 처리
       const handlePrevious = () => {
-        if (pageNation.prev === true) {
+        if (pageNation.currentPage >1) {
           setCarouselIndex(prevIndex => prevIndex - 1);
           console.log(`main 현재 페이지 번호 : ${carouselIndex}`)
         }
@@ -72,21 +72,7 @@ const PopularProjects = forwardRef((
 
       const handleNext = () => {
         console.log('handleNext')
-        // // 마지막 페이지 일 때 다시 페이지 설정을 해줘야 정상작동
-        // // ex 마지막 페이지가 13인데 carouselIndex가 14일 때
-        // // 마지막 페이지의 값이 필요
-        //
-        // //마지막 페이지 값
-        // const lastPage = Math.ceil(pageNation.totalCount / 3);
-        //
-        // if (lastPage === carouselIndex) {
-        //   setCarouselIndex((prevIndex) => prevIndex - 1)
-        //   return;
-        // }
-        // console.log(`렌더링 1단계 전 carouselIndex = `, carouselIndex)
-        // if (pageNation.next === true) {
-        //   setCarouselIndex(prevIndex => prevIndex + 1);
-        // }
+
         if (pageNation.next === true) {
           setCarouselIndex(prevIndex => prevIndex + 1);
           console.log(`main 현재 페이지 번호 : ${carouselIndex}`)
