@@ -83,7 +83,7 @@ public class CompanyService {
         CompanyRequestDTO dto = new CompanyRequestDTO();
         List<CompanyRequestDTO> wantedList = new ArrayList<>();
 
-        System.out.println(wantedArray.length());
+//        System.out.println(wantedArray.length());
         for (int i = 0; i < wantedArray.length(); i++) {
 
             JSONObject value = wantedArray.getJSONObject(i);
@@ -239,10 +239,25 @@ public class CompanyService {
     }
 
     // 키워드 검색
-    public CompanyListPageResponseDTO getKeywordList(String keyword,String sort ,PageDTO pageDTO){
+    public CompanyListPageResponseDTO getKeywordList(String keyword,String keyword2 ,PageDTO pageDTO){
 
         PageRequest pageable = getPageable(pageDTO);
-        Page<Company> companies = companyRepository.findByKeyword(keyword,sort,pageable);
+        Page<Company> companies = companyRepository.findByKeywordback(keyword,keyword2,pageable);
+        log.info("pageCompany : {}" , companies);
+        List<CompanyListResponseDTO> companyListResponseDTOS = getCompanyListKeyword(companies);
+
+        return CompanyListPageResponseDTO.builder()
+                .count(companyListResponseDTOS.size())
+                .pageInfo(new PageResponseDTO<>(companies))
+                .companyList(companyListResponseDTOS)
+                .build();
+    }
+
+    public CompanyListPageResponseDTO getKeywordListfront(String keyword,String keyword2 ,PageDTO pageDTO){
+
+        PageRequest pageable = getPageable(pageDTO);
+        Page<Company> companies = companyRepository.findByKeywordfront(keyword,keyword2,pageable);
+        log.info("pageCompany : {}" , companies);
         List<CompanyListResponseDTO> companyListResponseDTOS = getCompanyListKeyword(companies);
 
         return CompanyListPageResponseDTO.builder()
