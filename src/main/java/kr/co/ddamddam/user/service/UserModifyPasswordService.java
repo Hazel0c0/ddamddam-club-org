@@ -47,14 +47,20 @@ public class UserModifyPasswordService {
         String encodedNewPassword = encoder.encode(requestDTO.getNewUserPassword());
 
         // 입력한 기존 비밀번호가 현재 비밀번호와 같은지 검증 (같아야합니다)
-        if (!user.getUserPassword().equals(encodedOldPassword)) {
+        if (!encoder.matches(requestDTO.getOldUserPassword(), user.getUserPassword())) {
             // 다르면 401 에러 리턴
+            log.info("userPassword : {}", user.getUserPassword());
+            log.info("encodedOldPassword : {}", encodedOldPassword);
+            log.warn("INVALID_PASSWORD");
             throw new LoginException(INVALID_PASSWORD, requestDTO.getOldUserPassword());
         }
 
         // 입력한 새 비밀번호가 현재 비밀번호와 같은지 검증 (달라야합니다)
-        if (user.getUserPassword().equals(encodedNewPassword)) {
+        if (encoder.matches(requestDTO.getNewUserPassword(), user.getUserPassword())) {
             // 같으면 400 에러 리턴
+            log.info("userPassword : {}", user.getUserPassword());
+            log.info("encodedOldPassword : {}", encodedNewPassword);
+            log.warn("INVALID_PARAMETER");
             throw new LoginException(INVALID_PARAMETER, requestDTO.getNewUserPassword());
         }
 
