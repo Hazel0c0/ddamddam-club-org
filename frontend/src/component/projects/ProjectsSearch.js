@@ -1,7 +1,7 @@
 import React from 'react'
-import Common from "../../common/Common";
-import searchIcon from "../../../src_assets/search-icon.png";
-import '../scss/ProjectSearch.scss';
+import Common from "../common/Common";
+import searchIcon from "../../src_assets/search-icon.png";
+import './scss/ProjectSearch.scss';
 import {Link} from "react-router-dom";
 
 const ProjectsSearch = () => {

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import axios from "axios";
+
 // import {useNavigate} from "react-router-dom";
 import {BASE_URL, AUTH} from "../common/config/HostConfig";
 import '../user/scss/UserFindPassword.scss';

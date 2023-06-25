@@ -47,7 +47,7 @@ public class ProjectApiController {
      * @return : 페이징 처리 된 프로젝트 리스트 정보
      * <p>
      * 기본 조회 (조회순) - keyword 입력 없음
-     * 좋아요 순 조회 - keyword : like
+     * 좋아요 순 조회 - like : true
      */
     @GetMapping
     private ApplicationResponse<ProjectListPageResponseDTO> getList(
