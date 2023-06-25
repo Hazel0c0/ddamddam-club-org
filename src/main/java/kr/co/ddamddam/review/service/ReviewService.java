@@ -1,10 +1,13 @@
 package kr.co.ddamddam.review.service;
 
+import kr.co.ddamddam.common.common.ValidateToken;
 import kr.co.ddamddam.common.exception.custom.ErrorCode;
+import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
 import kr.co.ddamddam.common.exception.custom.NotFoundUserException;
 import kr.co.ddamddam.company.dto.page.PageResponseDTO;
 import kr.co.ddamddam.company.entity.Company;
 import kr.co.ddamddam.company.repository.CompanyRepository;
+import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.review.dto.page.PageDTO;
 import kr.co.ddamddam.review.dto.request.ReviewModifyRequestDTO;
 import kr.co.ddamddam.review.dto.request.ReviewWriteRequestDTO;
@@ -29,6 +32,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
+import static kr.co.ddamddam.common.exception.custom.ErrorCode.*;
 
 @SuppressWarnings("unchecked")
 @Service
@@ -40,6 +44,7 @@ public class ReviewService {
     private final CompanyRepository companyRepository;
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
+    private final ValidateToken validateToken;
 
     public ReviewListPageResponseDTO getList(PageDTO pageDTO){
         PageRequest pageable = getPageable(pageDTO);
@@ -76,17 +81,26 @@ public class ReviewService {
     }
 
     //게시글 상세조회
-    public ReviewDetailResponseDTO getDetail(Long reviewIdx) throws ReviewNotFoundException {
-        Optional<Review> reviewOptional = reviewRepository.findById(reviewIdx);
+    public ReviewDetailResponseDTO getDetail(Long reviewIdx, TokenUserInfo tokenUserInfo) throws ReviewNotFoundException {
+        validateToken.validateToken(tokenUserInfo);
 
-        if (reviewOptional.isPresent()) {
-            Review review = reviewOptional.get();
-            // 조회수를 증가시킵니다.
-            increaseReviewView(reviewIdx);
-            return new ReviewDetailResponseDTO(review);
-        } else {
-            throw new ReviewNotFoundException("Review not found with ID: " + reviewIdx);
+        if(reviewIdx == null){
+            throw new NotFoundBoardException(INVALID_PARAMETER, reviewIdx);
         }
+        Review review = reviewRepository.findById(reviewIdx).orElseThrow(
+                    () -> {throw new NotFoundBoardException(NOT_FOUND_BOARD, reviewIdx);});
+
+        // 조회수를 증가시킵니다.
+        increaseReviewView(reviewIdx);
+
+        ReviewDetailResponseDTO dto = new ReviewDetailResponseDTO();
+
+        User user = review.getUser();
+        if(user != null){
+            dto.setUserIdx(user.getUserIdx());
+        }
+
+        return  dto;
     }
 
     //TOP3 게시글 가져오기
@@ -182,27 +196,35 @@ public class ReviewService {
 
 
     //게시글 작성
-    public ReviewDetailResponseDTO write(ReviewWriteRequestDTO dto, Long userIdx) throws ReviewNotFoundException {
-//        Optional<User> optionalUser = userRepository.findById(userIdx);
+    public ReviewDetailResponseDTO write(ReviewWriteRequestDTO dto, TokenUserInfo tokenUserInfo) throws ReviewNotFoundException {
+
+        validateToken.validateToken(tokenUserInfo);
+
+        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
+
         User user = userRepository.findById(userIdx).orElseThrow(() -> {
             throw new NotFoundUserException(ErrorCode.NOT_FOUND_USER, userIdx);
         });
 
         Review saved = reviewRepository.save(dto.toEntity(user));
-        ReviewDetailResponseDTO detail = getDetail(saved.getReviewIdx());
+        ReviewDetailResponseDTO detail = getDetail(saved.getReviewIdx(),tokenUserInfo);
 //        User user = optionalUser.orElseThrow(() -> new RuntimeException("User not found with id: " + userIdx));
 
         return detail;
     }
 
     //수정
-    public ReviewDetailResponseDTO modify(ReviewModifyRequestDTO dto) throws RuntimeException, ReviewNotFoundException {
-        Optional<Review> targetReview = reviewRepository.findById(dto.getReviewIdx());
+    public ReviewDetailResponseDTO modify(ReviewModifyRequestDTO dto ,TokenUserInfo tokenUserInfo) throws RuntimeException, ReviewNotFoundException {
 
-        if (targetReview.isPresent()){
-            Review review = targetReview.get();
-//            Company company = companyRepository.findById(dto.getReviewCompany()).get();
-//            Review review1 = new ReviewModifyRequestDTO().toEntity();
+        validateToken.validateToken(tokenUserInfo);
+
+        Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
+
+
+        Review review = reviewRepository.findByReviewIdxAndUserUserIdx(dto.getReviewIdx(),userIdx).orElseThrow(
+                () -> {throw new NotFoundBoardException(NOT_FOUND_BOARD, dto.getReviewIdx());}
+        );
+
             review.setReviewTitle(dto.getReviewTitle());
             review.setReviewContent(dto.getReviewContent());
             review.setReviewJob(dto.getReviewJob());
@@ -212,37 +234,30 @@ public class ReviewService {
             review.setReviewTenure(dto.getReviewTenure());
 
             reviewRepository.save(review);
-        }else {
-            throw new RuntimeException("없는 게시판입니다"+ dto.getReviewIdx());
-        }
-        return getDetail(dto.getReviewIdx());
+        return getDetail(dto.getReviewIdx(),tokenUserInfo);
 
     }
 
     //게시판 삭제
     public void delete(Long reviewIdx) throws RuntimeException{
-        Optional<Review> targetReview = reviewRepository.findById(reviewIdx);
-        if (targetReview.isPresent()){
-            reviewRepository.delete(targetReview.get());
-        } else {
-            throw new RuntimeException("없는 게시판입니다" + reviewIdx);
+        Review targetReview = reviewRepository.findById(reviewIdx).orElseThrow(
+                () -> {throw  new NotFoundBoardException(NOT_FOUND_BOARD, reviewIdx);}
+        );
+            reviewRepository.delete(targetReview);
         }
-    }
 
     //조회수 상승
 //    @Transactional
     public void increaseReviewView(Long reviewIdx) throws ReviewNotFoundException {
-        Optional<Review> targetReviewOptional = reviewRepository.findById(reviewIdx);
-        if (targetReviewOptional.isEmpty()) {
-            throw new ReviewNotFoundException("Review not found with id: " + reviewIdx);
-        }
+        Review review = reviewRepository.findById(reviewIdx).orElseThrow(
+                () -> {throw new NotFoundBoardException(NOT_FOUND_BOARD, reviewIdx);}
+        );
 
-        Review targetReview = targetReviewOptional.get();
         // 조회수를 1 증가시킵니다.
-        targetReview.setReviewView(targetReview.getReviewView() + 1);
+        review.setReviewView(review.getReviewView() + 1);
 
         // 변경된 리뷰를 저장합니다.
-        reviewRepository.save(targetReview);
+        reviewRepository.save(review);
     }
 
 
