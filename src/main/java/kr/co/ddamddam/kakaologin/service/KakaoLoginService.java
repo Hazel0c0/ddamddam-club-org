@@ -20,6 +20,9 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Optional;
 
+import static kr.co.ddamddam.user.service.RandomStringGenerator.generateRandomNickname;
+import static kr.co.ddamddam.user.service.RandomStringGenerator.generateRandomPassword;
+
 
 /**
  * 카카오 로그인 처리
@@ -32,7 +35,7 @@ public class KakaoLoginService {
     private UserRepository userRepository;
     @Autowired
     private TokenProvider tokenProvider;
-    
+
     @Value("${sns.kakao.app-key}")
     private String kakaoAppKey;
     @Value("${sns.kakao.redirect-uri}")
@@ -41,11 +44,12 @@ public class KakaoLoginService {
     /**
      * 카카오 로그인
      * 첫 로그인 시, 회원가입을 수행합니다.
+     *
      * @param accessToken - 카카오 액세스 토큰
      * @return 카카오 로그인 응답 DTO
-     *          (상태코드, 우리 서비스의 토큰, 비밀번호를 제외한 회원정보)
+     * (상태코드, 우리 서비스의 토큰, 비밀번호를 제외한 회원정보)
      */
-    public KakaoLoginResponseDTO kakaoLogin (final String accessToken) {
+    public KakaoLoginResponseDTO kakaoLogin(final String accessToken) {
 
         log.info("[KakaoLoginService] kakaoLogin... - accessToken : {}", accessToken);
 
@@ -62,6 +66,7 @@ public class KakaoLoginService {
 
     /**
      * 인가코드를 통해 카카오 액세스 토큰을 받아옵니다.
+     *
      * @return 카카오 액세스 토큰
      */
     public String getKakaoAccessToken(final String code) {
@@ -101,7 +106,7 @@ public class KakaoLoginService {
             String line = "";
             StringBuilder responseBody = new StringBuilder();
 
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 responseBody.append(line);
             }
 
@@ -128,6 +133,7 @@ public class KakaoLoginService {
 
     /**
      * 카카오에서 토큰을 통해 유저 정보를 받아옵니다.
+     *
      * @param accessToken - 카카오 액세스 토큰
      * @return 유저 정보를 담은 HashMap (id, nickname, email)
      * // TODO : 프로필사진 및 파일유틸 구현 후 프로필 사진 추가 필요
@@ -167,17 +173,35 @@ public class KakaoLoginService {
 
             String id = element.getAsJsonObject().get("id").getAsString();
 
+            log.info("kakao id : {}", id);
+
             JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
             JsonObject kakaoAccount = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
-            String nickname = properties.getAsJsonObject().get("nickname").getAsString();
+            log.info("kakao login's properties : {}", properties);
 
-            if (kakaoAccount.getAsJsonObject().get("email") != null) {
-                String email = kakaoAccount.getAsJsonObject().get("email").getAsString();
-                userInfo.put("email", email);
+//            String nickname = properties.getAsJsonObject().get("nickname").getAsString();
+
+            if (properties.getAsJsonObject().get("profile_image") != null) {
+            // 프로필사진 존재할 시 프로필 등록
+                String profile = properties.getAsJsonObject().get("profile_image").getAsString();
+                log.info("profile : {}", profile);
+                userInfo.put("profile", profile);
             }
 
-            userInfo.put("nickname", nickname);
+            if (kakaoAccount.getAsJsonObject().get("email") != null) {
+            // 카카오계정(이메일) 수집 동의 시 이메일 등록
+                log.info("email : {}", kakaoAccount.getAsJsonObject().get("email"));
+                String email = kakaoAccount.getAsJsonObject().get("email").getAsString();
+                userInfo.put("email", email);
+            } else {
+            // 카카오계정(이메일) 수집 미동의 시 랜덤 이메일 생성
+                String randomEmail = "kakaoUser" + "@" + generateRandomPassword();
+                log.info("randomEmail : {}", randomEmail);
+                userInfo.put("email", randomEmail);
+            }
+
+            userInfo.put("nickname", generateRandomNickname()); // 영어+숫자 10자리로 닉네임 랜덤 설정 (중복방지)
             userInfo.put("id", id);
 
         } catch (IOException e) {
@@ -191,7 +215,8 @@ public class KakaoLoginService {
     /**
      * 이미 카카오 계정으로 가입되어 있는 지 확인하고 해당 유저의 정보를 찾아 반환합니다.
      * 가입이 되어 있지 않은 경우, 회원가입을 수행합니다.
-     * @param userEmail - 회원의 이메일
+     *
+     * @param userEmail             - 회원의 이메일
      * @param kakaoSignUpRequestDTO - 회원가입에 사용할 카카오 회원가입 요청 dto
      * @return 이메일로 찾은 User Entity
      */
@@ -213,6 +238,7 @@ public class KakaoLoginService {
 
     /**
      * 카카오 계정으로 첫 로그인시 회원가입 수행
+     *
      * @param requestDTO - 회원가입 요청 DTO
      * @return 회원가입 성공 한 회원의 이메일
      */
