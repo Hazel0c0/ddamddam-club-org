@@ -40,9 +40,9 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         console.log(`set 후 현재 finalPage : `, finalPage)
 
         setIsLoading(true)
-        // const res = await fetch(`${COMPANY}/search?keyword=&page=${page}&size=10$sort={}`, {
-        // const res = await fetch(`${COMPANY}/list?page=${page}&size=10`, {
-        const res = await fetch(`${COMPANY}/list?page=${page}&size=10`, {
+        const res = await fetch(
+            `${COMPANY}/searchBack?keyword=${searchKeyword}page=${page}&size=10&keyword2=${searchCareer}`,
+            {
             method: 'GET',
             headers: {'content-type': 'application/json'}
         });
