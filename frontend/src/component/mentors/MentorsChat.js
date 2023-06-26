@@ -103,7 +103,13 @@ const MentorsChat = () => {
           method: 'PUT',
           headers: headerInfo
         })
-          .then((res) => res.json())
+          .then((res) => {
+            if(res.status === 400){
+              alert('이미 확정된 멘티입니다');
+              return;
+            } 
+            return res.json();
+          })
           .then((result) => {
             setMenteeCount(result);
           });

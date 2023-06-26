@@ -5,18 +5,18 @@ const ProjectImage = ({projectIdx}) => {
   // console.log(`[ img.js ] P.idx : ${projectIdx}`)
   const [fileUrl, setFileUrl] = useState([]);
 
-  const fileRequestURL = '//localhost:8181/api/ddamddam/load-file'
+  const fileRequestURL = '//localhost:8181/api/ddamddam/project/load-s3';
 
   useEffect(() => {
 
     (async() => {
       const res = await fetch(
-        `${fileRequestURL}?projectIdx=${projectIdx}&boardType=project`, {
+        `${fileRequestURL}?projectIdx=${projectIdx}`, {
           method: 'GET',
         });
       if (res.status === 200) {
-        const fileBlob = await res.blob();
-        const imgUrl = window.URL.createObjectURL(fileBlob);
+        const imgUrl = await res.text();
+        setFileUrl(imgUrl);
         // 이미지 수정
         // setFileUrl((prevUrls) => {
         //   const updatedUrls = [...prevUrls];

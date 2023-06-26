@@ -23,6 +23,11 @@ const MentorsWrite = () => {
         }
     )
 
+    const requestHeader = {
+        'content-type': 'application/json',
+        'Authorization': 'Bearer ' + ACCESS_TOKEN
+    };
+
     const handleSelect = (e) => {
         const {name, value} = e.target;
         let parseValue = value;
@@ -69,10 +74,7 @@ const MentorsWrite = () => {
 
         const res = await fetch(REVIEW + '/write', {
             method: 'POST',
-            headers: {
-                'content-type': 'application/json',
-                'Authorization': 'Bearer ' + ACCESS_TOKEN
-            },
+            headers: requestHeader,
             body: JSON.stringify(data)
         });
         if (res.status === 500) {

@@ -5,5 +5,6 @@ package kr.co.ddamddam.user.entity;
  */
 public enum UserRole {
     ADMIN,
-    COMMON
+    COMMON,
+    SNS
 }

@@ -13,6 +13,8 @@ const LatestProjects = forwardRef((
           sortTitle,
           handleLikeClick,
           handleShowDetails,
+            keyword
+
         },
         ref
     ) => {
@@ -31,9 +33,14 @@ const LatestProjects = forwardRef((
       useImperativeHandle(ref, () => ({
         fetchData
       }));
-
+    let FETCH;
+    if (!!keyword) {
+        FETCH = PROJECT+`?page=${clickCurrentPage}&keyword=${keyword}`;
+    } else {
+        FETCH = PROJECT+`?page=${clickCurrentPage}`;
+    }
       const fetchData = async () => {
-        const res =await fetch(PROJECT+`?page=${clickCurrentPage}`, {
+        const res =await fetch(FETCH, {
           method: 'GET',
           headers: {'content-type': 'application/json'}
         })
@@ -59,7 +66,7 @@ const LatestProjects = forwardRef((
 
       useEffect(() => {
         fetchData();
-      }, [clickCurrentPage]);
+      }, [clickCurrentPage,keyword]);
 
 
       return (
