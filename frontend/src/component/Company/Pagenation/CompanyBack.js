@@ -13,6 +13,14 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
 
     //워크넷 링크 상태관리
     const [goWorknet, setGoWorknet] = useState([]);
+
+    useEffect(() => {
+        setCompanyList([]); // 기존 리스트 초기화
+        setPage(1); // 페이지 번호 초기화
+        setFinalPage(1); // 마지막 페이지 초기화
+        setGoWorknet([]); // 워크넷 링크 상태 초기화
+    }, [searchKeyword, searchValue, searchCareer]);
+
     useEffect(() => {
         if (finalPage >= page) {
             fetchData(page);
@@ -76,6 +84,14 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
 
             return {...list, companyEnddate: endDate, dDay: formattedEndDate, companyArea: setModifyLocation}
         });
+
+        console.log(`마지막 페이지 찾기의 page : `,page)
+        console.log(`마지막 페이지 찾기의 finaPage : `,finalPage)
+        if (page === finalPage) {
+            // 마지막 페이지에 도달한 경우 스크롤 이벤트 리스너 제거
+            console.log('마지막 페이지 도달')
+            window.removeEventListener('scroll', handleScroll);
+        }
 
         setGoWorknet((prevGoWorknet) => [...prevGoWorknet, ...new Array(companyLists.length).fill(false)]);
         setCompanyList((prevCompanyList) => [...prevCompanyList, ...modifyCompanyList]);

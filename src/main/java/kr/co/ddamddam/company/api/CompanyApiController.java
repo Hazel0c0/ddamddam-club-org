@@ -38,6 +38,8 @@ public class CompanyApiController {
     }
 
 
+
+    //----------------------------------------------------------------------
     //키워드 검색(백)
     @GetMapping("/searchBack")
     public ResponseEntity<?> search(@RequestParam("keyword") String keyword,
@@ -61,7 +63,7 @@ public class CompanyApiController {
     }
 
     //키워드 검색(전체)
-    @GetMapping("/searchall")
+    @GetMapping("/searchAll")
     public ResponseEntity<?> searchAll(@RequestParam("keyword") String keyword,
                                          @RequestParam("career") String  keyword2 ,
                                          PageDTO pageDTO) {
@@ -70,7 +72,5 @@ public class CompanyApiController {
         log.info("responseDTO : {}", companyList);
         return ResponseEntity.ok().body(companyList);
     }
-
-
 
 }
