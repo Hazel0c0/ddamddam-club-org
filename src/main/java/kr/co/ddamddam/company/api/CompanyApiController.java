@@ -32,42 +32,16 @@ public class CompanyApiController {
     //전체 목록 조회
     @GetMapping("/list")
     public ResponseEntity<?> list(PageDTO pageDTO) throws IOException {
-//        companyService.processExternalData(allUrl);
         log.info("api/ddamddam/companies/list?page{}&size={}&sort={}", pageDTO.getPage(), pageDTO.getSize(), pageDTO.getSort());
         CompanyListPageResponseDTO dto = companyService.getList(pageDTO);
         return ResponseEntity.ok().body(dto);
     }
 
 
-    //경력별로 가져오기
-    @GetMapping("/career")
-    public ResponseEntity<?> listCareer(PageDTO pageDTO) throws IOException {
-        log.info("api/ddamddam/companies/career?&page={}&size={}", pageDTO.getPage(), pageDTO.getSize(), pageDTO.getSort());
-        CompanyListPageResponseDTO dto = companyService.getCareer(pageDTO);
-        return ResponseEntity.ok().body(dto);
-    }
-
-    //신입
-    @GetMapping("/newcareer")
-    public ResponseEntity<?> listnewCareer(PageDTO pageDTO) throws IOException {
-        log.info("api/ddamddam/companies/newcareer?page={}&size={}", pageDTO.getPage(), pageDTO.getSize(), pageDTO.getSort());
-        CompanyListPageResponseDTO dto = companyService.getNewCareer(pageDTO);
-        return ResponseEntity.ok().body(dto);
-    }
-
-    //경력관계없음
-    @GetMapping("/nocareer")
-    public ResponseEntity<?> listnoCareer(PageDTO pageDTO) throws IOException {
-        log.info("api/ddamddam/companies/nocareer?page={}&size={}", pageDTO.getPage(), pageDTO.getSize(), pageDTO.getSort());
-        CompanyListPageResponseDTO dto = companyService.getNoCareer(pageDTO);
-        return ResponseEntity.ok().body(dto);
-    }
-
-
     //키워드 검색(백)
-    @GetMapping("/search")
+    @GetMapping("/searchBack")
     public ResponseEntity<?> search(@RequestParam("keyword") String keyword,
-                                    @RequestParam("keyword2") String  keyword2 ,
+                                    @RequestParam("career") String  keyword2 ,
                                     PageDTO pageDTO) {
         log.info("api/ddamddam/companies/search?keyword={}&page={}&size={}&keyword2={}",keyword,pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort()) ;
         CompanyListPageResponseDTO companyList = companyService.getKeywordList(keyword,keyword2,pageDTO);
@@ -75,32 +49,27 @@ public class CompanyApiController {
         return ResponseEntity.ok().body(companyList);
     }
 
-    @GetMapping("/searchfront")
+    //키워드 검색(프론트)
+    @GetMapping("/searchFront")
     public ResponseEntity<?> searchfront(@RequestParam("keyword") String keyword,
-                                    @RequestParam("keyword2") String  keyword2 ,
-                                    PageDTO pageDTO) {
+                                         @RequestParam("career") String  keyword2 ,
+                                         PageDTO pageDTO) {
         log.info("api/ddamddam/companies/search?keyword={}&page={}&size={}&keyword2={}",keyword,pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort()) ;
         CompanyListPageResponseDTO companyList = companyService.getKeywordListfront(keyword,keyword2,pageDTO);
         log.info("responseDTO : {}", companyList);
         return ResponseEntity.ok().body(companyList);
     }
 
-    //백엔드 리스트 불러오기
-    @GetMapping("/back")
-    public ResponseEntity<?> backlist(@RequestParam("keyword") String keyword,PageDTO pageDTO) throws IOException {
-        log.info("api/ddamddam/companies/back?keyword={}&page={}&size={}",keyword, pageDTO.getPage(), pageDTO.getSize());
-        CompanyListPageResponseDTO dto = companyService.getBack(keyword,pageDTO);
-        return ResponseEntity.ok().body(dto);
+    //키워드 검색(전체)
+    @GetMapping("/searchall")
+    public ResponseEntity<?> searchAll(@RequestParam("keyword") String keyword,
+                                         @RequestParam("career") String  keyword2 ,
+                                         PageDTO pageDTO) {
+        log.info("api/ddamddam/companies/search?keyword={}&page={}&size={}&keyword2={}",keyword,pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort()) ;
+        CompanyListPageResponseDTO companyList = companyService.getKeywordListAll(keyword,keyword2,pageDTO);
+        log.info("responseDTO : {}", companyList);
+        return ResponseEntity.ok().body(companyList);
     }
-
-    //프론트 리스트 불러오기
-    @GetMapping("/front")
-    public ResponseEntity<?> frontlist(@RequestParam("keyword") String keyword,PageDTO pageDTO) throws IOException {
-        log.info("api/ddamddam/companies/back?keyword={}&page={}&size={}",keyword,pageDTO.getPage(), pageDTO.getSize());
-        CompanyListPageResponseDTO dto = companyService.getFornt(keyword,pageDTO);
-        return ResponseEntity.ok().body(dto);
-    }
-
 
 
 }
