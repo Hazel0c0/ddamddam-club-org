@@ -6,7 +6,7 @@ import kr.co.ddamddam.common.common.ValidateToken;
 import kr.co.ddamddam.common.exception.custom.ErrorCode;
 import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
 import kr.co.ddamddam.config.security.TokenUserInfo;
-import kr.co.ddamddam.UserUtil;
+import kr.co.ddamddam.project.UserUtil;
 import kr.co.ddamddam.mentor.dto.page.MentorPageResponseDTO;
 import kr.co.ddamddam.mentor.entity.Mentor;
 import kr.co.ddamddam.mentor.repository.MentorRepository;
@@ -16,7 +16,6 @@ import kr.co.ddamddam.mypage.dto.page.PageMaker;
 import kr.co.ddamddam.mypage.dto.request.MypageModifyRequestDTO;
 import kr.co.ddamddam.mypage.dto.response.*;
 //import kr.co.ddamddam.project.dto.page.PageResponseDTO; // TODO : 페이징 통일해야합니다...ㅋㅋ
-import kr.co.ddamddam.project.dto.page.ProjectPageResponseDTO;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfFront;

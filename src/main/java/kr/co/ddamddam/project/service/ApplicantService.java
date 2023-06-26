@@ -5,7 +5,7 @@ import kr.co.ddamddam.common.common.ValidateToken;
 import kr.co.ddamddam.common.exception.custom.ErrorCode;
 import kr.co.ddamddam.common.exception.custom.UnauthorizationException;
 import kr.co.ddamddam.config.security.TokenUserInfo;
-import kr.co.ddamddam.UserUtil;
+import kr.co.ddamddam.project.UserUtil;
 import kr.co.ddamddam.project.dto.response.ProjectDetailResponseDTO;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
