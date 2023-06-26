@@ -11,7 +11,7 @@ import './scss/QuickMatching.scss';
 import ProjectsQuickMatching from "./ProjectsQuickMatching";
 import LatestProjects from "./LatestProjects";
 
-const ProjectsMain = () => {
+const ProjectsMain = ({keyword}) => {
 
   // 토큰
   const ACCESS_TOKEN = getToken();
@@ -107,6 +107,7 @@ const ProjectsMain = () => {
         handleShowDetails={handleShowDetails}
         // pageChange={handlePageChange}
         ref={childRef}
+        keyword = {keyword}
       />
 
       <LatestProjects
@@ -115,6 +116,7 @@ const ProjectsMain = () => {
         handleLikeClick={handleLikeClick}
         handleShowDetails={handleShowDetails}
         ref={childRef}
+        keyword = {keyword}
       />
 
       {/* 퀵매칭 */}
