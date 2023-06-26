@@ -35,9 +35,6 @@ public class DataProcessingService {
         @Override
         public void run() {
             try {
-                System.out.println("\n\n\n");
-                System.out.println("3초");
-                System.out.println("\n\n\n");
                 //db를 전부 지운다(중복 방지를 위해서)
                 companyRepository.deleteAll();
                 //서비스에서 함수 호출해서 다시 넣기
