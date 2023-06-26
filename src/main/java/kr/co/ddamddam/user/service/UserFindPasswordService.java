@@ -1,9 +1,6 @@
 package kr.co.ddamddam.user.service;
 
-import kr.co.ddamddam.common.exception.custom.ErrorCode;
 import kr.co.ddamddam.common.exception.custom.MessageException;
-import kr.co.ddamddam.common.exception.custom.NotFoundUserByEmailException;
-import kr.co.ddamddam.common.exception.custom.NotFoundUserException;
 import kr.co.ddamddam.common.response.ResponseMessage;
 import kr.co.ddamddam.user.dto.request.UserFindPasswordRequestDTO;
 import kr.co.ddamddam.user.entity.User;
@@ -19,11 +16,10 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.Optional;
-import java.util.Random;
 
 import static kr.co.ddamddam.common.exception.custom.ErrorCode.*;
 import static kr.co.ddamddam.common.response.ResponseMessage.*;
-import static kr.co.ddamddam.user.service.PasswordGenerator.generateRandomPassword;
+import static kr.co.ddamddam.user.service.RandomStringGenerator.generateRandomPassword;
 
 @Service
 @Slf4j
