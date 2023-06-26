@@ -106,6 +106,7 @@ const Header = () => {
 
     return (
       <Common className={'header-background'}>
+
           <div className={'header-wrapper'}>
               <Link to={'/'}>
                   <img className={'logo'} src={logo} alt="logo"/>
@@ -143,6 +144,7 @@ const Header = () => {
 
           {/* 네비게이션 바 */}
           {dropdownOpen && (
+              <>
             <nav
               className={`navigation-bar ${animating ? 'animating' : ''}`}
               onMouseLeave={handleMouseLeave}
@@ -163,6 +165,8 @@ const Header = () => {
                     <li><Link to={'/qna'}>Q&A</Link></li>
                 </ul>
             </nav>
+                  <div className={'background'}></div>
+              </>
           )}
       </Common>
 

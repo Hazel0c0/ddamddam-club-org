@@ -241,7 +241,7 @@ public class MentorService {
     }
 
     // 멘티 테이블 저장
-    public int menteeSave(Long mentorIdx, Long roomId , TokenUserInfo tokenUserInfo) {
+    public int menteeSave(Long mentorIdx, Long roomId , TokenUserInfo tokenUserInfo) throws RuntimeException{
 
         validateToken.validateToken(tokenUserInfo);
 
@@ -250,23 +250,37 @@ public class MentorService {
         // 멘티 몇 명 확정했는지
         List<Mentee> findByMenteeList = menteeRepository.findByMentorMentorIdx(mentorIdx);
 
+        // 해당 멘티와 같이 있는 채팅방
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(
+                () -> {
+                    throw new NotFoundBoardException(NOT_FOUND_BOARD, roomId);
+                }
+        );
+
+        // 멘티 유저
+        User user = userRepository.findById(chatRoom.getSender().getUserIdx()).orElseThrow(
+                () -> {throw  new NotFoundUserException(NOT_FOUND_USER, enterUserIdx);}
+        );
+
         // 멘티 제한 인원이 다 찼는지 확인하기
         Mentor mentor = mentorRepository.findByMentorIdxAndUserUserIdx(mentorIdx,enterUserIdx)
                 .orElseThrow( () -> { throw  new NotFoundBoardException(NOT_FOUND_BOARD,mentorIdx);}
                 );
+
+        // 이미 멘티로 확정된 클라이언트인지 체크하기
+        findByMenteeList.forEach(mentee -> {
+            if (mentee.getUser().getUserIdx() == user.getUserIdx()){
+                 throw new RuntimeException("이미 확정된 멘티입니다");
+            }
+        });
+
+
         if (findByMenteeList.size() == mentor.getMentorMentee()){
             return mentor.getMentorMentee();
         }
         // 제한인원이 다 안 찼으면 멘티 확정하기
         else if (findByMenteeList.size() < mentor.getMentorMentee()){
-            ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(
-                    () -> {
-                        throw new NotFoundBoardException(NOT_FOUND_BOARD, roomId);
-                    }
-            );
-            User user = userRepository.findById(chatRoom.getSender().getUserIdx()).orElseThrow(
-                    () -> {throw  new NotFoundUserException(NOT_FOUND_USER, enterUserIdx);}
-            );
+
             Mentee mentee = new Mentee();
             mentee.setMentor(mentor);
             mentee.setUser(user);

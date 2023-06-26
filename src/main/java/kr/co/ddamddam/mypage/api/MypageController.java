@@ -13,8 +13,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @Slf4j
@@ -57,20 +61,53 @@ public class MypageController {
     @PostMapping("/modify")
     public ResponseEntity<?> modify(
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
-            @RequestBody MypageModifyRequestDTO dto
-    ){
+            @Validated @RequestPart("user") MypageModifyRequestDTO dto
+            , @RequestPart(value = "profileImage", required = false) MultipartFile profileImg
+            ,BindingResult result
+    ) throws IOException {
 
 
+
+        log.info("수정요청 발생");
         log.info("modify: {}",dto);
+        log.info("inputImg : {}",profileImg);
 
-        myPageService.myPageModify(dto, tokenUserInfo);
+        if (result.hasErrors()) {
+            log.warn(result.toString());
+            return ResponseEntity.badRequest()
+                    .body(result.getFieldError());
+        }
+
+        String uploadFilePath = null;
+        if(profileImg != null) {
+            uploadFilePath = myPageService.uploadProfileImage(profileImg);
+        }
+
+
+        myPageService.myPageModify(dto, tokenUserInfo,uploadFilePath);
 
         return ResponseEntity.ok().body("회원정보 수정완료!");
     }
 
+    //s3에서 불러온 프로필 사진 저장 처리
+    @GetMapping("/load-s3")
+    public ResponseEntity<?> loads3(
+            @AuthenticationPrincipal TokenUserInfo userInfo
+    ) {
+        log.info("/api/auth/load-s3 GET - user: {}", userInfo);
+        try {
+            String profilePath = myPageService.getProfilePath(Long.valueOf(userInfo.getUserIdx()));
+            return ResponseEntity.ok().body(profilePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+
+        }
+    }
+
     /**
      * 회원정보 수정 성공 후, 수정된 정보만 DB 에서 가져와서 리턴합니다.
-     * @param tokenUserInfo - 로그인 한 유저 정보 
+     * @param tokenUserInfo - 로그인 한 유저 정보
      * @return 수정된 유저의 일부 정보
      */
     @GetMapping("/after-modify")

@@ -34,6 +34,7 @@ import MypageTemplate from "./component/mypage/MypageTemplate";
 import MypageUserModify from './component/mypage/MypageUserModify';
 import CompanyTemplate from "./component/Company/CompanyTemplate";
 import UserFindInfo from "./component/user/UserFindInfo";
+import ReviewModify from "./component/review/ReviewModify";
 
 
 function App() {
@@ -84,6 +85,8 @@ function App() {
                 <Route path={'/reviews/detail/:reviewIdx'} element={<ReviewDetail/>} />
                 {/*Review/글작성*/}
                 <Route path={'/reviews/write'} element={<ReviewWrite/>} />
+                {/*Review/글수정*/}
+                <Route path={'/reviews/modify/:reviewIdx'} element={<ReviewModify/>} />
 
                 {/*마이페이지*/}
                 <Route path={'/mypage'} element={<MypageTemplate/>}></Route>
