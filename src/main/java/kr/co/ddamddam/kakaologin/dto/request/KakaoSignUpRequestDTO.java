@@ -2,6 +2,7 @@ package kr.co.ddamddam.kakaologin.dto.request;
 
 import kr.co.ddamddam.user.entity.User;
 import kr.co.ddamddam.user.entity.UserPosition;
+import kr.co.ddamddam.user.entity.UserRole;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -52,6 +53,7 @@ public class KakaoSignUpRequestDTO {
                 .userPassword(this.userPassword)
                 .userName("카카오회원")
                 .userPosition(UserPosition.FRONTEND)
+                .userRole(UserRole.SNS)
                 .userBirth(LocalDate.of(2000, 1, 1))
                 .userProfile(this.profile)
                 .build();
