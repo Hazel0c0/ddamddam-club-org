@@ -4,7 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {RxCalendar} from "react-icons/rx"
 import {Spinner} from 'reactstrap';
 
-const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
+const CompanyTotal = ({searchKeyword, searchValue, searchCareer,onCountChange}) => {
     const [companyList, setCompanyList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -13,16 +13,29 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
 
     //워크넷 링크 상태관리
     const [goWorknet, setGoWorknet] = useState([]);
+
+    //처음 한 번만 실행
+    useEffect(()=>{
+        fetchCount()
+
+    },[])
+
     useEffect(() => {
+        setCompanyList([]); // 기존 리스트 초기화
+        setPage(1); // 페이지 번호 초기화
+        setFinalPage(1); // 마지막 페이지 초기화
+        setGoWorknet([]); // 워크넷 링크 상태 초기화
+    }, [searchKeyword, searchValue, searchCareer]);
+
+
+    useEffect(() => {
+        console.log(`useEffect 실행`)
         if (finalPage >= page) {
             fetchData(page);
         }
         if (finalPage > 1 && finalPage === page) {
             setIsLoading(false);
-            console.log(`page : `,page)
-            console.log(`finalPage : `,finalPage)
         }
-        console.log(`finalPage : `, finalPage)
     }, [page, searchKeyword, searchValue, searchCareer]);
 
     useEffect(() => {
@@ -35,23 +48,47 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         };
     }, []);
 
-    const fetchData = async (page) => {
-        console.log(`set 후 현재 page : `, page)
-        console.log(`set 후 현재 finalPage : `, finalPage)
-
-        setIsLoading(true)
-        // const res = await fetch(`${COMPANY}/search?keyword=&page=${page}&size=10$sort={}`, {
-        // const res = await fetch(`${COMPANY}/list?page=${page}&size=10`, {
-        const res = await fetch(`${COMPANY}/list?page=${page}&size=10`, {
-            method: 'GET',
-            headers: {'content-type': 'application/json'}
-        });
+    const[totalCount, setTotalCount] = useState(0);
+    //전체 갯수 추출
+    const fetchCount = async () =>{
+        const res = await fetch(
+            `${COMPANY}/searchAll?keyword= &page=1&size=10&career=`,
+            {
+                method: 'GET',
+                headers: {'content-type': 'application/json'}
+            });
 
         if (res.status === 500) {
             alert('잠시 후 다시 접속해주세요.[서버오류]');
             return;
         }
-        console.log(`현재 페이지 url : ${COMPANY}/list?page=${page}&size=10`)
+
+        const result = await res.json();
+        const totalCount = result.pageInfo.totalCount;
+        // setTotalCount(totalCount);
+        onCountChange({totalCount : totalCount})
+    }
+
+    const fetchData = async (page) => {
+        console.log(`set 후 현재 page : `, page)
+        console.log(`set 후 현재 finalPage : `, finalPage)
+
+        setIsLoading(true)
+        const res = await fetch(
+            `${COMPANY}/searchAll?keyword=${searchKeyword}&page=${page}&size=10&career=${searchCareer}`,
+            {
+                method: 'GET',
+                headers: {'content-type': 'application/json'}
+            });
+
+        if (res.status === 500) {
+            alert('잠시 후 다시 접속해주세요.[서버오류]');
+            return;
+        }
+
+        console.log()
+        console.log(`현재 페이지 url : ${COMPANY}/searchAll?keyword=${searchKeyword}&page=${page}&size=10&career=${searchCareer}`)
+
         const result = await res.json();
 
         //마지막 페이지 계산해서 로딩 막기
@@ -78,16 +115,20 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         setGoWorknet((prevGoWorknet) => [...prevGoWorknet, ...new Array(companyLists.length).fill(false)]);
         setCompanyList((prevCompanyList) => [...prevCompanyList, ...modifyCompanyList]);
         setIsLoading(false)
-        console.log(`modifyCompanyList : `,modifyCompanyList)
+        console.log(`modifyCompanyList : `, modifyCompanyList)
 
     }
 
     let throttleTimer = null;
     const handleScroll = () => {
+        console.log(`스크롤 이벤트 발생`);
+        // console.log(`마지막 페이지 찾기의 page : `, page)
+        // console.log(`마지막 페이지 찾기의 finaPage : `, finalPage)
+
         if (throttleTimer !== null) return;
         if (finalPage > 1 && finalPage === page) {
             setIsLoading(false);
-           return;
+            return;
         }
 
 
@@ -97,7 +138,7 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const windowHeight = window.innerHeight || document.documentElement.clientHeight;
             const documentHeight = document.documentElement.scrollHeight;
-            if (scrollTop + windowHeight >= documentHeight - 200 && !isLoading) {
+            if (scrollTop + windowHeight >= documentHeight - 200 && !isLoading && page <= finalPage) {
                 setPage((prevPage) => prevPage + 1);
             }
             throttleTimer = null;
@@ -106,6 +147,14 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         setIsLoading(true)
 
     }
+
+    // console.log(`마지막 페이지 찾기의 page : `, page)
+    // console.log(`마지막 페이지 찾기의 finaPage : `, finalPage)
+    // if (page >= finalPage) {
+    //     // 마지막 페이지에 도달한 경우 스크롤 이벤트 리스너 제거
+    //     console.log('마지막 페이지 도달')
+    //     window.removeEventListener('scroll', handleScroll);
+    // }
 
     //d-day계산
     const convertToEndDate = (endDate) => {
@@ -127,7 +176,7 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         return formattedDdayDate;
     }
 
-    const showLinkHandler = (index,companyName) => {
+    const showLinkHandler = (index, companyName) => {
         const updatedGoWorknet = goWorknet.map((item, i) => (i === index ? true : false));
         setGoWorknet(updatedGoWorknet);
     }
@@ -185,7 +234,7 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
                 </>
             ))}
 
-            {isLoading &&
+            {isLoading && page!==finalPage &&
                 <div className={'grow-wrapper'}>
                     <Spinner type={"grow"}></Spinner>
                     <Spinner type={"grow"}></Spinner>

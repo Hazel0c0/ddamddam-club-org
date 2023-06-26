@@ -10,23 +10,26 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
     const [page, setPage] = useState(1);
 
     const [finalPage, setFinalPage] = useState(1);
-
+    const [totalPage, setTotalPage] = useState(1)
     //워크넷 링크 상태관리
     const [goWorknet, setGoWorknet] = useState([]);
+
     useEffect(() => {
-        if (finalPage >= page) {
-            fetchData(page);
-        }
-        if (finalPage > 1 && finalPage === page) {
-            setIsLoading(false);
-            console.log(`page : `,page)
-            console.log(`finalPage : `,finalPage)
-        }
+        setCompanyList([]); // 기존 리스트 초기화
+        setPage(1); // 페이지 번호 초기화
+        setFinalPage(1); // 마지막 페이지 초기화
+        setGoWorknet([]); // 워크넷 링크 상태 초기화
+    }, [searchKeyword, searchValue, searchCareer]);
+
+    useEffect(() => {
+
+        fetchData(page);
+
         console.log(`finalPage : `, finalPage)
     }, [page, searchKeyword, searchValue, searchCareer]);
 
     useEffect(() => {
-        // 스크롤 이벤트 리스너 등록
+               // 스크롤 이벤트 리스너 등록
         window.addEventListener('scroll', handleScroll);
 
         return () => {
@@ -36,12 +39,10 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
     }, []);
 
     const fetchData = async (page) => {
-        console.log(`set 후 현재 page : `, page)
-        console.log(`set 후 현재 finalPage : `, finalPage)
 
         setIsLoading(true)
         const res = await fetch(
-            `${COMPANY}/searchBack?keyword=${searchKeyword}page=${page}&size=10&keyword2=${searchCareer}`,
+            `${COMPANY}/searchFront?keyword=${searchKeyword}&page=${page}&size=10&career=${searchCareer}`,
             {
             method: 'GET',
             headers: {'content-type': 'application/json'}
@@ -57,6 +58,7 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         //마지막 페이지 계산해서 로딩 막기
         const totalCount = result.pageInfo.totalCount;
         const totalPage = Math.ceil(totalCount / 10);
+        setTotalPage(totalPage);
         setFinalPage(totalPage);
 
         const companyLists = result.companyList
@@ -78,32 +80,45 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         setGoWorknet((prevGoWorknet) => [...prevGoWorknet, ...new Array(companyLists.length).fill(false)]);
         setCompanyList((prevCompanyList) => [...prevCompanyList, ...modifyCompanyList]);
         setIsLoading(false)
+
+
+        console.log(`마지막 페이지 찾기의 page : `,page)
+        console.log(`마지막 페이지 찾기의 finaPage : `,finalPage)
+        if (page === finalPage) {
+            // 마지막 페이지에 도달한 경우 스크롤 이벤트 리스너 제거
+            console.log('마지막 페이지 도달')
+            window.removeEventListener('scroll', handleScroll);
+        }
+
+
         console.log(`modifyCompanyList : `,modifyCompanyList)
 
     }
 
+
     let throttleTimer = null;
     const handleScroll = () => {
         if (throttleTimer !== null) return;
-        if (finalPage > 1 && finalPage === page) {
-            setIsLoading(false);
-           return;
-        }
-
 
         setIsLoading(false)
+
+
 
         throttleTimer = setTimeout(() => {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const windowHeight = window.innerHeight || document.documentElement.clientHeight;
             const documentHeight = document.documentElement.scrollHeight;
-            if (scrollTop + windowHeight >= documentHeight - 200 && !isLoading) {
+            if (scrollTop + windowHeight >= documentHeight - 200 && !isLoading && finalPage > 1 && finalPage !== page) {
                 setPage((prevPage) => prevPage + 1);
             }
+
+
+
             throttleTimer = null;
         }, 2000)
 
         setIsLoading(true)
+
 
     }
 
