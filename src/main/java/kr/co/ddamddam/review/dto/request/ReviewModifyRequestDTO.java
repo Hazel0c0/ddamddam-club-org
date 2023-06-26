@@ -37,7 +37,7 @@ public class ReviewModifyRequestDTO {
 
     private int reviewTenure;
 
-    private Long reviewCompany;
+//    private Long reviewCompany;
 
     private String companyName;
 
