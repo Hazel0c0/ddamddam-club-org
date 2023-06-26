@@ -78,7 +78,7 @@ public class CompanyService {
         newJson.put("wanted", wantedArray);
 
 //        System.out.println(jsonObject.toString(INDENT_FACTOR));
-        System.out.println(newJson.toString());
+//        System.out.println(newJson.toString());
 
         CompanyRequestDTO dto = new CompanyRequestDTO();
         List<CompanyRequestDTO> wantedList = new ArrayList<>();
