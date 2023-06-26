@@ -42,7 +42,9 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         setIsLoading(true)
         // const res = await fetch(`${COMPANY}/search?keyword=&page=${page}&size=10$sort={}`, {
         // const res = await fetch(`${COMPANY}/list?page=${page}&size=10`, {
-        const res = await fetch(`${COMPANY}/list?page=${page}&size=10`, {
+        const res = await fetch(
+            `${COMPANY}/searchBack?keyword=${searchKeyword}&page=${page}&size=10&career=${searchCareer}`,
+            {
             method: 'GET',
             headers: {'content-type': 'application/json'}
         });
@@ -51,7 +53,7 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
             alert('잠시 후 다시 접속해주세요.[서버오류]');
             return;
         }
-        console.log(`현재 페이지 url : ${COMPANY}/list?page=${page}&size=10`)
+        console.log(`현재 페이지 url : ${COMPANY}/searchBack?keyword=${searchKeyword}page=${page}&size=10&career=${searchCareer}`)
         const result = await res.json();
 
         //마지막 페이지 계산해서 로딩 막기

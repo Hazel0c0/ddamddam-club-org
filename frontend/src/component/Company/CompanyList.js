@@ -3,6 +3,8 @@ import Common from "../common/Common";
 import CompanyTotal from "./Pagenation/CompanyTotal";
 import './scss/CompanyList.scss'
 import ReviewTotal from "../review/Pagination/ReviewTotal";
+import CompanyFront from "./Pagenation/CompanyFront";
+import CompanyBack from "./Pagenation/CompanyBack";
 
 const CompanyList = ({searchValue, searchKeyword,searchCareer}) => {
 
@@ -14,8 +16,8 @@ const CompanyList = ({searchValue, searchKeyword,searchCareer}) => {
     return (
         <Common className={'company-list-wrapper'}>
             {searchValue === '' && <CompanyTotal searchKeyword={searchKeyword} searchValue={searchValue} searchCareer={searchCareer}/>}
-            {searchValue === 'front' && <CompanyTotal searchKeyword={searchKeyword} searchValue={searchValue} searchCareer={searchCareer}/>}
-            {searchValue === 'back' && <CompanyTotal searchKeyword={searchKeyword} searchValue={searchValue} searchCareer={searchCareer}/>}
+            {searchValue === 'front' && <CompanyFront searchKeyword={searchKeyword} searchValue={searchValue} searchCareer={searchCareer}/>}
+            {searchValue === 'back' && <CompanyBack searchKeyword={searchKeyword} searchValue={searchValue} searchCareer={searchCareer}/>}
         </Common>
     );
 };

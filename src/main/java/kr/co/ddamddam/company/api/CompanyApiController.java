@@ -65,9 +65,9 @@ public class CompanyApiController {
 
 
     //키워드 검색(백)
-    @GetMapping("/search")
+    @GetMapping("/searchBack")
     public ResponseEntity<?> search(@RequestParam("keyword") String keyword,
-                                    @RequestParam("keyword2") String  keyword2 ,
+                                    @RequestParam("career") String  keyword2 ,
                                     PageDTO pageDTO) {
         log.info("api/ddamddam/companies/search?keyword={}&page={}&size={}&keyword2={}",keyword,pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort()) ;
         CompanyListPageResponseDTO companyList = companyService.getKeywordList(keyword,keyword2,pageDTO);
@@ -75,9 +75,9 @@ public class CompanyApiController {
         return ResponseEntity.ok().body(companyList);
     }
 
-    @GetMapping("/searchfront")
+    @GetMapping("/searchFront")
     public ResponseEntity<?> searchfront(@RequestParam("keyword") String keyword,
-                                    @RequestParam("keyword2") String  keyword2 ,
+                                    @RequestParam("career") String  keyword2 ,
                                     PageDTO pageDTO) {
         log.info("api/ddamddam/companies/search?keyword={}&page={}&size={}&keyword2={}",keyword,pageDTO.getPage(),pageDTO.getSize(),pageDTO.getSort()) ;
         CompanyListPageResponseDTO companyList = companyService.getKeywordListfront(keyword,keyword2,pageDTO);
