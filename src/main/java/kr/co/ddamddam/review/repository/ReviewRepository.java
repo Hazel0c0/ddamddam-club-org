@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review,Long> {
@@ -41,5 +42,7 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
     Page<Review> findByRate(Pageable pageable);
 
     List<Review> findByUserUserIdx(Long userIdx);
+
+    Optional<Review> findByReviewIdxAndUserUserIdx(Long reviewIdx, Long userIdx);
 
 }
