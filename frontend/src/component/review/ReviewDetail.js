@@ -88,7 +88,7 @@ const ReviewDetail = () => {
                 <p className={'main-sub-title'}>근무했던 기업에 대한 정보를 공유해보세요.</p>
                 <Link to={'/reviews'} className={'back-btn'}>
                     <img src={back} alt={'back-icon'} className={'back-icon'}/>
-                    <span className={'back-text'}>Back</span>
+                    {/*<span className={'back-text'}>Back</span>*/}
                 </Link>
             </div>
 

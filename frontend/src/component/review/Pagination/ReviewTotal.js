@@ -53,7 +53,7 @@ const ReviewTotal = ({loginCheck, searchKeyword, searchValue}) => {
     return (
         <>
             {reviewList.map((review) => (
-                <section className={'review-list'}>
+                <section key={review.reviewIdx} className={'review-list'}>
 
                     <div className={'company-info-wrapper'}>
                         <span className={'company'}>{review.reviewCompanyName}</span>
@@ -95,7 +95,9 @@ const ReviewTotal = ({loginCheck, searchKeyword, searchValue}) => {
                     </div>
                 </section>
             ))}
-
+            {pageNation.totalCount === 0 &&
+                <div className={'no-search-result'}>검색 결과가 없습니다.</div>
+            }
             <ul>
                 <PageNation
                     pageNation={pageNation}

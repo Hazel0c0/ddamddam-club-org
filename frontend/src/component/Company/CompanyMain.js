@@ -51,8 +51,11 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChang
 
     //경력 선택 버튼
     const careerHandler = (e) => {
-        const careerValue = e.target.value;
+        let careerValue = e.target.value;
         console.log(careerValue)
+        if (careerValue==='전체'){
+            careerValue='';
+        }
         onSearchCareerChange(careerValue);
     }
 
@@ -116,7 +119,7 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChang
                         <option value={'전체'}>전체</option>
                         <option value={'신입'}>신입</option>
                         <option value={'경력'}>경력</option>
-                        <option value={'경력무관'}>경력무관</option>
+                        <option value={'관계없음'}>경력무관</option>
                     </select>
                 </div>
                 <button className={'reset-btn'} onClick={resetHandler}><GrPowerReset/></button>

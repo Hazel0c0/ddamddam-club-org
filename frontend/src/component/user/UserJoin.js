@@ -422,8 +422,6 @@ const UserJoin = () => {
 
         const res = await fetch(`${BASE_URL}/signup`, {
             method: 'POST',
-            // headers: {'content-type': 'application/json'},
-            // headers: {'content-type': 'application/json'},
             body: userFormData
         });
 

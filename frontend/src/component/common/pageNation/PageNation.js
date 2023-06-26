@@ -5,7 +5,7 @@ const PageNation = ({pageNation, currentPageHandler, clickCurrentPage}) => {
     const pageAmount = () => {
         const pageList = [];
 
-        if (pageNation.currentPage !== 1) {
+        if (pageNation.currentPage !== 1 && pageNation.totalCount !== 0) {
             pageList.push(
                 <li className="page-item" onClick={() => currentPageHandler(1)}>
                     <div className="page-link start"><RxDoubleArrowLeft/></div>
@@ -39,7 +39,7 @@ const PageNation = ({pageNation, currentPageHandler, clickCurrentPage}) => {
         }
         // const finalPage = Math.ceil(PageNation.endPage)
         const finalPage = Math.ceil(pageNation.totalCount/10);
-        if (pageNation.currentPage !== finalPage) {
+        if (pageNation.currentPage !== finalPage && pageNation.totalCount !== 0) {
             pageList.push(
                 <li className="page-item" onClick={() => currentPageHandler(Math.floor((pageNation.totalCount) / 10 + 1))}>
                     <div className="page-link end"
@@ -56,7 +56,6 @@ const PageNation = ({pageNation, currentPageHandler, clickCurrentPage}) => {
 
     return (
         <ul className={'pagination-wrapper'}>
-            {/*{clickCurrentPage}*/}
             {pageAmount()}
         </ul>
     );

@@ -33,6 +33,8 @@ const MypageUserModify = props => {
   const USER_CAREER = getUserCareer();
   const USER_BIRTH = getUserBirth();
 
+  
+
    // 상태변수로 회원수정 입력값 관리
    const [userValue, setUserValue] = useState({
     userName: USER_NAME,
@@ -40,7 +42,7 @@ const MypageUserModify = props => {
     userBirth: USER_BIRTH,
     userPosition: USER_POSITION,
     userCareer: USER_CAREER,
-    userProfile: USER_PROFILE
+    // userProfile: USER_PROFILE
 });
     // 검증 메세지에 대한 상태변수 관리
     const [message, setMessage] = useState({
@@ -214,7 +216,12 @@ const birthHandler = (event) => {
 const [selectedPosition, setSelectedPosition] = useState('');
 const positionHandler = e => {
     const selectedValue = e.target.value;
+    console.log(selectedValue);
     setSelectedPosition(selectedValue);
+    setUserValue(prevValue =>({
+        ...prevValue,
+        userPosition : e.target.value
+    }));
 };
 
 //입력칸이 모두 검증에 통과했는지 여부를 검사
@@ -266,15 +273,36 @@ const isValid = () => {
 
   // 회원수정 처리 서버 요청
   const fetchModifyPost = async () => {
+
+    
     console.log(`fetchSignUpPost의 userValue : ${userValue}`);
-    console.log(userValue.userNickName);
+    // console.log(userValue.userNickName);
+
+      const headerModify = new Headers();
+      headerModify.append('Authorization', 'Bearer ' + ACCESS_TOKEN);
+
+    // JSON을 Blob타입으로 변경 후 FormData에 넣기
+    const userJsonBlob = new Blob(
+        [JSON.stringify(userValue)],
+        { type: 'application/json' }
+      );
+
+ // 이미지파일과 회원정보 JSON을 하나로 묶어야 함
+    const userFormData = new FormData();
+    userFormData.append('user', userJsonBlob);
+    userFormData.append('profileImage', $fileTag.current.files[0]);
+
+      console.log('userFormData:', userFormData);
+      console.log(`$fileTag.current.files[0] : `,$fileTag.current.files[0])
 
     const res = await fetch(`${API_BASE_URL}/modify`, {
+    // const res = await fetch(`//localhost:8181/api/ddamddam/mypage/modify`, {
         method: 'POST',
-        headers: headerInfo,
-        body: JSON.stringify(userValue)
+        headers: headerModify,
+        body: userFormData
     });
 
+      console.log(res)
     if (res.status === 200) {
         alert('회원 정보 수정에 성공했습니다!');
 
