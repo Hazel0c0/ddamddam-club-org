@@ -133,4 +133,13 @@
     font-size: 15px;
     cursor: pointer;
   }
+  .grow-wrapper{
+    margin: 0 auto;
+
+    .spinner-grow{
+      margin: 30px 7px;
+      width: 10px;
+      height: 10px;
+    }
+  }
 }

@@ -1,12 +1,13 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {TfiClose} from 'react-icons/tfi';
 import Common from '../common/Common';
-import {useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import {CHAT, MENTOR} from '../common/config/HostConfig';
 import './scss/MentorChat.scss';
 import {getToken, getUserIdx, getUserNickname, getUserRegdate} from '../common/util/login-util';
 import {Window} from '@mui/icons-material';
 import {BsPersonFill} from "react-icons/bs";
+import back from "../../src_assets/back.png";
 
 const MentorsChat = () => {
   const {chatPageIdx, roomId} = useParams(); // 멘토 게시판 idx
@@ -395,6 +396,10 @@ const MentorsChat = () => {
     return (
         <Common className={'mentors-chat-wrapper'}>
             <div className={'mentor-detail-wrapper'}>
+              <Link to={'/mentors'} className={'back-btn'}>
+                <img src={back} alt={'back-icon'} className={'back-icon'}/>
+                {/*<span className={'back-text'}>Back</span>*/}
+              </Link>
                 <section className={'top-section'}>
                     <div className={'top-title'}>
                         <h1 className={'top-title-text'}>멘토 소개</h1>

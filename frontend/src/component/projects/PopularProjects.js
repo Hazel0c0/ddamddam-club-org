@@ -8,6 +8,7 @@ import logo from '../../src_assets/logo.png'
 import './scss/ProjectsItem.scss';
 import ProjectImage from "./ProjectImage";
 import {PROJECT} from "../common/config/HostConfig";
+import ProjectListContainer from "./ProjectListContainer";
 
 const PopularProjects = forwardRef((
         {
@@ -25,19 +26,19 @@ const PopularProjects = forwardRef((
       const [nextBtn, setNextBtn] = useState(false);
       //캐러셀
       const [carouselIndex, setCarouselIndex] = useState(1);
+      const [clickCurrentPage, setClickCurrentPage] = useState(1);
 
-      const [currentUrl, setCurrentUrl] = useState(PROJECT);
       const LIKE_PAGE_SIZE = 3;
-      const popularityUrl = `${PROJECT}?page=${carouselIndex}&size=${LIKE_PAGE_SIZE}&like=true`;
-      const [popularity, setPopularity] = useState(popularityUrl);
-
-
+      const currentPageHandler = (clickPageNum) => {
+        console.log(`페이지 클릭 시 현재 페이지 번호: ${clickPageNum}`);
+        setClickCurrentPage(clickPageNum);
+      }
       useImperativeHandle(ref, () => ({
         fetchData
       }));
 
       const fetchData = () => {
-        fetch(popularity, {
+        fetch(`${PROJECT}?page=${carouselIndex}&size=${LIKE_PAGE_SIZE}&like=true`, {
           method: 'GET',
           headers: {'content-type': 'application/json'}
         })
@@ -55,20 +56,19 @@ const PopularProjects = forwardRef((
                 console.log(`pageInfo : `, result.pageInfo);
                 setProjects(result.projects);
                 setPageNation(result.pageInfo);
+                console.log(`carouselIndex : ${carouselIndex}`)
               }
             });
       };
 
       useEffect(() => {
         fetchData();
-        // console.log(`item page index `, carouselIndex)
-        // pageChange(carouselIndex);
-        // }, [carouselIndex]);
       }, [carouselIndex]);
 
-
+      // 페이지 처리
       const handlePrevious = () => {
-        if (pageNation.prev === true) {
+        if (pageNation.currentPage > 1) {
+          console.log(`pageNation.currentPage : ${pageNation.currentPage}`)
           setCarouselIndex(prevIndex => prevIndex - 1);
         }
       };
@@ -76,30 +76,16 @@ const PopularProjects = forwardRef((
 
       const handleNext = () => {
         console.log('handleNext')
-        // // 마지막 페이지 일 때 다시 페이지 설정을 해줘야 정상작동
-        // // ex 마지막 페이지가 13인데 carouselIndex가 14일 때
-        // // 마지막 페이지의 값이 필요
-        //
-        // //마지막 페이지 값
-        // const lastPage = Math.ceil(pageNation.totalCount / 3);
-        //
-        // if (lastPage === carouselIndex) {
-        //   setCarouselIndex((prevIndex) => prevIndex - 1)
-        //   return;
-        // }
-        // console.log(`렌더링 1단계 전 carouselIndex = `, carouselIndex)
-        // if (pageNation.next === true) {
-        //   setCarouselIndex(prevIndex => prevIndex + 1);
-        // }
+
         if (pageNation.next === true) {
           setCarouselIndex(prevIndex => prevIndex + 1);
-        }
+          console.log(`pageNation.currentPage : ${pageNation.currentPage}`)        }
       };
 
 
       return (
           <Common className={'project-list-wrapper'}>
-            {pageNation.prev &&
+            {pageNation.currentPage >1 &&
                 <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
             }
 
@@ -109,51 +95,12 @@ const PopularProjects = forwardRef((
 
             <h2 className={'sort-title'}>{sortTitle}</h2>
 
-            <div className="project-list-container">
-              {projects.map((p, index) => {
-                // 현재 날짜와 게시글 작성일 간의 차이를 계산합니다
-                const currentDate = new Date();
-                const writeDate = new Date(p.projectDate);
-                const timeDiff = Math.abs(currentDate - writeDate);
-                const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+            <ProjectListContainer
+                projects={projects}
+                handleShowDetails={handleShowDetails}
+                handleLikeClick={handleLikeClick}
+            />
 
-                return (
-                    <section
-                        className={'project-list'}
-                        key={`${p.boardIdx}`}
-                        onClick={() => handleShowDetails(p.boardIdx)}
-                    >
-
-                      <div className={'project-wrapper'}>
-                        <ProjectImage projectIdx={p.boardIdx}/>
-
-                        <div className={'text-title'}>{p.boardTitle}</div>
-                        <div className={'text-content'}>{p.boardContent}</div>
-                        <div className={'project-type'}>{p.projectType}</div>
-                        <div className={'project-completion'}>
-                          {p.completion ? '모집완료' : '구인중'}
-                        </div>
-                        <div
-                            className={'project-like-btn'}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleLikeClick(p.boardIdx);
-                            }}
-                        >
-                          <div className={'project-like'}>
-                            ♥ {p.likeCount}
-                          </div>
-                        </div>
-                        {daysDiff <= 7 && (
-                            <div className={'project-new-box'}>
-                              <div className={'project-new'}>new</div>
-                            </div>
-                        )}
-                      </div>
-                    </section>
-                );
-              })}
-            </div>
           </Common>
       );
     }
