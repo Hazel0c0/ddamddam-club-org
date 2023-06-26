@@ -134,14 +134,12 @@ public class MentorService {
 
         validateToken.validateToken(tokenUserInfo);
 
-        if (mentorIdx == null) {
-            throw new NotFoundBoardException(INVALID_PARAMETER, mentorIdx);
-        }
-
         Mentor mentor  = mentorRepository.findById(mentorIdx).orElseThrow(
                 () -> {throw new NotFoundBoardException(NOT_FOUND_BOARD, mentorIdx);});
 
         List<Mentee> menteeList = menteeRepository.findByMentorMentorIdx(mentorIdx);
+
+        log.info("Mentor : {}", mentor);
 
         List<MenteeResponseDTO> menteeResponseDTOList = menteeList.stream().map(
                         mentee -> {
@@ -153,7 +151,6 @@ public class MentorService {
                         })
                 .collect(toList());
 
-        log.info("chatRoomList : {}",menteeList.size());
 
         MentorDetailResponseDTO dto = new MentorDetailResponseDTO();
         dto.setIdx(mentor.getMentorIdx());
@@ -173,6 +170,7 @@ public class MentorService {
             dto.setNickName(user.getUserNickname());
             dto.setUserIdx(user.getUserIdx());
         }
+
         return dto;
     }
 
@@ -190,6 +188,11 @@ public class MentorService {
                 }
         );
         mentor.setUser(user);
+        if (user.getUserCareer() == 0){
+            mentor.setMentorCareer("신입");
+        }else {
+            mentor.setMentorCareer(String.valueOf(user.getUserCareer()));
+        }
         Mentor saved = mentorRepository.save(mentor);
         return getDetail(saved.getMentorIdx(),tokenUserInfo);
     }

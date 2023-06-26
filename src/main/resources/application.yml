@@ -6,12 +6,12 @@ spring:
   main:
     allow-bean-definition-overriding: true
   datasource:
-#    url: jdbc:mariadb://oslobdb.cqd7fh7vsssg.ap-northeast-2.rds.amazonaws.com:3306/ddamddam
-#    username: taegun
+    url: jdbc:mariadb://oslobdb.cqd7fh7vsssg.ap-northeast-2.rds.amazonaws.com:3306/ddamddam
+    username: taegun
+    password: 1234
+#    url: jdbc:mariadb://localhost:3306/ddamddam
+#    username: root
 #    password: 1234
-    url: jdbc:mariadb://localhost:3306/ddamddam
-    username: root
-    password: 1111
     driver-class-name: org.mariadb.jdbc.Driver
   servlet:
     multipart:
