@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getToken, getUserPosition } from '../common/util/login-util';
 import { Button, Modal } from 'react-bootstrap';
 import { PROJECT } from "../common/config/HostConfig";
+import {Link} from "react-router-dom";
 
 const ProjectsQuickMatching = () => {
   // 토큰
@@ -14,13 +15,14 @@ const ProjectsQuickMatching = () => {
 
   // 퀵 매칭 모달창
   const [quickDetail, setQuickDetail] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // 퀵 매칭
   const [show, setShow] = useState(false);
 
   const handleShow = () => {
     console.log('퀵 매칭 버튼 클릭');
+    setCurrentPage(1); // 페이지를 1로 초기화
     setShow(true);
     quickMatchingFetchData();
   };
@@ -89,6 +91,8 @@ const ProjectsQuickMatching = () => {
             <Modal.Body>
               <div>나의 포지션: {USER_POSITION}</div>
               <div>제목: {board.boardTitle}</div>
+              <div>♥ : {board.likeCount}</div>
+              <div>작성일자 : {board.projectDate}</div>
 
               <div>
                 {renderApplicantImages(
@@ -127,9 +131,9 @@ const ProjectsQuickMatching = () => {
               <Button variant="secondary" onClick={handleClose}>
                 닫기
               </Button>
-              <Button variant="primary" onClick={handleClose}>
-                저장
-              </Button>
+              <Link to={`/projects/detail?projectIdx=${board.boardIdx}`} >
+                상세보기
+              </Link>
             </Modal.Footer>
           </React.Fragment>
         ))}
