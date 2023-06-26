@@ -1,4 +1,4 @@
-package kr.co.ddamddam;
+package kr.co.ddamddam.project;
 
 import kr.co.ddamddam.common.exception.custom.ErrorCode;
 import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;

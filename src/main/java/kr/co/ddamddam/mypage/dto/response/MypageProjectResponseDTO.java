@@ -1,6 +1,5 @@
 package kr.co.ddamddam.mypage.dto.response;
 
-import kr.co.ddamddam.UserUtil;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfFront;

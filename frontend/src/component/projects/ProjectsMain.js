@@ -11,11 +11,10 @@ import './scss/QuickMatching.scss';
 import ProjectsQuickMatching from "./ProjectsQuickMatching";
 import LatestProjects from "./LatestProjects";
 
-const ProjectsMain = () => {
+const ProjectsMain = ({keyword}) => {
 
   // 토큰
   const ACCESS_TOKEN = getToken();
-  const USER_POSITION = getUserPosition();
   const headerInfo = {
     'content-type': 'application/json',
     'Authorization': 'Bearer ' + ACCESS_TOKEN
@@ -29,9 +28,6 @@ const ProjectsMain = () => {
   //   handlePageChange(likePage);
   //   // setPopularity(popularityUrl);
   // }, [likePage, popularity])
-
-  // 퀵 매칭 모달창
-  const [quickDetail, setQuickDetail] = useState([]);
 
   const handleLikeClick = (projectId) => {
     // 서버에 좋아요 처리를 위한 POST 요청을 보냅니다
@@ -58,39 +54,7 @@ const ProjectsMain = () => {
     navigate(`/projects/detail?projectIdx=${projectIdx}`);
   };
 
-  // 퀵 매칭
-  const [show, setShow] = useState(false);
 
-  const handleShow = () => {
-    console.log('퀵 매칭 버튼 클릭');
-    setShow(true);
-    quickMatchingFetchData();
-  };
-  const handleClose = () => {
-    setShow(false)
-  };
-
-
-  const quick = PROJECT + `/quick?position=${USER_POSITION}&size=5`;
-  const quickMatchingFetchData = () => {
-    fetch(quick, {
-      method: 'GET',
-      headers: headerInfo
-    }).then(res => {
-        if (res.status === 500) {
-          alert('서버 오류입니다');
-          return;
-        }
-        return res.json();
-      }
-    ).then(res => {
-      if (res) {
-      console.log('퀵 매칭 데이터 패치');
-      console.log(res.payload.projects);
-      setQuickDetail(res.payload.projects);
-    }
-    })
-  };
   useEffect(() => {
   }, []);
 
@@ -107,6 +71,7 @@ const ProjectsMain = () => {
         handleShowDetails={handleShowDetails}
         // pageChange={handlePageChange}
         ref={childRef}
+        keyword={keyword}
       />
 
       <LatestProjects
@@ -115,25 +80,12 @@ const ProjectsMain = () => {
         handleLikeClick={handleLikeClick}
         handleShowDetails={handleShowDetails}
         ref={childRef}
+        keyword={keyword}
       />
 
       {/* 퀵매칭 */}
       <div className={'quick-wrapper'}>
-        <Button className={'quick-btn'}
-                onClick={handleShow}
-        >퀵 매칭
-        </Button>
-
-        <Modal show={show} onHide={handleClose} id="modal-container">
-
-          {quickDetail.map((board) => (
-            <>
-              <ProjectsQuickMatching board={board}
-                                     handleClose={handleClose}/>
-            </>
-          ))}
-
-        </Modal>
+        <ProjectsQuickMatching />
       </div>
     </Common>
   );

@@ -40,6 +40,7 @@ public class S3Service {
 
         this.s3 = S3Client.builder()
                 .region(Region.of(region))
+
                 .credentialsProvider(StaticCredentialsProvider.create(credentials))
                 .build();
     }
