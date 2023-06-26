@@ -150,6 +150,12 @@ const ProjectsDetail = () => {
             return (
                 <section className={'main-text-wrapper'}>
                   <div key={de.boardIdx}>
+
+                    <div className={'category'}>
+                      <span className={'p-sub-title'}>작성일자</span>
+                      <span className={'sub-content'}>{de.projectDate}</span>
+                    </div>
+
                     <div className={'qna-title'}>{de.boardTitle}</div>
                     {fileUrl && <img
                         src={fileUrl}
@@ -194,9 +200,10 @@ const ProjectsDetail = () => {
                             <span className={'sub-content'}>{de.maxBack}</span>
                           </div>
                         </div>
+
                         <div className={'category'}>
-                          <span className={'p-sub-title'}>작성일자</span>
-                          <span className={'sub-content'}>{de.projectDate}</span>
+                          <span className={'p-sub-title'}>모집 마감 일자</span>
+                          <span className={'sub-content'}>{de.offerPeriod}</span>
                         </div>
                       </div>
                     </section>

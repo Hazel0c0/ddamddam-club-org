@@ -41,6 +41,12 @@ const ProjectsSearch = () => {
             <ul className={'sort-btn'}>
                 <li>▼ 제목</li>
             </ul>
+            <select className={''} name={''} defaultValue={'전체'}>
+                <option value={'전체'}>전체</option>
+                <option value={'제목'}>제목</option>
+                <option value={'내용'}>내용</option>
+                <option value={'타입'}>타입</option>
+            </select>
 
             <div className={'search-wrapper'}>
                 <img src={searchIcon} alt={'search-icon'} className={'search-icon'}/>
