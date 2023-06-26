@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import Common from "../common/Common";
 import './scss/ProjectsWrite.scss';
 import {PROJECT} from "../common/config/HostConfig";
-import { Link, useNavigate } from "react-router-dom"; // useHistory 대신 useNavigate 추가
+import { Link, useNavigate } from "react-router-dom";
 import ProjectsTitle from "./ProjectsTitle";
 import {Grid} from "@mui/material";
 import * as PropTypes from "prop-types";
@@ -128,10 +128,11 @@ const ProjectsWrite = () => {
                       value={formData.projectType}
                       onChange={handleInputChange}
               >
-                <option value="웹페이지">웹페이지</option>
-                <option value="기타">기타</option>
+                <option value="웹개발">웹개발</option>
+                <option value="앱개발">앱개발</option>
               </select>
             </div>
+
 
             <div className={'personnel'}>
               <div className={'sub-title'}>모집인원</div>
@@ -173,6 +174,14 @@ const ProjectsWrite = () => {
             </div>
 
           </div>
+        </section>
+
+        <section>
+        <ul className={'-box'}>
+          <li className={''} name={''} value={''}><img src={'https://letspl.s3.ap-northeast-2.amazonaws.com/icons/java/java-original.svg'} alt={''}/>JAVA</li>
+          <li className={''} name={''} value={''}><img src={''} alt={''}/>C언어</li>
+          <li className={''} name={''} value={''}><img src={''} alt={''}/>파이썬</li>
+        </ul>
         </section>
 
         <section>

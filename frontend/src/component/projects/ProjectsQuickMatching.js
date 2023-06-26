@@ -92,7 +92,7 @@ const ProjectsQuickMatching = () => {
               <div>나의 포지션: {USER_POSITION}</div>
               <div>제목: {board.boardTitle}</div>
               <div>♥ : {board.likeCount}</div>
-              <div>작성일자 : {board.projectDate}</div>
+              <div>모집 마감 : {board.offerPeriod}</div>
 
               <div>
                 {renderApplicantImages(

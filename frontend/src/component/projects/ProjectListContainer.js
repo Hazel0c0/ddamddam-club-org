@@ -34,7 +34,7 @@ const ProjectListContainer = ({ projects, handleShowDetails
                   <div className={'text-title'}>{p.boardTitle}</div>
                   <div className={'text-content'}>{p.boardContent}</div>
                   <div className={'project-type'}>{p.projectType}</div>
-                  <div className={'project-completion'}>{p.completion ? '모집완료' : '구인중'}</div>
+                  <div className={'project-completion'}>{p.completion ? '모집완료' : '모집중'}</div>
                   <div
                       className={'project-like-btn'}
                       onClick={(e) => {
