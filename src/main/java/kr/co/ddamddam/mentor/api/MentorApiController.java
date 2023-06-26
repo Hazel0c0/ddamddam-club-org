@@ -147,14 +147,15 @@ public class MentorApiController {
             ,@PathVariable Long roomId
             ,@AuthenticationPrincipal TokenUserInfo tokenUserInfo
     ){
-//        Long enterUserIdx = Long.valueOf(userInfo.getUserIdx());
-//        log.info("들옴");
-        int menteeSave = mentorService.menteeSave(mentorIdx, roomId, tokenUserInfo);
+        try {
+            int menteeSave = mentorService.menteeSave(mentorIdx, roomId, tokenUserInfo);
 
-        return ResponseEntity.ok().body(menteeSave);
+            return ResponseEntity.ok().body(menteeSave);
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
-
-    // 좋아요 기능 만들기(멘토에 대한 좋아요인지 게시판에 대한 좋아요인지)
 
 
     // 멘티 리스트
