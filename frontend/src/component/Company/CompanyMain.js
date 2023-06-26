@@ -1,19 +1,15 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Common from "../common/Common";
 import './scss/CompanyMain.scss'
 import searchIcon from "../../src_assets/search-icon.png";
 import {GrPowerReset} from "react-icons/gr";
-import {Link, useNavigate} from "react-router-dom";
-import {getToken} from "../common/util/login-util";
+import {COMPANY} from "../common/config/HostConfig";
 
 const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChange}) => {
     const [selectedBtn, setSelectedBtn] = useState('전체');
     const inputVal = useRef();
     const careerVal = useRef();
 
-    //로그인 검증
-    const ACCESS_TOKEN = getToken();
-    const redirection = useNavigate();
     const handleInputChange = (e) => {
         const value = e.target.closest('.frontend-filter');
         if (value) {
@@ -32,7 +28,6 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChang
     }
     const searchHandler = (e) => {
         onSearchKeywordChange(e.target.value);
-
         //엔터
         if (e.keyCode === 13) {
             onSearchKeywordChange(e.target.value);
@@ -59,6 +54,73 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChang
         onSearchCareerChange(careerValue);
     }
 
+    //갯수 출력
+    const [count,setCount] = useState({totalCount :0, frontCount:0,backCount:0});
+    useEffect(()=>{
+        fetchCount();
+    },[])
+
+    const fetchCount = async () =>{
+
+        //1.전체
+        let res = await fetch(
+            `${COMPANY}/searchAll?keyword= &page=1&size=10&career=`,
+            {
+                method: 'GET',
+                headers: {'content-type': 'application/json'}
+            });
+
+        if (res.status === 500) {
+            alert('잠시 후 다시 접속해주세요.[서버오류]');
+            return;
+        }
+
+        let result = await res.json();
+        let totalCount = result.pageInfo.totalCount;
+        setCount((prev)=>({...prev, totalCount : totalCount}));
+
+        console.log(`1.전체 count : `,totalCount)
+
+        //2.프론트
+        res = await fetch(
+            `${COMPANY}/searchFront?keyword= &page=1&size=10&career=`,
+            {
+                method: 'GET',
+                headers: {'content-type': 'application/json'}
+            });
+
+        if (res.status === 500) {
+            alert('잠시 후 다시 접속해주세요.[서버오류]');
+            return;
+        }
+
+        result = await res.json();
+        totalCount = result.pageInfo.totalCount;
+        setCount((prev)=>({...prev, frontCount : totalCount}));
+
+        console.log(`2.프론트엔드 count : `,totalCount)
+
+        //3.백
+        res = await fetch(
+            `${COMPANY}/searchBack?keyword= &page=1&size=10&career=`,
+            {
+                method: 'GET',
+                headers: {'content-type': 'application/json'}
+            });
+
+        if (res.status === 500) {
+            alert('잠시 후 다시 접속해주세요.[서버오류]');
+            return;
+        }
+
+        result = await res.json();
+        totalCount = result.pageInfo.totalCount;
+        setCount((prev)=>({...prev, backCount : totalCount}));
+
+        console.log(`3.백 count : `,totalCount)
+
+    }
+
 
     return (
         <Common className={'company-top-wrapper'}>
@@ -73,10 +135,10 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChang
             <section className={'select-view-wrapper'}>
                 <div className={'frontend-filter'} onClick={handleInputChange}>
                     <div className={'frontend-title'}>
-                        <span className={'title-text'}>프론트엔드</span>
+                        <span className={'title-text selected'}>프론트엔드</span>
                         <span className={'title-add'}>+채용공고 보러가기</span>
                     </div>
-                    <span className={'frontend-count'}>12</span>
+                    <span className={'frontend-count'}>{count.frontCount}</span>
                 </div>
 
                 <div className={'backend-filter'} onClick={handleInputChange}>
@@ -84,7 +146,7 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChang
                         <span className={'title-text'}>백엔드</span>
                         <span className={'title-add'}>+채용공고 보러가기</span>
                     </div>
-                    <span className={'backend-count'}>12</span>
+                    <span className={'backend-count'}>{count.backCount}</span>
                 </div>
 
                 <div className={'total-filter'} onClick={handleInputChange}>
@@ -92,7 +154,7 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChang
                         <span className={'title-text'}>개발직군 전체</span>
                         <span className={'title-add'}>+채용공고 보러가기</span>
                     </div>
-                    <span className={'total-count'}>12</span>
+                    <span className={'total-count'}>{count.totalCount}</span>
                 </div>
             </section>
 
@@ -126,7 +188,6 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChang
             </section>
 
         </Common>
-        // <button className={'submit-btn'} onClick={submitHandler}>검색</button>
     );
 };
 
