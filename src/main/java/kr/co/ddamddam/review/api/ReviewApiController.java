@@ -1,5 +1,6 @@
 package kr.co.ddamddam.review.api;
 
+import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.review.dto.page.PageDTO;
 import kr.co.ddamddam.review.dto.request.ReviewModifyRequestDTO;
 import kr.co.ddamddam.review.dto.request.ReviewWriteRequestDTO;
@@ -11,6 +12,7 @@ import kr.co.ddamddam.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,11 +37,14 @@ public class ReviewApiController {
 
     //상세 페이지 조회
     @GetMapping("/detail")
-    public ResponseEntity<?> detail(@RequestParam Long reviewIdx)  {
+    public ResponseEntity<?> detail(
+            @RequestParam Long reviewIdx
+            ,@AuthenticationPrincipal TokenUserInfo tokenUserInfo
+    )  {
         log.info("api/ddamddam/reviews/detail?reviewIdx={}",reviewIdx);
         ReviewDetailResponseDTO dto = null;
         try {
-            dto = reviewService.getDetail(reviewIdx);
+            dto = reviewService.getDetail(reviewIdx,tokenUserInfo);
         } catch (ReviewNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -104,10 +109,13 @@ public class ReviewApiController {
 
     //게시물 생성하기
     @PostMapping("/write")
-    public  ResponseEntity<?> write(@Validated @RequestBody ReviewWriteRequestDTO dto) throws ReviewNotFoundException {
+    public  ResponseEntity<?> write(
+            @Validated @RequestBody ReviewWriteRequestDTO dto
+            ,@AuthenticationPrincipal TokenUserInfo tokenUserInfo
+    ) throws ReviewNotFoundException {
         log.info("POST : /reviews/write - 게시글 생성 {}", dto);
-        Long userIdx = 1L;
-        ReviewDetailResponseDTO responseDTO = reviewService.write(dto,userIdx);
+//        Long userIdx = 1L;
+        ReviewDetailResponseDTO responseDTO = reviewService.write(dto,tokenUserInfo);
         return ResponseEntity.ok().body(responseDTO);
     }
 
@@ -115,11 +123,12 @@ public class ReviewApiController {
     @RequestMapping(value = "/modify",method = {RequestMethod.PUT,RequestMethod.PATCH})
     public ResponseEntity<?> modify(
             @Validated @RequestBody ReviewModifyRequestDTO dto
+            ,@AuthenticationPrincipal TokenUserInfo tokenUserInfo
     ){
         log.info("/api/ddamddam/reviews PUT!! - payload {}",dto);
 
         try {
-            ReviewDetailResponseDTO responseDTO = reviewService.modify(dto);
+            ReviewDetailResponseDTO responseDTO = reviewService.modify(dto,tokenUserInfo);
             return ResponseEntity.ok().body(responseDTO);
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body("해당 게시판은 존재하지 않습니다");
