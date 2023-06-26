@@ -49,6 +49,7 @@ public class SecurityConfig {
                     .antMatchers("/api/ddamddam/**", "/").permitAll()
                     .antMatchers("/api/ddamddam/auth/load-profile").permitAll()
                     .antMatchers("/socket/chat/**", "/").permitAll()
+                    .antMatchers("/health-check").permitAll()
                 /*
                     .antMatchers("/api/ddamddam/oauth/**").permitAll()
                     .antMatchers("/socket/chat/**").permitAll()

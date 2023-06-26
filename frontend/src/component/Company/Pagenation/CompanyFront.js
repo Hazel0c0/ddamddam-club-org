@@ -4,21 +4,15 @@ import {Link, useNavigate} from "react-router-dom";
 import {RxCalendar} from "react-icons/rx"
 import {Spinner} from 'reactstrap';
 
-const CompanyTotal = ({searchKeyword, searchValue, searchCareer,onCountChange}) => {
+const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
     const [companyList, setCompanyList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [page, setPage] = useState(1);
 
     const [finalPage, setFinalPage] = useState(1);
-
+    const [totalPage, setTotalPage] = useState(1)
     //워크넷 링크 상태관리
     const [goWorknet, setGoWorknet] = useState([]);
-
-    //처음 한 번만 실행
-    useEffect(()=>{
-        fetchCount()
-
-    },[])
 
     useEffect(() => {
         setCompanyList([]); // 기존 리스트 초기화
@@ -27,19 +21,15 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer,onCountChange}) 
         setGoWorknet([]); // 워크넷 링크 상태 초기화
     }, [searchKeyword, searchValue, searchCareer]);
 
-
     useEffect(() => {
-        console.log(`useEffect 실행`)
-        if (finalPage >= page) {
-            fetchData(page);
-        }
-        if (finalPage > 1 && finalPage === page) {
-            setIsLoading(false);
-        }
+
+        fetchData(page);
+
+        console.log(`finalPage : `, finalPage)
     }, [page, searchKeyword, searchValue, searchCareer]);
 
     useEffect(() => {
-        // 스크롤 이벤트 리스너 등록
+               // 스크롤 이벤트 리스너 등록
         window.addEventListener('scroll', handleScroll);
 
         return () => {
@@ -48,52 +38,27 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer,onCountChange}) 
         };
     }, []);
 
-    const[totalCount, setTotalCount] = useState(0);
-    //전체 갯수 추출
-    const fetchCount = async () =>{
-        const res = await fetch(
-            `${COMPANY}/searchAll?keyword= &page=1&size=10&career=`,
-            {
-                method: 'GET',
-                headers: {'content-type': 'application/json'}
-            });
-
-        if (res.status === 500) {
-            alert('잠시 후 다시 접속해주세요.[서버오류]');
-            return;
-        }
-
-        const result = await res.json();
-        const totalCount = result.pageInfo.totalCount;
-        // setTotalCount(totalCount);
-        onCountChange({totalCount : totalCount})
-    }
-
     const fetchData = async (page) => {
-        console.log(`set 후 현재 page : `, page)
-        console.log(`set 후 현재 finalPage : `, finalPage)
 
         setIsLoading(true)
         const res = await fetch(
-            `${COMPANY}/searchAll?keyword=${searchKeyword}&page=${page}&size=10&career=${searchCareer}`,
+            `${COMPANY}/searchFront?keyword=${searchKeyword}&page=${page}&size=10&career=${searchCareer}`,
             {
-                method: 'GET',
-                headers: {'content-type': 'application/json'}
-            });
+            method: 'GET',
+            headers: {'content-type': 'application/json'}
+        });
 
         if (res.status === 500) {
             alert('잠시 후 다시 접속해주세요.[서버오류]');
             return;
         }
-
-        console.log()
-        console.log(`현재 페이지 url : ${COMPANY}/searchAll?keyword=${searchKeyword}&page=${page}&size=10&career=${searchCareer}`)
-
+        console.log(`현재 페이지 url : ${COMPANY}/list?page=${page}&size=10`)
         const result = await res.json();
 
         //마지막 페이지 계산해서 로딩 막기
         const totalCount = result.pageInfo.totalCount;
         const totalPage = Math.ceil(totalCount / 10);
+        setTotalPage(totalPage);
         setFinalPage(totalPage);
 
         const companyLists = result.companyList
@@ -115,46 +80,47 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer,onCountChange}) 
         setGoWorknet((prevGoWorknet) => [...prevGoWorknet, ...new Array(companyLists.length).fill(false)]);
         setCompanyList((prevCompanyList) => [...prevCompanyList, ...modifyCompanyList]);
         setIsLoading(false)
-        console.log(`modifyCompanyList : `, modifyCompanyList)
 
-    }
 
-    let throttleTimer = null;
-    const handleScroll = () => {
-        console.log(`스크롤 이벤트 발생`);
-        // console.log(`마지막 페이지 찾기의 page : `, page)
-        // console.log(`마지막 페이지 찾기의 finaPage : `, finalPage)
-
-        if (throttleTimer !== null) return;
-        if (finalPage > 1 && finalPage === page) {
-            setIsLoading(false);
-            return;
+        console.log(`마지막 페이지 찾기의 page : `,page)
+        console.log(`마지막 페이지 찾기의 finaPage : `,finalPage)
+        if (page === finalPage) {
+            // 마지막 페이지에 도달한 경우 스크롤 이벤트 리스너 제거
+            console.log('마지막 페이지 도달')
+            window.removeEventListener('scroll', handleScroll);
         }
 
 
+        console.log(`modifyCompanyList : `,modifyCompanyList)
+
+    }
+
+
+    let throttleTimer = null;
+    const handleScroll = () => {
+        if (throttleTimer !== null) return;
+
         setIsLoading(false)
+
+
 
         throttleTimer = setTimeout(() => {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const windowHeight = window.innerHeight || document.documentElement.clientHeight;
             const documentHeight = document.documentElement.scrollHeight;
-            if (scrollTop + windowHeight >= documentHeight - 200 && !isLoading && page <= finalPage) {
+            if (scrollTop + windowHeight >= documentHeight - 200 && !isLoading && finalPage > 1 && finalPage !== page) {
                 setPage((prevPage) => prevPage + 1);
             }
+
+
+
             throttleTimer = null;
         }, 2000)
 
         setIsLoading(true)
 
-    }
 
-    // console.log(`마지막 페이지 찾기의 page : `, page)
-    // console.log(`마지막 페이지 찾기의 finaPage : `, finalPage)
-    // if (page >= finalPage) {
-    //     // 마지막 페이지에 도달한 경우 스크롤 이벤트 리스너 제거
-    //     console.log('마지막 페이지 도달')
-    //     window.removeEventListener('scroll', handleScroll);
-    // }
+    }
 
     //d-day계산
     const convertToEndDate = (endDate) => {
@@ -176,7 +142,7 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer,onCountChange}) 
         return formattedDdayDate;
     }
 
-    const showLinkHandler = (index, companyName) => {
+    const showLinkHandler = (index,companyName) => {
         const updatedGoWorknet = goWorknet.map((item, i) => (i === index ? true : false));
         setGoWorknet(updatedGoWorknet);
     }
@@ -234,7 +200,7 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer,onCountChange}) 
                 </>
             ))}
 
-            {isLoading && page!==finalPage &&
+            {isLoading &&
                 <div className={'grow-wrapper'}>
                     <Spinner type={"grow"}></Spinner>
                     <Spinner type={"grow"}></Spinner>

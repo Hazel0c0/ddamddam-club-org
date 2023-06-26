@@ -78,12 +78,12 @@ public class CompanyService {
         newJson.put("wanted", wantedArray);
 
 //        System.out.println(jsonObject.toString(INDENT_FACTOR));
-        System.out.println(newJson.toString());
+//        System.out.println(newJson.toString());
 
         CompanyRequestDTO dto = new CompanyRequestDTO();
         List<CompanyRequestDTO> wantedList = new ArrayList<>();
 
-        System.out.println(wantedArray.length());
+//        System.out.println(wantedArray.length());
         for (int i = 0; i < wantedArray.length(); i++) {
 
             JSONObject value = wantedArray.getJSONObject(i);
@@ -180,69 +180,28 @@ public class CompanyService {
                 .collect(toList());
     }
 
-    //경력 별로 필터링
-    public CompanyListPageResponseDTO getCareer(PageDTO pageDTO){
+
+    // 키워드 검색(백엔드 검색)
+    public CompanyListPageResponseDTO getKeywordList(String keyword,String keyword2 ,PageDTO pageDTO){
 
         PageRequest pageable = getPageable(pageDTO);
-        // 데이터베이스에서 게시글 목록 조회 후 DTO 리스트로 꺼내기
-        Page<Company> companies = companyRepository.findHavingCareer(pageable);
-        List<CompanyListResponseDTO> companyListResponseDTOList = getCompanyDTOList(companies);
+        Page<Company> companies = companyRepository.findByKeywordback(keyword,keyword2,pageable);
+        log.info("pageCompany : {}" , companies);
+        List<CompanyListResponseDTO> companyListResponseDTOS = getCompanyListKeyword(companies);
 
-
-        //JSON 형태로 변형
         return CompanyListPageResponseDTO.builder()
-                .count(companyListResponseDTOList.size())
-                .count(companyListResponseDTOList.size())
-                .pageInfo(new PageResponseDTO<Company>(companies))
-                .companyList(companyListResponseDTOList)
+                .count(companyListResponseDTOS.size())
+                .pageInfo(new PageResponseDTO<>(companies))
+                .companyList(companyListResponseDTOS)
                 .build();
-
     }
 
-    //신입으로 보기
-    public CompanyListPageResponseDTO getNewCareer(PageDTO pageDTO){
+    // 키워드 검색(프론트엔드 검색)
+    public CompanyListPageResponseDTO getKeywordListfront(String keyword,String keyword2 ,PageDTO pageDTO){
 
         PageRequest pageable = getPageable(pageDTO);
-        // 데이터베이스에서 게시글 목록 조회 후 DTO 리스트로 꺼내기
-        Page<Company> companies = companyRepository.findCareer(pageable);
-        List<CompanyListResponseDTO> companyListResponseDTOList = getCompanyDTOList(companies);
-
-
-        //JSON 형태로 변형
-        return CompanyListPageResponseDTO.builder()
-                .count(companyListResponseDTOList.size())
-                .count(companyListResponseDTOList.size())
-                .pageInfo(new PageResponseDTO<Company>(companies))
-                .companyList(companyListResponseDTOList)
-                .build();
-
-    }
-
-
-    //경력관계없음
-    public CompanyListPageResponseDTO getNoCareer(PageDTO pageDTO){
-
-        PageRequest pageable = getPageable(pageDTO);
-        // 데이터베이스에서 게시글 목록 조회 후 DTO 리스트로 꺼내기
-        Page<Company> companies = companyRepository.findNoExperience(pageable);
-        List<CompanyListResponseDTO> companyListResponseDTOList = getCompanyDTOList(companies);
-
-
-        //JSON 형태로 변형
-        return CompanyListPageResponseDTO.builder()
-                .count(companyListResponseDTOList.size())
-                .count(companyListResponseDTOList.size())
-                .pageInfo(new PageResponseDTO<Company>(companies))
-                .companyList(companyListResponseDTOList)
-                .build();
-
-    }
-
-    // 키워드 검색
-    public CompanyListPageResponseDTO getKeywordList(String keyword,String sort ,PageDTO pageDTO){
-
-        PageRequest pageable = getPageable(pageDTO);
-        Page<Company> companies = companyRepository.findByKeyword(keyword,sort,pageable);
+        Page<Company> companies = companyRepository.findByKeywordfront(keyword,keyword2,pageable);
+        log.info("pageCompany : {}" , companies);
         List<CompanyListResponseDTO> companyListResponseDTOS = getCompanyListKeyword(companies);
 
         return CompanyListPageResponseDTO.builder()
@@ -258,39 +217,23 @@ public class CompanyService {
                 .collect(toList());
     }
 
-    //프론트엔드 불러오기
-    public CompanyListPageResponseDTO getFornt(String keyword,PageDTO pageDTO){
+    // 키워드 전체 검색(경력 정렬 포함)
+    public CompanyListPageResponseDTO getKeywordListAll(String keyword,String keyword2 ,PageDTO pageDTO){
 
         PageRequest pageable = getPageable(pageDTO);
-        // 데이터베이스에서 게시글 목록 조회 후 DTO 리스트로 꺼내기
-        Page<Company> companies = companyRepository.findFront(keyword,pageable);
-        List<CompanyListResponseDTO> companyListResponseDTOList = getCompanyDTOList(companies);
+//        keyword2 = keyword2 + " ";
+//        keyword = keyword + " ";
+        Page<Company> companies = companyRepository.findAllBy(keyword,keyword2,pageable);
+        log.info("pageCompany : {}" , companies);
+        List<CompanyListResponseDTO> companyListResponseDTOS = getCompanyListKeyword(companies);
 
-
-        //JSON 형태로 변형
         return CompanyListPageResponseDTO.builder()
-                .count(companyListResponseDTOList.size())
-                .pageInfo(new PageResponseDTO<Company>(companies))
-                .companyList(companyListResponseDTOList)
+                .count(companyListResponseDTOS.size())
+                .pageInfo(new PageResponseDTO<>(companies))
+                .companyList(companyListResponseDTOS)
                 .build();
     }
 
-    //백엔드 불러오기
-    public CompanyListPageResponseDTO getBack(String keyword,PageDTO pageDTO){
-
-        PageRequest pageable = getPageable(pageDTO);
-        // 데이터베이스에서 게시글 목록 조회 후 DTO 리스트로 꺼내기
-        Page<Company> companies = companyRepository.findBack(keyword,pageable);
-        List<CompanyListResponseDTO> companyListResponseDTOList = getCompanyDTOList(companies);
-
-
-        //JSON 형태로 변형
-        return CompanyListPageResponseDTO.builder()
-                .count(companyListResponseDTOList.size())
-                .pageInfo(new PageResponseDTO<Company>(companies))
-                .companyList(companyListResponseDTOList)
-                .build();
-    }
 
 
 

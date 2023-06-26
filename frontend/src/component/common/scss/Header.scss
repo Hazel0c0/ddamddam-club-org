@@ -142,5 +142,15 @@
       opacity: 0;
     }
   }
+  .background {
+    height: 100vh;
+    position: absolute;
+    width: 100%;
+    top: 100px;
+    background-color: rgba(0, 0, 0, 0.7);
+    //opacity: 0.3;
+    z-index: 100;
+    animation: slide-in 0.3s ease;
+  }
 
 }

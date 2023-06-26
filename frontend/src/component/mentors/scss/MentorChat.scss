@@ -23,6 +23,7 @@
     border: none;
     display: flex;
     flex-direction: column;
+    position: relative;
 
     .top-section {
       display: flex;
@@ -167,7 +168,11 @@
       border-radius: 5px;
       background-color: #292834;
     }
-
+    .back-icon {
+      width: 27px;
+      position: absolute;
+      top: -25px;
+    }
   }
 
   //채팅부분
