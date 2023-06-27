@@ -136,7 +136,6 @@ public class KakaoLoginService {
      *
      * @param accessToken - 카카오 액세스 토큰
      * @return 유저 정보를 담은 HashMap (id, nickname, email)
-     * // TODO : 프로필사진 및 파일유틸 구현 후 프로필 사진 추가 필요
      */
     public HashMap<String, Object> getUserKakaoInfo(final String accessToken) {
 
