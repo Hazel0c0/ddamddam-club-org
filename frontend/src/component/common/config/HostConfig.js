@@ -5,9 +5,9 @@ let backendHost; // 백엔드 호스트 이름
 
 if(hostname === 'localhost') {
   backendHost = '//localhost:8181/api/ddamddam';    // 로컬 테스트용
-
-}else if(hostname === 'newcen.co.kr') {
-  backendHost = '';  // 배포 테스트용
+}else if(hostname === 'ddamddam-club.s3-website.ap-northeast-2.amazonaws.com') {
+  backendHost = 'http://3.39.47.226';  // 배포 테스트용
+  //ec2주소 작성
 }
 
 //host주소

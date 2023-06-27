@@ -23,7 +23,7 @@ const MentorsWrite = () => {
     mentorSubject: '프론트엔드',
     mentorMentee: '1',
     mentorCurrent: '',
-    mentorCareer: '신입'
+    // mentorCareer: '신입'
   });
   
 
@@ -47,7 +47,7 @@ const MentorsWrite = () => {
         const {
             mentorTitle,
             mentorSubject,
-            mentorCareer,
+            // mentorCareer,
             mentorCurrent,
             mentorContent,
             mentorMentee
@@ -63,7 +63,7 @@ const MentorsWrite = () => {
                 mentorContent: mentorContent,
                 mentorSubject: mentorSubject,
                 mentorCurrent: mentorCurrent,
-                mentorCareer: mentorCareer,
+                // mentorCareer: mentorCareer,
                 mentorMentee: +mentorMentee
             };
             // 비동기 POST 요청 처리 로직 작성
@@ -118,19 +118,19 @@ const MentorsWrite = () => {
                         </select>
                     </div>
 
-                    <div className={'career'}>
-                        <h1 className={'sub-title'}>경력</h1>
-                        <select className="career-select"
-                                onChange={handleSelect}
-                                value={textInput.mentorCareer}
-                                name="mentorCareer"
-                        >
-                            <option value="신입">신입</option>
-                            <option value="1년">1년 이상</option>
-                            <option value="3년">3년 이상</option>
-                            <option value="5년">5년 이상</option>
-                        </select>
-                    </div>
+                    {/*<div className={'career'}>*/}
+                    {/*    <h1 className={'sub-title'}>경력</h1>*/}
+                    {/*    <select className="career-select"*/}
+                    {/*            onChange={handleSelect}*/}
+                    {/*            value={textInput.mentorCareer}*/}
+                    {/*            name="mentorCareer"*/}
+                    {/*    >*/}
+                    {/*        <option value="신입">신입</option>*/}
+                    {/*        <option value="1년">1년 이상</option>*/}
+                    {/*        <option value="3년">3년 이상</option>*/}
+                    {/*        <option value="5년">5년 이상</option>*/}
+                    {/*    </select>*/}
+                    {/*</div>*/}
                     <div className={'mentee'}>
                         <h1 className={'sub-title'}>모집인원</h1>
                         <select className="mentee-text-input"

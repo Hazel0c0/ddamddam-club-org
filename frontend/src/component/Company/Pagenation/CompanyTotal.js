@@ -207,13 +207,33 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
                 </>
             ))}
 
-            {isLoading && page!==finalPage &&
+            {isLoading && page !== finalPage &&
                 <div className={'grow-wrapper'}>
                     <Spinner type={"grow"}></Spinner>
                     <Spinner type={"grow"}></Spinner>
                     <Spinner type={"grow"}></Spinner>
                 </div>
             }
+
+            {/*{!isLoading }*/}
+            {/*<div className={'grow-wrapper'}>*/}
+            {/*    <div className={'no-search-result'}>마지막 페이지 입니다.</div>*/}
+            {/*</div>*/}
+
+
+            {/*{isLoading && page!==finalPage*/}
+            {/*    ? <div className={'grow-wrapper'}>*/}
+            {/*        <Spinner type={"grow"}></Spinner>*/}
+            {/*        <Spinner type={"grow"}></Spinner>*/}
+            {/*        <Spinner type={"grow"}></Spinner>*/}
+            {/*    </div>*/}
+
+            {/*    :*/}
+            {/*    <div className={'grow-wrapper'}>*/}
+            {/*        <div className={'no-search-result'}>마지막 페이지 입니다.</div>*/}
+            {/*    </div>*/}
+            {/*}*/}
+
         </>
     )
         ;

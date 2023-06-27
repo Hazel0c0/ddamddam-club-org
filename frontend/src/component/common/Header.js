@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import logo from '../../src_assets/logo.png';
 import './scss/Header.scss';
 import Common from "./Common";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {deleteSession, getToken, isLogin} from "./util/login-util";
 import profileImg from "../../src_assets/IMG_4525.JPG"
 import {BASE_URL, AUTH} from "../../component/common/config/HostConfig";
@@ -12,14 +12,12 @@ const Header = () => {
     //프로필 이미지 url 상태변수
     const [profileUrl, setProfileUrl] = useState(null); //기본값은 null
     const profileRequestURL = `${BASE_URL}${AUTH}/load-s3`;
-    // const profileRequestURL = `//localhost:8181/api/ddamddam/auth/load-profile`;
-    // const profileRequestURL = `${BASE_URL}${AUTH}/load-profile`;
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [animating, setAnimating] = useState(false);
     const [background, setBackground] = useState('rgba(0, 0, 0, 0)');
     const navigationRef = useRef(null);
     const categoryRef = useRef(null);
-    // const [token, setToken] = useState(null);
+    const navigation = useNavigate();
 
     const [isLoggedIn, setIsLoggedIn] = useState(isLogin());
 
@@ -43,15 +41,6 @@ const Header = () => {
             const imgUrl = await res.text();
             setProfileUrl(imgUrl);
 
-            //로컬 파일 저장 처리
-            //     //서버에서 직렬화된 이미지가 응답된다.
-            //     const profileBlob = await res.blob();
-            //     //해당 이미지를 imgUrl로 변경
-            //     const imgUrl = window.URL.createObjectURL(profileBlob);
-            //     setProfileUrl(imgUrl);
-            // } else{
-            //     const err = await res.text();
-            //     setProfileUrl(null);
             console.log(`imgUrl : `, imgUrl)
         }
     };
@@ -66,7 +55,7 @@ const Header = () => {
         const confirmBtn  = window.confirm("정말 로그아웃 하시겠습니까?")
         if (confirmBtn){
             deleteSession();
-            window.location.href='/';
+            navigation('/');
         }else {
             return;
         }
@@ -113,6 +102,7 @@ const Header = () => {
               </Link>
               <ul className={'category-wrapper'}
                   onMouseEnter={handleMouseEnter}
+                  // onMouseOver={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                   ref={categoryRef}
               >
@@ -158,9 +148,7 @@ const Header = () => {
                     <li><Link to={'/reviews'}>취업 후기</Link></li>
                     <li><Link to={'/companies'}>채용공고</Link></li>
                 </ul>
-                {/*<ul>*/}
-                {/*    <li><Link to={'/'}>프로젝트 공유</Link></li>*/}
-                {/*</ul>*/}
+
                 <ul>
                     <li><Link to={'/qna'}>Q&A</Link></li>
                 </ul>

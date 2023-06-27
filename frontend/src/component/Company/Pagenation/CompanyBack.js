@@ -4,7 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {RxCalendar} from "react-icons/rx"
 import {Spinner} from 'reactstrap';
 
-const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
+const CompanyBack = ({searchKeyword, searchValue, searchCareer}) => {
     const [companyList, setCompanyList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -213,9 +213,22 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
                     <Spinner type={"grow"}></Spinner>
                 </div>
             }
+
+            {/*{!isLoading }*/}
+            {/*<div className={'grow-wrapper'}>*/}
+            {/*    <div className={'no-search-result'}>마지막 페이지 입니다.</div>*/}
+            {/*</div>*/}
+
+
+            {/*{isLoading && page!==finalPage*/}
+            {/*    ? <div className={'grow-wrapper'}>*/}
+            {/*        <Spinner type={"grow"}></Spinner>*/}
+            {/*        <Spinner type={"grow"}></Spinner>*/}
+            {/*        <Spinner type={"grow"}></Spinner>*/}
+            {/*    </div>*/}
         </>
     )
         ;
 };
 
-export default CompanyTotal;
+export default CompanyBack;
