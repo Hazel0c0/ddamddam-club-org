@@ -48,7 +48,7 @@ const Header = () => {
     useEffect(() => {
         fetchProfileImage();
 
-    }, [profileUrl]);
+    }, [profileUrl,dropdownOpen]);
 
     //로그아웃
     const logoutHandler = () => {
@@ -72,16 +72,22 @@ const Header = () => {
         setBackground('rgba(0,0,0,0.5');
     }
     const handleMouseLeave = (event) => {
-        const relatedTarget = event.relatedTarget;
-        if (
-          (!relatedTarget || (relatedTarget !== categoryRef.current && relatedTarget !== navigationRef.current)) &&
-          navigationRef.current &&
-          categoryRef.current &&
-          categoryRef.current instanceof Node &&
-          (!relatedTarget || !(relatedTarget instanceof Node) || !categoryRef.current.contains(relatedTarget))
-        ) {
+
+        // if (
+        //     !event.target.classList.contains('category-wrapper') &&
+        //     !event.target.classList.contains('navigation-bar')
+        // ){
+
+        console.log("handlerMouseOut 이벤트 발생")
+        console.log(dropdownOpen)
+        if (dropdownOpen){
+            console.log(event.target.className)
             setAnimating(true);
-            navigationRef.current.style.animation = 'slide-out 0.2s ease-out forwards';
+
+            if (navigationRef.current) {
+                navigationRef.current.style.animation = 'slide-out 0.2s ease-out forwards';
+            }
+
             setTimeout(() => {
                 setDropdownOpen(false);
                 setAnimating(false);
@@ -102,8 +108,7 @@ const Header = () => {
               </Link>
               <ul className={'category-wrapper'}
                   onMouseEnter={handleMouseEnter}
-                  // onMouseOver={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
+                  // onMouseLeave={handleMouseLeave}
                   ref={categoryRef}
               >
                   <li>모집</li>

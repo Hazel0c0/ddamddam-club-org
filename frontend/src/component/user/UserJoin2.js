@@ -6,7 +6,7 @@ import {BsCheckLg} from "react-icons/bs"
 
 // 리다이렉트 사용하기
 import {useNavigate, Link} from 'react-router-dom';
-import {BASE_URL as BASE, AUTH, JOININ, EMAIL, BASE_URL} from '../../component/common/config/HostConfig';
+import {BASE_URL as BASE, AUTH, JOININ, EMAIL} from '../../component/common/config/HostConfig';
 import useDebounce from "./useDebounce";
 
 const UserJoin = () => {
@@ -17,8 +17,8 @@ const UserJoin = () => {
     // 리다이렉트 사용하기
     const redirection = useNavigate();
 
-    // const API_BASE_URL = BASE + AUTH;
-    const API_BASE_URL = BASE_URL + JOININ;
+    // const BASE_URL = BASE + AUTH;
+    const BASE_URL = JOININ;
 
     //이메일 주소 선택 값
     const emailValue = useRef();
@@ -163,7 +163,7 @@ const UserJoin = () => {
 
         const inputNickname = userValue.userNickName;
         console.log(`inputNick : ${inputNickname}`)
-        const res = await fetch(`${API_BASE_URL}/checknickname?nickname=${inputNickname}`);
+        const res = await fetch(`${JOININ}/checknickname?nickname=${inputNickname}`);
 
         let msg = '', flag = false;
         if (res.status === 200) {
@@ -192,14 +192,13 @@ const UserJoin = () => {
 
         const inputEmail = userValue.userEmail;
         console.log(`inputEmail : ${inputEmail}`)
-        const res = await fetch(`${API_BASE_URL}/check?email=${inputEmail}`);
+        const res = await fetch(`${JOININ}/check?email=${inputEmail}`);
 
         let msg = '', flag = false;
         if (res.status === 200) {
             const json = await res.json();
-            console.log(json);
+            // console.log(json);
             if (json) {
-                alert("이메일이 중복되었습니다");
                 msg = '이메일이 중복되었습니다!';
                 flag = false;
             } else {
@@ -409,8 +408,8 @@ const UserJoin = () => {
 
         // JSON을 Blob타입으로 변경 후 FormData에 넣기
         const userJsonBlob = new Blob(
-          [JSON.stringify(userValue)],
-          { type: 'application/json' }
+            [JSON.stringify(userValue)],
+            { type: 'application/json' }
         );
 
         // 이미지파일과 회원정보 JSON을 하나로 묶어야 함
@@ -421,8 +420,10 @@ const UserJoin = () => {
 
         console.log(`userFormData : `,userFormData)
 
-        const res = await fetch(`${API_BASE_URL}/signup`, {
+        const res = await fetch(`${BASE_URL}/signup`, {
             method: 'POST',
+            // headers: {'content-type': 'application/json'},
+            // headers: {'content-type': 'application/json'},
             body: userFormData
         });
 

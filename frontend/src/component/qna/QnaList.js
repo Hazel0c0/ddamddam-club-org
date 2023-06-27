@@ -14,11 +14,6 @@ import QnaAdoption from "./Paginatrion/QnaAdoption";
 import QnaSearchKeyword from "./Paginatrion/QnaSearchKeyword";
 
 const QnaList = ({searchValue, searchKeyword}) => {
-    const [pageTrue, setPageTrue] = useState({
-        total: true,
-        notAdoption: false,
-        Adoption: false
-    })
 
     const [loginCheck, setLoginCheck] = useState(false);
 
@@ -29,43 +24,9 @@ const QnaList = ({searchValue, searchKeyword}) => {
         if (ACCESS_TOKEN !== '' && ACCESS_TOKEN !== null) {
             setLoginCheck(true);
         }
-        console.log(`카테고리 : searchValue = ${searchValue}`)
-        console.log(`검색어 : searchKeyword = ${searchKeyword}`)
-        // if (searchKeyword !== null && searchKeyword !== '') {
-        //     setPageTrue({
-        //         total: false,
-        //         notAdoption: false,
-        //         Adoption: false,
-        //         search: true
-        //     });
-        //     return;
-        // }
-        //
-        // if (searchValue === '' || searchValue === '전체') {
-        //     searchKeyword = '';
-        //     setPageTrue({
-        //         total: true,
-        //         notAdoption: false,
-        //         Adoption: false,
-        //         search: false
-        //     });
-        // } else if (searchValue === '미채택') {
-        //     searchKeyword = '';
-        //     setPageTrue({
-        //         total: false,
-        //         notAdoption: true,
-        //         Adoption: false,
-        //         search: false
-        //     });
-        // } else if (searchValue === '채택완료') {
-        //     searchKeyword = '';
-        //     setPageTrue({
-        //         total: false,
-        //         notAdoption: false,
-        //         Adoption: true,
-        //         search: false
-        //     });
-        // }
+        // console.log(`카테고리 : searchValue = ${searchValue}`)
+        // console.log(`검색어 : searchKeyword = ${searchKeyword}`)
+
 
 
     }, [searchValue, searchKeyword]);
@@ -75,9 +36,6 @@ const QnaList = ({searchValue, searchKeyword}) => {
             {searchValue === '' && <QnaTotal loginCheck={loginCheck} searchKeyword={searchKeyword} searchValue={searchValue}/>}
             {searchValue === 'N' && <QnaNoAdoption loginCheck={loginCheck} searchKeyword={searchKeyword} searchValue={searchValue}/>}
             {searchValue === 'Y' && <QnaAdoption loginCheck={loginCheck} searchKeyword={searchKeyword} searchValue={searchValue}/>}
-            {/*{pageTrue.total && <QnaTotal loginCheck={loginCheck}/>}*/}
-            {/*{pageTrue.notAdoption && <QnaNoAdoption loginCheck={loginCheck}/>}*/}
-            {/*{pageTrue.Adoption && <QnaAdoption loginCheck={loginCheck}/>}*/}
         </Common>
     );
 };

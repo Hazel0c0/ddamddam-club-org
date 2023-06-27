@@ -87,7 +87,7 @@ const QnaTotal =({loginCheck, searchKeyword, searchValue}) => {
                         <div className={'write-date'} key={qna.boardDate}>{qna.boardDate}</div>
                     </section>
 
-                    <Link to={`/api/ddamddam/qna/${qna.boardIdx}`} onClick={loginCheckHandler}>
+                    <Link to={`/qna/${qna.boardIdx}`} onClick={loginCheckHandler}>
                         {/*<div className={'go-detail'} onClick={() => detailHandler(qna.boardIdx)}>*/}
                         <div className={'go-detail'}>
                             <div className={'go-detail-text'}>더보기</div>
