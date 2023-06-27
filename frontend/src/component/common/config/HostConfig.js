@@ -8,6 +8,8 @@ if(hostname === 'localhost') {
 }else if(hostname === 'ddamddam-club.s3-website.ap-northeast-2.amazonaws.com') {
   backendHost = 'http://3.39.47.226';  // 배포 테스트용
 }
+console.log('client hostname: ', hostname);
+console.log('server hostname: ', backendHost);
 
 //host주소
 export const CRIENT_HOST = hostname;
