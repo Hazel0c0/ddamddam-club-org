@@ -24,7 +24,7 @@ const ProjectsModify = () => {
 
   // 기존 데이터 불러오기
   useEffect(() => {
-    fetch(PROJECT + `/${projectIdx}`, {
+    fetch(PROJECT + `/detail/${projectIdx}`, {
       method: 'GET',
       headers: {'content-type': 'application/json'}
     })
@@ -193,7 +193,7 @@ const ProjectsModify = () => {
 
                 <div className={'offerPeriod'}>
                   <h1 className={'sub-title'}>모집기간</h1>
-                  <input type={"text"}
+                  <input type={"date"}
                          placeholder={'기한을 입력해주세요'}
                          name="offerPeriod"
                          className={'current-text-input'}

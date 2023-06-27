@@ -21,7 +21,7 @@ const ProjectsWrite = () => {
     , setFormData] = useState({
     boardWriterIdx: '1',
     boardTitle: '',
-    boardContent: '',
+    boardContent: `1. 프로젝트의 시작 동기\n\n\n2. 회의 진행/모임 방식\n\n\n3. 그외 자유기재`,
     projectType: '웹페이지',
     maxFront: '1',
     maxBack: '1',
@@ -133,7 +133,9 @@ const ProjectsWrite = () => {
                       onChange={handleInputChange}
               >
                 <option value="웹개발">웹개발</option>
-                <option value="앱개발">앱개발</option>
+                <option value="앱개발">모바일</option>
+                <option value="반응형">반응형</option>
+                <option value="기타">기타</option>
               </select>
             </div>
 
@@ -180,16 +182,7 @@ const ProjectsWrite = () => {
         </section>
 
         <section>
-        <ul className={'-box'}>
-          <li className={''} name={''} value={''}><img src={'https://letspl.s3.ap-northeast-2.amazonaws.com/icons/java/java-original.svg'} alt={''}/>JAVA</li>
-          <li className={''} name={''} value={''}><img src={''} alt={''}/>C언어</li>
-          <li className={''} name={''} value={''}><img src={''} alt={''}/>파이썬</li>
-        </ul>
-        </section>
-
-        <section>
                 <textarea type="text"
-                          placeholder={"내용을 입력해주세요"}
                           className={'boardContent'}
                           name="boardContent"
                           value={formData.boardContent}

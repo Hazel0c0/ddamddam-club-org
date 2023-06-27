@@ -43,7 +43,7 @@ const ProjectsDetail = () => {
   const fetchProjectDetail = () => {
     fetch(PROJECT + `/detail/${projectIdx}`, {
       method: 'GET',
-      headers: {'content-type': 'application/json'}
+      headers: headerInfo
     })
         .then(response => {
           if (!response.ok) {

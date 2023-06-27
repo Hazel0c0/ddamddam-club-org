@@ -8,7 +8,9 @@ import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfFront;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,8 +46,8 @@ public class ProjectDetailResponseDTO {
      */
     private boolean completion;
 
-    private LocalDateTime projectDate; // 게시글 작성 날짜
-    private String offerPeriod; //모집기간
+    private String projectDate; // 게시글 작성 날짜
+    private LocalDate offerPeriod; //모집기간
 
     private int likeCount;
 
@@ -62,9 +64,14 @@ public class ProjectDetailResponseDTO {
         this.applicantOfBack = project.getApplicantOfBacks().size();
         this.completion = (project.getMaxFront() - project.getApplicantOfFronts().size()) == 0 && (project.getMaxBack() - project.getApplicantOfBacks().size()) == 0;
         this.offerPeriod = project.getOfferPeriod();
-        this.projectDate = project.getProjectDate();
         this.likeCount =project.getLikeCount();
-    }
 
+        this.projectDate = formatProjectDate(project.getProjectDate());
+
+    }
+    private String formatProjectDate(LocalDateTime projectDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd  HH:mm");
+        return projectDate.format(formatter);
+    }
 
 }
