@@ -90,15 +90,19 @@ public class ReviewService {
         Review review = reviewRepository.findById(reviewIdx).orElseThrow(
                     () -> {throw new NotFoundBoardException(NOT_FOUND_BOARD, reviewIdx);});
 
+        log.info("토큰아 들어갔니?:{}",review);
+
         // 조회수를 증가시킵니다.
         increaseReviewView(reviewIdx);
 
-        ReviewDetailResponseDTO dto = new ReviewDetailResponseDTO();
+        ReviewDetailResponseDTO dto = new ReviewDetailResponseDTO(review);
+
 
         User user = review.getUser();
         if(user != null){
             dto.setUserIdx(user.getUserIdx());
         }
+        log.info("토큰아 들어갔니?2{}",dto);
 
         return  dto;
     }
