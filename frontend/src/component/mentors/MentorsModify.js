@@ -27,15 +27,17 @@ const MentorsModify = () => {
     mentorContent: '',
     mentorSubject: '프론트엔드',
     mentorMentee: '1',
-    mentorCurrent: '',
-    mentorCareer: '신입'
+    mentorCurrent: ''
   });
   
   
   
 
   useEffect(() => {
-    fetch(`${MENTOR}/detail?mentorIdx=${boardIdx}`)
+    fetch(`${MENTOR}/detail?mentorIdx=${boardIdx}`,{
+      method : 'GET',
+      headers : headerInfo
+    })
       .then((res) => {
         if (res.status === 500) {
           alert('잠시 후 다시 접속해주세요.[서버오류]');
@@ -52,7 +54,6 @@ const MentorsModify = () => {
             mentorSubject: result.subject,
             mentorMentee: result.metee,
             mentorCurrent: result.current,
-            mentorCareer: result.career
         });
       });
   }, []);
@@ -76,7 +77,6 @@ const MentorsModify = () => {
         mentorTitle,
         mentorContent,
         mentorSubject,
-        mentorCareer,
         mentorCurrent,
         mentorMentee
       } = textInput;
@@ -90,7 +90,6 @@ const MentorsModify = () => {
             mentorContent: mentorContent,
             mentorSubject: mentorSubject,
             mentorCurrent: mentorCurrent,
-            mentorCareer: mentorCareer,
             mentorMentee: +mentorMentee
         };
       console.log(data);
@@ -123,7 +122,7 @@ const MentorsModify = () => {
                         placeholder={'제목을 입력하세요'}
                         className={'title-text-input'}
                         name={'mentorTitle'}
-                        value={textInput.mentorTitle}
+                        defaultValue={textInput.mentorTitle}
                         onChange={handleSelect}
                     />
                 </div>
@@ -132,7 +131,7 @@ const MentorsModify = () => {
                         <h1 className={'sub-title'}>주제</h1>
                         <select className="subject-select"
                                 onChange={handleSelect}
-                                value={textInput.mentorSubject}
+                                defaultValue={textInput.mentorSubject}
                                 name="mentorSubject"
                         >
                             <option value="프론트엔드">프론트엔드</option>
@@ -141,25 +140,12 @@ const MentorsModify = () => {
                             <option value="기타">기타</option>
                         </select>
                     </div>
-
-                    <div className={'career'}>
-                        <h1 className={'sub-title'}>경력</h1>
-                        <select className="career-select"
-                                onChange={handleSelect}
-                                value={textInput.mentorCareer}
-                                name="mentorCareer"
-                        >
-                            <option value="신입">신입</option>
-                            <option value="1년">1년 이상</option>
-                            <option value="3년">3년 이상</option>
-                            <option value="5년">5년 이상</option>
-                        </select>
-                    </div>
+                   
                     <div className={'mentee'}>
                         <h1 className={'sub-title'}>모집인원</h1>
                         <select className="mentee-text-input"
                                 onChange={handleSelect}
-                                value={textInput.mentorMentee}
+                                defaultValue={textInput.mentorMentee}
                                 name="mentorMentee"
                         >
                             <option value="1">1명</option>
@@ -174,7 +160,7 @@ const MentorsModify = () => {
                                placeholder={'현재 직장을 입력해주세요'}
                                name="mentorCurrent"
                                className={'current-text-input'}
-                               value={textInput.mentorCurrent}
+                               defaultValue={textInput.mentorCurrent}
                                onChange={handleSelect}
                         />
                     </div>
@@ -187,7 +173,7 @@ const MentorsModify = () => {
                 <textarea type="text"
                           placeholder={"내용을 입력해주세요"}
                           className={'content'}
-                          value={textInput.mentorContent}
+                          defaultValue={textInput.mentorContent}
                           name="mentorContent"
                           onChange={handleSelect}
                 />

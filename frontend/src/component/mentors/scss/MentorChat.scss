@@ -105,6 +105,9 @@
 
         .mentee-wrapper {
 
+          display: flex;
+          max-height: 300px;
+
           .mentee-title {
             padding-bottom: 5px;
             font-size: 12px;
@@ -113,7 +116,6 @@
 
           .mentee {
             font-size: 12px;
-            display: flex;
             align-items: center;
           }
 
@@ -179,7 +181,7 @@
   .mentor-chat-room {
     font-family: Pretendard, sans-serif;
     width: 500px;
-    height: 710px;
+    height: 760px;
     background-color: #292834;
     color: #292834;
     border-radius: 22px;
