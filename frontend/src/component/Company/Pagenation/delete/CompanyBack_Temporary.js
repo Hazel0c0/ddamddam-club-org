@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {COMPANY, REVIEW} from "../../common/config/HostConfig";
+import {COMPANY, REVIEW} from "../../../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import {RxCalendar} from "react-icons/rx"
 import {Spinner} from 'reactstrap';
@@ -21,15 +21,16 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         setGoWorknet([]); // 워크넷 링크 상태 초기화
     }, [searchKeyword, searchValue, searchCareer]);
 
-
     useEffect(() => {
-        console.log(`useEffect 실행`)
         if (finalPage >= page) {
             fetchData(page);
         }
         if (finalPage > 1 && finalPage === page) {
             setIsLoading(false);
+            console.log(`page : `,page)
+            console.log(`finalPage : `,finalPage)
         }
+        console.log(`finalPage : `, finalPage)
     }, [page, searchKeyword, searchValue, searchCareer]);
 
     useEffect(() => {
@@ -47,21 +48,20 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         console.log(`set 후 현재 finalPage : `, finalPage)
 
         setIsLoading(true)
+        // const res = await fetch(`${COMPANY}/search?keyword=&page=${page}&size=10$sort={}`, {
+        // const res = await fetch(`${COMPANY}/list?page=${page}&size=10`, {
         const res = await fetch(
-            `${COMPANY}/searchFront?keyword=${searchKeyword}&page=${page}&size=10&career=${searchCareer}`,
+            `${COMPANY}/searchBack?keyword=${searchKeyword}&page=${page}&size=10&career=${searchCareer}`,
             {
-                method: 'GET',
-                headers: {'content-type': 'application/json'}
-            });
+            method: 'GET',
+            headers: {'content-type': 'application/json'}
+        });
 
         if (res.status === 500) {
             alert('잠시 후 다시 접속해주세요.[서버오류]');
             return;
         }
-
-        console.log()
-        console.log(`현재 페이지 url : ${COMPANY}/searchAll?keyword=${searchKeyword}&page=${page}&size=10&career=${searchCareer}`)
-
+        console.log(`현재 페이지 url : ${COMPANY}/searchBack?keyword=${searchKeyword}page=${page}&size=10&career=${searchCareer}`)
         const result = await res.json();
 
         //마지막 페이지 계산해서 로딩 막기
@@ -85,23 +85,27 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
             return {...list, companyEnddate: endDate, dDay: formattedEndDate, companyArea: setModifyLocation}
         });
 
+        console.log(`마지막 페이지 찾기의 page : `,page)
+        console.log(`마지막 페이지 찾기의 finaPage : `,finalPage)
+        if (page === finalPage) {
+            // 마지막 페이지에 도달한 경우 스크롤 이벤트 리스너 제거
+            console.log('마지막 페이지 도달')
+            window.removeEventListener('scroll', handleScroll);
+        }
+
         setGoWorknet((prevGoWorknet) => [...prevGoWorknet, ...new Array(companyLists.length).fill(false)]);
         setCompanyList((prevCompanyList) => [...prevCompanyList, ...modifyCompanyList]);
         setIsLoading(false)
-        console.log(`modifyCompanyList : `, modifyCompanyList)
+        console.log(`modifyCompanyList : `,modifyCompanyList)
 
     }
 
     let throttleTimer = null;
     const handleScroll = () => {
-        console.log(`스크롤 이벤트 발생`);
-        // console.log(`마지막 페이지 찾기의 page : `, page)
-        // console.log(`마지막 페이지 찾기의 finaPage : `, finalPage)
-
         if (throttleTimer !== null) return;
         if (finalPage > 1 && finalPage === page) {
             setIsLoading(false);
-            return;
+           return;
         }
 
 
@@ -111,7 +115,7 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const windowHeight = window.innerHeight || document.documentElement.clientHeight;
             const documentHeight = document.documentElement.scrollHeight;
-            if (scrollTop + windowHeight >= documentHeight - 200 && !isLoading && page <= finalPage) {
+            if (scrollTop + windowHeight >= documentHeight - 200 && !isLoading) {
                 setPage((prevPage) => prevPage + 1);
             }
             throttleTimer = null;
@@ -120,14 +124,6 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         setIsLoading(true)
 
     }
-
-    // console.log(`마지막 페이지 찾기의 page : `, page)
-    // console.log(`마지막 페이지 찾기의 finaPage : `, finalPage)
-    // if (page >= finalPage) {
-    //     // 마지막 페이지에 도달한 경우 스크롤 이벤트 리스너 제거
-    //     console.log('마지막 페이지 도달')
-    //     window.removeEventListener('scroll', handleScroll);
-    // }
 
     //d-day계산
     const convertToEndDate = (endDate) => {
@@ -149,7 +145,7 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         return formattedDdayDate;
     }
 
-    const showLinkHandler = (index, companyName) => {
+    const showLinkHandler = (index,companyName) => {
         const updatedGoWorknet = goWorknet.map((item, i) => (i === index ? true : false));
         setGoWorknet(updatedGoWorknet);
     }
@@ -207,7 +203,7 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
                 </>
             ))}
 
-            {isLoading && page!==finalPage &&
+            {isLoading &&
                 <div className={'grow-wrapper'}>
                     <Spinner type={"grow"}></Spinner>
                     <Spinner type={"grow"}></Spinner>

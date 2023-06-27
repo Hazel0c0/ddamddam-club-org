@@ -92,7 +92,7 @@ const ReviewSearch = ({onSearchChange, onSearchKeywordChange}) => {
                 <img src={searchIcon} alt={'search-icon'} className={'search-icon'}/>
                 <input className={'input-btn'} placeholder={'검색창'} name={'search'} onKeyUp={searchHandler} ref={inputVal}></input>
                 <button className={'reset-btn'} onClick={resetHandler}><GrPowerReset /></button>
-                <button className={'submit-btn'} onClick={submitHandler}>검색</button>
+                {/*<button className={'submit-btn'} onClick={submitHandler}>검색</button>*/}
             </div>
             <Link to={'/reviews/write'}>
                 <button className={'write-btn'} onClick={loginCheckHandler}>작성하기</button>
