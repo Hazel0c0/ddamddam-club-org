@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam/project/applicant")
 @Slf4j
-@CrossOrigin
 public class ApplicantApiController {
 
     private final ApplicantService applicantService;

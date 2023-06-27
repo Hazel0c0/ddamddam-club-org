@@ -26,7 +26,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam/project")
 @Slf4j
-@CrossOrigin
 public class ProjectApiController {
   /*
     전체 게시글 조회 :  [GET] findAll()    -/project

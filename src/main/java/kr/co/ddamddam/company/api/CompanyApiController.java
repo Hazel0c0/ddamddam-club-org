@@ -15,7 +15,6 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam/companies")
-@CrossOrigin
 public class CompanyApiController {
 
     private final CompanyService companyService;
