@@ -5,7 +5,6 @@ import './scss/ProjectSearch.scss';
 import {Link, useNavigate} from "react-router-dom";
 import {PROJECT} from "../common/config/HostConfig";
 
-
 const ProjectsSearch = () => {
     const [searchText, setSearchText] = useState([]);
     const [searchList, setSearchList] = useState([]);

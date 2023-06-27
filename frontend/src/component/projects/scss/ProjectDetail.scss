@@ -5,7 +5,7 @@
 
 
 .project-detail-wrapper {
-  padding: 0px 370px 50px;
+  padding: 160px 370px 50px;
   color: #292834;
 
   .main-title {
@@ -25,7 +25,7 @@
 
   //메인 컨텐츠 section
   .main-text-wrapper {
-    margin: 0px auto;
+    margin: 37px auto;
     width: 80%;
     padding: 70px 50px 30px;
     display: flex;
@@ -288,7 +288,7 @@
   }
 
   .apply-btn {
-    margin: 0 auto 5px;
+    margin-left: auto;
     border: none;
     width: 100px;
     height: 30px;
@@ -301,7 +301,6 @@
     align-items: center;
     cursor: pointer;
     transition: background-color 0.3s ease;
-
 
     &:hover {
       background-color: #6b77f6;

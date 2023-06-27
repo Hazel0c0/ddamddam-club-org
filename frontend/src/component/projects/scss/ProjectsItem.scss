@@ -1,6 +1,6 @@
 .project-list-wrapper{
-  padding: 35px 370px 50px;
-  //display: flex;
+  padding: 35px 250px 50px;
+  display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   position: relative;
@@ -22,20 +22,18 @@
   }
 
   .less-icon {
-    left: 16%;
+    left: 1%;
   }
 
   .than-icon {
-    right: 16%;
+    right: 1%;
   }
 
 .sort-title {
-  //width: 966px;
-  width: 100%;
-  margin-bottom: 10px;
-  //height: 72px;
+  width: 966px;
+  height: 72px;
   flex-grow: 0;
-  //margin: 119px 23px 11px 67px;
+  margin: 119px 23px 11px 67px;
   font-size: 30px;
   font-weight: 500;
   font-stretch: normal;
@@ -48,15 +46,14 @@
 .project-list-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  //grid-gap: 20px;
+  grid-gap: 20px;
 }
 
 .project-list {
-  //width: 365px;
-  height: 350px;
+  width: 365px;
+  height: 400px;
   flex-grow: 0;
-  //margin: 0 20.8px 0 65px;
-  margin: 0 10px 30px;
+  margin: 0 20.8px 0 65px;
   padding: 29.3px 20px 32.8px 23.9px;
   border-radius: 13px;
   border: solid 1px #d4d4d4;
@@ -77,10 +74,8 @@
   }
 
   .text-content {
-    //width: 316px;
-
+    width: 316px;
     height: 68.2px;
-    min-height: 100px;
     flex-grow: 0;
     margin: 16.4px 5.2px 5px 0;
     font-size: 15px;
@@ -89,17 +84,15 @@
   }
 
   .project-type {
-    text-align: center;
     width: 72.8px;
-    border-radius: 2px;
-    //height: 17.7px;
+    height: 17.7px;
     flex-grow: 0;
-    //margin: 5px 202.2px 18.6px 1.1px;
+    margin: 5px 202.2px 18.6px 1.1px;
     padding: 3.2px 14.3px 3.2px 14px;
     background-color: rgba(30, 79, 255, 0.1);
 
     font-size: 10px;
-    //text-align: left;
+    text-align: left;
     color: #000;
   }
 
@@ -107,7 +100,7 @@
     width: 316px;
     height: 20.5px;
     flex-grow: 0;
-    margin: 15px 4.2px 0.2px 1px;
+    margin: 18.6px 4.2px 0.2px 1px;
     font-size: 18px;
     font-weight: bold;
     text-align: left;
@@ -129,28 +122,16 @@
   }
 
   .project-new-box {
-    position: absolute;
-    right: 10px;
-    top: 45px;
-    //width: 45px;
-    //height: 20px;
-    //flex-grow: 0;
-    //margin: -185.7px 9px 0 252.2px;
-    padding: 1px 10px;
+    width: 45px;
+    height: 20px;
+    flex-grow: 0;
+    margin: -185.7px 9px 0 252.2px;
+    padding: 0 8px 0 7px;
     border-radius: 50px;
     background-color: #446dfe;
-    font-size: 14px;
+
     color: #fff;
   }
 }
-  .project-wrapper{
-    position: relative;
-  }
 
-.project-list:nth-of-type(3){
-  margin-right: 0px;
-}
-  .project-list:nth-of-type(1){
-    margin-left:  0px;
-  }
 }

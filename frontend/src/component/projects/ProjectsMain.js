@@ -59,7 +59,7 @@ const ProjectsMain = ({keyword}) => {
   }, []);
 
   return (
-    <Common>
+    <>
       <Link to={'/projects/write'} className={'projects-write-btn'}>
         작성하기
       </Link>
@@ -87,7 +87,7 @@ const ProjectsMain = ({keyword}) => {
       <div className={'quick-wrapper'}>
         <ProjectsQuickMatching />
       </div>
-    </Common>
+    </>
   );
 };
 export default ProjectsMain;

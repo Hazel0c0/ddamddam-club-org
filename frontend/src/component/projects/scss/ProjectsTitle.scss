@@ -28,9 +28,9 @@
 }
 
 .projects-write-btn{
-  position: absolute;
-  left: 74.5%;
-  top: 44.5%;
+  position: relative;
+  left: 88%;
+  top: 146px;
   padding: 13px 30px;
   background-color: #292834;
   color: white;
@@ -38,7 +38,7 @@
   text-decoration: none;
   font-size: 17px;
   border: none;
-  z-index: 1;
+  z-index: 9999;
 }
 
 .sort-button-box {
