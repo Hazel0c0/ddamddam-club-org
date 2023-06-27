@@ -94,7 +94,7 @@ const QnaSearch = ({onSearchChange, onSearchKeywordChange}) => {
                 <button className={'reset-btn'} onClick={resetHandler}><GrPowerReset /></button>
                 {/*<button className={'submit-btn'} onClick={submitHandler}>검색</button>*/}
             </div>
-            <Link to={'/api/ddamddam/qna/write'}>
+            <Link to={'/qna/write'}>
                 <button className={'write-btn'} onClick={loginCheckHandler}>작성하기</button>
             </Link>
         </Common>

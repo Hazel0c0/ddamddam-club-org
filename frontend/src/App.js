@@ -69,11 +69,11 @@ function App() {
                 {/*Q&A*/}
                 <Route path={'/qna'} element={<QnaTemplate/>} />
                 {/*Q&A/상세보기*/}
-                <Route path={'/api/ddamddam/qna/:boardIdx'} element={<QnaDetail/>} />
+                <Route path={'/qna/:boardIdx'} element={<QnaDetail/>} />
                 {/*Q&A/글작성*/}
-                <Route path={'/api/ddamddam/qna/write'} element={<QnaWrite/>} />
+                <Route path={'/qna/write'} element={<QnaWrite/>} />
                 {/*Q&A/글수정*/}
-                <Route path={'api/ddamddam/qna/modify/:boardIdx'} element={<QnaModify/>} />
+                <Route path={'/qna/modify/:boardIdx'} element={<QnaModify/>} />
 
                 {/*REVIEW*/}
                 <Route path={'/reviews'} element={<ReviewTemplate/>} />

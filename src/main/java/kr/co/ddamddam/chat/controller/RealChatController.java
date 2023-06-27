@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin
 public class RealChatController {
 
     private final ChatService chatService;

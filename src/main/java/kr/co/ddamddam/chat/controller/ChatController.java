@@ -19,7 +19,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/ddamddam/chat")
 @RequiredArgsConstructor
-@CrossOrigin
 @Slf4j
 public class ChatController {
 

@@ -102,7 +102,7 @@ const MentorsModify = () => {
         .then((res) => res.json())
         .then((json) => {
           alert('수정이 완료되었습니다.');
-          window.location.href = 'http://localhost:3000/mentors';
+          window.location.href = '/mentors';
         });
     }
   };

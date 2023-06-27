@@ -59,7 +59,7 @@ const QnaMain = () => {
                     <div className={'top-section-one'} key={qna.boardIdx}>
 
                         <h1 className={'top-section-title'}>🔥 주간 조회수 TOP{index + 1} 🔥</h1>
-                        <Link to={`/api/ddamddam/qna/${qna.boardIdx}`} className={'detail-link'} onClick={loginCheckHandler}>
+                        <Link to={`/qna/${qna.boardIdx}`} className={'detail-link'} onClick={loginCheckHandler}>
                             <section className={'top-section-wrapper'}>
                                 {/*채택완료 수정해야함*/}
                                 {/*<div className={'checked'}>값주세요</div>*/}

@@ -122,7 +122,7 @@ const QnaDetail = () => {
             inputRef.current.value = '';
             alert("댓글이 등록 되었습니다.");
 
-            //임시방편 데이터에 무리갈듯
+            // TODO : 임시방편 데이터에 무리갈듯
             asyncDetail();
 
 
@@ -327,7 +327,7 @@ const QnaDetail = () => {
                                 <div className={'detail-wrapper'}>
                                     {enterUserNickName === detailQna.boardWriter &&
                                         <div className={'category'}>
-                                            <Link to={`/api/ddamddam/qna/modify/${boardIdx}`} className={'modify-btn'}
+                                            <Link to={`/qna/modify/${boardIdx}`} className={'modify-btn'}
                                                   onClick={modifyHandler}>수정</Link>
                                             <span className={'delete-btn'} onClick={deleteHandler}>삭제</span>
                                         </div>
