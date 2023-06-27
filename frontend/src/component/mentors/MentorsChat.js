@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {TfiClose} from 'react-icons/tfi';
 import Common from '../common/Common';
 import {Link, useParams} from 'react-router-dom';
-import {CHAT, MENTOR, BASE_URL} from '../common/config/HostConfig';
+import {CHAT, MENTOR, SOCKET_URL} from '../common/config/HostConfig';
 import './scss/MentorChat.scss';
 import {getToken, getUserIdx, getUserNickname, getUserRegdate} from '../common/util/login-util';
 import {Window} from '@mui/icons-material';
@@ -281,7 +281,7 @@ const MentorsChat = () => {
 // 메세지 컨트롤러 보내기
   useEffect(() => {
     const webSocketLogin = () => {
-      ws.current = new WebSocket("ws://" + BASE_URL + "/socket/chat");
+      ws.current = new WebSocket("ws://" + SOCKET_URL + "/socket/chat");
 
       // ws.current.onopen = () => {
       //   console.log("WebSocket 연결 성공");
