@@ -5,7 +5,7 @@ let backendHost; // 백엔드 호스트 이름
 
 if(hostname === 'localhost') {
   backendHost = 'http://localhost:8181';    // 로컬 테스트용
-}else if(hostname === 'newcen.co.kr') {
+}else if(hostname === 'ddamddam-club.s3-website.ap-northeast-2.amazonaws.com') {
   backendHost = 'http://3.39.47.226';  // 배포 테스트용
 }
 
@@ -28,6 +28,6 @@ export const REVIEW = backendHost + "/api/ddamddam/reviews"
 
 export const MYPAGE = "/mypage";
 
-export const COMPANY = backendHost + "/api/ddamddam/companies"
+export const COMPANY = backendHost + "/api/ddamddam/companies";
 
 export const FIND_PASSWORD = "/auth/find-password";
