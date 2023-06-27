@@ -56,14 +56,21 @@ const ProjectsMain = ({keyword}) => {
   useEffect(() => {
   }, []);
 
-  console.log('로그인 ??')
-  console.log(isLogin())
+  console.log(`is login ? ${isLogin()}`);
+
+  const handleWriteClick = () => {
+    if (isLogin()) {
+      navigate('/projects/write');
+    } else {
+      alert('로그인이 필요합니다.');
+    }
+  };
 
   return (
     <>
-      <Link to={'/projects/write'} className={'projects-write-btn'}>
+      <button className={'projects-write-btn'} onClick={handleWriteClick}>
         작성하기
-      </Link>
+      </button>
 
       <PopularProjects
         // url={popularity}
