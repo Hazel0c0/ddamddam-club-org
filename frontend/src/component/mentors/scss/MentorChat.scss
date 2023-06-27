@@ -40,6 +40,24 @@
           font-weight: 600;
         }
 
+        .writer-wrapper {
+          display: flex;
+          margin-left: 14px;
+          font-size: 13px;
+          font-weight: 600;
+          color: #828282;
+  
+          .modify-btn {
+            margin-right: 7px;
+            cursor: pointer;
+            color: #828282;
+            text-decoration: none;
+          }
+          .delete-btn{
+            cursor: pointer;
+          }
+        }
+
         .write-date {
           margin-left: 10px;
           font-size: 13px;
