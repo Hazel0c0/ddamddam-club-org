@@ -55,6 +55,7 @@ const ProjectsWrite = () => {
     projectFormData.append('project', projectJsonBlob);
     projectFormData.append('projectImage', $fileTag.current.files[0]);
 
+    if (window.confirm("작성을 완료하시겠습니까?")) {
     fetch(PROJECT, {
       method: 'POST',
       headers : headerInfo,
@@ -70,6 +71,7 @@ const ProjectsWrite = () => {
         console.error(error); // Handle errors
       });
     console.log(formData); // 예시: 콘솔에 데이터 출력
+  }
   };
 
   const $fileTag = useRef();

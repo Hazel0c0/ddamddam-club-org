@@ -35,7 +35,7 @@ const ProjectsSearch = () => {
                 console.log(searchList);
 
                 // 검색 결과 페이지로 이동
-                navigate(`/projects?keyword=${searchText}`);
+                navigate(`/projects?page=1&keyword=${searchText}`);
 
             });
 

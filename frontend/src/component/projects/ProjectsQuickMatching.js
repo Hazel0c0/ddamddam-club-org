@@ -22,13 +22,13 @@ const ProjectsQuickMatching = () => {
 
   const handleShow = () => {
     console.log('퀵 매칭 버튼 클릭');
-    setCurrentPage(1); // 페이지를 1로 초기화
     setShow(true);
     quickMatchingFetchData();
   };
 
   const handleClose = () => {
     setShow(false);
+    setCurrentPage(1); // 페이지를 1로 초기화
   };
 
   // 퀵 매칭 데이터 불러오기
