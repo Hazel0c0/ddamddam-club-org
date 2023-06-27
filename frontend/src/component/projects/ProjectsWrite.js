@@ -133,7 +133,7 @@ const ProjectsWrite = () => {
                       onChange={handleInputChange}
               >
                 <option value="웹개발">웹개발</option>
-                <option value="앱개발">모바일</option>
+                <option value="모바일">모바일</option>
                 <option value="반응형">반응형</option>
                 <option value="기타">기타</option>
               </select>

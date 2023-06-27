@@ -26,7 +26,7 @@ const ProjectsModify = () => {
   useEffect(() => {
     fetch(PROJECT + `/detail/${projectIdx}`, {
       method: 'GET',
-      headers: {'content-type': 'application/json'}
+      headers: headerInfo
     })
       .then(response => {
         if (!response.ok) {
@@ -158,7 +158,9 @@ const ProjectsModify = () => {
                   <select className="subject-select"
                           name="projectType"
                   >
-                    <option value="웹페이지">웹페이지</option>
+                    <option value="웹개발">웹개발</option>
+                    <option value="모바일">모바일</option>
+                    <option value="반응형">반응형</option>
                     <option value="기타">기타</option>
                   </select>
                 </div>
