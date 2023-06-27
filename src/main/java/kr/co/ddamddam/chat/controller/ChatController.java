@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/ddamddam/chat")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 @Slf4j
 public class ChatController {
 

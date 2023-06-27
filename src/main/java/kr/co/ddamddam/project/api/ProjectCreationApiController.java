@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam/project")
 @Slf4j
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class ProjectCreationApiController {
 
     private final ProjectLikeService projectLikeService;

@@ -15,7 +15,7 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class UploadController {
 
   private final UploadService uploadService;

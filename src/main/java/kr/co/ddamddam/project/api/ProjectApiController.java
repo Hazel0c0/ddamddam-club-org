@@ -26,7 +26,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam/project")
 @Slf4j
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class ProjectApiController {
   /*
     전체 게시글 조회 :  [GET] findAll()    -/project
