@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {TfiClose} from 'react-icons/tfi';
 import Common from '../common/Common';
 import {Link, useParams} from 'react-router-dom';
-import {CHAT, MENTOR} from '../common/config/HostConfig';
+import {CHAT, MENTOR, BASE_URL} from '../common/config/HostConfig';
 import './scss/MentorChat.scss';
 import {getToken, getUserIdx, getUserNickname, getUserRegdate} from '../common/util/login-util';
 import {Window} from '@mui/icons-material';
@@ -40,15 +40,26 @@ const MentorsChat = () => {
 
   const ws = useRef(null);
   const chatScroll = useRef(null);
+  // 삭제하기
+  const handleDelete = e => {
+    if (window.confirm('삭제하시겠습니까?')) {
+      fetch(`${MENTOR}/${idx}`, {
+        method: 'DELETE',
+        headers: headerInfo
+      })
+        .then(res => res.json())
+        .then(json => {
+          window.location.href = '/mentors';
+        });
+    } else {
+      return;
+    }
+  };
 
   // 멘토한정 채팅방으로 돌아가기
   const backChatRoomList = () => {
-    // const newURL = `/mentors/detail/chat/${chatPageIdx}/${roomId}`;
-    // history(newURL);
-    // setDisplay(true);
     document.querySelector('.mentor-back-room').style.display = 'none';
-    window.location.assign('http://localhost:3000/mentors/detail/chat/' + chatPageIdx + '/' + roomId);
-    // redirection(`/mentors/detail/chat/${chatPageIdx}/${roomId}`);
+    window.location.assign('/mentors/detail/chat/' + chatPageIdx + '/' + roomId);
   };
 
   // 멘토가 멘티들의 채팅방 선택
@@ -134,12 +145,6 @@ const MentorsChat = () => {
         });
     }
   };
-
-  const menteeRenderList = () => {
-
-  };
-
-
 
 
   // 멘토가 채팅방 선택 렌더링
@@ -276,7 +281,7 @@ const MentorsChat = () => {
 // 메세지 컨트롤러 보내기
   useEffect(() => {
     const webSocketLogin = () => {
-      ws.current = new WebSocket("ws://localhost:8181/socket/chat");
+      ws.current = new WebSocket("ws://" + BASE_URL + "/socket/chat");
 
       // ws.current.onopen = () => {
       //   console.log("WebSocket 연결 성공");
@@ -410,6 +415,17 @@ const MentorsChat = () => {
                     <div className={'top-title'}>
                         <h1 className={'top-title-text'}>멘토 소개</h1>
                         <div className={'write-date'}>{date}</div>
+
+                        {detailMember.userIdx === enterUserIdx &&
+              <>
+                <div className={'writer-wrapper'}>
+                  <Link to={`/mentors/modify/${idx}`} className={'modify-btn'}>
+                    수정
+                  </Link>
+                  <div className={'delete-btn'} onClick={handleDelete}>삭제</div>
+                </div>
+              </>
+            }
                     </div>
                 </section>
 
