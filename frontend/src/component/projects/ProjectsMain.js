@@ -49,7 +49,11 @@ const ProjectsMain = ({keyword}) => {
   const handleShowDetails = (projectIdx) => {
     console.log('게시판 번호: ', projectIdx);
 
-    navigate(`/projects/detail?projectIdx=${projectIdx}`);
+    if (isLogin()) {
+      navigate(`/projects/detail?projectIdx=${projectIdx}`);
+    } else {
+      alert('로그인 후에 이용할 수 있습니다.');
+    }
   };
 
 
