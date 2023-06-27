@@ -21,12 +21,12 @@ export const QNAREPLY = backendHost + '/api/ddamddam/qna-reply'
 export const PROJECT = backendHost + '/api/ddamddam/project'
 
 export const BASE_URL = backendHost;
-export const AUTH = "/auth";
+export const AUTH = "/api/ddamddam/auth";
 export const JOININ = "/api/ddamddam/auth"
 export const EMAIL = backendHost + "/api/ddamddam/email"
 export const REVIEW = backendHost + "/api/ddamddam/reviews"
 
-export const MYPAGE = "/mypage";
+export const MYPAGE = "/api/ddamddam/mypage";
 
 export const COMPANY = backendHost + "/api/ddamddam/companies";
 
