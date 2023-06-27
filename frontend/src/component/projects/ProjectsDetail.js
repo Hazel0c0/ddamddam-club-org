@@ -146,7 +146,7 @@ const ProjectsDetail = () => {
           {projectDetail.map(de => {
             return (
                 <section className={'main-text-wrapper'}>
-                  <div key={de.boardIdx}>
+                  <div key={de.boardIdx} className={'main-wrapper'}>
 
                     <div className={'category'}>
                       <span className={'p-sub-title'}>작성일자</span>

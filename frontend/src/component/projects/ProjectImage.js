@@ -42,15 +42,11 @@ const ProjectImage = ({projectIdx}) => {
   }, []);
 
   return (
-    <div className={'project-img'}>
+    <div className={'project-img-wrapper'}>
       <img
         src={fileUrl}
         alt="Project Image"
         className={'project-img'}
-        style={{
-          height: 120,
-          marginBottom: 20
-        }}
       />
     </div>
   );
