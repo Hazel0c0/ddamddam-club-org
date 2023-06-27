@@ -13,6 +13,10 @@ import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUs
 
 
 const ProjectsWrite = () => {
+  const today = new Date();
+  const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+  const tomorrowFormatted = tomorrow.toISOString().split('T')[0];
+
   const [formData
     , setFormData] = useState({
     boardWriterIdx: '1',
@@ -21,7 +25,7 @@ const ProjectsWrite = () => {
     projectType: '웹페이지',
     maxFront: '1',
     maxBack: '1',
-    offerPeriod: '2023-07-19',
+    offerPeriod: tomorrowFormatted,
     projectImg:'',
   });
   const navigate = useNavigate();
@@ -164,7 +168,7 @@ const ProjectsWrite = () => {
 
             <div className={'offerPeriod'}>
               <h1 className={'sub-title'}>모집기간</h1>
-              <input type={"text"}
+              <input type={"date"}
                      placeholder={'기한을 입력해주세요'}
                      name="offerPeriod"
                      className={'current-text-input'}
@@ -172,7 +176,6 @@ const ProjectsWrite = () => {
                      onChange={handleInputChange}
               />까지
             </div>
-
           </div>
         </section>
 
