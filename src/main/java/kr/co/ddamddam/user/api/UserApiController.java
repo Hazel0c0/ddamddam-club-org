@@ -52,7 +52,7 @@ public class UserApiController {
 
     //닉네임 중복확인 요청처리
     @GetMapping("/checknickname")
-    public ResponseEntity<?> checknick(String nickname) {
+    public ResponseEntity<?> checknick(@RequestParam("nickname") String nickname) {
         log.info("/api/auth/checknickname?nickname={}", nickname);
 
         if(nickname.trim().isEmpty()) {
