@@ -72,8 +72,13 @@ const PopularProjects = forwardRef((
     };
 
     useEffect(() => {
+      setCarouselIndex(1);
+    }, [keyword]);
+
+    useEffect(() => {
       fetchData();
     }, [carouselIndex, keyword]);
+
 
     // 페이지 처리
     const handlePrevious = () => {
