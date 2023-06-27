@@ -15,7 +15,8 @@ const PopularProjects = forwardRef((
       sortTitle,
       handleLikeClick,
       handleShowDetails,
-      keyword
+      keyword,
+        isLike
     },
     ref
   ) => {
@@ -23,7 +24,6 @@ const PopularProjects = forwardRef((
 // 키워드 null값 처리
     const navigate = useNavigate();
     const [projects, setProjects] = useState([]);
-
     const [pageNation, setPageNation] = useState([]);
     const [prevBtn, setPrevBtn] = useState(false);
     const [nextBtn, setNextBtn] = useState(false);
@@ -33,9 +33,10 @@ const PopularProjects = forwardRef((
 
 
     const currentPageHandler = (clickPageNum) => {
-      console.log(`페이지 클릭 시 현재 페이지 번호: ${clickPageNum}`);
+      console.log(`page click: ${clickPageNum}`);
       setClickCurrentPage(clickPageNum);
     }
+
     useImperativeHandle(ref, () => ({
       fetchData
     }));
@@ -76,7 +77,7 @@ const PopularProjects = forwardRef((
 
     useEffect(() => {
       fetchData();
-    }, [carouselIndex, keyword]);
+    }, [carouselIndex, keyword,isLike]);
 
 
     // 페이지 처리

@@ -13,94 +13,96 @@ import LatestProjects from "../LatestProjects";
 
 const ProjectsMain = ({keyword}) => {
 
-  // 토큰
-  const ACCESS_TOKEN = getToken();
-  const headerInfo = {
-    'content-type': 'application/json',
-    'Authorization': 'Bearer ' + ACCESS_TOKEN
-  }
-  const navigate = useNavigate();
-  const childRef = useRef(null);
-
-  // useEffect(() => {
-  //   handlePageChange(likePage);
-  //   // setPopularity(popularityUrl);
-  // }, [likePage, popularity])
-
-  const handleLikeClick = (projectId) => {
-    // 서버에 좋아요 처리를 위한 POST 요청을 보냅니다
-    fetch(PROJECT + `/like/${projectId}`, {
-      method: 'POST',
-      headers: headerInfo
-    })
-      .then(res => {
-        if (res.status === 200) return res.json()
-      })
-      .then(data => {
-        console.log(data);
-        childRef.current.fetchData(); // 자식 컴포넌트의 함수 호출
-      })
-      .catch(error => {
-        console.log('Error:', error);
-      });
-  };
-
-
-  const handleShowDetails = (projectIdx) => {
-    console.log('게시판 번호: ', projectIdx);
-
-    if (isLogin()) {
-      navigate(`/projects/detail?projectIdx=${projectIdx}`);
-    } else {
-      alert('로그인 후에 이용할 수 있습니다.');
+    // 토큰
+    const ACCESS_TOKEN = getToken();
+    const headerInfo = {
+        'content-type': 'application/json',
+        'Authorization': 'Bearer ' + ACCESS_TOKEN
     }
-  };
+    const navigate = useNavigate();
+    const childRef = useRef(null);
+
+    const [isLike, setIsLike] = useState(false);
+    // useEffect(() => {
+    //   handlePageChange(likePage);
+    //   // setPopularity(popularityUrl);
+    // }, [likePage, popularity])
+
+    const handleLikeClick = (projectId) => {
+        // 서버에 좋아요 처리를 위한 POST 요청을 보냅니다
+        fetch(PROJECT + `/like/${projectId}`, {
+            method: 'POST',
+            headers: headerInfo
+        })
+            .then(res => {
+                if (res.status === 200) return res.json()
+            })
+            .then(data => {
+                console.log(data);
+                setIsLike(!isLike);
+            })
+            .catch(error => {
+                console.log('Error:', error);
+            });
+    };
 
 
-  useEffect(() => {
-  }, []);
+    const handleShowDetails = (projectIdx) => {
+        console.log('게시판 번호: ', projectIdx);
 
-  console.log(`is login ? ${isLogin()}`);
+        if (isLogin()) {
+            navigate(`/projects/detail?projectIdx=${projectIdx}`);
+        } else {
+            alert('로그인 후에 이용할 수 있습니다.');
+        }
+    };
 
-  const handleWriteClick = () => {
-    if (isLogin()) {
-      navigate('/projects/write');
-    } else {
-      alert('로그인이 필요합니다.');
-    }
-  };
 
-  return (
-    <>
-      <button className={'projects-write-btn'} onClick={handleWriteClick}>
-        작성하기
-      </button>
+    useEffect(() => {
+        childRef.current.fetchData();
+    }, [isLike]);
 
-      <PopularProjects
-        // url={popularity}
-        sortTitle={'인기 프로젝트'}
-        handleLikeClick={handleLikeClick}
-        handleShowDetails={handleShowDetails}
-        // pageChange={handlePageChange}
-        ref={childRef}
-        keyword={keyword}
-      />
+    console.log(`is login ? ${isLogin()}`);
 
-      <LatestProjects
-        // url={currentUrl}
-        sortTitle={'최신 프로젝트'}
-        handleLikeClick={handleLikeClick}
-        handleShowDetails={handleShowDetails}
-        ref={childRef}
-        keyword={keyword}
-      />
+    const handleWriteClick = () => {
+        if (isLogin()) {
+            navigate('/projects/write');
+        } else {
+            alert('로그인이 필요합니다.');
+        }
+    };
 
-      {isLogin() &&
-        <div className={'quick-wrapper'}>
-          <ProjectsQuickMatching/>
-        </div>
-      }
-    </>
-  );
+    return (
+        <>
+            <button className={'projects-write-btn'} onClick={handleWriteClick}>
+                작성하기
+            </button>
+
+            <PopularProjects
+                // url={popularity}
+                sortTitle={'인기 프로젝트'}
+                handleLikeClick={handleLikeClick}
+                handleShowDetails={handleShowDetails}
+                ref={childRef}
+                keyword={keyword}
+                isLike={isLike}
+            />
+
+            <LatestProjects
+                // url={currentUrl}
+                sortTitle={'최신 프로젝트'}
+                handleLikeClick={handleLikeClick}
+                handleShowDetails={handleShowDetails}
+                ref={childRef}
+                keyword={keyword}
+            />
+
+            {isLogin() &&
+                <div className={'quick-wrapper'}>
+                    <ProjectsQuickMatching/>
+                </div>
+            }
+        </>
+    );
 };
 export default ProjectsMain;
