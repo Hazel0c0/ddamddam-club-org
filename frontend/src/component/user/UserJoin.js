@@ -3,8 +3,7 @@ import Common from "../common/Common";
 import logo from "../../src_assets/logo(white).png";
 import './scss/UserJoin.scss';
 import {BsCheckLg} from "react-icons/bs"
-
-// 리다이렉트 사용하기
+// import ProfileNull from "../../src_assets/ProfileLogo.png"
 import {useNavigate, Link} from 'react-router-dom';
 import {BASE_URL as BASE, AUTH, JOININ, EMAIL, BASE_URL} from '../../component/common/config/HostConfig';
 import useDebounce from "./useDebounce";
@@ -26,6 +25,7 @@ const UserJoin = () => {
     const [emailDomain, setEmailDomain] = useState('gmail.com');
     const [certification, setCertification] = useState(false);
     const [showCertificationBtn, setShowCertificationBtn] = useState(false);
+    const [showCodeCertificationBtn, setShowCodeCertificationBtn] = useState(false);
     const [showNickCertificationBtn, setShowNickCertificationBtn] = useState(false);
     //이메일 인증코드
     const emailCode = useRef();
@@ -211,7 +211,7 @@ const UserJoin = () => {
         } else {
             alert('서버 통신이 원활하지 않습니다!');
         }
-
+        setShowCodeCertificationBtn(true)
         setUserValue({...userValue, userEmail: inputEmail});
         setMessage({...message, userEmail: msg});
         setCorrect({...correct, userEmail: flag});
@@ -232,7 +232,7 @@ const UserJoin = () => {
                 email: inputEmail
             })
         })
-        setShowCertificationBtn(false);
+        setShowCodeCertificationBtn(false);
         console.log(res)
     }
 
@@ -485,7 +485,7 @@ const UserJoin = () => {
             <div className={'background'}></div>
             <section className={'form-wrapper'}>
                 <div className={"thunmbnail-box"} onClick={() => $fileTag.current.click()}>
-                    <img src={imgFile || require('../../src_assets/IMG_4525.JPG')}
+                    <img src={imgFile || require('../../src_assets/ProfileLogo.png')}
                          alt={'profileImg'}
                          className={'profile-img'}
                     />
@@ -523,7 +523,7 @@ const UserJoin = () => {
 
 
                 <section className={'email-certification-wrapper'}>
-                    {showCertificationBtn &&
+                    {showCodeCertificationBtn &&
                         <>
                             <button className={'email-check-btn'} onClick={certificationHandler}
                                     disabled={emailCodeResult} ref={emailCodeCheck}>인증하기
