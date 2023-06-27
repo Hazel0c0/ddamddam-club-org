@@ -26,6 +26,7 @@ const UserJoin = () => {
     const [emailDomain, setEmailDomain] = useState('gmail.com');
     const [certification, setCertification] = useState(false);
     const [showCertificationBtn, setShowCertificationBtn] = useState(false);
+    const [showCodeCertificationBtn, setShowCodeCertificationBtn] = useState(false);
     const [showNickCertificationBtn, setShowNickCertificationBtn] = useState(false);
     //이메일 인증코드
     const emailCode = useRef();
@@ -211,7 +212,7 @@ const UserJoin = () => {
         } else {
             alert('서버 통신이 원활하지 않습니다!');
         }
-
+        setShowCodeCertificationBtn(true)
         setUserValue({...userValue, userEmail: inputEmail});
         setMessage({...message, userEmail: msg});
         setCorrect({...correct, userEmail: flag});
@@ -232,7 +233,7 @@ const UserJoin = () => {
                 email: inputEmail
             })
         })
-        setShowCertificationBtn(false);
+        setShowCodeCertificationBtn(false);
         console.log(res)
     }
 
@@ -523,7 +524,7 @@ const UserJoin = () => {
 
 
                 <section className={'email-certification-wrapper'}>
-                    {showCertificationBtn &&
+                    {showCodeCertificationBtn &&
                         <>
                             <button className={'email-check-btn'} onClick={certificationHandler}
                                     disabled={emailCodeResult} ref={emailCodeCheck}>인증하기
