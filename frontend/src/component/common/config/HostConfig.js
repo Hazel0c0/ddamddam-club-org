@@ -10,6 +10,7 @@ if(hostname === 'localhost') {
 }
 
 //host주소
+export const CRIENT_HOST = hostname;
 export const MENTOR = backendHost + '/api/ddamddam/mentors'
 export const CHAT = backendHost + '/api/ddamddam/chat'
 export const QNA = backendHost + '/api/ddamddam/qna'
