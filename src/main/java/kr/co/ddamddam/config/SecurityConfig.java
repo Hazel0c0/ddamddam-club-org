@@ -46,6 +46,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                     // 어떤 요청에서 인증을 안할 것인지 설정
                     // - 회원가입, 로그인, index 페이지, 각 게시판 첫 페이지
+                    .antMatchers("/").permitAll()
                     .antMatchers("/api/ddamddam/auth/load-profile").permitAll()
                     .antMatchers("/api/ddamddam/auth/**").permitAll()
                     .antMatchers("/api/ddamddam/email/**").permitAll()
