@@ -3,8 +3,7 @@ import Common from "../common/Common";
 import logo from "../../src_assets/logo(white).png";
 import './scss/UserJoin.scss';
 import {BsCheckLg} from "react-icons/bs"
-
-// 리다이렉트 사용하기
+// import ProfileNull from "../../src_assets/ProfileLogo.png"
 import {useNavigate, Link} from 'react-router-dom';
 import {BASE_URL as BASE, AUTH, JOININ, EMAIL, BASE_URL} from '../../component/common/config/HostConfig';
 import useDebounce from "./useDebounce";
@@ -486,7 +485,7 @@ const UserJoin = () => {
             <div className={'background'}></div>
             <section className={'form-wrapper'}>
                 <div className={"thunmbnail-box"} onClick={() => $fileTag.current.click()}>
-                    <img src={imgFile || require('../../src_assets/IMG_4525.JPG')}
+                    <img src={imgFile || require('../../src_assets/ProfileLogo.png')}
                          alt={'profileImg'}
                          className={'profile-img'}
                     />
