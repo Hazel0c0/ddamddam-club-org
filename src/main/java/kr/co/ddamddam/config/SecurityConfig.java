@@ -48,6 +48,7 @@ public class SecurityConfig {
                     // - 회원가입, 로그인, index 페이지, 각 게시판 첫 페이지
                     .antMatchers("/api/ddamddam/auth/load-profile").permitAll()
                     .antMatchers("/api/ddamddam/auth/**").permitAll()
+                    .antMatchers("/api/ddamddam/email/**").permitAll()
                     .antMatchers("/socket/chat/**").permitAll()
                     .antMatchers("/health-check").permitAll()
                     .antMatchers("/api/ddamddam/oauth/**").permitAll()

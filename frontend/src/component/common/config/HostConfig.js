@@ -34,3 +34,4 @@ export const MYPAGE = "/api/ddamddam/mypage";
 export const COMPANY = backendHost + "/api/ddamddam/companies";
 
 export const FIND_PASSWORD = "/auth/find-password";
+export const SOCKET_URL = "3.39.47.226";
