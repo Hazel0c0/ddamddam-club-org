@@ -16,6 +16,12 @@ const ProjectsSearch = () => {
         console.log(inputText);
     };
 
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleSearchClick();
+        }
+    };
+
     const handleSearchClick = () => {
         fetch(PROJECT + `?keyword=${searchText}`, {
             method: 'GET'
@@ -29,7 +35,7 @@ const ProjectsSearch = () => {
                 console.log(searchList);
 
                 // 검색 결과 페이지로 이동
-                navigate(`/projects?keyword=${searchText}`);
+                navigate(`/projects?page=1&keyword=${searchText}`);
 
             });
 
@@ -38,25 +44,15 @@ const ProjectsSearch = () => {
 
     return (
         <Common className={'project-search-wrapper'}>
-            <ul className={'sort-btn'}>
-                <li>▼ 제목</li>
-            </ul>
-            <select className={''} name={''} defaultValue={'전체'}>
-                <option value={'전체'}>전체</option>
-                <option value={'제목'}>제목</option>
-                <option value={'내용'}>내용</option>
-                <option value={'타입'}>타입</option>
-            </select>
-
             <div className={'search-wrapper'}>
                 <img src={searchIcon} alt={'search-icon'} className={'search-icon'}/>
                 <input className={'input-btn'}
-                       placeholder={'검색창'}
+                       placeholder={'검색'}
                        name={'search'}
                        onChange={handleInputChange}
+                       onKeyPress={handleKeyPress}
                 ></input>
             </div>
-            {/*fetch(`${PROJECT}?page=${carouselIndex}&size=${LIKE_PAGE_SIZE}&like=true`, {*/}
 
             <div>
                 <div className={'projects-write-btn'}

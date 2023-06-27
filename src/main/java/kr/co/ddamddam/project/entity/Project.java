@@ -8,6 +8,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class Project {
   @Column(nullable = false, length = 100)
   private String projectTitle;
 
-  @Column(nullable = true)
+  @Column(nullable = true, length = 500)
   private String projectImg;
 
   @Column(nullable = false, length = 3000)
@@ -50,7 +51,7 @@ public class Project {
   @Column(nullable = false)
   private int maxBack;
 
-  private String offerPeriod; //모집기간
+  private LocalDate offerPeriod; //모집기간
 
   @CreationTimestamp
   @Column(

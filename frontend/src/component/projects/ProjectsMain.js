@@ -5,7 +5,7 @@ import {PROJECT} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 
 import {Modal, Button} from 'react-bootstrap';
-import {getToken, getUserPosition} from "../common/util/login-util";
+import {getToken, getUserPosition, isLogin} from "../common/util/login-util";
 import 'bootstrap/dist/css/bootstrap.css';
 import './scss/QuickMatching.scss';
 import ProjectsQuickMatching from "./ProjectsQuickMatching";
@@ -19,10 +19,8 @@ const ProjectsMain = ({keyword}) => {
     'content-type': 'application/json',
     'Authorization': 'Bearer ' + ACCESS_TOKEN
   }
-
   const navigate = useNavigate();
   const childRef = useRef(null);
-
 
   // useEffect(() => {
   //   handlePageChange(likePage);
@@ -51,18 +49,32 @@ const ProjectsMain = ({keyword}) => {
   const handleShowDetails = (projectIdx) => {
     console.log('게시판 번호: ', projectIdx);
 
-    navigate(`/projects/detail?projectIdx=${projectIdx}`);
+    if (isLogin()) {
+      navigate(`/projects/detail?projectIdx=${projectIdx}`);
+    } else {
+      alert('로그인 후에 이용할 수 있습니다.');
+    }
   };
 
 
   useEffect(() => {
   }, []);
 
+  console.log(`is login ? ${isLogin()}`);
+
+  const handleWriteClick = () => {
+    if (isLogin()) {
+      navigate('/projects/write');
+    } else {
+      alert('로그인이 필요합니다.');
+    }
+  };
+
   return (
     <>
-      <Link to={'/projects/write'} className={'projects-write-btn'}>
+      <button className={'projects-write-btn'} onClick={handleWriteClick}>
         작성하기
-      </Link>
+      </button>
 
       <PopularProjects
         // url={popularity}
@@ -83,10 +95,11 @@ const ProjectsMain = ({keyword}) => {
         keyword={keyword}
       />
 
-      {/* 퀵매칭 */}
-      <div className={'quick-wrapper'}>
-        <ProjectsQuickMatching />
-      </div>
+      {isLogin() &&
+        <div className={'quick-wrapper'}>
+          <ProjectsQuickMatching/>
+        </div>
+      }
     </>
   );
 };

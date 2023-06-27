@@ -5,6 +5,7 @@ import lombok.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @Setter
 @Getter
@@ -30,5 +31,5 @@ public class ProjectModifyRequestDTO {
   @NotNull @Max(5)
   private int maxBack;
 
-  private String offerPeriod; //모집기간
+  private LocalDate offerPeriod; //모집기간
 }

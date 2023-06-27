@@ -23,7 +23,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
         "ORDER BY (p.maxFront - SIZE(p.applicantOfFronts)) ASC,(p.maxBack - SIZE(p.applicantOfBacks)) ASC, p.offerPeriod ASC,p.likeCount DESC ")
     Page<Project> frontQuickSort(Pageable pageable);
 
-    @Query("SELECT p FROM Project p WHERE LOWER(p.projectTitle) LIKE %:keyword%")
+    @Query("SELECT p FROM Project p WHERE LOWER(p.projectTitle) LIKE %:keyword% OR LOWER(p.projectContent) LIKE %:keyword%")
     Page<Project> findProjectsBySearchWord(Pageable pageable, String keyword);
 
     List<Project> findByUserUserIdx(Long userIdx);

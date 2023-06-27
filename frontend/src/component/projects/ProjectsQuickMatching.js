@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getToken, getUserPosition } from '../common/util/login-util';
+import {getToken, getUserPosition, isLogin} from '../common/util/login-util';
 import { Button, Modal } from 'react-bootstrap';
 import { PROJECT } from "../common/config/HostConfig";
 import {Link} from "react-router-dom";
@@ -22,13 +22,13 @@ const ProjectsQuickMatching = () => {
 
   const handleShow = () => {
     console.log('퀵 매칭 버튼 클릭');
-    setCurrentPage(1); // 페이지를 1로 초기화
     setShow(true);
     quickMatchingFetchData();
   };
 
   const handleClose = () => {
     setShow(false);
+    setCurrentPage(1); // 페이지를 1로 초기화
   };
 
   // 퀵 매칭 데이터 불러오기
@@ -78,9 +78,12 @@ const ProjectsQuickMatching = () => {
 
   return (
     <>
+      {
+       isLogin &&
       <Button className="quick-btn" onClick={handleShow}>
         퀵 매칭
       </Button>
+      }
 
       <Modal show={show} onHide={handleClose} id="modal-container">
         {quickDetail.map(board => (
@@ -89,10 +92,9 @@ const ProjectsQuickMatching = () => {
               <Modal.Title>{board.boardTitle}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <div>나의 포지션: {USER_POSITION}</div>
-              <div>제목: {board.boardTitle}</div>
-              <div>♥ : {board.likeCount}</div>
+              <div>타입: {board.projectType}</div>
               <div>모집 마감 : {board.offerPeriod}</div>
+              <div>♥ : {board.likeCount}</div>
 
               <div>
                 {renderApplicantImages(

@@ -24,9 +24,9 @@ const ProjectsModify = () => {
 
   // 기존 데이터 불러오기
   useEffect(() => {
-    fetch(PROJECT + `/${projectIdx}`, {
+    fetch(PROJECT + `/detail/${projectIdx}`, {
       method: 'GET',
-      headers: {'content-type': 'application/json'}
+      headers: headerInfo
     })
       .then(response => {
         if (!response.ok) {
@@ -158,7 +158,9 @@ const ProjectsModify = () => {
                   <select className="subject-select"
                           name="projectType"
                   >
-                    <option value="웹페이지">웹페이지</option>
+                    <option value="웹개발">웹개발</option>
+                    <option value="모바일">모바일</option>
+                    <option value="반응형">반응형</option>
                     <option value="기타">기타</option>
                   </select>
                 </div>
@@ -193,7 +195,7 @@ const ProjectsModify = () => {
 
                 <div className={'offerPeriod'}>
                   <h1 className={'sub-title'}>모집기간</h1>
-                  <input type={"text"}
+                  <input type={"date"}
                          placeholder={'기한을 입력해주세요'}
                          name="offerPeriod"
                          className={'current-text-input'}
