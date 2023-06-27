@@ -92,10 +92,9 @@ const ProjectsQuickMatching = () => {
               <Modal.Title>{board.boardTitle}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <div>나의 포지션: {USER_POSITION}</div>
-              <div>제목: {board.boardTitle}</div>
-              <div>♥ : {board.likeCount}</div>
+              <div>타입: {board.projectType}</div>
               <div>모집 마감 : {board.offerPeriod}</div>
+              <div>♥ : {board.likeCount}</div>
 
               <div>
                 {renderApplicantImages(
