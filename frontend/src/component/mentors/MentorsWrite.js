@@ -2,13 +2,13 @@ import React, {useRef, useState} from 'react';
 import Common from "../common/Common";
 import './scss/MentorWrite.scss';
 import {MENTOR} from "../common/config/HostConfig";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
     getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
     getUserRole, isLogin } from '../common/util/login-util';
 
 const MentorsWrite = () => {
-
+    const redirection = useNavigate();
     const ACCESS_TOKEN = getToken(); // 토큰
 
     // headers
@@ -74,7 +74,8 @@ const MentorsWrite = () => {
                 .then(res => res.json())
                 .then(json => {
                     alert('작성이 완료되었습니다.');
-                    window.location.href = 'http://localhost:3000/mentors';
+                    redirection('/mentors')
+                    // window.location.href = 'http://localhost:3000/mentors';
                 })
         }
         ;
