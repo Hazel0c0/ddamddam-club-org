@@ -13,7 +13,8 @@ public class CorsConfig implements WebMvcConfigurer {
 
         registry
                 .addMapping("/api/**") // 어떤 요청에 대해서 허용할지?
-                .allowedOrigins("http://localhost:3000") // 어떤 클라이언트를 허용할지
+//                .allowedOrigins("http://localhost:3000") // 어떤 클라이언트를 허용할지
+                .allowedOrigins("*") // 어떤 클라이언트를 허용할지
                 .allowedMethods("*") // 어떤 요청방식을 허용할지
                 .allowedHeaders("*") // 어떤 요청 헤더를 허용할지
                 .allowCredentials(true) // 쿠키 전달을 허용할것인지

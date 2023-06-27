@@ -26,7 +26,7 @@ import static kr.co.ddamddam.common.response.ResponseMessage.FAIL;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam/qna")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class QnaApiController {
 
     private final QnaService qnaService;

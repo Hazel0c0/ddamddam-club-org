@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class RealChatController {
 
     private final ChatService chatService;
