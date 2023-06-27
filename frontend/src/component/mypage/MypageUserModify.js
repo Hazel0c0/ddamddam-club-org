@@ -362,6 +362,7 @@ const modifyButtonClickHandler = e => {
                   style={{display: 'none'}}
                   accept='image/*'
                   ref={$fileTag}
+                  defaultValue={USER_PROFILE}
                   onChange={showThumbnailHandler}
                 />
 
