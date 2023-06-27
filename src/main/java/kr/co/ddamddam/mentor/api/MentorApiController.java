@@ -70,7 +70,7 @@ public class MentorApiController {
     ){
 //        log.info("/api/ddamddam/mentors/detail?mentorIdx={}",mentorIdx);
         MentorDetailResponseDTO dto = mentorService.getDetail(mentorIdx, tokenUserInfo);
-
+//        log.info("detail!!! : {}",dto);
         return ResponseEntity.ok().body(dto);
     }
 
@@ -91,7 +91,7 @@ public class MentorApiController {
         log.info("/api/ddamddam/mentors POST!! - payload {}",dto);
         // 로그인한 토큰방식으로 user_idx값 받아와 서비스 파라미터에 넣기
         MentorDetailResponseDTO responseDTO = mentorService.write(dto,userInfo);
-
+        log.info("write RES : {}", responseDTO);
         return ResponseEntity.ok().body(responseDTO);
     }
 

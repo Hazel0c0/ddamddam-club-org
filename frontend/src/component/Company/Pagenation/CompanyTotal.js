@@ -4,7 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {RxCalendar} from "react-icons/rx"
 import {Spinner} from 'reactstrap';
 
-const CompanyTotal = ({searchKeyword, searchValue, searchCareer,onCountChange}) => {
+const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
     const [companyList, setCompanyList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -13,12 +13,6 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer,onCountChange}) 
 
     //워크넷 링크 상태관리
     const [goWorknet, setGoWorknet] = useState([]);
-
-    //처음 한 번만 실행
-    useEffect(()=>{
-        fetchCount()
-
-    },[])
 
     useEffect(() => {
         setCompanyList([]); // 기존 리스트 초기화
@@ -47,27 +41,6 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer,onCountChange}) 
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-
-    const[totalCount, setTotalCount] = useState(0);
-    //전체 갯수 추출
-    const fetchCount = async () =>{
-        const res = await fetch(
-            `${COMPANY}/searchAll?keyword= &page=1&size=10&career=`,
-            {
-                method: 'GET',
-                headers: {'content-type': 'application/json'}
-            });
-
-        if (res.status === 500) {
-            alert('잠시 후 다시 접속해주세요.[서버오류]');
-            return;
-        }
-
-        const result = await res.json();
-        const totalCount = result.pageInfo.totalCount;
-        // setTotalCount(totalCount);
-        onCountChange({totalCount : totalCount})
-    }
 
     const fetchData = async (page) => {
         console.log(`set 후 현재 page : `, page)
@@ -234,13 +207,33 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer,onCountChange}) 
                 </>
             ))}
 
-            {isLoading && page!==finalPage &&
+            {isLoading && page !== finalPage &&
                 <div className={'grow-wrapper'}>
                     <Spinner type={"grow"}></Spinner>
                     <Spinner type={"grow"}></Spinner>
                     <Spinner type={"grow"}></Spinner>
                 </div>
             }
+
+            {/*{!isLoading }*/}
+            {/*<div className={'grow-wrapper'}>*/}
+            {/*    <div className={'no-search-result'}>마지막 페이지 입니다.</div>*/}
+            {/*</div>*/}
+
+
+            {/*{isLoading && page!==finalPage*/}
+            {/*    ? <div className={'grow-wrapper'}>*/}
+            {/*        <Spinner type={"grow"}></Spinner>*/}
+            {/*        <Spinner type={"grow"}></Spinner>*/}
+            {/*        <Spinner type={"grow"}></Spinner>*/}
+            {/*    </div>*/}
+
+            {/*    :*/}
+            {/*    <div className={'grow-wrapper'}>*/}
+            {/*        <div className={'no-search-result'}>마지막 페이지 입니다.</div>*/}
+            {/*    </div>*/}
+            {/*}*/}
+
         </>
     )
         ;
