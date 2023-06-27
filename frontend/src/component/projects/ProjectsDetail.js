@@ -41,7 +41,7 @@ const ProjectsDetail = () => {
 
 
   const fetchProjectDetail = () => {
-    fetch(PROJECT + `/${projectIdx}`, {
+    fetch(PROJECT + `/detail/${projectIdx}`, {
       method: 'GET',
       headers: {'content-type': 'application/json'}
     })
@@ -56,14 +56,11 @@ const ProjectsDetail = () => {
           console.log("프로젝트 디테일 dto")
 
           // 내 게시글 신청하기 버튼 색상 변경
-          console.log(data.payload.boardWriter);
-          const bw = data.payload.boardWriter;
+          const b_writer = data.payload.boardWriter;
           const userNickname = getUserNickname();
-          console.log('유저 넘버')
-          console.log(bw);
-          console.log(userNickname);
+          console.log(`${b_writer} = ${userNickname}`);
 
-          const isOwner = bw === userNickname;
+          const isOwner = b_writer === userNickname;
           setApplyButtonColor(isOwner ? 'gray' : ''); // Set the button color based on ownership
         })
         .catch(error => {
@@ -82,9 +79,9 @@ const ProjectsDetail = () => {
     if (res.status === 200) {
       const imgUrl = await res.text();
       setFileUrl(imgUrl);
-      console.log(`프로젝트 디테일 - 이미지 : ${imgUrl}`);
+      // console.log(`프로젝트 디테일 - 이미지 : ${imgUrl}`);
     } else {
-      const err = await res.text();
+      console.log(await res.text())
       setFileUrl(null);
     }
   };

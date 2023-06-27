@@ -54,7 +54,7 @@ public class SecurityConfig {
                     .antMatchers("/api/ddamddam/companies/list").permitAll()
                     .antMatchers("/api/ddamddam/mentors/list").permitAll()
                     .antMatchers("/api/ddamddam/mentors/sublist").permitAll()
-                    .antMatchers("/api/ddamddam/project").permitAll()
+                    .antMatchers("/api/ddamddam/project/**").permitAll()
                     .antMatchers("/api/ddamddam/qna").permitAll()
                     .antMatchers("/api/ddamddam/qna/top").permitAll()
                     .antMatchers("/api/ddamddam/qna/adopts").permitAll()

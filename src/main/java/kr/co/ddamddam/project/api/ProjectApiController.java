@@ -63,11 +63,11 @@ public class ProjectApiController {
     }
 
     // 게시글 상세 보기
-    @GetMapping("/{projectIdx}")
+    @GetMapping("/detail/{projectIdx}")
     public ApplicationResponse<?> getDetail(
         @PathVariable Long projectIdx
     ) {
-        log.info("/api/ddamddam/{} GET", projectIdx);
+        log.info("/api/ddamddam/detail/{} GET", projectIdx);
 
         try {
             ProjectDetailResponseDTO dto = projectService.getDetail(projectIdx);
