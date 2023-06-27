@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Common from "../common/Common";
-import ProjectsTitle from "./ProjectsTitle";
+import ProjectsTitle from "./main/ProjectsTitle";
 import {PROJECT} from "../common/config/HostConfig";
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import './scss/ProjectDetail.scss';

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Common from "../common/Common";
-import './scss/ProjectsTitle.scss'
+import Common from "../../common/Common";
+import '../scss/ProjectsTitle.scss'
 import {Link, useNavigate} from "react-router-dom";
 
 const ProjectsTitle = () => {

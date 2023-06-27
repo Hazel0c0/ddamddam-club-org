@@ -3,7 +3,7 @@ import Common from "../common/Common";
 import './scss/ProjectsWrite.scss';
 import {PROJECT} from "../common/config/HostConfig";
 import { Link, useNavigate } from "react-router-dom";
-import ProjectsTitle from "./ProjectsTitle";
+import ProjectsTitle from "./main/ProjectsTitle";
 import {Grid} from "@mui/material";
 import * as PropTypes from "prop-types";
 import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,

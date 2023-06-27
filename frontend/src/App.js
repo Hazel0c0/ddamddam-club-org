@@ -7,7 +7,7 @@ import Header from "./component/common/Header";
 import MainTemplate from "./component/common/MainTemplate";
 import UserLogin from "./component/user/UserLogin";
 import UserJoin from "./component/user/UserJoin";
-import ProjectsTemplate from "./component/projects/ProjectsTemplate";
+import ProjectsTemplate from "./component/projects/main/ProjectsTemplate";
 import ProjectsWrite from "./component/projects/ProjectsWrite";
 import ProjectsDetail from "./component/projects/ProjectsDetail";
 import Footer from "./component/common/Footer";
