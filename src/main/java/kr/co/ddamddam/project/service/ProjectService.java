@@ -59,7 +59,7 @@ public class ProjectService {
       log.info("is like pageable !!");
       return PageRequest.of(
           dto.getPage() - 1,
-          dto.getSize(),
+          3,
           Sort.by("likeCount").descending()
       );
       // 퀵 매칭 (포지션) 정렬
@@ -67,7 +67,7 @@ public class ProjectService {
       log.info("position pageable !!");
       return PageRequest.of(
           dto.getPage() - 1,
-          dto.getSize()
+          1
       );
     }
     // 최신순 정렬 : 기본값
