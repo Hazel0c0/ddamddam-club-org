@@ -5,7 +5,7 @@ import {PROJECT} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 
 import {Modal, Button} from 'react-bootstrap';
-import {getToken, getUserPosition} from "../common/util/login-util";
+import {getToken, getUserPosition, isLogin} from "../common/util/login-util";
 import 'bootstrap/dist/css/bootstrap.css';
 import './scss/QuickMatching.scss';
 import ProjectsQuickMatching from "./ProjectsQuickMatching";
@@ -19,10 +19,8 @@ const ProjectsMain = ({keyword}) => {
     'content-type': 'application/json',
     'Authorization': 'Bearer ' + ACCESS_TOKEN
   }
-
   const navigate = useNavigate();
   const childRef = useRef(null);
-
 
   // useEffect(() => {
   //   handlePageChange(likePage);
@@ -58,6 +56,9 @@ const ProjectsMain = ({keyword}) => {
   useEffect(() => {
   }, []);
 
+  console.log('로그인 ??')
+  console.log(isLogin())
+
   return (
     <>
       <Link to={'/projects/write'} className={'projects-write-btn'}>
@@ -83,10 +84,11 @@ const ProjectsMain = ({keyword}) => {
         keyword={keyword}
       />
 
-      {/* 퀵매칭 */}
-      <div className={'quick-wrapper'}>
-        <ProjectsQuickMatching />
-      </div>
+      {isLogin() &&
+        <div className={'quick-wrapper'}>
+          <ProjectsQuickMatching/>
+        </div>
+      }
     </>
   );
 };

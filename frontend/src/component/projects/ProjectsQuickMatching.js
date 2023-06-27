@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getToken, getUserPosition } from '../common/util/login-util';
+import {getToken, getUserPosition, isLogin} from '../common/util/login-util';
 import { Button, Modal } from 'react-bootstrap';
 import { PROJECT } from "../common/config/HostConfig";
 import {Link} from "react-router-dom";
@@ -78,9 +78,12 @@ const ProjectsQuickMatching = () => {
 
   return (
     <>
+      {
+       isLogin &&
       <Button className="quick-btn" onClick={handleShow}>
         퀵 매칭
       </Button>
+      }
 
       <Modal show={show} onHide={handleClose} id="modal-container">
         {quickDetail.map(board => (

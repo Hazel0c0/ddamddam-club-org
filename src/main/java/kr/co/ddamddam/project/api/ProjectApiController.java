@@ -64,12 +64,14 @@ public class ProjectApiController {
     // 게시글 상세 보기
     @GetMapping("/detail/{projectIdx}")
     public ApplicationResponse<?> getDetail(
-        @PathVariable Long projectIdx
+        @PathVariable Long projectIdx,
+        @AuthenticationPrincipal TokenUserInfo tokenUserInfo
     ) {
+
         log.info("/api/ddamddam/detail/{} GET", projectIdx);
 
         try {
-            ProjectDetailResponseDTO dto = projectService.getDetail(projectIdx);
+            ProjectDetailResponseDTO dto = projectService.getDetail(projectIdx,tokenUserInfo);
 
             return ApplicationResponse.ok(dto);
 
@@ -90,11 +92,10 @@ public class ProjectApiController {
         @Validated @RequestPart("project") ProjectWriteDTO dto,
         @RequestPart(value = "projectImage", required = false) MultipartFile projectImg
     ) {
-        log.info("/api/ddamddam write POST!! - payload: {}", dto);
-
         if (dto == null) {
             return ApplicationResponse.bad("게시글 정보를 전달해주세요");
         }
+        log.info("/api/ddamddam write POST!! - payload: {}", dto);
 
         try {
             String uploadedFilePath = fileUpload(projectImg);

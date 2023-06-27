@@ -118,7 +118,9 @@ public class ProjectService {
         return projectRepository.findAll(pageable);
     }
 
-    public ProjectDetailResponseDTO getDetail(Long projectIdx) {
+    public ProjectDetailResponseDTO getDetail(Long projectIdx, TokenUserInfo tokenUserInfo) {
+
+        validateToken.validateToken(tokenUserInfo);
 
         Project foundProject = getProject(projectIdx);
 
@@ -188,6 +190,8 @@ public class ProjectService {
     // 퀵 매칭
     // select : 오래된 순 / 내 포지션 일치 / 남은자리가 적은것 부터
     public ProjectListPageResponseDTO quickMatching(TokenUserInfo tokenUserInfo, ProjectPageDTO dto, ProjectSearchRequestDto searchDto) {
+        validateToken.validateToken(tokenUserInfo);
+
         Pageable pageable = getPageable(dto, searchDto);
 
         Page<Project> projectPage = null;

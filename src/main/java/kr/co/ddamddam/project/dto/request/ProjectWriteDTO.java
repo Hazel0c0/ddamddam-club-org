@@ -7,6 +7,7 @@ import lombok.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @Getter
 @ToString
@@ -31,7 +32,7 @@ public class ProjectWriteDTO {
   @NotNull @Max(5)
   private int maxBack;
 
-  private String offerPeriod; //모집기간
+  private LocalDate offerPeriod; //모집기간
 
   public Project toEntity(User user, String uploadedFilePath) {
     return Project.builder()
@@ -43,6 +44,7 @@ public class ProjectWriteDTO {
         .projectType(this.projectType)
         .maxFront(this.maxFront)
         .maxBack(this.maxBack)
+        .offerPeriod(this.offerPeriod)
         .build();
   }
 }
