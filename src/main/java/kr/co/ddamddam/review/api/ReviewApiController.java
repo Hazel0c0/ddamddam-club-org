@@ -22,7 +22,6 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam/reviews")
-@CrossOrigin
 public class ReviewApiController {
 
     private final ReviewService reviewService;

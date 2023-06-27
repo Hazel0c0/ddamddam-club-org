@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {BASE_URL} from "../../common/config/HostConfig";
 
 /**
  * Back 단에 카카오 로그인 요청을 보내고 토큰을 설정합니다.
@@ -11,7 +12,7 @@ export const useKakaoLogin = () => {
 export const kakaoLogin = async (navigate, code) => {
   try {
     const response = await axios.get(
-      `http://localhost:8181/api/ddamddam/oauth/kakao?code=${code}`
+      BASE_URL + `/api/ddamddam/oauth/kakao?code=${code}`
     );
 
     const result = response.data;
@@ -30,7 +31,7 @@ export const kakaoLogin = async (navigate, code) => {
     sessionStorage.setItem('LOGIN_USER_PROFILE', result.userProfile);
     sessionStorage.setItem('LOGIN_USER_ROLE', result.userRole);
 
-    window.location.href = '/'; // 토큰 받고 로그인 성공했으니 메인으로 돌아가기
+    window.location.href = '/'; // 토큰 받고 로그인 성공 후, 메인페이지로 돌아가기
   } catch (err) {
     console.log('카카오 로그인 에러', err);
     window.alert('로그인에 실패하였습니다.');
