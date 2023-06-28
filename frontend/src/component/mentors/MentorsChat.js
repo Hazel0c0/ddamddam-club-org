@@ -64,6 +64,7 @@ const MentorsChat = () => {
 
   // 멘토가 멘티들의 채팅방 선택
   const handleSelectRoom = (e) => {
+    e.stopPropagation();
     setSelectChatRoomId(e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value);
     const elements = document.querySelectorAll('.chat-room-list');
     elements.forEach(element => {
@@ -131,7 +132,7 @@ const MentorsChat = () => {
   };
 
   const delChatRoom = (e) => {
-
+    e.stopPropagation();
     const delRoomIdx = e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value;
 
     if (window.confirm('채팅방을 삭제하시겠습니까?')) {
@@ -144,8 +145,8 @@ const MentorsChat = () => {
         })
         .then((result) => {
           console.log('삭제하기');
-          window.location.href('/mentors/detail/chat/' + chatPageIdx);
           setChatRoom(result);
+          window.location.assign('/mentors/detail/chat/' + chatPageIdx+'/'+0);
         });
     }
   };
@@ -172,7 +173,7 @@ const MentorsChat = () => {
       </div>
     )
   }
-  return null;
+  else{return null;}
   });
 
   // 멘티 채팅방 입장 후 메세지 렌더링
