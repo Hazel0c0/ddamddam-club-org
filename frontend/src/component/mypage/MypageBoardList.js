@@ -99,7 +99,7 @@ const MypageBoardList = () => {
             <div className={'board-title'}>
               {
                 board.boardType === 'Q&A' &&
-                <Link to={`/api/ddamddam/qna/${board.boardIdx}`} onClick={loginCheckHandler}>
+                <Link to={`/qna/${board.boardIdx}`} onClick={loginCheckHandler}>
                   {board.boardTitle}
                 </Link>
               }
