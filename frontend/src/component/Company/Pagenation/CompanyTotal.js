@@ -24,9 +24,9 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
 
     useEffect(() => {
         console.log(`useEffect 실행`)
-        if (finalPage >= page) {
+        // if (finalPage >= page) {
             fetchData(page);
-        }
+        // }
         if (finalPage > 1 && finalPage === page) {
             setIsLoading(false);
         }

@@ -18,8 +18,7 @@ const Header = () => {
     const navigationRef = useRef(null);
     const categoryRef = useRef(null);
     const navigation = useNavigate();
-
-    const [isLoggedIn, setIsLoggedIn] = useState(isLogin());
+    const backgroundBlack = useRef();
 
     const ACCESS_TOKEN = getToken();
     const headerInfo = {
@@ -29,10 +28,12 @@ const Header = () => {
 
     //프로필사진 이미지 패치
     const fetchProfileImage = async() => {
+        if (getToken() === null){
+            return
+        }
         const res = await fetch(profileRequestURL,{
               method: 'GET',
               headers: headerInfo
-              // headers: { 'Authorization': 'Bearer ' + getToken() }
           }
 
         );
@@ -40,8 +41,6 @@ const Header = () => {
             //서버에서 s3 url이 응답된다.
             const imgUrl = await res.text();
             setProfileUrl(imgUrl);
-
-            console.log(`imgUrl : `, imgUrl)
         }
     };
 
@@ -73,29 +72,24 @@ const Header = () => {
     }
     const handleMouseLeave = (event) => {
 
-        // if (
-        //     !event.target.classList.contains('category-wrapper') &&
-        //     !event.target.classList.contains('navigation-bar')
-        // ){
-
-        console.log("handlerMouseOut 이벤트 발생")
-        console.log(dropdownOpen)
         if (dropdownOpen){
             console.log(event.target.className)
             setAnimating(true);
 
             if (navigationRef.current) {
-                navigationRef.current.style.animation = 'slide-out 0.2s ease-out forwards';
+                navigationRef.current.style.animation = 'slide-out 3s ease-out forwards';
+                backgroundBlack.current.style.animation = 'slide-out 3s ease-out forwards';
             }
 
             setTimeout(() => {
-                setDropdownOpen(false);
-                setAnimating(false);
                 if (navigationRef.current) {
                     navigationRef.current.style.animation = '';
-                    setBackground('rgba(0,0,0,0');
                 }
+                setDropdownOpen(false);
+                setAnimating(false);
+                setBackground('rgba(0,0,0,0)');
             }, 200);
+
         }
     };
 
@@ -108,18 +102,16 @@ const Header = () => {
               </Link>
               <ul className={'category-wrapper'}
                   onMouseEnter={handleMouseEnter}
-                  // onMouseLeave={handleMouseLeave}
                   ref={categoryRef}
               >
                   <li>모집</li>
                   <li>취업게시판</li>
-                  {/*<li>프로젝트 공유</li>*/}
                   <li>Q&A</li>
               </ul>
 
 
               <div className="login-wrapper">
-                  {/*{ACCESS_TOKEN ? 'isLoginEnd의 값 true' : 'isLoginEnd의 값 false'}*/}
+
                   {ACCESS_TOKEN === null || ACCESS_TOKEN === ''
                     ? <>
                         <Link to={'/login'} className={'login'}>로그인</Link>
@@ -158,7 +150,7 @@ const Header = () => {
                     <li><Link to={'/qna'}>Q&A</Link></li>
                 </ul>
             </nav>
-                  <div className={'background'}></div>
+                  <div className={'background'} ref={backgroundBlack}></div>
               </>
           )}
       </Common>

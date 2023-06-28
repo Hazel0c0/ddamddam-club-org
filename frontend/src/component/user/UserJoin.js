@@ -6,7 +6,7 @@ import {BsCheckLg} from "react-icons/bs"
 // import ProfileNull from "../../src_assets/ProfileLogo.png"
 import {useNavigate, Link} from 'react-router-dom';
 import {BASE_URL as BASE, AUTH, JOININ, EMAIL, BASE_URL} from '../../component/common/config/HostConfig';
-import useDebounce from "./useDebounce";
+import useDebounce from "./UseDebounce";
 
 const UserJoin = () => {
 
@@ -60,8 +60,8 @@ const UserJoin = () => {
 
     // 검증 완료 체크에 대한 상태변수 관리
     const [correct, setCorrect] = useState({
-        userEmail: true,
-        userCode: true,
+        userEmail: false,
+        userCode: false,
         userPw: false,
         passwordCheck: false,
         userName: false,
@@ -133,7 +133,6 @@ const UserJoin = () => {
 
         const inputVal = e.target.value;
 
-        // console.log(`inputVal의 값 : ${inputVal}`)
         // 입력값 검증
         let msg; // 검증 메시지를 저장할 변수
         let flag; // 입력 검증체크 변수
@@ -200,10 +199,8 @@ const UserJoin = () => {
             console.log(json);
             if (json) {
                 alert("이메일이 중복되었습니다");
-                msg = '이메일이 중복되었습니다!';
-                flag = false;
+                return;
             } else {
-                msg = '사용 가능한 이메일입니다.';
                 flag = true;
                 alert("사용 가능한 이메일입니다.");
                 setShowCertificationBtn(true);
@@ -276,10 +273,6 @@ const UserJoin = () => {
         //이메일 입력
         const inputEmail = e.target.value;
 
-        //이메일 주소 선택
-        //         console.log(emailDomainValue);
-
-        // const inputVal = `${inputEmail}@${emailDomainValue}`;
         console.log(`emailDomain : `, emailDomain)
         const inputVal = `${inputEmail}@${emailDomain}`;
         console.log(`emailResult Value : ${inputVal}`);
@@ -300,8 +293,22 @@ const UserJoin = () => {
     //이메일 도메인 선택
     const handleEmailChange = (e) => {
         const emailDomainValue = e.target.value;
-        console.log(`emailDomainValue의 값 : `, emailDomainValue)
+        console.log(`emailDomainValue의 값 : `, emailDomainValue);
         setEmailDomain(emailDomainValue);
+
+        //이메일 입력
+        const inputEmail = document.querySelector('.email-input').value;console.log(`emailDomain : `, emailDomain)
+        const inputVal = `${inputEmail}@${emailDomainValue}`;
+        console.log(`emailResult Value : ${inputVal}`);
+
+        let msg = '', flag = true;
+
+        saveInputState({
+            key: 'userEmail',
+            inputVal,
+            msg,
+            flag
+        });
     }
 
 
@@ -506,6 +513,7 @@ const UserJoin = () => {
                             onChange={handleEmailChange}>
                         <option value={'gmail.com'}>@gmail.com</option>
                         <option value={'naver.com'}>@naver.com</option>
+                        {/*<option value={'daum.net'}>@daum.net</option>*/}
                     </select>
 
                     {showCertificationBtn
@@ -548,7 +556,7 @@ const UserJoin = () => {
                 </section>
 
                 <div className={'input-pw'}>
-                    <input type={"text"} className={'pw'} id={'userPw'} name={'userPw'} placeholder={'비밀번호'}
+                    <input type={"password"} className={'pw'} id={'userPw'} name={'userPw'} placeholder={'비밀번호'}
                            onChange={passwordHandler}/>
                     <span className={correct.userPw ? 'correct' : 'not-correct'}>{message.userPw}</span>
                     {correct.userPw &&
@@ -556,7 +564,7 @@ const UserJoin = () => {
                     }
                 </div>
                 <div className={'input-pwcheck'}>
-                    <input type={"text"} className={'pw-check'} id={'passwordCheck'} name={'pw-check'}
+                    <input type={"password"} className={'pw-check'} id={'passwordCheck'} name={'pw-check'}
                            placeholder={'비밀번호 확인'} onChange={pwcheckHandler}/>
 
                     <span className={correct.passwordCheck ? 'correct' : 'not-correct'}>{message.passwordCheck}</span>
