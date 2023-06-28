@@ -14,6 +14,7 @@ import {
   getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
   getUserRole, isLogin
 } from '../common/util/login-util';
+import {debounce} from "lodash";
 
 
 const MentorsList = ({selectedSubjects}) => {
@@ -123,7 +124,7 @@ const MentorsList = ({selectedSubjects}) => {
       });
   };
 
-  const createChatRoom = e => {
+  const createChatRoom = debounce((e) => {
     e.preventDefault();
     const data = {
       senderId: enterUserIdx,
@@ -143,7 +144,7 @@ const MentorsList = ({selectedSubjects}) => {
         window.location.href = `/mentors/detail/chat/${chatPageIdx}/${result.roomId}`;
 
       })
-  }
+  },300)
 
   const {title, content, subject, current, nickName, date, mentee, career, idx, userIdx} = detailMember;
 

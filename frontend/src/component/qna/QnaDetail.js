@@ -7,6 +7,7 @@ import speechBubbleText from "../../src_assets/speech-bubble(text).png";
 import speechBubble from "../../src_assets/speech-bubble.png";
 import {QNA, QNAREPLY} from "../common/config/HostConfig";
 import {getToken, getUserNickname} from "../common/util/login-util";
+import {debounce} from "lodash";
 
 const QnaDetail = () => {
         const redirection = useNavigate();
@@ -78,14 +79,11 @@ const QnaDetail = () => {
             asyncDetail();
         }, []);
 
+
         //댓글 작성
-        let isRun = false;
         //TODO 중복클릭 방지 해야함
-        const writeReplyHandler = async () => {
-            if (isRun === true) {
-                console.log("여러번 클릭")
-                return;
-            }
+        const writeReplyHandler = debounce(async () => {
+
             if (detailQna.boardAdoption === 'Y') {
                 alert('이미 채택된 글은 댓글을 작성하실 수 없습니다.');
                 return;
@@ -110,7 +108,7 @@ const QnaDetail = () => {
                 alert(text);
                 return;
             }
-            isRun = true;
+
             const replyData = await res.json();
             const replyList = replyData.payload;
 
@@ -122,11 +120,10 @@ const QnaDetail = () => {
             inputRef.current.value = '';
             alert("댓글이 등록 되었습니다.");
 
-            // TODO : 임시방편 데이터에 무리갈듯
             asyncDetail();
 
 
-        }
+        },300)
 
         //댓글 수정
         const replyModifyShowHandler = (index) => {
