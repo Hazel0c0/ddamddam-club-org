@@ -74,7 +74,6 @@ public class UserApiController {
     ) {
         //값이 잘 들어오는지 확인
         log.info("/api/auth POST! - {}", dto);
-        log.info("attached file name; {}", profileImg.getOriginalFilename());
 
         if (result.hasErrors()) {
             log.warn(result.toString());
