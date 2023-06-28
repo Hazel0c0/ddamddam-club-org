@@ -6,7 +6,7 @@
   padding: 35px 0px 50px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   position: relative;
 
   //화살표 아이콘
@@ -33,8 +33,9 @@
 
   //전체 리스트
   .mentors-list {
-    width: 385px;
+    width: 375px;
     margin-top: 30px;
+    margin-right: 20px;
     @include content-center;
     position: relative;
     background-color: #f0f0f0;
@@ -59,7 +60,7 @@
       content: '';
       position: absolute;
       bottom: -10px;
-      left: 30px;
+      left: 50%;
       //border-radius: 2px;
       width: 0;
       height: 0;
@@ -67,12 +68,15 @@
       border-top: 0px solid transparent;
       border-left: 15px solid #292834;
       border-right: 15px solid transparent;
+
+      transform: translateX(-15%);
     }
 
 
     .profile-img {
       background-image: url("../../../src_assets/IMG_4525.JPG");
-      background-size: 112px;
+      background-size: cover;
+      background-repeat: no-repeat;
       width: 120px;
       height: 120px;
       border-radius: 200px;
@@ -95,9 +99,10 @@
       .text {
         white-space: pre-line;
         line-height: 17px;
-        font-size: 13px;
+        font-size: 14px;
         height: 50px;
-        overflow: scroll;
+        overflow: hidden;
+        word-break: break-all;
         //width: 10px;
       }
 
@@ -129,7 +134,9 @@
       }
     }
   }
-
+  .mentors-list:nth-of-type(3n) {
+margin-right: 0;
+  }
   .mentors-list:hover {
     //transition: 0.1s;
     //background-color: #e3e3e3;

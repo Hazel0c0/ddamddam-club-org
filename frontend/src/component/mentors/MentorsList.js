@@ -221,7 +221,7 @@ const MentorsList = ({selectedSubjects}) => {
             <ul className={'category'}>
               <li>{mentor.subject}</li>
             </ul>
-            <div className={'mentor-career'}>경력 : {mentor.career}</div>
+            <div className={'mentor-career'}>경력 : { mentor.career === '신입' ? mentor.career : mentor.career+'년'}</div>
           </div>
           {/*</Link>*/}
         </div>

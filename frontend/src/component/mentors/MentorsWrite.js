@@ -71,8 +71,16 @@ const MentorsWrite = () => {
                 headers: headerInfo,
                 body: JSON.stringify(data)
             })
-                .then(res => res.json())
+                .then(res =>{
+                   if(res.status === 400){
+                    alert('다시 작성하세요');
+                   }
+                    return res.json();
+                })
                 .then(json => {
+                    if(json === undefined){
+                        return;
+                    }
                     alert('작성이 완료되었습니다.');
                     redirection('/mentors')
                     // window.location.href = 'http://localhost:3000/mentors';

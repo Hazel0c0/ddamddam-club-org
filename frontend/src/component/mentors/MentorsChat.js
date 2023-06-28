@@ -5,7 +5,7 @@ import {Link, useParams} from 'react-router-dom';
 import {CHAT, MENTOR, SOCKET_URL} from '../common/config/HostConfig';
 import './scss/MentorChat.scss';
 import {getToken, getUserIdx, getUserNickname, getUserRegdate} from '../common/util/login-util';
-import {Window} from '@mui/icons-material';
+import {ChatSharp, Window} from '@mui/icons-material';
 import {BsPersonFill} from "react-icons/bs";
 import back from "../../src_assets/back.png";
 
@@ -107,6 +107,7 @@ const MentorsChat = () => {
       alert('return');
       return;
     }
+    const saveMenteeCount = menteeCountList.length;
 
     if (window.confirm(chatRoom[0].sender.userNickname + '님을 멘티로 확정하시겠습니까?')) {
       if (detailMember.userIdx === enterUserIdx && selectChatRoomId !== undefined) {
@@ -117,6 +118,7 @@ const MentorsChat = () => {
           .then((res) => {
             if(res.status === 400){
               alert('이미 확정된 멘티입니다');
+              setMenteeCount(saveMenteeCount);
               return;
             } 
             return res.json();
@@ -141,6 +143,8 @@ const MentorsChat = () => {
           return res.json();
         })
         .then((result) => {
+          console.log('삭제하기');
+          window.location.href('/mentors/detail/chat/' + chatPageIdx);
           setChatRoom(result);
         });
     }
@@ -149,7 +153,9 @@ const MentorsChat = () => {
 
   // 멘토가 채팅방 선택 렌더링
   const mentorsChatRoom =
-    chatRoom.map((item, idx) => (
+    chatRoom.map((item, idx) => {
+      if(chatRoom !== undefined){
+      return (
       <div className={'chat-room-list'} key={`${item.name}-${idx}`} onClick={handleSelectRoom}>
         <input type={'hidden'} value={item.sender.userIdx} className={'sender-idx'}/>
         <input type={'hidden'} value={item.roomId} className={'chatRoom-idx'}/>
@@ -164,7 +170,10 @@ const MentorsChat = () => {
         <span className={'mentee-date'}>{item.sentAt}</span>
         <button className={'chatroom-delbtn'} onClick={delChatRoom}>삭제</button>
       </div>
-    ));
+    )
+  }
+  return null;
+  });
 
   // 멘티 채팅방 입장 후 메세지 렌더링
   const menteeMsgBox = chat.map((item, idx) => {
