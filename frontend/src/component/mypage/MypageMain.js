@@ -66,7 +66,7 @@ const MypageMain = props => {
           <div className={'role text-box'}>
             <p className={'info-category'}>등급</p>
             {
-              USER_ROLE === 'COMMON'
+              USER_ROLE === 'COMMON' || USER_ROLE === 'SNS'
                 ? '일반회원'
                 : '관리자'
             }
