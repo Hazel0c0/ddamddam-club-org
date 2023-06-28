@@ -104,11 +104,16 @@ const MentorsChat = () => {
     //       console.log(`Found user: ${mentee}`);
     //     }
     //   });
+
+    if(mentee === menteeCount){
+      alert('멘티 모집완료!');
+      return;
+    }
+
     if(chatRoom === undefined){
       alert('return');
       return;
-    }
-    const saveMenteeCount = menteeCountList.length;
+    } 
 
     if (window.confirm(chatRoom[0].sender.userNickname + '님을 멘티로 확정하시겠습니까?')) {
       if (detailMember.userIdx === enterUserIdx && selectChatRoomId !== undefined) {
@@ -125,18 +130,18 @@ const MentorsChat = () => {
               return;
             }
             setMenteeCount(result);
-          });
-
-          fetch(MENTOR + '/mentee/list/' + chatPageIdx, {
-            method: 'GET',
-            headers: headerInfo,
-          }).then((res) => {
-            return res.json();
-          }).then((result) => {
-            setApplyMenteeList(result.menteeResponseDTOList);
-            // console.log('applyMenteeList:', result.menteeResponseDTOList);
-          }).catch((error) => {
-            console.log('네트워크 요청 오류:', error);
+            fetch(MENTOR + '/mentee/list/' + chatPageIdx, {
+              method: 'GET',
+              headers: headerInfo,
+            }).then((res) => {
+              return res.json();
+            }).then((result) => {
+              console.log('result!!!: ', result);
+              setApplyMenteeList(result.menteeResponseDTOList);
+              console.log('applyMenteeList:!!!!', result.menteeResponseDTOList);
+            }).catch((error) => {
+              console.log('네트워크 요청 오류:', error);
+            });
           });
       }
     }

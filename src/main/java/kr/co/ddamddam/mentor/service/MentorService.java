@@ -307,6 +307,7 @@ public class MentorService {
 
 
         List<Mentee> menteeList = menteeRepository.findByMentorMentorIdx(mentorIdx);
+        log.info("menteeListService : {}",menteeList);
 
         List<MenteeResponseDTO> menteeResponseDTOList = menteeList.stream().map(
                 mentee -> {
