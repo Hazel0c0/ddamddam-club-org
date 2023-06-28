@@ -107,7 +107,11 @@
 
     //회원가입 버튼
     .join-wrapper {
-      width: 60%;
+      width: 80%;
+
+      .btn-hover:hover {
+        color: #1e4fff;
+      }
 
       .join-btn {
         margin-bottom: 10px;
@@ -122,10 +126,11 @@
       }
 
 
-      .find-wrapper {
-        //width: 95%;
+      .find-pw-wrapper {
+        width: 100%;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
+        margin-top: 20px;
 
         .find-id,
         .find-pw {
@@ -134,11 +139,6 @@
           //color: #292834;
           text-decoration: none;
         }
-        .find-pw{
-          margin-left: 10px;
-        }
-
-
       }
     }
 
