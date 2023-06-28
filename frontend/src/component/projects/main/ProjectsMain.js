@@ -73,7 +73,7 @@ const ProjectsMain = ({keyword}) => {
     };
 
     return (
-        <>
+      <Common>
             <button className={'projects-write-btn'} onClick={handleWriteClick}>
                 작성하기
             </button>
@@ -102,7 +102,8 @@ const ProjectsMain = ({keyword}) => {
                     <ProjectsQuickMatching/>
                 </div>
             }
-        </>
+        </Common>
+
     );
 };
 export default ProjectsMain;
