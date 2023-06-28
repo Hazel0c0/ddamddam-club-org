@@ -94,24 +94,26 @@ const ProjectsDetail = () => {
 
     const handleDelete = (id) => {
         console.log("delete id : " + id);
+        if (window.confirm("삭제 하시겠습니까?")) {
 
-        fetch(PROJECT + `/${projectIdx}`, {
-            method: 'DELETE',
-            headers: {'content-type': 'application/json'}
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to delete project');
-                }
-                console.log('삭제됨');
-                navigate('/projects');
-                setProjectDetail([response.payload]);
-
+            fetch(PROJECT + `/${projectIdx}`, {
+                method: 'DELETE',
+                headers: {'content-type': 'application/json'}
             })
-            .catch(error => {
-                console.error(error);
-            });
-    }
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete project');
+                    }
+                    console.log('삭제됨');
+                    navigate('/projects');
+                    setProjectDetail([response.payload]);
+
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    };
 
     const handleApply = () => {
         if (window.confirm('정말로 신청하시겠습니까?')) {

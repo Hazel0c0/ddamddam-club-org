@@ -5,6 +5,7 @@ import kr.co.ddamddam.common.exception.custom.ErrorCode;
 import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
 import kr.co.ddamddam.common.exception.custom.UnauthorizationException;
 import kr.co.ddamddam.config.security.TokenUserInfo;
+import kr.co.ddamddam.project.UserUtil;
 import kr.co.ddamddam.project.dto.page.ProjectPageDTO;
 import kr.co.ddamddam.project.dto.page.ProjectPageResponseDTO;
 import kr.co.ddamddam.project.dto.request.ProjectModifyRequestDTO;
@@ -40,6 +41,7 @@ public class ProjectService {
   private final ProjectRepository projectRepository;
   private final UserRepository userRepository;
   private final ValidateToken validateToken;
+  private final UserUtil userUtil;
 
   public ProjectListPageResponseDTO getList(ProjectPageDTO dto, ProjectSearchRequestDto searchDto) {
     log.info("pageDTO : {} ", dto);
@@ -181,8 +183,17 @@ public class ProjectService {
     }
   }
 
-  public void delete(Long id) {
-    projectRepository.deleteById(id);
+  // 삭제
+  public void delete(Long projectIdx, TokenUserInfo tokenUserInfo) {
+    validateToken.validateToken(tokenUserInfo);
+    User user = userUtil.getUser(Long.valueOf(tokenUserInfo.getUserIdx()));
+    Project project = getProject(projectIdx);
+
+    if (project.getUser() == user) {
+      projectRepository.deleteById(projectIdx);
+    }else {
+      throw new RuntimeException("게시글은 본인만 삭제 가능 합니다");
+    }
   }
 
   // 퀵 매칭
@@ -229,4 +240,5 @@ public class ProjectService {
 
     return project;
   }
+
 }
