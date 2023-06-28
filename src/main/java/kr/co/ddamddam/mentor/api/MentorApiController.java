@@ -146,13 +146,9 @@ public class MentorApiController {
             ,@PathVariable Long roomId
             ,@AuthenticationPrincipal TokenUserInfo tokenUserInfo
     ){
-        try {
             int menteeSave = mentorService.menteeSave(mentorIdx, roomId, tokenUserInfo);
 
             return ResponseEntity.ok().body(menteeSave);
-        }catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
 
     }
 

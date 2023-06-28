@@ -117,15 +117,26 @@ const MentorsChat = () => {
           headers: headerInfo
         })
           .then((res) => {
-            if(res.status === 400){
-              alert('이미 확정된 멘티입니다');
-              setMenteeCount(saveMenteeCount);
-              return;
-            } 
             return res.json();
           })
           .then((result) => {
+            if(menteeCount === result){
+              alert('이미 확정된 멘티입니다');
+              return;
+            }
             setMenteeCount(result);
+          });
+
+          fetch(MENTOR + '/mentee/list/' + chatPageIdx, {
+            method: 'GET',
+            headers: headerInfo,
+          }).then((res) => {
+            return res.json();
+          }).then((result) => {
+            setApplyMenteeList(result.menteeResponseDTOList);
+            // console.log('applyMenteeList:', result.menteeResponseDTOList);
+          }).catch((error) => {
+            console.log('네트워크 요청 오류:', error);
           });
       }
     }
@@ -229,7 +240,7 @@ const MentorsChat = () => {
       return res.json();
     }).then((result) => {
       setApplyMenteeList(result.menteeResponseDTOList);
-      console.log('applyMenteeList:', result.menteeResponseDTOList);
+      // console.log('applyMenteeList:', result.menteeResponseDTOList);
     }).catch((error) => {
       console.log('네트워크 요청 오류:', error);
     });
