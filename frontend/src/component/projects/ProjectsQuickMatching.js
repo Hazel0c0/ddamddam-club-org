@@ -4,7 +4,6 @@ import {Button, Modal} from 'react-bootstrap';
 import {PROJECT} from "../common/config/HostConfig";
 import {Link} from "react-router-dom";
 import './scss/QuickMatching.scss';
-import ProjectsQuickMatching from "./나중에삭제예정퀵매칭";
 
 const ProjectsQuickMatching = () => {
   // 토큰
@@ -94,7 +93,7 @@ const ProjectsQuickMatching = () => {
           <div className="modal-container">
             {quickDetail.map((board) => (
                 <React.Fragment key={board.id}>
-                  <div className="modal-content">
+                  <div className="modal-contents">
                     <div className="modal-header">
                       <h5 className="modal-title">{board.boardTitle}</h5>
                       <button className="close" onClick={handleClose}>

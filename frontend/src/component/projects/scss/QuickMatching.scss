@@ -1,94 +1,8 @@
-.modal-box {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
 
-  &.show {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .modal-container {
-    background-color: #fff;
-    border-radius: 4px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    width: 400px;
-  }
-
-  .modal-content {
-    // Modal content styles here
-  }
-
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ccc;
-  }
-
-  .modal-title {
-    font-size: 18px;
-    font-weight: bold;
-  }
-
-  .close {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    font-size: 18px;
-    color: #999;
-  }
-
-  .modal-body {
-    margin-top: 10px;
-    margin-bottom: 20px;
-  }
-
-  .modal-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 10px;
-    border-top: 1px solid #ccc;
-  }
-
-  .footer-left {
-    display: flex;
-    align-items: center;
-  }
-
-  .detail-btn {
-    margin-right: 10px;
-    text-decoration: none;
-    color: #333;
-  }
-
-  .like-btn {
-    font-weight: bold;
-    color: #f00;
-  }
-
-  .footer-right {
-    display: flex;
-    align-items: center;
-  }
-}
-
-// 버튼
 .quick-btn {
   cursor: pointer;
   position: relative;
   left: 30px;
-
   font-weight: 500;
   font-size: 20px;
   color: white;
@@ -119,3 +33,122 @@
   }
 }
 
+.modal-box {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+
+  &.show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-container {
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 600px;
+
+    .modal-contents {
+      // Modal content styles here
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+
+      .modal-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .close {
+        color: #999;
+        border: none;
+      }
+    }
+
+    .modal-body {
+      padding: 20px;
+
+      li {
+        margin-bottom: 10px;
+        font-weight: 550;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      .applicant-box {
+        margin-top: 20px;
+
+        .position-img {
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 10px;
+
+      .footer-left {
+        text-align: left;
+        display: flex;
+
+        .detail-btn,
+        .like-btn {
+          background-color: #0d6efd;
+          border-radius: 5px;
+          border: none;
+          width: fit-content;
+          height: 38px;
+          margin-right: 15px;
+          padding: 0 12px;
+          font-size: 15px;
+          color: white;
+          align-items: center;
+          display: flex;
+          cursor: pointer;
+
+          &:hover {
+            background-color: #0a58ca;
+          }
+        }
+
+        .like-btn {
+          background-color: #6c757d;
+
+          &:hover {
+            background-color: #5c636a;
+          }
+        }
+      }
+
+      .footer-right {
+        .btn {
+          margin-left: 10px;
+          padding: 5px 10px;
+        }
+      }
+    }
+  }
+}
