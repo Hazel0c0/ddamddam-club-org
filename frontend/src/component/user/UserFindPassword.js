@@ -225,13 +225,13 @@ const UserFindPassword = () => {
           <div className={'input-oldpw'}>
             {/*<input type={"text"} className={'oldpw'} id={'oldpw'} name={'oldpw'} placeholder={'기존 비밀번호'}*/}
             {/*       onChange={handleInputChange}/>*/}
-            <input type={"text"} className={'oldpw'} id={'oldpw'} name={'oldpw'} placeholder={'기존 비밀번호'}
+            <input type={"password"} className={'oldpw'} id={'oldpw'} name={'oldpw'} placeholder={'기존 비밀번호'}
                    onChange={oldPasswordHandler}/>
           </div>
           <br/><br/>
           {/* 새로운 비밀번호*/}
           <div className={'input-newpw'}>
-            <input type={"text"} className={'newpw'} id={'newpw'} name={'newpw'} placeholder={'새로운 비밀번호'}
+            <input type={"password"} className={'newpw'} id={'newpw'} name={'newpw'} placeholder={'새로운 비밀번호'}
                    // onChange={handleInputChange}
                    onChange={newPasswordHandler}/>
             <span className={correct.newpw ? 'correct' : 'not-correct'}>{message.newpw}</span>
@@ -242,7 +242,7 @@ const UserFindPassword = () => {
           <br/><br/>
           {/*새로운 비밀번호 확인*/}
           <div className={'input-checkpw'}>
-            <input type={"text"} className={'checkpw'} id={'checkpw'} name={'checkpw'} placeholder={'비밀번호 확인'}
+            <input type={"password"} className={'checkpw'} id={'checkpw'} name={'checkpw'} placeholder={'비밀번호 확인'}
                    onChange={pwcheckHandler}/>
             <span className={correct.checkpw ? 'correct' : 'not-correct'}>{message.checkpw}</span>
             {correct.checkpw &&

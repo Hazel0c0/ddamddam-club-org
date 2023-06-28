@@ -75,7 +75,7 @@ public class QnaService {
 
         log.info("[Qna/Service] QNA 게시글 조회순 TOP3 정렬");
 
-        List<Qna> qnaListTop3 = qnaRepository.findTop3ByOrderByViewCountDesc();
+        List<Qna> qnaListTop3 = qnaRepository.findTop3ByOrderByWeeklyViewCountDescReplyCountDesc();
 
         return qnaListTop3.stream()
                 .map(qna -> QnaTopListResponseDTO.builder()
@@ -233,7 +233,9 @@ public class QnaService {
             throw new NotFoundBoardException(NOT_FOUND_BOARD, boardIdx);
         });
 
+        // 일반 조회수, 주간 조회수 모두 1씩 상승
         qna.setViewCount(qna.getViewCount() + VIEW_COUNT_UP);
+        qna.setWeeklyViewCount(qna.getWeeklyViewCount() + VIEW_COUNT_UP);
 
         qnaRepository.save(qna);
 

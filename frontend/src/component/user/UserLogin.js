@@ -183,10 +183,9 @@ const UserLogin = () => {
         </section>
 
         <section className={'join-wrapper'}>
-          <div className={'join-btn'}>아직 회원이 아니신가요?<Link to={'/join'}>회원가입</Link></div>
-          <div className={'find-wrapper'}>
-            <Link to={'/'} className={'find-id'}>아이디 찾기</Link>
-            <Link to={'/'} className={'find-pw'}>비밀번호 찾기</Link>
+          <div className={'join-btn'}>아직 회원이 아니신가요?<Link to={'/join'} className={'btn-hover'}>회원가입</Link></div>
+          <div className={'find-pw-wrapper'}>
+            <Link to={'/find-password'} className={'find-pw'}>비밀번호 찾기</Link>
           </div>
         </section>
       </section>

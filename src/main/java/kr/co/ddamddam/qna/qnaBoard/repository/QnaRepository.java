@@ -18,7 +18,7 @@ public interface QnaRepository extends JpaRepository<Qna, Long> {
     /**
      * QNA 게시글 조회순 TOP3 정렬
      */
-    List<Qna> findTop3ByOrderByViewCountDesc();
+    List<Qna> findTop3ByOrderByWeeklyViewCountDescReplyCountDesc();
 
     @Query("SELECT DISTINCT q FROM Qna q " +
             "JOIN q.hashtagList h " +

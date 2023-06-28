@@ -35,7 +35,6 @@ public class MypageController {
         MyPagePageDTO myPagePageDTO
     ) {
         log.info("GET : MypageController/getBoardList - tokenUserInfo : {}", tokenUserInfo);
-//        log.info("GET : MypageController/getBoardList - tokenUserInfo : {}", pageDTO);
 
         MypageBoardPageResponseDTO boardList = myPageService.getBoardList(tokenUserInfo, myPagePageDTO);
 

@@ -98,12 +98,12 @@ const ReviewDetail = () => {
                 </h1>
                 <section className={'info-detail-container'}>
                     <div className={'info-wrapper'}>
-                        {/*{enterUserNickName === detailReview.boardWriter &&*/}
+                        {enterUserNickName === detailReview.boardWriter &&
                           <div className={'category'}>
                               <Link to={`/reviews/modify/${reviewIdx}`} className={'modify-btn'}>수정</Link>
                               <span className={'delete-btn'} onClick={deleteHandler}>삭제</span>
                           </div>
-                        {/*}*/}
+                        }
 
                         <div className={'category'}>
                             <span className={'sub-title'}>직무</span>
