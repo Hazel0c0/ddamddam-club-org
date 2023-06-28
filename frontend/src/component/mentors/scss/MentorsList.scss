@@ -6,7 +6,7 @@
   padding: 35px 0px 50px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   position: relative;
 
   //화살표 아이콘
@@ -33,8 +33,9 @@
 
   //전체 리스트
   .mentors-list {
-    width: 385px;
+    width: 375px;
     margin-top: 30px;
+    margin-right: 20px;
     @include content-center;
     position: relative;
     background-color: #f0f0f0;
@@ -98,9 +99,10 @@
       .text {
         white-space: pre-line;
         line-height: 17px;
-        font-size: 13px;
+        font-size: 14px;
         height: 50px;
-        overflow: scroll;
+        overflow: hidden;
+        word-break: break-all;
         //width: 10px;
       }
 
@@ -132,7 +134,9 @@
       }
     }
   }
-
+  .mentors-list:nth-of-type(3n) {
+margin-right: 0;
+  }
   .mentors-list:hover {
     //transition: 0.1s;
     //background-color: #e3e3e3;
