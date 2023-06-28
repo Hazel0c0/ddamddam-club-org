@@ -34,7 +34,7 @@ public class ChatRoom {
     @Builder.Default
     private List<ChatMessage> messages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "chatRoom")
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<Mentee> mentee = new ArrayList<>();
 
