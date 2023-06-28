@@ -143,8 +143,9 @@ const MentorsChat = () => {
           return res.json();
         })
         .then((result) => {
+          console.log('삭제하기');
+          window.location.href('/mentors/detail/chat/' + chatPageIdx);
           setChatRoom(result);
-          window.location.href('/mentors/detail/chat/' + chatPageIdx + '/'+ 0);
         });
     }
   };
