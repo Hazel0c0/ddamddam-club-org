@@ -1,11 +1,10 @@
 import React, {useEffect, useState, forwardRef, useImperativeHandle} from 'react';
 import {useNavigate} from 'react-router-dom';
 import Common from '../common/Common';
-import './scss/ProjectsItem.scss';
-import ProjectImage from "./ProjectImage";
+import ProjectsImage from "./ProjectsImage";
 import PageNation from "../common/pageNation/PageNation";
 import {PROJECT} from "../common/config/HostConfig";
-import ProjectListContainer from "./ProjectListContainer";
+import ProjectContainer from "./ProjectContainer";
 
 const LatestProjects = forwardRef((
     {
@@ -78,11 +77,16 @@ const LatestProjects = forwardRef((
 
         <h2 className={'sort-title'}>{sortTitle}</h2>
 
-        <ProjectListContainer
-          projects={projects}
-          handleShowDetails={handleShowDetails}
-          handleLikeClick={handleLikeClick}
-        />
+          {projects.length > 0 ? (
+              <ProjectContainer
+                  projects={projects}
+                  handleShowDetails={handleShowDetails}
+                  handleLikeClick={handleLikeClick}
+              />
+          ) : (
+              <p>게시글이 없습니다.</p>
+          )}
+
 
         <ul>
           <PageNation

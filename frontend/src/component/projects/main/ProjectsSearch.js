@@ -46,8 +46,8 @@ const ProjectsSearch = () => {
         <Common className={'project-search-wrapper'}>
             <div className={'search-wrapper'}>
                 <img src={searchIcon} alt={'search-icon'} className={'search-icon'}/>
-                <input className={'input-btn'}
-                       placeholder={'검색'}
+                <input className={'input-search'}
+                       placeholder={'검색창'}
                        name={'search'}
                        onChange={handleInputChange}
                        onKeyPress={handleKeyPress}
@@ -55,7 +55,7 @@ const ProjectsSearch = () => {
             </div>
 
             <div>
-                <div className={'projects-write-btn'}
+                <div className={'search-btn'}
                      onClick={handleSearchClick}
                      style={{cursor: 'pointer'}}
                 >

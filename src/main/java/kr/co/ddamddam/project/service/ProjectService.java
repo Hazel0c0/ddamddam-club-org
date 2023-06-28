@@ -16,6 +16,7 @@ import kr.co.ddamddam.project.dto.response.ProjectListPageResponseDTO;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.repository.ProjectRepository;
 import kr.co.ddamddam.user.entity.User;
+import kr.co.ddamddam.user.entity.UserPosition;
 import kr.co.ddamddam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -122,9 +123,16 @@ public class ProjectService {
 
     validateToken.validateToken(tokenUserInfo);
 
+    User user = userUtil.getUser(Long.valueOf(tokenUserInfo.getUserIdx()));
+    UserPosition writerPosition = user.getUserPosition();
+
     Project foundProject = getProject(projectIdx);
 
-    return new ProjectDetailResponseDTO(foundProject);
+    // 디테일 응답에 작성자 포지션 담아주기
+    ProjectDetailResponseDTO dto = new ProjectDetailResponseDTO(foundProject);
+    dto.setWriterPosition(writerPosition);
+
+    return dto;
   }
 
   public Project getProject(Long projectIdx) {
@@ -190,6 +198,7 @@ public class ProjectService {
     Project project = getProject(projectIdx);
 
     if (project.getUser() == user) {
+    log.info("delete -user info {} == {}",project.getUser().getUserIdx(),user.getUserIdx());
       projectRepository.deleteById(projectIdx);
     }else {
       throw new RuntimeException("게시글은 본인만 삭제 가능 합니다");

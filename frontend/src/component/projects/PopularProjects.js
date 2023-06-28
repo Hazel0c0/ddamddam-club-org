@@ -5,10 +5,9 @@ import less from "../../src_assets/less.png";
 import than from "../../src_assets/than.png";
 import logo from '../../src_assets/logo.png'
 
-import './scss/ProjectsItem.scss';
-import ProjectImage from "./ProjectImage";
+import ProjectsImage from "./ProjectsImage";
 import {PROJECT} from "../common/config/HostConfig";
-import ProjectListContainer from "./ProjectListContainer";
+import ProjectContainer from "./ProjectContainer";
 
 const PopularProjects = forwardRef((
     {
@@ -111,12 +110,16 @@ const PopularProjects = forwardRef((
         }
 
         <h2 className={'sort-title'}>{sortTitle}</h2>
+        {projects.length > 0 ? (
 
-        <ProjectListContainer
+        <ProjectContainer
           projects={projects}
           handleShowDetails={handleShowDetails}
           handleLikeClick={handleLikeClick}
         />
+        ) : (
+            <p>게시글이 없습니다.</p>
+        )}
 
       </Common>
     );

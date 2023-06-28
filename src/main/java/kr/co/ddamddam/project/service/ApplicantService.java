@@ -37,7 +37,7 @@ public class ApplicantService {
     private final ValidateToken validateToken;
     private final UserUtil userUtil;
 
-    public ProjectDetailResponseDTO apply(TokenUserInfo tokenUserInfo, Long projectIdx) throws IllegalStateException{
+    public ProjectDetailResponseDTO apply(TokenUserInfo tokenUserInfo, Long projectIdx) throws IllegalStateException {
         log.info("apply service");
 
         validateToken.validateToken(tokenUserInfo);
@@ -59,8 +59,10 @@ public class ApplicantService {
         //유저 포지션별 분류
         if (foundUser.getUserPosition() == UserPosition.BACKEND) {
             System.out.println("이 유저는 backend 다");
-            if (currProject.getApplicantOfBacks().size() < currProject.getMaxBack()) {
-                log.info("남은자리 {}, MaxBack {}",currProject.getApplicantOfBacks().size() ,currProject.getMaxBack());
+            if (backRepository.existsByProjectAndUser(currProject,foundUser)) {
+                throw new IllegalStateException("이미 신청되었습니다");
+            } else if (currProject.getApplicantOfBacks().size() < currProject.getMaxBack()) {
+                log.info("남은자리 {}, MaxBack {}", currProject.getApplicantOfBacks().size(), currProject.getMaxBack());
 
                 currProject.addBack(backRepository.save(
                     ApplicantOfBack.builder()
@@ -74,8 +76,10 @@ public class ApplicantService {
             }
         } else {
             System.out.println("이 유저는 front 다");
-            if (currProject.getApplicantOfFronts().size() < currProject.getMaxFront()) {
-                log.info("남은자리 {}, maxFront {}",currProject.getApplicantOfFronts().size() ,currProject.getMaxFront());
+            if (frontRepository.existsByProjectAndUser(currProject,foundUser)) {
+                throw new IllegalStateException("이미 신청되었습니다");
+            } else if (currProject.getApplicantOfFronts().size() < currProject.getMaxFront()) {
+                log.info("남은자리 {}, maxFront {}", currProject.getApplicantOfFronts().size(), currProject.getMaxFront());
                 currProject.addFront(frontRepository.save(
                     ApplicantOfFront.builder()
                         .user(foundUser)

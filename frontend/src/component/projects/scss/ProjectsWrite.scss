@@ -1,19 +1,6 @@
 .project-write-wrapper {
   padding: 160px 370px 0;
 
-  .main-title {
-    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
-    font-family: 'IBM Plex Mono', sans-serif !important;
-    font-size: 43.2px;
-    font-weight: 500;
-    letter-spacing: -1.5px;
-  }
-
-  .main-sub-title {
-    font-size: 16px;
-    margin-top: 10px;
-  }
-
   .write-form-wrapper {
     margin-top: 30px;
     display: flex;
@@ -41,7 +28,7 @@
 
   //input 공통영역
   .project-type,
-  .personnel,
+  .applicant,
   .offerPeriod {
     display: flex;
     margin-right: 15px;

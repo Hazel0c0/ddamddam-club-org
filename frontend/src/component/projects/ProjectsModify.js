@@ -28,23 +28,23 @@ const ProjectsModify = () => {
       method: 'GET',
       headers: headerInfo
     })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch project');
-        }
-        return response.json();
-      })
-      .then(data => {
-        setUpdatedFormData(data.payload);
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch project');
+          }
+          return response.json();
+        })
+        .then(data => {
+          setUpdatedFormData(data.payload);
 
-        console.log(data.payload);
+          console.log(data.payload);
 
-        console.log(' 이미지 사진 불러오기 : ')
-        console.log(data.payload.boardImg)
-      })
-      .catch(error => {
-        console.error(error);
-      });
+          console.log(' 이미지 사진 불러오기 : ')
+          console.log(data.payload.boardImg)
+        })
+        .catch(error => {
+          console.error(error);
+        });
   }, []);
 
 
@@ -53,7 +53,7 @@ const ProjectsModify = () => {
     setUpdatedFormData((prevFormData) => ({
       ...prevFormData,
       // 입력값이 없으면 기존 정보 사용
-      [name]: value|| prevFormData[name],
+      [name]: value || prevFormData[name],
     }));
     console.log(name + " : " + value);
   }
@@ -62,11 +62,11 @@ const ProjectsModify = () => {
     console.log(updatedFormData);
     console.log('projectIdx:', projectIdx);
 
-    const {projectImg,boardTitle, boardContent, projectType, maxFront, maxBack, } = updatedFormData;
+    const {projectImg, boardTitle, boardContent, projectType, maxFront, maxBack,} = updatedFormData;
 
     const projectJsonBlob = new Blob(
-      [JSON.stringify(updatedFormData)],
-      { type: 'application/json' }
+        [JSON.stringify(updatedFormData)],
+        {type: 'application/json'}
     );
     const projectFormData = new FormData();
     projectFormData.append('project', projectJsonBlob);
@@ -80,15 +80,15 @@ const ProjectsModify = () => {
         headers: headerInfo,
         body: projectFormData
       }).then(response => response.json())
-        .then(data => {
-          setUpdatedFormData(data.formData);
-          console.log(data); // Handle the response data
+          .then(data => {
+            setUpdatedFormData(data.formData);
+            console.log(data); // Handle the response data
 
-          navigate(`/projects/detail?projectIdx=${projectIdx}`)
-        })
-        .catch(error => {
-          console.error(error);
-        });
+            navigate(`/projects/detail?projectIdx=${projectIdx}`)
+          })
+          .catch(error => {
+            console.error(error);
+          });
       console.log(updatedFormData); // 예시: 콘솔에 데이터 출력
     }
   };
@@ -105,69 +105,79 @@ const ProjectsModify = () => {
       setImgFile(reader.result);
     };
   };
-      console.log('img file upload : '+imgFile)
+  console.log('img file upload : ' + imgFile)
 
   return (
-    <>
-      <ProjectsTitle/>
-      <Common className={'qna-detail-wrapper'}>
-        <section className={'main-text-wrapper'}>
-          <div key={updatedFormData.boardIdx}>
-            <input type="hidden"
-                   value={updatedFormData.boardIdx}
-                   name="boardIdx"
-            />
-            <div className={'qna-title'}>
-              <h1 className={'sub-title'}>제목</h1>
-              <input
-                type={"text"}
-                placeholder={updatedFormData.boardTitle}
-                className={'title-text-input'}
-                name={'boardTitle'}
-                defaultValue={updatedFormData.boardTitle}
-                onChange={handleInputChange}
-              />
-            </div>
+      <>
+        <ProjectsTitle/>
+        <Common className={'project-write-wrapper'}>
 
+          <div key={updatedFormData.boardIdx}>
+
+            {/* 이미지 */}
             <div className={'thumbnail-box'} onClick={() => $fileTag.current.click()}>
               <img
-                src={imgFile || require('../../assets/img/image-add.png')}
-                alt="profile"
+                  src={imgFile || require('../../assets/img/image-add.png')}
+                  alt="profile"
               />
               <label className='signup-img-label' htmlFor='profile-img'>사진 수정하기</label>
               <input
-                id='profile-img'
-                type="file"
-                accept="image/*"
-                ref={$fileTag}
-                style={{ display: 'none' }}
-                onChange={showThumbnailHandler}
+                  id='profile-img'
+                  type="file"
+                  accept="image/*"
+                  ref={$fileTag}
+                  style={{display: 'none'}}
+                  onChange={showThumbnailHandler}
               />
             </div>
 
-            <div className={'hashTag-wrapper'}></div>
-            <section className={'info-detail-container'}>
-              <div className={'detail-wrapper'}>
-                <div className={'category'}>
-                </div>
-                <div className={'category'}>
-                  <span className={'sub-title'}>작성자</span>
-                  <span className={'sub-content'}>{updatedFormData.boardWriter}</span>
-                </div>
 
+            <section className={'write-form-wrapper'}>
+              <input type="hidden"
+                     value={updatedFormData.boardIdx}
+                     name="boardIdx"
+              />
+              <div className={'project-date'}>
+                {/* 수정 후에는  변경 되도록 */}
+                <span className={'sub-title'}>작성일자</span>
+                <span className={'sub-content'}>{updatedFormData.projectDate}</span>
+              </div>
+
+              <div className={'writer'}>
+                <span className={'sub-title'}>작성자</span>
+                <span className={'sub-content'}>{updatedFormData.boardWriter}</span>
+              </div>
+
+              {/* write - 공통 데이터 */}
+              <div className={'title-input-wrapper'}>
+                <h1 className={'sub-title'}>제목</h1>
+                <input
+                    type={"text"}
+                    placeholder={updatedFormData.boardTitle}
+                    className={'title-text-input'}
+                    name={'boardTitle'}
+                    defaultValue={updatedFormData.boardTitle}
+                    onChange={handleInputChange}
+                />
+              </div>
+
+              <div className={'select-input-wrapper'}>
                 <div className={'project-type'}>
                   <div className={'sub-title'}>프로젝트 타입</div>
                   <select className="subject-select"
                           name="projectType"
+                          value={updatedFormData.projectType}
+
+                          onChange={handleInputChange}
                   >
-                    <option value="웹개발">웹개발</option>
-                    <option value="모바일">모바일</option>
-                    <option value="반응형">반응형</option>
-                    <option value="기타">기타</option>
+                    <option value="Mobile Web">Mobile Web</option>
+                    <option value="Web App">Web App</option>
+                    <option value="Native App">Native App</option>
+                    <option value="Native App">Native App</option>
                   </select>
                 </div>
 
-                <div className={'personnel'}>
+                <div className={'applicant'}>
                   <div className={'sub-title'}>모집인원</div>
                   <div className={'sub-title'}>프론트</div>
                   <select className="mentee-text-input"
@@ -205,38 +215,33 @@ const ProjectsModify = () => {
                          onChange={handleInputChange}
                   />까지
                 </div>
-
-                <div className={'category'}>
-                  {/* 수정 후에는 작성일자 변경 되도록 */}
-                  <span className={'sub-title'}>작성일자</span>
-                  <span className={'sub-content'}>{updatedFormData.projectDate}</span>
-                </div>
               </div>
             </section>
+
             <section>
                 <textarea type="text"
                           placeholder={updatedFormData.boardContent}
-                          className={'main-content'}
+                          className={'boardContent'}
                           name="boardContent"
                           value={updatedFormData.boardContent}
                           onChange={handleInputChange}
                 />
             </section>
 
-            <Link to={'/projects'} className={'close-btn-a'}>
-              <button className={'close-btn'}>취소하기</button>
-            </Link>
-            <button className={'submit-btn'}
-                    onClick={modifySubmitHandler}
-            >작성완료
-            </button>
+            <div className={'btn-wrapper'}>
+              <Link to={'/projects'} className={'close-btn-a'}>
+                <button className={'close-btn'}>취소하기</button>
+              </Link>
+              <button className={'submit-btn'}
+                      onClick={modifySubmitHandler}
+              >작성완료
+              </button>
+            </div>
 
           </div>
-        </section>
-      </Common>
-    </>
+        </Common>
+      </>
   );
-
 }
 
 export default ProjectsModify;

@@ -45,9 +45,9 @@ public class ApplicantApiController {
             return ResponseEntity.ok().body(projectDto);
         } catch (UnauthorizationException e){
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("자신의 게시글에는 신청을 할 수 없습니다");
+            return ResponseEntity.badRequest().body("자신의 게시글에는 신청을 할 수 없습니다");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 
 
-const ProjectImage = ({projectIdx}) => {
+const ProjectsImage = ({projectIdx}) => {
   // console.log(`[ img.js ] P.idx : ${projectIdx}`)
   const [fileUrl, setFileUrl] = useState([]);
 
@@ -52,4 +52,4 @@ const ProjectImage = ({projectIdx}) => {
   );
 };
 
-export default ProjectImage;
+export default ProjectsImage;
