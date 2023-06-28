@@ -41,19 +41,20 @@ const ReviewDetail = () => {
     // 게시글 삭제 핸들러
     const deleteHandler = async () => {
         console.log("삭제버튼 클릭");
-        const res = await fetch(`${REVIEW}/delete/${reviewIdx}`, {
-            method: 'DELETE',
-            headers: requestHeader,
-            // body: JSON.stringify({
-            //     reviewIdx: reviewIdx
-            // })
-        });
 
-        httpStateCatcher(res.status);
-        if (res.status === 200) {
-            alert('삭제가 완료되었습니다.')
-            redirection(-1);
+
+        if (window.confirm('정말 삭제하시겠습니까?')) {
+            const res = await fetch(`${REVIEW}/delete/${reviewIdx}`, {
+                method: 'DELETE',
+                headers: requestHeader,
+            });
+            httpStateCatcher(res.status);
+            if (res.status === 200) {
+                alert('삭제가 완료되었습니다.')
+                redirection(-1);
+            }
         }
+
     }
 
     useEffect(()=>{

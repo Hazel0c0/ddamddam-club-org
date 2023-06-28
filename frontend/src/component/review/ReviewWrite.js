@@ -5,6 +5,7 @@ import {REVIEW} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import ReviewStarRating from "./StartRating/ReviewStarRating";
 import {getToken} from "../common/util/login-util";
+import {httpStateCatcher} from "../common/util/HttpStateCatcher";
 // import Tags from '@yaireo/tagify/dist/react.tagify';
 // import {getWhitelistFromServer, getValue} from './hashTagConfig/mockServer'
 
@@ -77,15 +78,8 @@ const MentorsWrite = () => {
             headers: requestHeader,
             body: JSON.stringify(data)
         });
-        if (res.status === 500) {
-            console.log(`서버 오류`);
-            return;
-        }
-        if (res.status === 400) {
-            const text = await res;
-            console.log(`오류시 알람 : ${text}`);
-            return;
-        } else {
+        httpStateCatcher(res.status);
+        if (res.status === 200) {
             alert('작성이 완료되었습니다.')
             redirection('/reviews')
         }
