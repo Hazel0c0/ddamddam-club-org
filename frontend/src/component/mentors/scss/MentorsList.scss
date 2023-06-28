@@ -59,7 +59,7 @@
       content: '';
       position: absolute;
       bottom: -10px;
-      left: 30px;
+      left: 50%;
       //border-radius: 2px;
       width: 0;
       height: 0;
@@ -67,6 +67,8 @@
       border-top: 0px solid transparent;
       border-left: 15px solid #292834;
       border-right: 15px solid transparent;
+
+      transform: translateX(-15%);
     }
 
 
