@@ -9,7 +9,9 @@ import CompanyBack from "./Pagenation/delete/CompanyBack_Temporary";
 const CompanyList = ({searchValue, searchKeyword,searchCareer}) => {
     // 전체 목록 리스트 출력
     useEffect(() => {
-    }, []);
+        console.log('useEffect CompanyList 실행')
+        console.log(`searchValue : `,searchValue,` searchKeyword : `,searchKeyword,`searchCareer : `,searchCareer )
+    }, [searchValue, searchKeyword,searchCareer]);
 
     return (
         <Common className={'company-list-wrapper'}>

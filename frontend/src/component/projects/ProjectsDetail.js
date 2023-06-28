@@ -140,13 +140,13 @@ const ProjectsDetail = () => {
   };
 
   return (
-    <>
-      <ProjectsTitle/>
-      <Common className={'project-detail-wrapper'}>
-        {projectDetail.map(de => {
-          return (
-            <section className={'main-text-wrapper'}>
-              <div key={de.boardIdx}>
+      <>
+        <ProjectsTitle/>
+        <Common className={'project-detail-wrapper'}>
+          {projectDetail.map(de => {
+            return (
+                <section className={'main-text-wrapper'}>
+                  <div key={de.boardIdx} className={'main-wrapper'}>
 
                 <div className={'category'}>
                   <span className={'p-sub-title'}>작성일자</span>
@@ -198,18 +198,13 @@ const ProjectsDetail = () => {
                       </div>
                     </div>
 
-                    <div className={'category'}>
-                      <span className={'p-sub-title'}>모집 마감 일자</span>
-                      <span className={'sub-content'}>{de.offerPeriod}</span>
-                    </div>
-                  </div>
-                </section>
-                <section
-                  className={'main-content'}
-                  style={{whiteSpace: 'pre-line'}}
-                >
-                  {de.boardContent}
-                </section>
+                        <div className={'category'}>
+                          <span className={'p-sub-title'}>모집 마감 일자</span>
+                          <span className={'sub-content'}>{de.offerPeriod}</span>
+                        </div>
+                      </div>
+                    </section>
+                    <section className={'main-content'}>{de.boardContent}</section>
 
                 <div className={'apply-wrapper'}
                      onClick={(e) => {

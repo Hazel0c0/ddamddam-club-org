@@ -19,8 +19,10 @@ const ProjectsMain = ({keyword}) => {
     'content-type': 'application/json',
     'Authorization': 'Bearer ' + ACCESS_TOKEN
   }
+
   const navigate = useNavigate();
   const childRef = useRef(null);
+
 
   // useEffect(() => {
   //   handlePageChange(likePage);
@@ -71,7 +73,7 @@ const ProjectsMain = ({keyword}) => {
   };
 
   return (
-    <>
+    <Common>
       <button className={'projects-write-btn'} onClick={handleWriteClick}>
         작성하기
       </button>
@@ -100,7 +102,7 @@ const ProjectsMain = ({keyword}) => {
           <ProjectsQuickMatching/>
         </div>
       }
-    </>
+    </Common>
   );
 };
 export default ProjectsMain;

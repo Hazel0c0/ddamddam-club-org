@@ -108,6 +108,8 @@
         background-color: white;
         padding: 5px 10px;
         border: 0.5px solid #828282;
+        display: flex;
+        align-items: center;
 
         .input-btn {
           width: 200px;
@@ -126,9 +128,7 @@
         }
 
         .search-icon {
-          //left: 10px;
-          //transform: translateY(50%);
-          //position: absolute;
+          margin-right: 5px;
           width: 14px;
         }
       }
