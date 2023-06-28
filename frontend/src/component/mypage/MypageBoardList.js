@@ -5,8 +5,6 @@ import {getToken} from "../common/util/login-util";
 import PageNation from "../common/pageNation/PageNation";
 import {Link, useNavigate} from "react-router-dom";
 
-{/* TODO : 큐앤에이만 요청 url 에 api/ddamddam 붙음 수정해주세요 */}
-
 /**
  * 내가 쓴 게시글 목록
  */
@@ -29,8 +27,13 @@ const MypageBoardList = () => {
   const [nextBtn, setNextBtn] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(1);
 
-  // 로그인 상태 검증 핸들러
+  const subStringContent = (str, n) => {
+    return str?.length > n
+      ? str.substr(0, n - 1) + "..."
+      : str;
+  }
 
+  // 로그인 상태 검증 핸들러
   const loginCheckHandler = (e) => {
     console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
     if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null) {
@@ -100,25 +103,25 @@ const MypageBoardList = () => {
               {
                 board.boardType === 'Q&A' &&
                 <Link to={`/qna/${board.boardIdx}`} onClick={loginCheckHandler}>
-                  {board.boardTitle}
+                  {subStringContent(board.boardTitle, 40)}
                 </Link>
               }
               {
                 board.boardType === '멘토/멘티' &&
                 <Link to={`/mentors/detail/chat/${board.boardIdx}/0`} onClick={loginCheckHandler}>
-                  {board.boardTitle}
+                  {subStringContent(board.boardTitle, 40)}
                 </Link>
               }
               {
                 board.boardType === '프로젝트 모집' &&
                 <Link to={`/projects/detail?projectIdx=${board.boardIdx}`} onClick={loginCheckHandler}>
-                  {board.boardTitle}
+                  {subStringContent(board.boardTitle, 40)}
                 </Link>
               }
               {
                 board.boardType === '취업후기' &&
                 <Link to={`/reviews/detail/${board.boardIdx}`} onClick={loginCheckHandler}>
-                  {board.boardTitle}
+                  {subStringContent(board.boardTitle, 40)}
                 </Link>
               }
             </div>
