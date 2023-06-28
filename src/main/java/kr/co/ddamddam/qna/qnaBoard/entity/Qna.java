@@ -44,6 +44,10 @@ public class Qna {
     @Builder.Default
     private int viewCount = 0;
 
+    @Column(name = "qna_weekly_view", nullable = false)
+    @Builder.Default
+    private int weeklyViewCount = 0; // 주간 조회수
+
     @Column(name = "qna_reply", nullable = false)
     @Builder.Default
     private int replyCount = 0;

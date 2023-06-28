@@ -68,10 +68,10 @@ public class QnaApiController {
     }
 
     /**
-     * QNA 게시글 조회순 TOP3 조회
+     * QNA 게시글 주간 조회순 TOP3 조회
      * [GET] /api/ddamddam/qna/top
-     * ❗ 조회수가 같을 경우, 게시글 index 번호가 낮은 게시글(더 먼저 작성된)이 우선 조회됩니다.
-     * @return - QNA 전체 게시글 중 조회수가 높은 상위 3개 게시글 리스트
+     * ❗ 주간 조회수가 같을 경우, 댓글 개수가 많은 게시글이 우선 조회됩니다.
+     * @return - QNA 전체 게시글 중 주간 조회수가 높은 상위 3개 게시글 리스트
      */
     @GetMapping("/top")
     public ApplicationResponse<?> getListTop3() {
