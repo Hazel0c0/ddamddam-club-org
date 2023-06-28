@@ -72,7 +72,8 @@
 
     .profile-img {
       background-image: url("../../../src_assets/IMG_4525.JPG");
-      background-size: 112px;
+      background-size: cover;
+      background-repeat: no-repeat;
       width: 120px;
       height: 120px;
       border-radius: 200px;
