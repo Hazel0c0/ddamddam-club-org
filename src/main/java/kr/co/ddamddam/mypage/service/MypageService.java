@@ -126,7 +126,6 @@ public class MypageService {
 
         // 유효성 검사 통과 시 서비스 기능 수행
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
-//        Long userIdx = 1L;
 
         List<Qna> qnaList = qnaRepository.findByUserUserIdx(userIdx);
         List<Mentor> mentorList = mentorRepository.findByUserUserIdx(userIdx);
@@ -193,12 +192,6 @@ public class MypageService {
         );
 
         // Project 게시글 리스트 매핑
-        mypageBoardList.addAll(
-            projectList.stream()
-                .map(project -> convertProjectToMypageDto(project))
-                .collect(Collectors.toList())
-        );
-        // Mentee 채팅방 리스트 매핑
         mypageBoardList.addAll(
             projectList.stream()
                 .map(project -> convertProjectToMypageDto(project))
