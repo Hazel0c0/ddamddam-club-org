@@ -140,7 +140,7 @@ const ProjectsWrite = () => {
                 >
                   <option value="Mobile Web">Mobile Web</option>
                   <option value="Web App">Web App</option>
-                  <option value="Native App">Native App</option>
+                  <option value="Native App">Hybrid App</option>
                   <option value="Native App">Native App</option>
                 </select>
               </div>

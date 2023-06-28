@@ -5,11 +5,10 @@ import {PROJECT} from "../../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import {Modal, Button} from 'react-bootstrap';
 import {getToken, getUserPosition, isLogin} from "../../common/util/login-util";
-import ProjectsQuickMatching from "../ProjectsQuickMatching";
+import ProjectsQuickMatching from "../나중에삭제예정퀵매칭";
 import LatestProjects from "../LatestProjects";
 import 'bootstrap/dist/css/bootstrap.css';
 import '../scss/ProjectsMain.scss';
-import '../scss/QuickMatching.scss';
 
 const ProjectsMain = ({keyword}) => {
 
@@ -97,12 +96,9 @@ const ProjectsMain = ({keyword}) => {
                 keyword={keyword}
             />
 
-            {isLogin() &&
-                <div className={'quick-wrapper'}>
-                    <ProjectsQuickMatching/>
-                </div>
-            }
+
         </Common>
+
 
     );
 };
