@@ -9,10 +9,8 @@ import {getToken} from "../common/util/login-util";
 import header from "../common/Header";
 
 const MentorsWrite = () => {
-    const redirection = useNavigate();
     const {boardIdx} = useParams();
     const [detailQna, setDetailQna] = useState([]);
-    const [hashTag, setHashTag] = useState("");
     const [textInput, setTextInput] = useState(
         {
             boardTitle: '',
@@ -20,11 +18,12 @@ const MentorsWrite = () => {
             hashtagList: []
         }
     )
+    // const [hashTagValue, setHashTagValue] =useState([]);
     const tagifyRef1 = useRef();
     const [tagifySettings, setTagifySettings] = useState([]);
     const [tagifyProps, setTagifyProps] = useState({});
 
-    const ACCESS_TOKEN =getToken();
+    const ACCESS_TOKEN = getToken();
     const requestHeader = {
         'content-type': 'application/json',
         'Authorization': 'Bearer ' + ACCESS_TOKEN
@@ -35,53 +34,52 @@ const MentorsWrite = () => {
         const res = await fetch(`${QNA}/${boardIdx}`, {
             method: 'GET',
             headers: requestHeader,
-            // body: JSON.stringify({
-            //     boardIdx: boardIdx
-            // })
         })
 
-        // if (res.status === 500) {
-        //     alert('잠시 후 다시 접속해주세요.[서버오류]');
-        //     return;
-        // }
+        if (res.status === 500) {
+            alert('잠시 후 다시 접속해주세요.[서버오류]');
+            return;
+        }
+
         const result = await res.json();
         setDetailQna(result.payload);
-
-        console.log(`수정할 value의 값: ${JSON.stringify(result.payload)}`);
+        setTextInput({
+            boardTitle: result.payload.boardTitle,
+            boardContent: result.payload.boardContent,
+            hashtagList: result.payload.hashtagList
+        })
+        console.log(`수정할 value의 값 : `, result.payload);
     }
+
 
     useEffect(() => {
 
         modifiedBoard();
 
-        setTagifyProps({loading: false});
-
-        getWhitelistFromServer(2000).then((response) => {
-            setTagifyProps((lastProps) => ({
-                ...lastProps,
-                // whitelist: response,
-                // showFilteredDropdown: "a",
-                loading: false
-            }))
-        })
-
-        // simulate setting tags value via server request
-        getValue(3000).then((response) =>
-            setTagifyProps((lastProps) => ({...lastProps, defaultValue: response}))
-        )
+        // setTagifyProps({loading: false});
 
         // simulate state change where some tags were deleted
-        setTimeout(
-            () =>
-                setTagifyProps((lastProps) => ({
-                    ...lastProps,
-                    defaultValue: [""]
-                    // showFilteredDropdown: false
-                })),
-            5000
-        )
+        // const timer = setTimeout(
+        //     () =>
+        //         setTagifyProps((lastProps) => ({
+        //             ...lastProps,
+        //             // defaultValue: ["wef"]
+        //             // showFilteredDropdown: false
+        //         })),
+        //     5000
+        // );
+        //
+        // return () => {
+        //     clearTimeout(timer);
+        // };
 
     }, [])
+
+
+    const hashTagStr = textInput.hashtagList.reduce((curVal, hashTag) => {
+        return curVal + hashTag;
+    }, '');
+    console.log('hashStr: ', hashTagStr);
 
 
     const handleSelect = (e) => {
@@ -148,6 +146,7 @@ const MentorsWrite = () => {
         }));
     }, [])
 
+    const test = [0,1,2]
 
     return (
         <Common className={'qna-write-wrapper'}>
@@ -174,8 +173,8 @@ const MentorsWrite = () => {
                     <Tags
                         tagifyRef={tagifyRef1}
                         settings={settings}
-                        // defaultValue="a,b,c"
-                        defaultValue={hashTag}
+                        // defaultValue={hashTagStr}
+                        value = {textInput.hashtagList}
                         autoFocus={true}
                         {...tagifyProps}
                         onChange={onChange}

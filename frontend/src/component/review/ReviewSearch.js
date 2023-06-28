@@ -5,6 +5,7 @@ import searchIcon from '../../src_assets/search-icon.png';
 import {Link, useNavigate} from "react-router-dom";
 import {getToken} from "../common/util/login-util";
 import {GrPowerReset} from "react-icons/gr";
+import {debounce} from "lodash";
 
 const ReviewSearch = ({onSearchChange, onSearchKeywordChange}) => {
     const [selectedBtn, setSelectedBtn] = useState('');
@@ -35,21 +36,25 @@ const ReviewSearch = ({onSearchChange, onSearchKeywordChange}) => {
             onSearchChange("VIEW");
             setSelectedBtn("VIEW");
         }
-        // onSearchChange(value);
-        // setSelectedBtn(value);
-        // onClickCurrentPageChange(1);
     }
 
-    //검색엔터
+    //디바운싱
+    const searchHandlerChange = debounce((value) => {
+        onSearchKeywordChange(value);
+    }, 400);
+
     const searchHandler = (e) => {
-        if (e.keyCode===13){
-            onSearchKeywordChange(e.target.value);
+        const value = e.target.value;
+        // onSearchKeywordChange(value);
+        if (e.keyCode === 13) {
+            searchHandlerChange.flush(); // 디바운스된 함수 즉시 실행
+        } else if (value === '') {
+            searchHandlerChange.cancel(); // 디바운스된 함수 취소
+            onSearchKeywordChange(''); // 검색 키워드 초기화
+        } else {
+            searchHandlerChange(value); // 디바운스된 함수 호출
         }
-        if (e.target.value === ''){
-            onSearchKeywordChange('');
-        }
-        onSearchKeywordChange(e.target.value);
-    }
+    };
 
     //검색버튼
     const submitHandler = () =>{

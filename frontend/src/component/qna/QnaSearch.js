@@ -5,6 +5,7 @@ import searchIcon from '../../src_assets/search-icon.png';
 import {Link, useNavigate} from "react-router-dom";
 import {getToken} from "../common/util/login-util";
 import {GrPowerReset} from "react-icons/gr";
+import {debounce} from "lodash";
 // import {GrPowerReset} from '/react-icons/gr';
 const QnaSearch = ({onSearchChange, onSearchKeywordChange}) => {
     const [selectedBtn, setSelectedBtn] = useState('');
@@ -40,22 +41,24 @@ const QnaSearch = ({onSearchChange, onSearchKeywordChange}) => {
         // onClickCurrentPageChange(1);
     }
 
-    //검색엔터
-    const searchHandler = (e) => {
-        if (e.keyCode===13){
-            onSearchKeywordChange(e.target.value);
-        }
-        if (e.target.value === ''){
-            onSearchKeywordChange('');
-        }
-        onSearchKeywordChange(e.target.value);
-    }
+    //디바운싱
+    const searchHandlerChange = debounce((value) => {
+        onSearchKeywordChange(value);
+    }, 400);
 
-    //검색버튼
-    const submitHandler = () =>{
-        const inputValue =  inputVal.current.value;
-        onSearchKeywordChange(inputValue);
-    }
+    const searchHandler = (e) => {
+        const value = e.target.value;
+        // onSearchKeywordChange(value);
+        if (e.keyCode === 13) {
+            searchHandlerChange.flush(); // 디바운스된 함수 즉시 실행
+        } else if (value === '') {
+            searchHandlerChange.cancel(); // 디바운스된 함수 취소
+            onSearchKeywordChange(''); // 검색 키워드 초기화
+        } else {
+            searchHandlerChange(value); // 디바운스된 함수 호출
+        }
+    };
+
     //리셋버튼
     const resetHandler = () =>{
         inputVal.current.value='';

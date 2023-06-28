@@ -28,7 +28,7 @@ import OAuth2RedirectHandler from "./component/snslogin/OAuth2RedirectHandler";
 import UserFindPassword from "./component/user/UserFindPassword";
 import MypageTemplate from "./component/mypage/MypageTemplate";
 import MypageUserModify from './component/mypage/MypageUserModify';
-import CompanyTemplate from "./component/Company/CompanyTemplate";
+import CompanyTemplate from "./component/company/CompanyTemplate";
 import UserFindInfo from "./component/user/UserFindInfo";
 import ReviewModify from "./component/review/ReviewModify";
 
