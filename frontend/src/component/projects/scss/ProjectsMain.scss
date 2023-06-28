@@ -1,6 +1,20 @@
-.project-list-wrapper{
+// 작성하기 btn
+.projects-write-btn{
+  position: relative;
+  left: 73%;
+  top : 75px;
+  padding: 13px 30px;
+  background-color: #292834;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 17px;
+  border: none;
+  z-index: 1;
+}
+
+.project-list-wrapper {
   padding: 35px 370px 50px;
-  //display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   position: relative;
@@ -30,78 +44,85 @@
   }
 
   .sort-title {
-    //width: 966px;
     width: 100%;
-    margin-bottom: 10px;
-    //height: 72px;
+    margin-bottom: 20px;
     flex-grow: 0;
-    //margin: 119px 23px 11px 67px;
     font-size: 30px;
-    font-weight: 500;
+    font-weight: 600;
     font-stretch: normal;
     font-style: normal;
     line-height: normal;
     letter-spacing: normal;
     text-align: left;
-    color: #000;
+    color: #292834;
   }
+
   .project-list-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    //grid-gap: 20px;
   }
 
   .project-list {
     width: 365px;
     height: 400px;
     flex-grow: 0;
-    //margin: 0 20.8px 0 65px;
     margin: 0 10px 30px;
     padding: 27px 20px 32.8px 20px;
     border-radius: 13px;
     border: solid 1px #d4d4d4;
     background-color: #fff;
+
     &:hover {
       cursor: pointer;
     }
 
     .text-title {
       width: 316px;
-      //height: 34.1px;
+      height: 55px;
       flex-grow: 0;
       margin: 10px 3.9px 7px 1.3px;
       font-size: 22px;
       font-weight: 700;
       text-align: left;
       color: #000;
+
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .text-content {
-      //width: 316px;
-      height: 68.2px;
-      min-height: 80px;
+      height: 60px;
       flex-grow: 0;
-      //margin: 16.4px 5.2px 5px 0;
       overflow-wrap: break-word;
       font-size: 15px;
       text-align: left;
       color: #000;
       margin-bottom: 5px;
+      position: relative;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
     }
 
     .project-type {
       text-align: center;
-      width: 72.8px;
-      border-radius: 2px;
-      //height: 17.7px;
+      width: fit-content;
+      border-radius: 26px;
       flex-grow: 0;
-      //margin: 5px 202.2px 18.6px 1.1px;
-      padding: 3.2px 14.3px 3.2px 14px;
-      background-color: rgba(30, 79, 255, 0.1);
+      padding: 6px 13px;
+      background-color: #292834;
+      color: #ffffff;
 
-      font-size: 10px;
-      //text-align: left;
-      color: #000;
+      .type-text {
+        font-size: 15px;
+      }
     }
 
     .project-completion {
@@ -114,11 +135,11 @@
       text-align: left;
       color: #446dfe;
     }
+
     .project-like-btn {
       width: 70px;
       height: 27px;
       flex-grow: 0;
-      //margin-left: auto;
       margin: -25px 0 0 250px;
       padding: 4px 8px 0 7px;
       border-radius: 50px;
@@ -141,14 +162,16 @@
       color: #fff;
     }
   }
-  .project-wrapper{
+
+  .project-wrapper {
     position: relative;
 
-    .project-img-wrapper{
+    .project-img-wrapper {
       overflow: hidden;
-      height: 170px;
+      height: 150px;
     }
-    .project-img{
+
+    .project-img {
       width: 100%;
 
     }

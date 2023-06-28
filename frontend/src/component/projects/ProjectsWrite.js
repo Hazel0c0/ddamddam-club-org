@@ -23,7 +23,7 @@ const ProjectsWrite = () => {
     boardWriterIdx: '1',
     boardTitle: '',
     boardContent: `1. 프로젝트의 시작 동기\n\n\n2. 회의 진행/모임 방식\n\n\n3. 그외 자유기재`,
-    projectType: '웹페이지',
+    projectType: 'Mobile Web',
     maxFront: '1',
     maxBack: '1',
     offerPeriod: tomorrowFormatted,
@@ -96,8 +96,8 @@ const ProjectsWrite = () => {
       <>
         <ProjectsTitle/>
         <Common className={'project-write-wrapper'}>
-          <section className={'write-form-wrapper'}>
 
+            {/* 이미지 */}
             <Grid item xs={12}>
               <div className="thumbnail-box" onClick={() => $fileTag.current.click()}>
                 <img
@@ -116,6 +116,8 @@ const ProjectsWrite = () => {
               />
             </Grid>
 
+          <section className={'write-form-wrapper'}>
+
             <div className={'title-input-wrapper'}>
               <h1 className={'sub-title'}>제목</h1>
               <input
@@ -127,6 +129,7 @@ const ProjectsWrite = () => {
                   onChange={handleInputChange}
               />
             </div>
+
             <div className={'select-input-wrapper'}>
               <div className={'project-type'}>
                 <div className={'sub-title'}>프로젝트 타입</div>
@@ -135,15 +138,15 @@ const ProjectsWrite = () => {
                         value={formData.projectType}
                         onChange={handleInputChange}
                 >
-                  <option value="웹개발">웹개발</option>
-                  <option value="모바일">모바일</option>
-                  <option value="반응형">반응형</option>
-                  <option value="기타">기타</option>
+                  <option value="Mobile Web">Mobile Web</option>
+                  <option value="Web App">Web App</option>
+                  <option value="Native App">Native App</option>
+                  <option value="Native App">Native App</option>
                 </select>
               </div>
 
 
-              <div className={'personnel'}>
+              <div className={'applicant'}>
                 <div className={'sub-title'}>모집인원</div>
                 <div className={'sub-title'}>프론트</div>
                 <select className="mentee-text-input"

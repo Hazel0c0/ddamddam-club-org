@@ -1,17 +1,19 @@
-import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useEffect, useState, forwardRef, useImperativeHandle} from 'react';
+import {useNavigate} from 'react-router-dom';
 import Common from '../common/Common';
 import less from '../../src_assets/less.png';
 import than from '../../src_assets/than.png';
 import logo from '../../src_assets/logo.png';
 
-import './scss/ProjectsItem.scss';
-import ProjectImage from './ProjectImage';
-import { PROJECT } from '../common/config/HostConfig';
+import ProjectsImage from './ProjectsImage';
+import {PROJECT} from '../common/config/HostConfig';
 
-const ProjectListContainer = ({ projects, handleShowDetails
-                                , handleLikeClick  }) => {
-
+const ProjectContainer
+    = ({
+         projects
+         , handleShowDetails
+         , handleLikeClick
+       }) => {
 
   return (
       <div className="project-list-container">
@@ -29,11 +31,15 @@ const ProjectListContainer = ({ projects, handleShowDetails
                   onClick={() => handleShowDetails(p.boardIdx)}
               >
                 <div className={'project-wrapper'}>
-                  <ProjectImage projectIdx={p.boardIdx} />
+                  <ProjectsImage projectIdx={p.boardIdx}/>
 
                   <div className={'text-title'}>{p.boardTitle}</div>
                   <div className={'text-content'}>{p.boardContent}</div>
-                  <div className={'project-type'}>{p.projectType}</div>
+                  <div className={'project-type'}>
+                    <div className={'type-text'}>
+                      {p.projectType}
+                    </div>
+                  </div>
                   <div className={'project-completion'}>{p.completion ? '모집완료' : '모집중'}</div>
                   <div
                       className={'project-like-btn'}
@@ -56,4 +62,4 @@ const ProjectListContainer = ({ projects, handleShowDetails
       </div>
   );
 };
-export default ProjectListContainer;
+export default ProjectContainer;

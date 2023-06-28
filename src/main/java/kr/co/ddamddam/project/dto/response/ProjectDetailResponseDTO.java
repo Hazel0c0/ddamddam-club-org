@@ -2,17 +2,13 @@ package kr.co.ddamddam.project.dto.response;
 
 //import kr.co.ddamddam.project.entity.applicant.Apply;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.co.ddamddam.project.entity.Project;
-import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
-import kr.co.ddamddam.project.entity.applicant.ApplicantOfFront;
+import kr.co.ddamddam.user.entity.UserPosition;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -25,6 +21,7 @@ public class ProjectDetailResponseDTO {
 
     private Long boardIdx;
     private String boardWriter;
+    private UserPosition writerPosition;
     private String boardImg;
     private String boardTitle;
     private String boardContent;
@@ -67,8 +64,8 @@ public class ProjectDetailResponseDTO {
         this.likeCount =project.getLikeCount();
 
         this.projectDate = formatProjectDate(project.getProjectDate());
-
     }
+
     private String formatProjectDate(LocalDateTime projectDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd  HH:mm");
         return projectDate.format(formatter);

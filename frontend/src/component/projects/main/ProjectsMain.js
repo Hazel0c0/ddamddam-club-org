@@ -3,13 +3,13 @@ import PopularProjects from "../PopularProjects";
 import Common from "../../common/Common";
 import {PROJECT} from "../../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
-
 import {Modal, Button} from 'react-bootstrap';
 import {getToken, getUserPosition, isLogin} from "../../common/util/login-util";
-import 'bootstrap/dist/css/bootstrap.css';
-import '../scss/QuickMatching.scss';
 import ProjectsQuickMatching from "../ProjectsQuickMatching";
 import LatestProjects from "../LatestProjects";
+import 'bootstrap/dist/css/bootstrap.css';
+import '../scss/ProjectsMain.scss';
+import '../scss/QuickMatching.scss';
 
 const ProjectsMain = ({keyword}) => {
 

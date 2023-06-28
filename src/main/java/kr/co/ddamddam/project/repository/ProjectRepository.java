@@ -37,5 +37,4 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
   List<Project> findByUserUserIdx(Long userIdx);
 
-//  boolean deleteByProjectIdxAndUser(Long projectIdx, User user);
 }
