@@ -25,7 +25,7 @@ public class ChatMessage {
     @JoinColumn(name = "sender_id")
     private User sender;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String content;
 
     @CreationTimestamp
