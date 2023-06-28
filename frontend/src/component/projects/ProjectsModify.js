@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Common from "../common/Common";
-import ProjectsTitle from "./ProjectsTitle";
+import ProjectsTitle from "./main/ProjectsTitle";
 import {PROJECT} from "../common/config/HostConfig";
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import './scss/ProjectsWrite.scss';
@@ -74,21 +74,23 @@ const ProjectsModify = () => {
 
 
     // 작성완료 버튼을 눌렀을 때 실행되는 함수
-    const res = fetch(PROJECT, {
-      method: 'PATCH',
-      headers : headerInfo,
-      body: projectFormData
-    }).then(response => response.json())
-      .then(data => {
-        setUpdatedFormData(data.formData);
-        console.log(data); // Handle the response data
+    if (window.confirm("작성을 완료하시겠습니까?")) {
+      const res = fetch(PROJECT, {
+        method: 'PATCH',
+        headers: headerInfo,
+        body: projectFormData
+      }).then(response => response.json())
+        .then(data => {
+          setUpdatedFormData(data.formData);
+          console.log(data); // Handle the response data
 
-        navigate(`/projects/detail?projectIdx=${projectIdx}`)
-      })
-      .catch(error => {
-        console.error(error);
-      });
-    console.log(updatedFormData); // 예시: 콘솔에 데이터 출력
+          navigate(`/projects/detail?projectIdx=${projectIdx}`)
+        })
+        .catch(error => {
+          console.error(error);
+        });
+      console.log(updatedFormData); // 예시: 콘솔에 데이터 출력
+    }
   };
 
   const $fileTag = useRef();

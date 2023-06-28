@@ -15,7 +15,8 @@ const PopularProjects = forwardRef((
       sortTitle,
       handleLikeClick,
       handleShowDetails,
-      keyword
+      keyword,
+        isLike
     },
     ref
   ) => {
@@ -23,7 +24,6 @@ const PopularProjects = forwardRef((
 // 키워드 null값 처리
     const navigate = useNavigate();
     const [projects, setProjects] = useState([]);
-
     const [pageNation, setPageNation] = useState([]);
     const [prevBtn, setPrevBtn] = useState(false);
     const [nextBtn, setNextBtn] = useState(false);
@@ -31,21 +31,21 @@ const PopularProjects = forwardRef((
     const [carouselIndex, setCarouselIndex] = useState(1);
     const [clickCurrentPage, setClickCurrentPage] = useState(1);
 
-    const LIKE_PAGE_SIZE = 3;
 
     const currentPageHandler = (clickPageNum) => {
-      console.log(`페이지 클릭 시 현재 페이지 번호: ${clickPageNum}`);
+      console.log(`page click: ${clickPageNum}`);
       setClickCurrentPage(clickPageNum);
     }
+
     useImperativeHandle(ref, () => ({
       fetchData
     }));
 
     let FETCH;
     if (!!keyword) {
-      FETCH = `${PROJECT}?page=${carouselIndex}&size=${LIKE_PAGE_SIZE}&like=true&keyword=${keyword}`;
+      FETCH = `${PROJECT}?page=${carouselIndex}&like=true&keyword=${keyword}`;
     } else {
-      FETCH = `${PROJECT}?page=${carouselIndex}&size=${LIKE_PAGE_SIZE}&like=true`;
+      FETCH = `${PROJECT}?page=${carouselIndex}&like=true`;
     }
     const fetchData = () => {
       fetch(FETCH, {
@@ -77,7 +77,7 @@ const PopularProjects = forwardRef((
 
     useEffect(() => {
       fetchData();
-    }, [carouselIndex, keyword]);
+    }, [carouselIndex, keyword,isLike]);
 
 
     // 페이지 처리

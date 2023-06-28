@@ -14,7 +14,6 @@ const LatestProjects = forwardRef((
       handleLikeClick,
       handleShowDetails,
       keyword
-
     },
     ref
   ) => {
@@ -26,13 +25,14 @@ const LatestProjects = forwardRef((
     const [clickCurrentPage, setClickCurrentPage] = useState(1);
 
     const currentPageHandler = (clickPageNum) => {
-      console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
+        console.log(`page click: ${clickPageNum}`);
       setClickCurrentPage(clickPageNum);
     }
 
     useImperativeHandle(ref, () => ({
       fetchData
     }));
+
     let FETCH;
     if (!!keyword) {
       FETCH = PROJECT + `?page=${clickCurrentPage}&keyword=${keyword}`;

@@ -17,11 +17,10 @@ const ProjectsQuickMatching = () => {
   const [quickDetail, setQuickDetail] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // 퀵 매칭
   const [show, setShow] = useState(false);
 
+  // 퀵 매칭 버튼 클릭
   const handleShow = () => {
-    console.log('퀵 매칭 버튼 클릭');
     setShow(true);
     quickMatchingFetchData();
   };
@@ -32,7 +31,7 @@ const ProjectsQuickMatching = () => {
   };
 
   // 퀵 매칭 데이터 불러오기
-  const quick = PROJECT + `/quick?position=${USER_POSITION}&size=1&page=${currentPage}`;
+  const quick = PROJECT + `/quick?position=${USER_POSITION}&page=${currentPage}`;
   const quickMatchingFetchData = () => {
     fetch(quick, {
       method: 'GET',
@@ -47,7 +46,6 @@ const ProjectsQuickMatching = () => {
       })
       .then(res => {
         if (res) {
-          console.log('퀵 매칭 데이터 패치');
           console.log(res.payload.projects);
           setQuickDetail(res.payload.projects);
         }
@@ -120,16 +118,16 @@ const ProjectsQuickMatching = () => {
               </div>
             </Modal.Body>
             <Modal.Footer>
-              {/*{currentPage > 0 && (*/}
+              {currentPage > 1 && (
               <Button variant="secondary" onClick={handlePreviousPage}>
                 이전
               </Button>
-              {/*)}*/}
-              {/*{currentPage < board.pages - 1 && (*/}
+              )}
+              {currentPage <= 10 && (
               <Button variant="primary" onClick={handleNextPage}>
                 다음
               </Button>
-              {/*)}*/}
+              )}
               <Button variant="secondary" onClick={handleClose}>
                 닫기
               </Button>

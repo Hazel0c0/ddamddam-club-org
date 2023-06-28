@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
-import Common from "../common/Common";
-import searchIcon from "../../src_assets/search-icon.png";
-import './scss/ProjectSearch.scss';
+import Common from "../../common/Common";
+import searchIcon from "../../../src_assets/search-icon.png";
+import '../scss/ProjectSearch.scss';
 import {Link, useNavigate} from "react-router-dom";
-import {PROJECT} from "../common/config/HostConfig";
+import {PROJECT} from "../../common/config/HostConfig";
 
 const ProjectsSearch = () => {
     const [searchText, setSearchText] = useState([]);

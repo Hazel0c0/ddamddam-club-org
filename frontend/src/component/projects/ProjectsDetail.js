@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Common from "../common/Common";
-import ProjectsTitle from "./ProjectsTitle";
+import ProjectsTitle from "./main/ProjectsTitle";
 import {PROJECT} from "../common/config/HostConfig";
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import './scss/ProjectDetail.scss';
@@ -92,8 +92,9 @@ const ProjectsDetail = () => {
     fetchFileImage();
   }, []);
 
-  const handleDelete = (id) => {
-    console.log("delete id : " + id);
+    const handleDelete = (id) => {
+        console.log("delete id : " + id);
+        if (window.confirm("삭제 하시겠습니까?")) {
 
     fetch(PROJECT + `/${projectIdx}`, {
       method: 'DELETE',
@@ -107,37 +108,40 @@ const ProjectsDetail = () => {
         navigate('/projects');
         setProjectDetail([response.payload]);
 
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    };
 
-  const handleApply = () => {
-    fetch(PROJECT + `/applicant/${projectIdx}`, {
-      method: 'PATCH',
-      headers: headerInfo,
-      body: JSON.stringify({}),
-    })
-      .then((response) => {
-        if (response.status === 400) {
-          return response.text();
+    const handleApply = () => {
+        if (window.confirm('정말로 신청하시겠습니까?')) {
+            fetch(PROJECT + `/applicant/${projectIdx}`, {
+                method: 'PATCH',
+                headers: headerInfo,
+                body: JSON.stringify({}),
+            })
+                .then((response) => {
+                    if (response.status === 400) {
+                        return response.text();
+                    }
+                    console.log('신청 성공')
+                    console.log(response.json())
+                    // 성공적으로 요청을 보냈을 때 처리할 코드를 추가합니다.
+                    fetchProjectDetail(); // 변경된 정보로 다시 가져오기
+                })
+                .then((errorMessage) => {
+                    if (errorMessage) {
+                        alert(errorMessage);
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                    // 요청이 실패했을 때 처리할 코드를 추가합니다.
+                });
         }
-        console.log('신청 성공')
-        console.log(response.json())
-        // 성공적으로 요청을 보냈을 때 처리할 코드를 추가합니다.
-        fetchProjectDetail(); // 변경된 정보로 다시 가져오기
-      })
-      .then((errorMessage) => {
-        if (errorMessage) {
-          alert(errorMessage);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        // 요청이 실패했을 때 처리할 코드를 추가합니다.
-      });
-  };
+    };
 
   return (
       <>
