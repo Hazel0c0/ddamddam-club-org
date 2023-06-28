@@ -6,6 +6,7 @@ import {getToken} from "../common/util/login-util";
 import {REVIEW} from "../common/config/HostConfig";
 import ReviewStarRating from "./StartRating/ReviewStarRating";
 import Common from "../common/Common";
+import {httpStateCatcher} from "../common/util/HttpStateCatcher";
 
 const ReviewModify = () => {
   const redirection = useNavigate();
@@ -37,23 +38,29 @@ const ReviewModify = () => {
       headers: requestHeader
     });
 
-    if (res.status === 500) {
-      alert('잠시 후 다시 접속해주세요.[서버오류]');
-      return;
-    }
+    httpStateCatcher(res.status);
 
     const result = await res.json();
     console.log(`result = `, result)
     setDetailReview(result);
+    // 업데이트된 값으로 상태 업데이트
+    setReviewRating(result.reviewRating);
+    setTextInput({
+      reviewTitle: result.reviewTitle,
+      reviewContent: result.reviewContent,
+      reviewJob: result.reviewJob,
+      reviewTenure: result.reviewTenure,
+      companyName: result.reviewCompanyName,
+      reviewLocation: result.reviewLocation,
+    });
   }
 
   const handleSelect = (e) => {
     const {name, value} = e.target;
-    let parseValue = value;
 
     setTextInput((prevTextInput) => ({
       ...prevTextInput,
-      [name]: parseValue
+      [name]: value
     }));
   };
 
@@ -85,7 +92,7 @@ const ReviewModify = () => {
       reviewLocation: reviewLocation
     };
 
-    console.log(`요청 보낼 data : ${data}`);
+    console.log(`요청 보낼 data : ${JSON.stringify(data)}`);
 
     const res = await fetch(`${REVIEW}/modify`, {
       method: 'PATCH',
@@ -93,22 +100,8 @@ const ReviewModify = () => {
       body: JSON.stringify(data)
     });
 
-    if (res.status === 400) {
-      alert('잘못된 요청 값 입니다.')
-      return;
-    } else if (res.status === 401) {
-      alert('로그인이 만료되었습니다.')
-      window.location.href = "/";
-    } else if (res.status === 403) {
-      alert('권한이 없습니다.')
-      window.location.href = "/";
-    } else if (res.status === 404) {
-      alert('요청을 찾을 수 없습니다.');
-      return;
-    } else if (res.status === 500) {
-      alert('잠시 후 다시 접속해주세요.[서버오류]');
-      return;
-    } else if (res.status === 200) {
+    httpStateCatcher(res.status);
+    if (res.status === 200) {
       alert('수정이 완료되었습니다.');
       redirection(`/reviews/detail/${reviewIdx}`);
     }

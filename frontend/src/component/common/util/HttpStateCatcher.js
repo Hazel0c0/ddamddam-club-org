@@ -1,6 +1,12 @@
-export function httpStateCatcher (status, successMessage) {
+/**
+ * 에러 Http status 를 처리하는 역할
+ * ❗ 200 일 경우는 각자 컴포넌트에서 처리합니다.
+ * @param status - Http 상태코드
+ */
+
+export function httpStateCatcher (status) {
   if (status === 400) {
-    alert('제목은 100자 이내, 내용은 1000자 이내로 작성해주세요.');
+    alert('제목은 100자 이내, 내용은 1000자 이내로 공백없이 작성해주세요.');
     return;
   } else if (status === 401) {
     alert('로그인이 만료되었습니다.');
