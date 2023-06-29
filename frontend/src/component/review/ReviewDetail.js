@@ -6,7 +6,7 @@ import {QNA, REVIEW} from "../common/config/HostConfig";
 import {getToken, getUserIdx} from "../common/util/login-util";
 import ReviewStar from "./StartRating/ReviewStar";
 import back from "../../src_assets/back.png";
-import {httpStateCatcherWrite} from "../common/util/HttpStateCatcherWrite";
+import {httpStateCatcherDelete, httpStateCatcherWrite} from "../common/util/HttpStateCatcherWrite";
 
 const ReviewDetail = () => {
     const redirection = useNavigate();
@@ -21,7 +21,7 @@ const ReviewDetail = () => {
     };
 
     const asyncDetail = async () => {
-        console.log(reviewIdx);
+        // console.log(reviewIdx);
         const res = await fetch(`${REVIEW}/detail?reviewIdx=${reviewIdx}`, {
             method: 'GET',
             headers: requestHeader
@@ -34,13 +34,13 @@ const ReviewDetail = () => {
         // }
 
         const result = await res.json();
-        console.log(`디테일 result = `,result)
+        // console.log(`디테일 result = `,result)
         setDetailReview(result);
     }
 
     // 게시글 삭제 핸들러
     const deleteHandler = async () => {
-        console.log("삭제버튼 클릭");
+        // console.log("삭제버튼 클릭");
 
 
         if (window.confirm('정말 삭제하시겠습니까?')) {
@@ -48,7 +48,7 @@ const ReviewDetail = () => {
                 method: 'DELETE',
                 headers: requestHeader,
             });
-            httpStateCatcherWrite(res.status);
+            httpStateCatcherDelete(res.status);
             if (res.status === 200) {
                 alert('삭제가 완료되었습니다.')
                 redirection(-1);

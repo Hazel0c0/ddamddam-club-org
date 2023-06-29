@@ -1,19 +1,14 @@
-
-
-import ReviewTotal from "./Pagination/ReviewTotal";
 import Common from "../common/Common";
 import './scss/ReviewList.scss'
 import {getToken} from "../common/util/login-util";
 import React, {useEffect, useState} from "react";
-import ReviewSearchKeyword from "./Pagination/ReviewSearchKeyword";
-import ReviewView from "./Pagination/ReviewView";
-import ReviewRating from "./Pagination/ReviewRating";
 import {REVIEW} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import ReviewStar from "./StartRating/ReviewStar";
 import {IoIosArrowForward} from "react-icons/io";
 import viewIcon from "../../src_assets/view-icon.png";
 import PageNation from "../common/pageNation/PageNation";
+import {httpStateCatcher} from "../common/util/HttpStateCatcherWrite";
 
 const ReviewList = ({searchValue, searchKeyword}) => {
     const [pageTrue, setPageTrue] = useState({
@@ -39,8 +34,8 @@ const ReviewList = ({searchValue, searchKeyword}) => {
         if (ACCESS_TOKEN !== '' && ACCESS_TOKEN !== null) {
             setLoginCheck(true);
         }
-        console.log(`카테고리 : searchValue = ${searchValue}`)
-        console.log(`검색어 : searchKeyword = ${searchKeyword}`)
+        // console.log(`카테고리 : searchValue = ${searchValue}`)
+        // console.log(`검색어 : searchKeyword = ${searchKeyword}`)
 
         asyncReviewTotalList();
     }, [searchValue, searchKeyword, clickTotalCurrentPage, clickRatingCurrentPage, clickViewCurrentPage]);
@@ -53,30 +48,31 @@ const ReviewList = ({searchValue, searchKeyword}) => {
         if (searchValue === 'VIEW') responseUrl = `/search?keyword=${searchKeyword}&page=${clickViewCurrentPage}&size=10&sort=${searchValue}`
         // const responseUrl = `/search?keyword=${searchKeyword}&page=${clickCurrentPage}&size=10&sort=${searchValue}`
 
-        console.log(`responseUrl의 값 : `,responseUrl)
+        // console.log(`responseUrl의 값 : `,responseUrl)
         const res = await fetch(`${REVIEW}${responseUrl}`, {
             method: 'GET',
             headers: {'content-type': 'application/json'}
         });
 
-        if (res.status === 500) {
-            alert('잠시 후 다시 접속해주세요.[서버오류]');
-            return;
-        }
+        httpStateCatcher(res.status);
+        // if (res.status === 500) {
+        //     alert('잠시 후 다시 접속해주세요.[서버오류]');
+        //     return;
+        // }
 
         // if (searchValue === '') setClickTotalCurrentPage(1);
         // if (searchValue === 'RATING') setClickRatingCurrentPage(1)
         // if (searchValue === 'VIEW') setClickViewCurrentPage(1)
 
         const reviewList = await res.json();
-        console.log(`전체 reviewList : `, reviewList)
+        // console.log(`전체 reviewList : `, reviewList)
         setReviewList(reviewList.responseList);
         setPageNation(reviewList.pageInfo);
     }
 
 
     const currentPageHandler = (clickPageNum) => {
-        console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
+        // console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
         if (searchValue === '') setClickTotalCurrentPage(clickPageNum);
         if (searchValue === 'RATING') setClickRatingCurrentPage(clickPageNum)
         if (searchValue === 'VIEW') setClickViewCurrentPage(clickPageNum)
