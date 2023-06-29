@@ -4,11 +4,15 @@ import TypeIt from "typeit-react";
 import './scss/MainTemplate.scss';
 import {SlArrowDown} from 'react-icons/sl';
 import AddInfo from "./AddInfo";
+import {useMediaQuery} from "react-responsive";
 
 const MainTemplate = () => {
     const inputText = 'Hi, We Are \nDDAMDDAM Club!';
     const subText = '땀땀클럽은 개발자들간의 커뮤니티 공간입니다.\n멘토링, 프로젝트 모집 등 다양한 콘텐츠를 즐겨보세요!';
     const [arrow, setArrow] = useState(false);
+    const presentationScreen = useMediaQuery({
+        query: "(max-width: 1024px)",
+    });
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -33,7 +37,7 @@ const MainTemplate = () => {
                     {arrow &&
                         <div className={'show-arrow-wrapper'}>
                             <p className={'arrow-text'}>스크롤을 아래로 내려 땀땀클럽을 구경해보세요!</p>
-                            <div className={'arrow-icon'}><SlArrowDown/></div>
+                            {/*<div className={'arrow-icon'}><SlArrowDown/></div>*/}
                         </div>
                     }
                 </div>

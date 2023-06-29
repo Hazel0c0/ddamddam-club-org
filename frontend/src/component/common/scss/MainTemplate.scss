@@ -7,18 +7,18 @@
 }
 
 .top-wrapper{
-
   //background-color: black;
-  height: 950px;
+  height: 100vh;
   color: white;
   white-space: pre-line;
   flex-direction: column;
-  padding: 0px 370px;
+  //padding: 0px 300px;
   text-align: center;
   position: relative;
   @include content-center;
   background-image: url("../../../src_assets/main-background.jpg");
   background-size: 100%;
+  background-repeat: no-repeat;
   background-position-y: 80px;
 
   .input-font{
