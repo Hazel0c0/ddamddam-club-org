@@ -6,6 +6,7 @@ import {IoIosArrowForward} from "react-icons/io";
 import PageNation from "../../common/pageNation/PageNation";
 import {QNA} from "../../common/config/HostConfig";
 import {getToken} from "../../common/util/login-util";
+import {httpStateCatcher} from "../../common/util/HttpStateCatcherWrite";
 
 const QnaNoAdoption = ({loginCheck, searchKeyword, searchValue}) => {
     const [qnaList, setQnaList] = useState([]);
@@ -24,10 +25,11 @@ const QnaNoAdoption = ({loginCheck, searchKeyword, searchValue}) => {
             headers: {'content-type': 'application/json'}
         });
 
-        if (res.status === 500) {
-            alert('잠시 후 다시 접속해주세요.[서버오류]');
-            return;
-        }
+        httpStateCatcher(res.status);
+        // if (res.status === 500) {
+        //     alert('잠시 후 다시 접속해주세요.[서버오류]');
+        //     return;
+        // }
 
         const qnaList = await res.json();
         // console.log(qnaList)

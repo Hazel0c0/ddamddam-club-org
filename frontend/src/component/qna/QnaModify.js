@@ -7,6 +7,7 @@ import Tags from '@yaireo/tagify/dist/react.tagify';
 import {getWhitelistFromServer, getValue} from './hashTagConfig/mockServer'
 import {getToken} from "../common/util/login-util";
 import header from "../common/Header";
+import {httpStateCatcher, httpStateCatcherModify} from "../common/util/HttpStateCatcherWrite";
 
 const MentorsWrite = () => {
     const {boardIdx} = useParams();
@@ -36,10 +37,11 @@ const MentorsWrite = () => {
             headers: requestHeader,
         })
 
-        if (res.status === 500) {
-            alert('잠시 후 다시 접속해주세요.[서버오류]');
-            return;
-        }
+        httpStateCatcher(res.status);
+        // if (res.status === 500) {
+        //     alert('잠시 후 다시 접속해주세요.[서버오류]');
+        //     return;
+        // }
 
         const result = await res.json();
         setDetailQna(result.payload);
@@ -48,7 +50,7 @@ const MentorsWrite = () => {
             boardContent: result.payload.boardContent,
             hashtagList: result.payload.hashtagList
         })
-        console.log(`수정할 value의 값 : `, result.payload);
+        // console.log(`수정할 value의 값 : `, result.payload);
     }
 
 
@@ -79,7 +81,7 @@ const MentorsWrite = () => {
     const hashTagStr = textInput.hashtagList.reduce((curVal, hashTag) => {
         return curVal + hashTag;
     }, '');
-    console.log('hashStr: ', hashTagStr);
+    // console.log('hashStr: ', hashTagStr);
 
 
     const handleSelect = (e) => {
@@ -94,7 +96,7 @@ const MentorsWrite = () => {
 
     //수정완료버튼
     const modifySubmitHandler = async () => {
-        console.log(textInput);
+        // console.log(textInput);
         const {boardTitle, boardContent, hashtagList} = textInput;
         const res = fetch(`${QNA}/modify/${boardIdx}`, {
             method: 'PATCH',
@@ -108,13 +110,13 @@ const MentorsWrite = () => {
         });
 
         const result = await res;
+        httpStateCatcherModify(result.status);
         if (result.status === 200) {
             alert("게시글 수정이 완료되었습니다.");
             window.location.href = `/qna/${boardIdx}`
-
         }
-        console.log(result)
-        console.log(JSON.stringify(result));
+        // console.log(result)
+        // console.log(JSON.stringify(result));
 
     }
 
@@ -138,7 +140,7 @@ const MentorsWrite = () => {
 
         const inputHashTag = e.detail.tagify.getCleanValue();
         const hashTagArr = inputHashTag.map(hashtag => (hashtag.value));
-        console.log("CHANGED:" + hashTagArr);
+        // console.log("CHANGED:" + hashTagArr);
 
         setTextInput((prevTextInput) => ({
             ...prevTextInput,

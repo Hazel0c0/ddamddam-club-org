@@ -212,11 +212,11 @@ const QnaDetail = () => {
       })
 
       httpStateCatcherDelete(res.status);
-      if (res.status === 400) { // 가입이 안되어있거나, 비번틀린 경우
-        const text = await res.text(); // 서버에서 온 문자열 읽기
-        alert(text);
-        return;
-      }
+      // if (res.status === 400) { // 가입이 안되어있거나, 비번틀린 경우
+      //   const text = await res.text(); // 서버에서 온 문자열 읽기
+      //   alert(text);
+      //   return;
+      // }
 
       // console.log(`replyData : ${JSON.stringify(replyData)}`);
       // console.log(`replyData : ${(replyData.payload)}`);
@@ -225,12 +225,12 @@ const QnaDetail = () => {
 
       if (replyData.payload === "SUCCESS") {
         const replyIndex = checkedReplyAdoption.findIndex((reply) => {
-          console.log('after success reply: ', reply);
-          console.log('after success replyIdxVal: ', replyIdxValue);
+          // console.log('after success reply: ', reply);
+          // console.log('after success replyIdxVal: ', replyIdxValue);
           return reply.replyIdx === +replyIdxValue;
         });
-        console.log(`replyIndex = ${replyIndex}`);
-        console.log(`checkedReplyAdoption 값 : ${JSON.stringify(checkedReplyAdoption)}`);
+        // console.log(`replyIndex = ${replyIndex}`);
+        // console.log(`checkedReplyAdoption 값 : ${JSON.stringify(checkedReplyAdoption)}`);
         if (replyIndex !== -1) {
           const updatedChekedReplyAdoption = [...checkedReplyAdoption];
           updatedChekedReplyAdoption[replyIndex] = {
@@ -238,7 +238,7 @@ const QnaDetail = () => {
             replyAdoption: 'Y'
           };
           setCheckedReplyAdoption(updatedChekedReplyAdoption);
-          console.log(`set되고 출력 updatedChekedReplyAdoption 값 : ${JSON.stringify(updatedChekedReplyAdoption)}`);
+          // console.log(`set되고 출력 updatedChekedReplyAdoption 값 : ${JSON.stringify(updatedChekedReplyAdoption)}`);
         }
 
 
@@ -291,7 +291,7 @@ const QnaDetail = () => {
           })
         });
         // const result = await res;
-        console.log(`result.body : ${result.body}`)
+        // console.log(`result.body : ${result.body}`)
 
         httpStateCatcherWrite(result.status);
         if (result.status === 200) {
