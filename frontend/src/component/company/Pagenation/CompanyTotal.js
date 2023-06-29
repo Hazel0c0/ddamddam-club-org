@@ -3,6 +3,7 @@ import {COMPANY, REVIEW} from "../../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import {RxCalendar} from "react-icons/rx"
 import {Spinner} from 'reactstrap';
+import {throttle} from "lodash";
 
 const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
     const [companyList, setCompanyList] = useState([]);
@@ -24,13 +25,11 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
 
     useEffect(() => {
         console.log(`useEffect 실행`)
-        if (finalPage >= page) {
+
+        if (getFetch) {
             fetchData(page);
         }
-        if (finalPage > 1 && finalPage === page) {
-            setIsLoading(false);
-        }
-    }, [page, searchKeyword, searchValue, searchCareer, getFetch]);
+    }, [page, searchKeyword, searchValue, searchCareer]);
 
     useEffect(() => {
         if (getFetch) {
@@ -42,11 +41,11 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
                 window.removeEventListener('scroll', handleScroll);
             };
         }
-    }, []);
+    }, [getFetch]);
 
     const fetchData = async (page) => {
-        console.log(`set 후 현재 page : `, page)
-        console.log(`set 후 현재 finalPage : `, finalPage)
+        // console.log(`set 후 현재 page : `, page)
+        // console.log(`set 후 현재 finalPage : `, finalPage)
 
         setIsLoading(true)
         const res = await fetch(
@@ -61,8 +60,7 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
             return;
         }
 
-        console.log()
-        console.log(`현재 페이지 url : ${COMPANY}/searchAll?keyword=${searchKeyword}&page=${page}&size=10&career=${searchCareer}`)
+        // console.log(`현재 페이지 url : ${COMPANY}/searchAll?keyword=${searchKeyword}&page=${page}&size=10&career=${searchCareer}`)
 
         const result = await res.json();
 
@@ -103,9 +101,10 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
     }
 
     let throttleTimer = null;
-    const handleScroll = () => {
+    const handleScroll = (e) => {
+        // console.log(`getfetch의 값 : `, getFetch)
         if (getFetch) {
-            console.log(`스크롤 이벤트 발생`);
+            // console.log(`스크롤 이벤트 발생`);
             // console.log(`마지막 페이지 찾기의 page : `, page)
             // console.log(`마지막 페이지 찾기의 finaPage : `, finalPage)
 
@@ -126,8 +125,9 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
                     setPage((prevPage) => prevPage + 1);
                 }
                 throttleTimer = null;
-            }, 2000)
+            }, 1500)
 
+            console.log(`loding true!!`)
             setIsLoading(true)
         }
     }
@@ -177,48 +177,47 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
                 <span className={'sort-date'}>날짜</span>
             </section>
             {companyList.map((company, index) => (
-                <>
-                    <section
-                        key={`${company.companyIdx}-${index}`}
-                        className={'company-list'}
-                        onMouseEnter={() => showLinkHandler(index)}
-                        onMouseLeave={() => hiddenLinkHandler(index)}
-                    >
-                        <div className={'d-day'}>{company.dDay}</div>
-                        <div className={'company-career'}>{company.companyCareer}</div>
-                        <div className={'companyName'}>{company.companyName}</div>
-                        <section className={'title-wrapper'}>
-                            <div className={'title'}>{company.companyTitle}</div>
 
-                            <div className={'info-wrapper'}>
-                                <div className={'info-salary-text'}>
-                                    <span className={'info-title'}>월급</span>
-                                    <span className={'info-content'}>{company.companySal}</span>
-                                </div>
-                                <div className={'info-location-text'}>
-                                    <span className={'info-title'}>위치</span>
-                                    <span className={'info-content'}>{company.companyArea}</span>
-                                </div>
+                <section
+                    key={`${company.companyIdx}-${index}`}
+                    className={'company-list'}
+                    onMouseEnter={() => showLinkHandler(index)}
+                    onMouseLeave={() => hiddenLinkHandler(index)}
+                >
+                    <div className={'d-day'}>{company.dDay}</div>
+                    <div className={'company-career'}>{company.companyCareer}</div>
+                    <div className={'companyName'}>{company.companyName}</div>
+                    <section className={'title-wrapper'}>
+                        <div className={'title'}>{company.companyTitle}</div>
+
+                        <div className={'info-wrapper'}>
+                            <div className={'info-salary-text'}>
+                                <span className={'info-title'}>월급</span>
+                                <span className={'info-content'}>{company.companySal}</span>
                             </div>
-                        </section>
-
-                        <div className={'date-wrapper'}>
-                            <RxCalendar className={'date-icon'}/>
-                            <span className={'date'}>{company.companyDate} ~ {company.companyEnddate}</span>
+                            <div className={'info-location-text'}>
+                                <span className={'info-title'}>위치</span>
+                                <span className={'info-content'}>{company.companyArea}</span>
+                            </div>
                         </div>
-                        {goWorknet[index] &&
-                            <button onClick={() => window.open(`${company.companyUrl}`, '_blank')}
-                                    className={'go-worknet'}>
-                                클릭시 워크넷 채용정보 페이지로 이동합니다.
-                            </button>
-                        }
-
                     </section>
 
-                </>
+                    <div className={'date-wrapper'}>
+                        <RxCalendar className={'date-icon'}/>
+                        <span className={'date'}>{company.companyDate} ~ {company.companyEnddate}</span>
+                    </div>
+                    {goWorknet[index] &&
+                        <button onClick={() => window.open(`${company.companyUrl}`, '_blank')}
+                                className={'go-worknet'}>
+                            클릭시 워크넷 채용정보 페이지로 이동합니다.
+                        </button>
+                    }
+
+                </section>
+
+
             ))}
 
-            {getFetch ? '페치값 true' : '페치값 false'}
             {isLoading && page !== finalPage &&
                 <div className={'grow-wrapper'}>
                     <Spinner type={"grow"}></Spinner>
@@ -226,29 +225,11 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
                     <Spinner type={"grow"}></Spinner>
                 </div>
             }
-
-            {/*{!isLoading }*/}
-            {/*<div className={'grow-wrapper'}>*/}
-            {/*    <div className={'no-search-result'}>마지막 페이지 입니다.</div>*/}
-            {/*</div>*/}
-
-
-            {/*{isLoading && page!==finalPage*/}
-            {/*    ? <div className={'grow-wrapper'}>*/}
-            {/*        <Spinner type={"grow"}></Spinner>*/}
-            {/*        <Spinner type={"grow"}></Spinner>*/}
-            {/*        <Spinner type={"grow"}></Spinner>*/}
-            {/*    </div>*/}
-
-            {/*    :*/}
-            {/*    <div className={'grow-wrapper'}>*/}
-            {/*        <div className={'no-search-result'}>마지막 페이지 입니다.</div>*/}
-            {/*    </div>*/}
-            {/*}*/}
-
+            {!getFetch &&
+                <div className={'no-search-result'}>마지막 페이지 입니다.</div>
+            }
         </>
-    )
-        ;
+    );
 };
 
 export default CompanyTotal;

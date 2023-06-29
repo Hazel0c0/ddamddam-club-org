@@ -82,6 +82,7 @@ public class CompanyService {
         List<CompanyRequestDTO> wantedList = new ArrayList<>();
 
         for (int page = 1; page <= arrPage; page++) {
+//        for (int page = 1; page <= 1; page++) {
             String pageUrl = "https://openapi.work.go.kr/opi/opi/opia/wantedApi.do?authKey=WNLIS5RDCEK7WOBRD73GA2VR1HJ&returnType=xml&display=100&callTp=L&startPage="+page+"&occupation=024";
 //            log.info("pageUrl : {}",pageUrl);
             HttpURLConnection pageConn = (HttpURLConnection) new URL(pageUrl).openConnection();
@@ -145,9 +146,6 @@ public class CompanyService {
                 // Persist the Company entity
                 entityManager.persist(companyEntity);
                 entityManager.flush();
-
-                // Add the DTO object to the list if needed
-                wantedList.add(dto);
 
                 // Add the DTO object to the list
                 wantedList.add(dto);
