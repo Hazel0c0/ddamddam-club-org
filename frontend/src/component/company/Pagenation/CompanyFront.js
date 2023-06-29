@@ -176,7 +176,6 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
                 <span className={'sort-date'}>날짜</span>
             </section>
             {companyList.map((company, index) => (
-                <>
                     <section
                         key={`${company.companyIdx}-${index}`}
                         className={'company-list'}
@@ -213,8 +212,6 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
                         }
 
                     </section>
-
-                </>
             ))}
 
             {isLoading && page !== finalPage &&
