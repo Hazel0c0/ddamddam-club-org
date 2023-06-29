@@ -98,17 +98,6 @@ public class ProjectService {
 
 
   private Page<Project> search(Pageable pageable, ProjectSearchRequestDto searchDto) {
-
-    // 포지션별 조회 : 포지션별 남은자리 적은 순 정렬
-    if ("FRONTEND".equals(searchDto.getPosition())) {
-      log.info("position FRONTEND search !!");
-      return projectRepository.frontQuickSort(pageable);
-
-    } else if ("BACKEND".equals(searchDto.getPosition())) {
-      log.info("position BACKEND search !!");
-      return projectRepository.backQuickSort(pageable);
-    }
-
     // 검색어 조회
     if (searchDto.getKeyword() != null) {
       log.info("KEYWORD search !! : {}", searchDto.getKeyword());
@@ -118,6 +107,21 @@ public class ProjectService {
     log.info("search !!");
     return projectRepository.findAll(pageable);
   }
+
+  private Page<Project> quickSearch(Pageable pageable, ProjectSearchRequestDto searchDto, Long userIdx) {
+
+    // 포지션별 조회 : 포지션별 남은자리 적은 순 정렬
+    if ("FRONTEND".equals(searchDto.getPosition())) {
+      log.info("position FRONTEND search !!");
+      return projectRepository.frontQuickSort(userIdx, pageable);
+
+    } else if ("BACKEND".equals(searchDto.getPosition())) {
+      log.info("position BACKEND search !!");
+      return projectRepository.backQuickSort(userIdx, pageable);
+    }
+    return null;
+  }
+
 
   public ProjectDetailResponseDTO getDetail(Long projectIdx, TokenUserInfo tokenUserInfo) {
 
@@ -198,7 +202,7 @@ public class ProjectService {
     Project project = getProject(projectIdx);
 
     if (project.getUser() == user) {
-    log.info("delete -user info {} == {}",project.getUser().getUserIdx(),user.getUserIdx());
+      log.info("delete -user info {} == {}",project.getUser().getUserIdx(),user.getUserIdx());
       projectRepository.deleteById(projectIdx);
     }else {
       throw new RuntimeException("게시글은 본인만 삭제 가능 합니다");
@@ -209,12 +213,13 @@ public class ProjectService {
   // select : 오래된 순 / 내 포지션 일치 / 남은자리가 적은것 부터
   public ProjectListPageResponseDTO quickMatching(TokenUserInfo tokenUserInfo, ProjectPageDTO dto, ProjectSearchRequestDto searchDto) {
     validateToken.validateToken(tokenUserInfo);
+    Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
     Pageable pageable = getPageable(dto, searchDto);
 
     Page<Project> projectPage = null;
     try {
-      projectPage = search(pageable, searchDto);
+      projectPage = quickSearch(pageable, searchDto,userIdx);
       log.info("ProjectService/quickMatching/projectPage {}", projectPage);
     } catch (Exception e) {
       log.error("quickMatching error !! : {}", e.getMessage());

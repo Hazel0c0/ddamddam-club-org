@@ -16,11 +16,11 @@
 
   .modal-container {
     //background-color: #f0f0f0;
-    background-color: #ffffff;
+    background-color: #dee2e6;
     border-radius: 20px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    width: 600px;
+    width: 500px;
     font-weight: 550;
     margin: 1px 5px;
     position: relative;
@@ -50,7 +50,7 @@
         font-weight: bold;
         display: -webkit-box;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 1;
         overflow: hidden;
         text-overflow: ellipsis;
         text-align: center;
@@ -58,11 +58,12 @@
         color: #282c37;
         padding: 10px 20px;
         border-radius: 10px;
+        line-height: 1.6;
       }
     }
 
     .modal-body {
-      padding: 20px;
+      padding-bottom: 20px;
       color: #282c37;
       margin: 0 20px ;
 
@@ -77,9 +78,14 @@
       }
 
       .applicant-box {
-        margin: 40px auto;
-        display: flex;
+        margin: 15px auto;
+        display: block;
+        text-align: center;
+        //justify-content: space-between;
 
+        .front-box {
+          margin-bottom: 10px;
+        }
         .position-img {
           margin-right: 10px;
           height: 80px;

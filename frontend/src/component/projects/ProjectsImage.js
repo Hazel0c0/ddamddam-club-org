@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
+import {CRIENT_HOST, PROJECT} from "../common/config/HostConfig";
 
 
 const ProjectsImage = ({projectIdx}) => {
   // console.log(`[ img.js ] P.idx : ${projectIdx}`)
   const [fileUrl, setFileUrl] = useState([]);
 
-  const fileRequestURL = '//localhost:8181/api/ddamddam/project/load-s3';
+  const fileRequestURL = `${PROJECT}/load-s3`;
 
   useEffect(() => {
 

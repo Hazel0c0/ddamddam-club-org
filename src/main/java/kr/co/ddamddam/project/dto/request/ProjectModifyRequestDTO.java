@@ -6,6 +6,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -31,5 +32,5 @@ public class ProjectModifyRequestDTO {
   @NotNull @Max(5)
   private int maxBack;
 
-  private LocalDate offerPeriod; //모집기간
+  private LocalDateTime offerPeriod; //모집기간
 }
