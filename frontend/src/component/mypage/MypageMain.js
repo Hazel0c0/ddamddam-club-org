@@ -3,7 +3,7 @@ import Common from "../common/Common";
 import "./scss/MypageMain.scss";
 import {Link} from "react-router-dom";
 import {MYPAGE} from "../common/config/HostConfig";
-import profileImg from "../../src_assets/anonymous.jpg";
+import profileImg from "../../src_assets/ProfileLogo.png"
 import {
   getToken,
   getUserNickname,
