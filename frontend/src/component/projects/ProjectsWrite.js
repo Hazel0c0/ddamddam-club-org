@@ -56,6 +56,11 @@ const ProjectsWrite = () => {
     projectFormData.append('project', projectJsonBlob);
     projectFormData.append('projectImage', $fileTag.current.files[0]);
 
+    if (!formData.boardTitle) {
+      window.alert('제목을 입력해주세요.');
+      return; // 제목이 비어있으면 함수 종료
+    }
+
     if (window.confirm("작성을 완료하시겠습니까?")) {
       fetch(PROJECT, {
         method: 'POST',
@@ -176,7 +181,7 @@ const ProjectsWrite = () => {
 
               <div className={'offerPeriod'}>
                 <h1 className={'sub-title'}>모집기간</h1>
-                <input type={"date"}
+                <input type={"datetime-local"}
                        placeholder={'기한을 입력해주세요'}
                        name="offerPeriod"
                        className={'current-text-input'}

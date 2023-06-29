@@ -7,6 +7,7 @@ import './scss/QuickMatching.scss';
 import frontIcon from "../../src_assets/front.png";
 import backIcon from "../../src_assets/back-icon.png";
 import xIcon from "../../src_assets/x.png";
+import {use} from "js-joda";
 
 
 const ProjectsQuickMatching = () => {
@@ -21,7 +22,7 @@ const ProjectsQuickMatching = () => {
   // 퀵 매칭 모달창
   const [quickDetail, setQuickDetail] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [lastPage, setLastPage] = useState('')
   const [show, setShow] = useState(false);
 
   // 퀵 매칭 버튼 클릭
@@ -35,6 +36,12 @@ const ProjectsQuickMatching = () => {
     setShow(false);
   };
 
+  // 모달 밖 영역 클릭 시 모달 닫기
+  const handleOutsideClick = (e) => {
+    if (e.target.classList.contains('modal-box')) {
+      handleClose();
+    }
+  };
   // 퀵 매칭 데이터 불러오기
   const quick = PROJECT + `/quick?position=${USER_POSITION}&page=${currentPage}`;
   const quickMatchingFetchData = () => {
@@ -51,10 +58,37 @@ const ProjectsQuickMatching = () => {
         })
         .then(res => {
           if (res) {
-            console.log(res.payload.projects);
+            // console.log(res.payload.projects);
             setQuickDetail(res.payload.projects);
+            setLastPage(res.payload.pageInfo.endPage);
           }
         });
+  };
+
+  // d-day 계산
+  const calculateDday  = (deadline) => {
+    const now = new Date();
+    const endDate = new Date(deadline);
+    const remainingTime = endDate - now;
+
+    // 시간, 분, 초 계산
+    const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+    return { days, hours, minutes, seconds };
+  };
+  const displayDday  = (deadline) => {
+    const remainingTime = calculateDday(deadline);
+    const { days, hours, minutes, seconds } = remainingTime;
+
+    return (
+        <div>
+          <span>남은 시간: </span>
+          <span>{days}일 {hours}시간 {minutes}분 {seconds}초</span>
+        </div>
+    );
   };
 
   // 지원자 현황
@@ -92,7 +126,10 @@ const ProjectsQuickMatching = () => {
               Quick Matching
             </button>
         }
-        <div className={show ? 'modal-box show' : 'modal-box'}>
+        <div
+            className={show ? 'modal-box show' : 'modal-box'}
+            onClick={handleOutsideClick} // 모달 밖 영역 클릭 시 handleOutsideClick 함수 호출
+        >
           <div className="modal-container">
             {quickDetail.map((board) => (
                 <React.Fragment key={board.id}>
@@ -107,33 +144,34 @@ const ProjectsQuickMatching = () => {
                       <ul>
                         <li>타입: {board.projectType}</li>
                         <li>모집 마감 : {board.offerPeriod}</li>
+                        <li>{displayDday (board.offerPeriod)}</li>
                       </ul>
                       <div className="applicant-box">
                         <div className={'front-box'}>
                           <div className={'position-text'}>front</div>
-                        {renderApplicantImages(
-                            board.applicantOfFront,
-                            frontIcon,
-                            'front'
-                        )}
-                        {renderApplicantImages(
-                            board.maxFront - board.applicantOfFront,
-                            xIcon,
-                            'front'
-                        )}
+                          {renderApplicantImages(
+                              board.applicantOfFront,
+                              frontIcon,
+                              'front'
+                          )}
+                          {renderApplicantImages(
+                              board.maxFront - board.applicantOfFront,
+                              xIcon,
+                              'front'
+                          )}
                         </div>
                         <div className={'back-box'}>
                           <div className={'position-text'}>back</div>
                           {renderApplicantImages(
-                            board.applicantOfBack,
-                            backIcon,
-                            'back'
-                        )}
-                        {renderApplicantImages(
-                            board.maxBack - board.applicantOfBack,
-                            xIcon, 'back'
-                        )}
-                      </div>
+                              board.applicantOfBack,
+                              backIcon,
+                              'back'
+                          )}
+                          {renderApplicantImages(
+                              board.maxBack - board.applicantOfBack,
+                              xIcon, 'back'
+                          )}
+                        </div>
                       </div>
                     </div>
                     <div className="modal-footer">
@@ -155,14 +193,15 @@ const ProjectsQuickMatching = () => {
                               이전
                             </button>
                         )}
-                        {currentPage <= 10 && (
-                            <button
-                                className="btn btn-primary"
-                                onClick={handleNextPage}
-                            >
-                              다음
-                            </button>
-                        )}
+                        {lastPage > 10 ? currentPage < lastPage : currentPage <= 10
+                            && (
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={handleNextPage}
+                                >
+                                  다음
+                                </button>
+                            )}
                       </div>
                     </div>
                   </div>

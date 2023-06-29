@@ -51,7 +51,7 @@ public class Project {
   @Column(nullable = false)
   private int maxBack;
 
-  private LocalDate offerPeriod; //모집기간
+  private LocalDateTime offerPeriod; //모집기간
 
   @CreationTimestamp
   @Column(
