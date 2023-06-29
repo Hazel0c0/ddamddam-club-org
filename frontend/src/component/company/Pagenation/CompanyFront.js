@@ -8,7 +8,7 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
     const [companyList, setCompanyList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [page, setPage] = useState(1);
-
+    const [getFetch, setGetFetch] = useState(true);
     const [finalPage, setFinalPage] = useState(1);
 
     //워크넷 링크 상태관리
@@ -24,27 +24,27 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
 
     useEffect(() => {
         console.log(`useEffect 실행`)
-        if (finalPage >= page) {
+
+        if (getFetch) {
             fetchData(page);
-        }
-        if (finalPage > 1 && finalPage === page) {
-            setIsLoading(false);
         }
     }, [page, searchKeyword, searchValue, searchCareer]);
 
     useEffect(() => {
-        // 스크롤 이벤트 리스너 등록
-        window.addEventListener('scroll', handleScroll);
+        if (getFetch) {
+            // 스크롤 이벤트 리스너 등록
+            window.addEventListener('scroll', handleScroll);
 
-        return () => {
-            // 컴포넌트 언마운트 시 스크롤 이벤트 리스너 제거
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+            return () => {
+                // 컴포넌트 언마운트 시 스크롤 이벤트 리스너 제거
+                window.removeEventListener('scroll', handleScroll);
+            };
+        }
+    }, [getFetch]);
 
     const fetchData = async (page) => {
-        console.log(`set 후 현재 page : `, page)
-        console.log(`set 후 현재 finalPage : `, finalPage)
+        // console.log(`set 후 현재 page : `, page)
+        // console.log(`set 후 현재 finalPage : `, finalPage)
 
         setIsLoading(true)
         const res = await fetch(
@@ -59,8 +59,7 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
             return;
         }
 
-        console.log()
-        console.log(`현재 페이지 url : ${COMPANY}/searchAll?keyword=${searchKeyword}&page=${page}&size=10&career=${searchCareer}`)
+        // console.log(`현재 페이지 url : ${COMPANY}/searchAll?keyword=${searchKeyword}&page=${page}&size=10&career=${searchCareer}`)
 
         const result = await res.json();
 
@@ -68,6 +67,14 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         const totalCount = result.pageInfo.totalCount;
         const totalPage = Math.ceil(totalCount / 10);
         setFinalPage(totalPage);
+
+        if (page !== 1 && page === finalPage) {
+            console.log('결과 없음!!!!')
+            setGetFetch(false)
+            setIsLoading(false)
+            window.removeEventListener('scroll', handleScroll);
+            return;
+        }
 
         const companyLists = result.companyList
 
@@ -93,32 +100,35 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
     }
 
     let throttleTimer = null;
-    const handleScroll = () => {
-        console.log(`스크롤 이벤트 발생`);
-        // console.log(`마지막 페이지 찾기의 page : `, page)
-        // console.log(`마지막 페이지 찾기의 finaPage : `, finalPage)
+    const handleScroll = (e) => {
+        // console.log(`getfetch의 값 : `, getFetch)
+        if (getFetch) {
+            // console.log(`스크롤 이벤트 발생`);
+            // console.log(`마지막 페이지 찾기의 page : `, page)
+            // console.log(`마지막 페이지 찾기의 finaPage : `, finalPage)
 
-        if (throttleTimer !== null) return;
-        if (finalPage > 1 && finalPage === page) {
-            setIsLoading(false);
-            return;
-        }
-
-
-        setIsLoading(false)
-
-        throttleTimer = setTimeout(() => {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-            const documentHeight = document.documentElement.scrollHeight;
-            if (scrollTop + windowHeight >= documentHeight - 200 && !isLoading && page <= finalPage) {
-                setPage((prevPage) => prevPage + 1);
+            if (throttleTimer !== null) return;
+            if (finalPage > 1 && finalPage === page) {
+                setIsLoading(false);
+                return;
             }
-            throttleTimer = null;
-        }, 2000)
 
-        setIsLoading(true)
 
+            setIsLoading(false)
+
+            throttleTimer = setTimeout(() => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+                const documentHeight = document.documentElement.scrollHeight;
+                if (scrollTop + windowHeight >= documentHeight - 200 && !isLoading && page <= finalPage) {
+                    setPage((prevPage) => prevPage + 1);
+                }
+                throttleTimer = null;
+            }, 1500)
+
+            console.log(`loding true!!`)
+            setIsLoading(true)
+        }
     }
 
     // console.log(`마지막 페이지 찾기의 page : `, page)
@@ -207,16 +217,18 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
                 </>
             ))}
 
-            {isLoading && page!==finalPage &&
+            {isLoading && page !== finalPage &&
                 <div className={'grow-wrapper'}>
                     <Spinner type={"grow"}></Spinner>
                     <Spinner type={"grow"}></Spinner>
                     <Spinner type={"grow"}></Spinner>
                 </div>
             }
+            {!getFetch &&
+                <div className={'no-search-result'}>마지막 페이지 입니다.</div>
+            }
         </>
-    )
-        ;
+    );
 };
 
 export default CompanyTotal;

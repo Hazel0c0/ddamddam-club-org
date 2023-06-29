@@ -11,7 +11,7 @@ import java.util.TimerTask;
 public class DataProcessingService {
 
     private final CompanyService companyService;
-    private final String allUrl;
+//    private final String allUrl;
     private final Timer timer;
     private final CompanyRepository companyRepository;
     private static final long INTERVAL_MS = 24 * 60 * 60 * 1000; // 24시간
@@ -19,7 +19,8 @@ public class DataProcessingService {
 
     public DataProcessingService(CompanyService companyService,CompanyRepository companyRepository) {
         this.companyService = companyService;
-        this.allUrl = "https://openapi.work.go.kr/opi/opi/opia/wantedApi.do?authKey=WNLIS5RDCEK7WOBRD73GA2VR1HJ&returnType=xml&display=100&callTp=L&region=&keyword==%EA%B0%9C%EB%B0%9C%EC%9E%90";
+
+//        this.allUrl = "https://openapi.work.go.kr/opi/opi/opia/wantedApi.do?authKey=WNLIS5RDCEK7WOBRD73GA2VR1HJ&returnType=xml&display=480&callTp=L&region=&keyword==%EA%B0%9C%EB%B0%9C%EC%9E%90";
         this.timer = new Timer();
         this.companyRepository = companyRepository;
         scheduleDataProcessingTask();
@@ -37,9 +38,7 @@ public class DataProcessingService {
                 //db를 전부 지운다(중복 방지를 위해서)
                 companyRepository.deleteAll();
                 //서비스에서 함수 호출해서 다시 넣기
-                for (int i = 0; i < 5; i++){
-                    companyService.processExternalData(allUrl);
-                }
+                companyService.processExternalData();
             } catch (IOException e) {
                 e.printStackTrace();
             }
