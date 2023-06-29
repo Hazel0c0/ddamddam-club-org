@@ -8,6 +8,7 @@ import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
 import kr.co.ddamddam.common.exception.custom.NotFoundReplyException;
 import kr.co.ddamddam.qna.qnaBoard.repository.QnaRepository;
+import kr.co.ddamddam.qna.qnaBoard.service.QnaService;
 import kr.co.ddamddam.qna.qnaReply.dto.request.QnaReplyInsertRequestDTO;
 import kr.co.ddamddam.qna.qnaReply.dto.request.QnaReplyModifyRequestDTO;
 import kr.co.ddamddam.qna.qnaReply.dto.response.QnaReplyListResponseDTO;
@@ -36,6 +37,7 @@ public class QnaReplyService {
     private final int REPLY_COUNT_DOWN = -1;
     private final QnaReplyRepository qnaReplyRepository;
     private final QnaRepository qnaRepository;
+    private final QnaService qnaService;
     private final UserRepository userRepository;
     private final ValidateToken validateToken;
 
@@ -144,6 +146,9 @@ public class QnaReplyService {
 
         Qna qna = qnaReply.getQna();
 
+        // 게시글 작성자와 로그인한 회원이 동일한지 검증
+        qnaService.validateDTO(tokenUserInfo, qna.getQnaIdx());
+                
         if (qna.getQnaAdoption() == Y) {
             return FAIL;
         }

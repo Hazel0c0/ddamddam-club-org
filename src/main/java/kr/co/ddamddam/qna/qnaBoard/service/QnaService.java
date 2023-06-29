@@ -182,7 +182,7 @@ public class QnaService {
      * @param tokenUserInfo - 로그인 중인 유저의 정보
      * @param boardIdx - 클라이언트에서 요청한 게시글 번호
      */
-    private Qna validateDTO(TokenUserInfo tokenUserInfo, Long boardIdx) {
+    public Qna validateDTO(TokenUserInfo tokenUserInfo, Long boardIdx) {
         // 토큰 인증 실패
         if (tokenUserInfo == null) {
             throw new UnauthorizationException(UNAUTHENTICATED_USER, "로그인 후 이용 가능합니다.");
