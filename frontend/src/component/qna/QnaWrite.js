@@ -6,6 +6,7 @@ import {Link, useNavigate} from "react-router-dom";
 import Tags from '@yaireo/tagify/dist/react.tagify';
 import {getWhitelistFromServer, getValue} from './hashTagConfig/mockServer'
 import {getToken, getUserName, getUserNickname} from "../common/util/login-util";
+import {httpStateCatcherWrite} from "../common/util/HttpStateCatcherWrite";
 
 const MentorsWrite = () => {
     const redirection = useNavigate();
@@ -33,7 +34,7 @@ const MentorsWrite = () => {
     };
 
     const handleSubmit = async () => {
-        console.log(textInput);
+        // console.log(textInput);
         // 수집한 값들을 이용하여 비동기 POST 요청 수행
         const {
             boardTitle,
@@ -50,7 +51,7 @@ const MentorsWrite = () => {
                 hashtagList: hashtagList
             };
             // 비동기 POST 요청 처리 로직 작성
-            console.log(data); // 확인을 위해 콘솔에 출력
+            // console.log(data); // 확인을 위해 콘솔에 출력
 
             const res = await fetch(QNA + '/write', {
                 method: 'POST',
@@ -58,16 +59,15 @@ const MentorsWrite = () => {
                 body: JSON.stringify(data)
             });
 
-            if (res.status === 400) {
-                const text = await res;
-                console.log(`오류시 알람 : ${text}`);
-                return;
-            } else {
+            httpStateCatcherWrite(res.status);
+            if (res.status === 200) {
+                // const text = await res;
+                // console.log(`오류시 알람 : ${text}`);
+                // return;
                 alert('작성이 완료되었습니다.')
                 redirection('/qna')
             }
         }
-        ;
     };
 
     //해쉬태그 핸들러
@@ -112,8 +112,6 @@ const MentorsWrite = () => {
                 })),
             5000
         )
-
-
     }, [])
 
     const settings = {
@@ -125,7 +123,7 @@ const MentorsWrite = () => {
 
         const inputHashTag = e.detail.tagify.getCleanValue();
         const hashTagArr = inputHashTag.map(hashtag=> (hashtag.value));
-        console.log("CHANGED:"+hashTagArr);
+        // console.log("CHANGED:"+hashTagArr);
 
         setTextInput((prevTextInput) => ({
             ...prevTextInput,

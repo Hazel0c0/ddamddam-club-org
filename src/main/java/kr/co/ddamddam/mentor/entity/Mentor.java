@@ -26,16 +26,16 @@ public class Mentor {
     @Column(name = "mentor_idx")
     private Long mentorIdx;
 
-    @Column(name = "mentor_title", nullable = false)
+    @Column(name = "mentor_title", nullable = false, length = 100)
     private String mentorTitle;
 
-    @Column(name = "mentor_content",nullable = false)
+    @Column(name = "mentor_content",nullable = false, length = 1000)
     private String mentorContent;
 
     @Column(name = "mentor_subject",nullable = false)
     private String mentorSubject;
 
-    @Column(name = "mentor_current",nullable = false)
+    @Column(name = "mentor_current",nullable = false, length = 30)
     private String mentorCurrent;
 
     @Column(name = "mentor_career",nullable = false)

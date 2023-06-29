@@ -87,10 +87,10 @@ public class MentorApiController {
         //  "mentorCurrent": "현재 상태"
         // 게시글 작성 후 상세 모달 보기로 일단 처리
         //}
-        log.info("/api/ddamddam/mentors POST!! - payload {}",dto);
+//        log.info("/api/ddamddam/mentors POST!! - payload {}",dto);
         // 로그인한 토큰방식으로 user_idx값 받아와 서비스 파라미터에 넣기
         MentorDetailResponseDTO responseDTO = mentorService.write(dto,userInfo);
-        log.info("write RES : {}", responseDTO);
+//        log.info("write RES : {}", responseDTO);
         return ResponseEntity.ok().body(responseDTO);
     }
 
@@ -146,13 +146,9 @@ public class MentorApiController {
             ,@PathVariable Long roomId
             ,@AuthenticationPrincipal TokenUserInfo tokenUserInfo
     ){
-        try {
             int menteeSave = mentorService.menteeSave(mentorIdx, roomId, tokenUserInfo);
 
             return ResponseEntity.ok().body(menteeSave);
-        }catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
 
     }
 
@@ -165,7 +161,7 @@ public class MentorApiController {
     ){
         MenteeListResponseDTO menteeList = mentorService.getMenteeList(mentorIdx, tokenUserInfo);
 
-        log.info("menteeList : {}", menteeList);
+//        log.info("menteeList : {}", menteeList);
 
         return ResponseEntity.ok().body(menteeList);
     }

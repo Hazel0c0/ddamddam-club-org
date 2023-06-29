@@ -66,7 +66,7 @@ public class Project {
   private int likeCount;
 
   // 좋아요를 누른 사용자 추적
-  @OneToMany(mappedBy = "project")
+  @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
   @Builder.Default
   private List<ProjectLike> likes = new ArrayList<>();
 

@@ -30,10 +30,10 @@ public class ChatController {
             @RequestBody ChatRoomRequestDTO dto
             , @AuthenticationPrincipal TokenUserInfo tokenUserInfo
     ) {
-        log.info("requestDTO 들어옴: {}",dto);
+//        log.info("requestDTO 들어옴: {}",dto);
 
             ChatRoomResponseDTO responseDTO = chatService.createChatRoom(dto,tokenUserInfo);
-            log.info("responseDTO 보냄 : {}", responseDTO.getRoomId());
+//            log.info("responseDTO 보냄 : {}", responseDTO.getRoomId());
             return ResponseEntity.ok(responseDTO);
     }
 
@@ -43,9 +43,9 @@ public class ChatController {
             @PathVariable("mentorIdx") Long mentorId,
             @RequestBody ChatMessageRequestDTO requestDTO
     ) {
-        log.info("메세지 저장:{}",requestDTO.getSenderId());
+//        log.info("메세지 저장:{}",requestDTO.getSenderId());
         ChatMessageResponseDTO responseDTO = chatService.sendMessage(mentorId, requestDTO);
-        log.info("메세지 출력:{}",responseDTO);
+//        log.info("메세지 출력:{}",responseDTO);
         return ResponseEntity.ok(responseDTO);
     }
 
@@ -55,9 +55,9 @@ public class ChatController {
             @PathVariable("roomIdx") Long roomId,
             @RequestBody ChatMessageRequestDTO requestDTO
     ) {
-        log.info("메세지 저장:{}",requestDTO.getSenderId());
+//        log.info("메세지 저장:{}",requestDTO.getSenderId());
         ChatMessageResponseDTO responseDTO = chatService.saveMentorMessage(roomId, requestDTO);
-        log.info("메세지 출력:{}",responseDTO);
+//        log.info("메세지 출력:{}",responseDTO);
         return ResponseEntity.ok(responseDTO);
     }
 
@@ -79,7 +79,7 @@ public class ChatController {
             ,@AuthenticationPrincipal TokenUserInfo userInfo
     ){
         Long senderIdx = Long.valueOf(userInfo.getUserIdx());
-        log.info("userIdx : {}",senderIdx);
+//        log.info("userIdx : {}",senderIdx);
         try {
             List<ChatMessageResponseDTO> list = chatService.getDetail(roomIdx, senderIdx);
             return ResponseEntity.ok().body(list);
@@ -93,7 +93,7 @@ public class ChatController {
     public ResponseEntity<?> chatList(
             ChatMentorDetailRequestDTO dto
             ){
-        log.info("respons cahhhhhh: {}",dto);
+//        log.info("respons cahhhhhh: {}",dto);
         try {
             List<ChatMessageResponseDTO> list = chatService.getMentorDetail(dto);
             return ResponseEntity.ok().body(list);

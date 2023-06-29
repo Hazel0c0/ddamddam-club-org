@@ -47,7 +47,7 @@ const MentorsModify = () => {
       })
       .then((result) => {
         setDetailMentor(result);
-        console.log(result);
+        // console.log(result);
         setTextInput({
             mentorTitle: result.title,
             mentorContent: result.content,
@@ -92,7 +92,7 @@ const MentorsModify = () => {
             mentorCurrent: mentorCurrent,
             mentorMentee: +mentorMentee
         };
-      console.log(data);
+      // console.log(data);
 
       fetch(`${MENTOR}/modify`, {
         method: 'PUT',
@@ -106,7 +106,7 @@ const MentorsModify = () => {
         });
     }
   };
-    console.log(textInput);
+    // console.log(textInput);
     return (
         <Common className={'mentors-write-wrapper'}>
             <div className={'title-wrapper'}>

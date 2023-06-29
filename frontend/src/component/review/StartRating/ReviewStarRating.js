@@ -16,6 +16,7 @@ const ReviewStarRating = ({reviewRating, setReviewRating}) => {
                 <Rating
                     name="reviewRating"
                     value={rating}
+                    defaultValue={reviewRating}
                     precision={0.5} // 0.5 단위로 평가
                     onChange={handleRatingChange}
                 />

@@ -110,7 +110,7 @@ const MypageChatRoom = props => {
     <div className={'mypage-chat-wrapper'}>
 
       {chatRoomList.length === 0 ? (
-        <div>작성한 게시글이 없습니다.</div>
+        <div>참여중인 멘토링이 없습니다.</div>
       ) : null}
 
       {pageNation.prev &&

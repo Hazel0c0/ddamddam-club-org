@@ -73,12 +73,12 @@ a {
       border: 0;
     }
 
-    .email-text {
+    .info-text {
       margin: 0;
       word-break: break-all;
       line-height: 120%;
       flex-basis: 0;
-      flex-grow: 5;
+      flex-grow: 100;
     }
 
     .bold-text {
@@ -87,6 +87,10 @@ a {
 
     .career {
       border: 0;
+    }
+
+    .modify-btn:hover {
+      color: #1e4fff;
     }
   }
 

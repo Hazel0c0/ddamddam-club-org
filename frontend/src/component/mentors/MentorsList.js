@@ -139,8 +139,8 @@ const MentorsList = ({selectedSubjects}) => {
       .then(res => res.json())
       .then(result => {
         alert('채팅방 입장! 멘토와 즐거운 채팅~');
-        console.log('방 생성');
-        console.log(`setRoomId의 값 : ${result.roomId}`);
+        // console.log('방 생성');
+        // console.log(`setRoomId의 값 : ${result.roomId}`);
         window.location.href = `/mentors/detail/chat/${chatPageIdx}/${result.roomId}`;
 
       })
@@ -171,7 +171,7 @@ const MentorsList = ({selectedSubjects}) => {
           setMentorsList(result.mentors);
           setPageNation(result.pageInfo);
 
-          console.log(`result.pageInfo : ${result.pageInfo.prev}`);
+          // console.log(`result.pageInfo : ${result.pageInfo.prev}`);
         }
       });
 

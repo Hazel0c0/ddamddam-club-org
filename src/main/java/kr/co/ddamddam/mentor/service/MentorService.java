@@ -139,7 +139,7 @@ public class MentorService {
 
         List<Mentee> menteeList = menteeRepository.findByMentorMentorIdx(mentorIdx);
 
-        log.info("Mentor : {}", mentor);
+//        log.info("Mentor : {}", mentor);
 
         List<MenteeResponseDTO> menteeResponseDTOList = menteeList.stream().map(
                         mentee -> {
@@ -244,7 +244,7 @@ public class MentorService {
     }
 
     // 멘티 테이블 저장
-    public int menteeSave(Long mentorIdx, Long roomId , TokenUserInfo tokenUserInfo) throws RuntimeException{
+    public int menteeSave(Long mentorIdx, Long roomId , TokenUserInfo tokenUserInfo){
 
         validateToken.validateToken(tokenUserInfo);
 
@@ -271,11 +271,11 @@ public class MentorService {
                 );
 
         // 이미 멘티로 확정된 클라이언트인지 체크하기
-        findByMenteeList.forEach(mentee -> {
-            if (mentee.getUser().getUserIdx() == user.getUserIdx()){
-                 throw new RuntimeException("이미 확정된 멘티입니다");
+        for (Mentee mentee : findByMenteeList) {
+            if (mentee.getUser().getUserIdx() == user.getUserIdx()) {
+                return findByMenteeList.size();
             }
-        });
+        }
 
 
         if (findByMenteeList.size() == mentor.getMentorMentee()){
@@ -303,10 +303,8 @@ public class MentorService {
 
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
-//        Long userIdx = 6L;
-
-
         List<Mentee> menteeList = menteeRepository.findByMentorMentorIdx(mentorIdx);
+//        log.info("menteeListService : {}",menteeList);
 
         List<MenteeResponseDTO> menteeResponseDTOList = menteeList.stream().map(
                 mentee -> {

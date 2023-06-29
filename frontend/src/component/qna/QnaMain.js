@@ -6,6 +6,7 @@ import speechBubble from '../../src_assets/speech-bubble.png';
 import {QNA} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import {getToken} from "../common/util/login-util";
+import {httpStateCatcher} from "../common/util/HttpStateCatcherWrite";
 
 const QnaMain = () => {
 
@@ -14,7 +15,7 @@ const QnaMain = () => {
     const ACCESS_TOKEN = getToken();
     const redirection = useNavigate();
     const loginCheckHandler = (e) =>{
-        console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
+        // console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
         if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null){
             alert('로그인 후 이용가능합니다.')
             e.preventDefault();
@@ -26,10 +27,11 @@ const QnaMain = () => {
     useEffect(() => {
         fetch(QNA + '/top')
             .then(res => {
-                if (res.status === 500) {
-                    alert('잠시 후 다시 접속해주세요. [서버오류]');
-                    return;
-                }
+                httpStateCatcher(res.status);
+                // if (res.status === 500) {
+                //     alert('잠시 후 다시 접속해주세요. [서버오류]');
+                //     return;
+                // }
                 return res.json();
             })
             .then(result => {

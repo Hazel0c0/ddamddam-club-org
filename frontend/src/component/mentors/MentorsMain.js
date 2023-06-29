@@ -10,7 +10,7 @@ const MentorsMain = () => {
   const [selectedSubjects, setSelectedSubjects] = useState([]);
 
   useEffect(() => {
-    console.log(selectedSubjects)
+    // console.log(selectedSubjects)
   }, [selectedSubjects]);
 
   // 카테고리 추가 또는 제거
@@ -34,8 +34,8 @@ const MentorsMain = () => {
     fetch(url)
       .then(/* ... */);
 
-    console.log(selectedSubjects);
-    console.log(`url값 : ${url}`);
+    // console.log(selectedSubjects);
+    // console.log(`url값 : ${url}`);
   }
 
   return (

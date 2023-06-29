@@ -101,7 +101,7 @@ const ProjectsWrite = () => {
             <Grid item xs={12}>
               <div className="thumbnail-box" onClick={() => $fileTag.current.click()}>
                 <img
-                    src={imgFile || require('../../assets/img/image-add.png')}
+                    src={imgFile || require('../../src_assets/image-add.png')}
                     alt="profile"
                 />
               </div>
@@ -140,7 +140,7 @@ const ProjectsWrite = () => {
                 >
                   <option value="Mobile Web">Mobile Web</option>
                   <option value="Web App">Web App</option>
-                  <option value="Native App">Native App</option>
+                  <option value="Native App">Hybrid App</option>
                   <option value="Native App">Native App</option>
                 </select>
               </div>

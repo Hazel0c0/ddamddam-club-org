@@ -97,7 +97,7 @@ const MypageProjectList = props => {
     <div className={'mypage-pj-wrapper'}>
 
       {projectList.length === 0 ? (
-        <div>작성한 게시글이 없습니다.</div>
+        <div>참여중인 프로젝트가 없습니다.</div>
       ) : null}
 
       {pageNation.prev &&

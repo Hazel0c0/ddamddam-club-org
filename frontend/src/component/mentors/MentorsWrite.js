@@ -64,7 +64,7 @@ const MentorsWrite = () => {
                 mentorMentee: +mentorMentee
             };
             // 비동기 POST 요청 처리 로직 작성
-            console.log(data); // 확인을 위해 콘솔에 출력
+          //  console.log(data); // 확인을 위해 콘솔에 출력
 
             fetch(MENTOR, {
                 method: 'POST',

@@ -64,6 +64,7 @@ const MentorsChat = () => {
 
   // 멘토가 멘티들의 채팅방 선택
   const handleSelectRoom = (e) => {
+    e.stopPropagation();
     setSelectChatRoomId(e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value);
     const elements = document.querySelectorAll('.chat-room-list');
     elements.forEach(element => {
@@ -98,16 +99,15 @@ const MentorsChat = () => {
   // 멘티 확정 시 렌더링
   const menteeCountUp = e => {
 
-    // menteeCountList.forEach((mentee) => {
-    //     if (mentee.userIdx === chatRoom[0].sender.userIdx) {
-    //       console.log(`Found user: ${mentee}`);
-    //     }
-    //   });
+    if(mentee === menteeCount){
+      alert('멘티 모집완료!');
+      return;
+    }
+
     if(chatRoom === undefined){
       alert('return');
       return;
-    }
-    const saveMenteeCount = menteeCountList.length;
+    } 
 
     if (window.confirm(chatRoom[0].sender.userNickname + '님을 멘티로 확정하시겠습니까?')) {
       if (detailMember.userIdx === enterUserIdx && selectChatRoomId !== undefined) {
@@ -116,22 +116,31 @@ const MentorsChat = () => {
           headers: headerInfo
         })
           .then((res) => {
-            if(res.status === 400){
-              alert('이미 확정된 멘티입니다');
-              setMenteeCount(saveMenteeCount);
-              return;
-            } 
             return res.json();
           })
           .then((result) => {
+            if(menteeCount === result){
+              alert('이미 확정된 멘티입니다');
+              return;
+            }
             setMenteeCount(result);
+            fetch(MENTOR + '/mentee/list/' + chatPageIdx, {
+              method: 'GET',
+              headers: headerInfo,
+            }).then((res) => {
+              return res.json();
+            }).then((result) => {
+              setApplyMenteeList(result.menteeResponseDTOList);
+            }).catch((error) => {
+              console.log('네트워크 요청 오류:', error);
+            });
           });
       }
     }
   };
 
   const delChatRoom = (e) => {
-
+    e.stopPropagation();
     const delRoomIdx = e.target.closest('.chat-room-list').querySelector('.chatRoom-idx').value;
 
     if (window.confirm('채팅방을 삭제하시겠습니까?')) {
@@ -143,9 +152,8 @@ const MentorsChat = () => {
           return res.json();
         })
         .then((result) => {
-          console.log('삭제하기');
-          window.location.href('/mentors/detail/chat/' + chatPageIdx);
           setChatRoom(result);
+          window.location.assign('/mentors/detail/chat/' + chatPageIdx+'/'+0);
         });
     }
   };
@@ -172,7 +180,7 @@ const MentorsChat = () => {
       </div>
     )
   }
-  return null;
+  else{return null;}
   });
 
   // 멘티 채팅방 입장 후 메세지 렌더링
@@ -228,7 +236,6 @@ const MentorsChat = () => {
       return res.json();
     }).then((result) => {
       setApplyMenteeList(result.menteeResponseDTOList);
-      console.log('applyMenteeList:', result.menteeResponseDTOList);
     }).catch((error) => {
       console.log('네트워크 요청 오류:', error);
     });
@@ -245,11 +252,9 @@ const MentorsChat = () => {
       return res.json();
     })
       .then((result) => {
-        console.log(result.completeMentee);
         setDetailMember(result);
         setMenteeCount(result.completeMentee)
         setMenteeCountList(result.menteeList);
-        console.log(result);
         if (result.userIdx !== enterUserIdx) {
           fetch(CHAT + '/mentee/list/' + chatPageIdx
             , {
@@ -276,7 +281,7 @@ const MentorsChat = () => {
             .then((allResult) => {
               if (allResult != undefined) {
                 setChatRoom(allResult);
-                console.log(allResult);
+                // console.log(allResult);
               }
               return;
             });
@@ -291,10 +296,7 @@ const MentorsChat = () => {
   useEffect(() => {
     const webSocketLogin = () => {
       ws.current = new WebSocket("ws://" + SOCKET_URL + "/socket/chat");
-
-      // ws.current.onopen = () => {
-      //   console.log("WebSocket 연결 성공");
-      // };
+     
       ws.current.onmessage = (message) => {
         try {
           const dataSet = JSON.parse(message.data);
@@ -319,14 +321,14 @@ const MentorsChat = () => {
   useEffect(() => {
     if (socketData !== undefined) {
       const tempData = chat.concat(socketData);
-      console.log(tempData);
+      // console.log(tempData);
       setChat(tempData);
     }
   }, [socketData]);
 
 // 입력한 메세지 담기
   const onText = event => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     setMsg(event.target.value);
   }
 
@@ -399,7 +401,7 @@ const MentorsChat = () => {
 //webSocket
 
 
-  console.log('접속한 userIdx: ' + enterUserIdx);
+  // console.log('접속한 userIdx: ' + enterUserIdx);
 
 
   useEffect(() => {

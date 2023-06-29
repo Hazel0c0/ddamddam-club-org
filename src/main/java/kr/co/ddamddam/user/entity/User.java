@@ -86,14 +86,8 @@ public class User {
     @Builder.Default
     private List<Review> review = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<ProjectLike> projects = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    @Builder.Default
-    private List<ProjectLike> likedProjects = new ArrayList<>();
-
-
 }
 
