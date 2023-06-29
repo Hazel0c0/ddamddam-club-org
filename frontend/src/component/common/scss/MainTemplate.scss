@@ -9,7 +9,7 @@
 .top-wrapper{
 
   //background-color: black;
-  height: 570px;
+  height: 950px;
   color: white;
   white-space: pre-line;
   flex-direction: column;
@@ -65,5 +65,196 @@
     color: rgb(230,230,230);
     font-size: 16px;
     font-weight: lighter;
+  }
+}
+
+//추가 설명 영역
+#add-info-wrapper{
+  background-color: #202020;
+  color: white;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  line-height: 1.5;
+  padding-bottom: 150px;
+
+  //메인 영역
+  .add-main{
+    @include content-center;
+    flex-direction: column;
+
+    .logo{
+      margin-top: 150px;
+      width: 60px;
+    }
+    .main-text{
+      margin-top: 40px;
+      text-align: center;
+      font-size: 23px;
+      font-weight: 600;
+      line-height: 1.6;
+
+
+      .highlight{
+        color: #1E4FFF;
+        font-weight: 700;
+      }
+    }
+  }
+
+  //멘토 멘티 영역
+  .add-mentor{
+    @include content-center;
+    flex-direction: column;
+    margin-top: 150px;
+    text-align: center;
+
+    .img-wrapper{
+      position: relative;
+
+      .mentorMain{
+        position: relative;
+        opacity: 0;
+        left: 25px;
+      }
+      .mentorChat{
+        position: relative;
+        opacity: 0;
+        right: 25px;
+        top: 30px;
+      }
+    }
+  }
+
+  //프로젝트 영역
+  .add-project{
+    @include content-center;
+    flex-direction: column;
+    margin-top: 150px;
+    text-align: center;
+
+    .text-wrapper{
+      @include content-center;
+      flex-direction: column;
+    }
+
+    .img-wrapper{
+      display: flex;
+      align-items: center;
+
+      .projectMain,
+      .projectDetail{
+        width: 350px;
+        opacity: 0;
+      }
+
+      .arrowDetail{
+        margin: 0 30px;
+        width: 75px;
+        opacity: 0;
+      }
+    }
+  }
+
+  //취업후기, 채용공고 영역
+  .add-company{
+    @include content-center;
+    background-color: white;
+    padding: 100px 0;
+    //flex-direction: column;
+    margin-top: 150px;
+
+    .main-title{
+      color: #292834;
+    }
+
+    .review-wrapper{
+      margin-right: 50px;
+    }
+
+    .text-wrapper{
+      display: flex;
+      align-items: start;
+      flex-direction: column;
+    }
+    .review,
+    .company{
+      width: 500px;
+    }
+  }
+
+  //qna 영역
+  .add-qna{
+    @include content-center;
+    margin-top: 150px;
+
+    .text-wrapper{
+      display: flex;
+      align-items: start;
+      flex-direction: column;
+      margin-right: 60px;
+      margin-bottom: 80px;
+    }
+  }
+
+
+  //공통 영역
+  .number{
+    color: #1E4FFF;
+    font-family: 'IBM Plex Mono', sans-serif;
+    font-size: 100px;
+    font-weight: 200;
+    line-height: 1.1;
+  }
+  .main-title{
+    font-weight: 700;
+    font-size: 33px;
+    margin-bottom: 10px;
+  }
+  .sub-text{
+    font-size: 17px;
+    margin-bottom: 35px;
+  }
+  .sub-text-small{
+    //font-size: 15px;
+    margin-bottom: 25px;
+    color: #292834;
+  }
+
+  @keyframes fadeInAnimation{
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeInCenterAnimation{
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
+.go-top-btn{
+  position: fixed;
+  bottom: 30px;
+  right: 35px;
+  width: 50px;
+  height: 50px;
+  border-radius: 300px;
+  border: none;
+  background-color: rgba(0,0,0,0.3);
+  z-index: 90;
+
+  .top-arrow{
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
   }
 }
