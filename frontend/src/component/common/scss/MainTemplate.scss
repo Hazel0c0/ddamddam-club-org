@@ -6,22 +6,22 @@
   align-items: center;
 }
 
-.top-wrapper{
-
+.top-wrapper {
   //background-color: black;
-  height: 950px;
+  height: 100vh;
   color: white;
   white-space: pre-line;
   flex-direction: column;
-  padding: 0px 370px;
+  //padding: 0px 300px;
   text-align: center;
   position: relative;
   @include content-center;
   background-image: url("../../../src_assets/main-background.jpg");
   background-size: 100%;
+  background-repeat: no-repeat;
   background-position-y: 80px;
 
-  .input-font{
+  .input-font {
     margin-top: 80px;
     height: 120px;
     line-height: 70px;
@@ -29,14 +29,14 @@
     font-family: 'IBM Plex Mono', sans-serif !important;
   }
 
-  .sub-title{
+  .sub-title {
     font-size: 15px;
     margin-top: 30px;
     line-height: 24px;
   }
 
   //화살표 나오는 영역
-  .show-arrow-wrapper{
+  .show-arrow-wrapper {
     animation: blink-effect 2s ease-in-out infinite;
     left: 50%;
     transform: translateX(-50%);
@@ -52,24 +52,25 @@
     }
   }
 
-  .arrow-text{
+  .arrow-text {
     font-size: 14px;
-    color: rgb(230,230,230);
+    color: rgb(230, 230, 230);
     margin-bottom: 10px;
   }
-  .arrow-icon{
+
+  .arrow-icon {
     //width: 50px;
     //height: 50px;
     //border-radius: 50px;
     //background: white;
-    color: rgb(230,230,230);
+    color: rgb(230, 230, 230);
     font-size: 16px;
     font-weight: lighter;
   }
 }
 
 //추가 설명 영역
-#add-info-wrapper{
+#add-info-wrapper {
   background-color: #202020;
   color: white;
   display: flex;
@@ -79,15 +80,16 @@
   padding-bottom: 150px;
 
   //메인 영역
-  .add-main{
+  .add-main {
     @include content-center;
     flex-direction: column;
 
-    .logo{
+    .logo {
       margin-top: 150px;
       width: 60px;
     }
-    .main-text{
+
+    .main-text {
       margin-top: 40px;
       text-align: center;
       font-size: 23px;
@@ -95,7 +97,7 @@
       line-height: 1.6;
 
 
-      .highlight{
+      .highlight {
         color: #1E4FFF;
         font-weight: 700;
       }
@@ -103,21 +105,22 @@
   }
 
   //멘토 멘티 영역
-  .add-mentor{
+  .add-mentor {
     @include content-center;
     flex-direction: column;
     margin-top: 150px;
     text-align: center;
 
-    .img-wrapper{
+    .img-wrapper {
       position: relative;
 
-      .mentorMain{
+      .mentorMain {
         position: relative;
         opacity: 0;
         left: 25px;
       }
-      .mentorChat{
+
+      .mentorChat {
         position: relative;
         opacity: 0;
         right: 25px;
@@ -127,28 +130,28 @@
   }
 
   //프로젝트 영역
-  .add-project{
+  .add-project {
     @include content-center;
     flex-direction: column;
     margin-top: 150px;
     text-align: center;
 
-    .text-wrapper{
+    .text-wrapper {
       @include content-center;
       flex-direction: column;
     }
 
-    .img-wrapper{
+    .img-wrapper {
       display: flex;
       align-items: center;
 
       .projectMain,
-      .projectDetail{
+      .projectDetail {
         width: 350px;
         opacity: 0;
       }
 
-      .arrowDetail{
+      .arrowDetail {
         margin: 0 30px;
         width: 75px;
         opacity: 0;
@@ -157,38 +160,39 @@
   }
 
   //취업후기, 채용공고 영역
-  .add-company{
+  .add-company {
     @include content-center;
     background-color: white;
     padding: 100px 0;
     //flex-direction: column;
     margin-top: 150px;
 
-    .main-title{
+    .main-title {
       color: #292834;
     }
 
-    .review-wrapper{
+    .review-wrapper {
       margin-right: 50px;
     }
 
-    .text-wrapper{
+    .text-wrapper {
       display: flex;
       align-items: start;
       flex-direction: column;
     }
+
     .review,
-    .company{
+    .company {
       width: 500px;
     }
   }
 
   //qna 영역
-  .add-qna{
+  .add-qna {
     @include content-center;
     margin-top: 150px;
 
-    .text-wrapper{
+    .text-wrapper {
       display: flex;
       align-items: start;
       flex-direction: column;
@@ -199,29 +203,32 @@
 
 
   //공통 영역
-  .number{
+  .number {
     color: #1E4FFF;
     font-family: 'IBM Plex Mono', sans-serif;
     font-size: 100px;
     font-weight: 200;
     line-height: 1.1;
   }
-  .main-title{
+
+  .main-title {
     font-weight: 700;
     font-size: 33px;
     margin-bottom: 10px;
   }
-  .sub-text{
+
+  .sub-text {
     font-size: 17px;
     margin-bottom: 35px;
   }
-  .sub-text-small{
+
+  .sub-text-small {
     //font-size: 15px;
     margin-bottom: 25px;
     color: #292834;
   }
 
-  @keyframes fadeInAnimation{
+  @keyframes fadeInAnimation {
     0% {
       opacity: 0;
       transform: translateY(30px);
@@ -231,7 +238,7 @@
     }
   }
 
-  @keyframes fadeInCenterAnimation{
+  @keyframes fadeInCenterAnimation {
     0% {
       opacity: 0;
     }
@@ -241,7 +248,7 @@
   }
 }
 
-.go-top-btn{
+.go-top-btn {
   position: fixed;
   bottom: 30px;
   right: 35px;
@@ -249,12 +256,74 @@
   height: 50px;
   border-radius: 300px;
   border: none;
-  background-color: rgba(0,0,0,0.3);
+  background-color: rgba(0, 0, 0, 0.3);
   z-index: 90;
 
-  .top-arrow{
+  .top-arrow {
     font-size: 20px;
     color: white;
     cursor: pointer;
   }
+}
+
+
+@media (max-width: 1024px) {
+  .top-wrapper {
+    background-image: url("../../../src_assets/main-background.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position-y: 70px;
+  }
+
+  #add-info-wrapper {
+    .add-main {
+      .logo {
+        margin-top: 120px;
+        width: 50px;
+      }
+
+      .main-text {
+        font-size: 18px;
+      }
+    }
+  }
+
+
+  //공통 영역
+  #add-info-wrapper .number {
+    font-size: 90px;
+  }
+
+  #add-info-wrapper .main-title {
+    font-size: 30px;
+    margin-bottom: 10px;
+  }
+
+  #add-info-wrapper .sub-text {
+    font-size: 15px;
+    margin-bottom: 35px;
+  }
+
+  #add-info-wrapper .add-project .img-wrapper .projectDetail,
+  #add-info-wrapper .add-project .img-wrapper .projectMain {
+    width: 280px;
+  }
+
+  #add-info-wrapper .sub-text-small {
+    font-size: 14px;
+  }
+
+  #add-info-wrapper .add-company .review,
+  #add-info-wrapper .add-company .company{
+    width: 370px;
+  }
+
+  .mentorMain,
+  .mentorChat {
+    width: 330px;
+  }
+.qna{
+  width: 400px;
+}
+
 }

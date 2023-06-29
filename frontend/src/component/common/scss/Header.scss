@@ -5,13 +5,15 @@
 }
 
 .header-background {
-  width: 1920px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   //background-color: #fafafa;
   background-color: #4f2222;
   position: absolute;
   z-index: 990;
+
+
 
   .header-wrapper{
     z-index: 10;
@@ -153,5 +155,30 @@
     z-index: 100;
     animation: slide-in 0.3s ease;
   }
+
+}
+
+
+@media (max-width: 1024px) {
+  .header-background .navigation-bar{
+    top: 70px;
+    padding: 0 160px;
+  }
+
+  .header-background{
+    .header-wrapper{
+      height: 70px;
+      padding: 0 100px;
+
+      .logo{
+        width: 60px;
+      }
+      .category-wrapper li{
+        font-size: 14px;
+      }
+    }
+  }
+
+
 
 }
