@@ -160,8 +160,25 @@
 
 
 @media (max-width: 1024px) {
-  .header-background {
-    width: 1024px;
+  .header-background .navigation-bar{
+    top: 70px;
+    padding: 0 160px;
   }
+
+  .header-background{
+    .header-wrapper{
+      height: 70px;
+      padding: 0 100px;
+
+      .logo{
+        width: 60px;
+      }
+      .category-wrapper li{
+        font-size: 14px;
+      }
+    }
+  }
+
+
 
 }
