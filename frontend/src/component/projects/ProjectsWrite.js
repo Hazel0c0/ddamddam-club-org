@@ -101,7 +101,7 @@ const ProjectsWrite = () => {
             <Grid item xs={12}>
               <div className="thumbnail-box" onClick={() => $fileTag.current.click()}>
                 <img
-                    src={imgFile || require('../../assets/img/image-add.png')}
+                    src={imgFile || require('../../src_assets/image-add.png')}
                     alt="profile"
                 />
               </div>

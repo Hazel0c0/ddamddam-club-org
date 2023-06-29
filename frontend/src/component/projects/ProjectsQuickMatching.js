@@ -4,6 +4,10 @@ import {Button, Modal} from 'react-bootstrap';
 import {PROJECT} from "../common/config/HostConfig";
 import {Link} from "react-router-dom";
 import './scss/QuickMatching.scss';
+import frontIcon from "../../src_assets/front.png";
+import backIcon from "../../src_assets/back-icon.png";
+import xIcon from "../../src_assets/x.png";
+
 
 const ProjectsQuickMatching = () => {
   // 토큰
@@ -62,7 +66,6 @@ const ProjectsQuickMatching = () => {
                 className={'position-img'}
                 src={imgSrc}
                 alt={position}
-                style={{height: 50}}
                 key={index}
             />
         ));
@@ -95,10 +98,10 @@ const ProjectsQuickMatching = () => {
                 <React.Fragment key={board.id}>
                   <div className="modal-contents">
                     <div className="modal-header">
-                      <h5 className="modal-title">{board.boardTitle}</h5>
                       <button className="close" onClick={handleClose}>
                         <span>&times;</span>
                       </button>
+                      <h5 className="modal-title">{board.boardTitle}</h5>
                     </div>
                     <div className="modal-body">
                       <ul>
@@ -106,37 +109,42 @@ const ProjectsQuickMatching = () => {
                         <li>모집 마감 : {board.offerPeriod}</li>
                       </ul>
                       <div className="applicant-box">
+                        <div className={'front-box'}>
+                          <div className={'position-text'}>front</div>
                         {renderApplicantImages(
                             board.applicantOfFront,
-                            'https://cdn-icons-png.flaticon.com/128/5226/5226066.png',
+                            frontIcon,
                             'front'
                         )}
                         {renderApplicantImages(
                             board.maxFront - board.applicantOfFront,
-                            'https://cdn-icons-png.flaticon.com/128/5226/5226057.png',
+                            xIcon,
                             'front'
                         )}
-                        {renderApplicantImages(
+                        </div>
+                        <div className={'back-box'}>
+                          <div className={'position-text'}>back</div>
+                          {renderApplicantImages(
                             board.applicantOfBack,
-                            'https://cdn-icons-png.flaticon.com/128/1353/1353491.png',
+                            backIcon,
                             'back'
                         )}
                         {renderApplicantImages(
                             board.maxBack - board.applicantOfBack,
-                            'https://cdn-icons-png.flaticon.com/128/1353/1353367.png',
-                            'back'
+                            xIcon, 'back'
                         )}
+                      </div>
                       </div>
                     </div>
                     <div className="modal-footer">
                       <div className="footer-left">
                         <Link
                             to={`/projects/detail?projectIdx=${board.boardIdx}`}
-                            className="detail-btn"
+                            className="btn detail-btn"
                         >
                           상세보기
                         </Link>
-                        <div className="like-btn">♥ : {board.likeCount}</div>
+                        <div className="like">❤️ {board.likeCount}</div>
                       </div>
                       <div className="footer-right">
                         {currentPage > 1 && (

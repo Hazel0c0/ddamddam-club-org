@@ -117,7 +117,7 @@ const ProjectsModify = () => {
             {/* 이미지 */}
             <div className={'thumbnail-box'} onClick={() => $fileTag.current.click()}>
               <img
-                  src={imgFile || require('../../assets/img/image-add.png')}
+                  src={imgFile || require('../../src_assets/image-add.png')}
                   alt="profile"
               />
               <label className='signup-img-label' htmlFor='profile-img'>사진 수정하기</label>
