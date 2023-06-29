@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {getToken, getUserPosition, isLogin} from '../common/util/login-util';
-import { Button, Modal } from 'react-bootstrap';
-import { PROJECT } from "../common/config/HostConfig";
+import {Button, Modal} from 'react-bootstrap';
+import {PROJECT} from "../common/config/HostConfig";
 import {Link} from "react-router-dom";
+import './scss/QuickMatching.scss';
+import frontIcon from "../../src_assets/front.png";
+import backIcon from "../../src_assets/back-icon.png";
+import xIcon from "../../src_assets/x.png";
+
 
 const ProjectsQuickMatching = () => {
   // 토큰
@@ -23,11 +28,11 @@ const ProjectsQuickMatching = () => {
   const handleShow = () => {
     setShow(true);
     quickMatchingFetchData();
+    setCurrentPage(1); // 페이지를 1로 초기화
   };
 
   const handleClose = () => {
     setShow(false);
-    setCurrentPage(1); // 페이지를 1로 초기화
   };
 
   // 퀵 매칭 데이터 불러오기
@@ -37,28 +42,33 @@ const ProjectsQuickMatching = () => {
       method: 'GET',
       headers: headerInfo
     })
-      .then(res => {
-        if (res.status === 500) {
-          alert('서버 오류입니다');
-          return;
-        }
-        return res.json();
-      })
-      .then(res => {
-        if (res) {
-          console.log(res.payload.projects);
-          setQuickDetail(res.payload.projects);
-        }
-      });
+        .then(res => {
+          if (res.status === 500) {
+            alert('서버 오류입니다');
+            return;
+          }
+          return res.json();
+        })
+        .then(res => {
+          if (res) {
+            console.log(res.payload.projects);
+            setQuickDetail(res.payload.projects);
+          }
+        });
   };
 
   // 지원자 현황
   const renderApplicantImages = (count, imgSrc, position) => {
     return Array(count)
-      .fill()
-      .map((_, index) => (
-        <img src={imgSrc} alt={position} style={{ height: 50 }} key={index} />
-      ));
+        .fill()
+        .map((_, index) => (
+            <img
+                className={'position-img'}
+                src={imgSrc}
+                alt={position}
+                key={index}
+            />
+        ));
   };
 
   // 페이지
@@ -75,71 +85,94 @@ const ProjectsQuickMatching = () => {
   }, [currentPage]);
 
   return (
-    <>
-      {
-       isLogin &&
-      <Button className="quick-btn" onClick={handleShow}>
-        퀵 매칭
-      </Button>
-      }
-
-      <Modal show={show} onHide={handleClose} id="modal-container">
-        {quickDetail.map(board => (
-          <React.Fragment key={board.id}>
-            <Modal.Header closeButton>
-              <Modal.Title>{board.boardTitle}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <div>타입: {board.projectType}</div>
-              <div>모집 마감 : {board.offerPeriod}</div>
-              <div>♥ : {board.likeCount}</div>
-
-              <div>
-                {renderApplicantImages(
-                  board.applicantOfFront,
-                  'https://cdn-icons-png.flaticon.com/128/5226/5226066.png',
-                  'front'
-                )}
-                {renderApplicantImages(
-                  board.maxFront - board.applicantOfFront,
-                  'https://cdn-icons-png.flaticon.com/128/5226/5226057.png',
-                  'front'
-                )}
-                {renderApplicantImages(
-                  board.applicantOfBack,
-                  'https://cdn-icons-png.flaticon.com/128/1353/1353491.png',
-                  'back'
-                )}
-                {renderApplicantImages(
-                  board.maxBack - board.applicantOfBack,
-                  'https://cdn-icons-png.flaticon.com/128/1353/1353367.png',
-                  'back'
-                )}
-              </div>
-            </Modal.Body>
-            <Modal.Footer>
-              {currentPage > 1 && (
-              <Button variant="secondary" onClick={handlePreviousPage}>
-                이전
-              </Button>
-              )}
-              {currentPage <= 10 && (
-              <Button variant="primary" onClick={handleNextPage}>
-                다음
-              </Button>
-              )}
-              <Button variant="secondary" onClick={handleClose}>
-                닫기
-              </Button>
-              <Link to={`/projects/detail?projectIdx=${board.boardIdx}`} >
-                상세보기
-              </Link>
-            </Modal.Footer>
-          </React.Fragment>
-        ))}
-      </Modal>
-    </>
+      <>
+        {
+            isLogin &&
+            <button className="quick-btn" onClick={handleShow}>
+              Quick Matching
+            </button>
+        }
+        <div className={show ? 'modal-box show' : 'modal-box'}>
+          <div className="modal-container">
+            {quickDetail.map((board) => (
+                <React.Fragment key={board.id}>
+                  <div className="modal-contents">
+                    <div className="modal-header">
+                      <button className="close" onClick={handleClose}>
+                        <span>&times;</span>
+                      </button>
+                      <h5 className="modal-title">{board.boardTitle}</h5>
+                    </div>
+                    <div className="modal-body">
+                      <ul>
+                        <li>타입: {board.projectType}</li>
+                        <li>모집 마감 : {board.offerPeriod}</li>
+                      </ul>
+                      <div className="applicant-box">
+                        <div className={'front-box'}>
+                          <div className={'position-text'}>front</div>
+                        {renderApplicantImages(
+                            board.applicantOfFront,
+                            frontIcon,
+                            'front'
+                        )}
+                        {renderApplicantImages(
+                            board.maxFront - board.applicantOfFront,
+                            xIcon,
+                            'front'
+                        )}
+                        </div>
+                        <div className={'back-box'}>
+                          <div className={'position-text'}>back</div>
+                          {renderApplicantImages(
+                            board.applicantOfBack,
+                            backIcon,
+                            'back'
+                        )}
+                        {renderApplicantImages(
+                            board.maxBack - board.applicantOfBack,
+                            xIcon, 'back'
+                        )}
+                      </div>
+                      </div>
+                    </div>
+                    <div className="modal-footer">
+                      <div className="footer-left">
+                        <Link
+                            to={`/projects/detail?projectIdx=${board.boardIdx}`}
+                            className="btn detail-btn"
+                        >
+                          상세보기
+                        </Link>
+                        <div className="like">❤️ {board.likeCount}</div>
+                      </div>
+                      <div className="footer-right">
+                        {currentPage > 1 && (
+                            <button
+                                className="btn btn-secondary"
+                                onClick={handlePreviousPage}
+                            >
+                              이전
+                            </button>
+                        )}
+                        {currentPage <= 10 && (
+                            <button
+                                className="btn btn-primary"
+                                onClick={handleNextPage}
+                            >
+                              다음
+                            </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </React.Fragment>
+            ))}
+          </div>
+        </div>
+      </>
   );
+
 };
 
 export default ProjectsQuickMatching;

@@ -3,6 +3,7 @@ package kr.co.ddamddam.project.service;
 
 import kr.co.ddamddam.common.common.ValidateToken;
 import kr.co.ddamddam.config.security.TokenUserInfo;
+import kr.co.ddamddam.project.UserUtil;
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.entity.ProjectLike;
 import kr.co.ddamddam.project.repository.ProjectLikeRepository;
@@ -27,12 +28,15 @@ public class ProjectLikeService {
     private final ProjectRepository projectRepository;
     private final ValidateToken validateToken;
 
+    private final UserUtil userUtil;
+    private final ProjectService projectService;
+
     public void handleLike(TokenUserInfo tokenUserInfo, Long projectIdx) {
         validateToken.validateToken(tokenUserInfo);
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
-        User user = getUser(userIdx);
-        Project project = getProject(projectIdx);
+        User user = userUtil.getUser(userIdx);
+        Project project = projectService.getProject(projectIdx);
 
         ProjectLike projectLike = projectLikeRepository.findByUserAndProject(user, project);
 
@@ -67,24 +71,11 @@ public class ProjectLikeService {
 
         ProjectLike projectLike
                 = projectLikeRepository.findByUserAndProject(
-                getUser(userIdx), getProject(projectIdx)
+                userUtil.getUser(userIdx), projectService.getProject(projectIdx)
         );
         System.out.println("좋아요 여부 = " + projectLike);
 
         // projectLike가 null이 아니라면 좋아요가 선택되어 있다고 판단합니다.
         return projectLike != null;
     }
-
-    private Project getProject(Long projectIdx) {
-        Project project = projectRepository.findById(projectIdx)
-                .orElseThrow(() -> new EntityNotFoundException("프로젝트를 찾을 수 없습니다."));
-        return project;
-    }
-
-    private User getUser(Long userIdx) {
-        User user = userRepository.findById(userIdx)
-                .orElseThrow(() -> new EntityNotFoundException("유저를 찾을 수 없습니다."));
-        return user;
-    }
-
 }
