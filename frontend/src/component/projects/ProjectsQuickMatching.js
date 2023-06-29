@@ -25,6 +25,7 @@ const ProjectsQuickMatching = () => {
   const [lastPage, setLastPage] = useState('')
   const [show, setShow] = useState(false);
 
+  console.log('lastPage'+lastPage);
   // 퀵 매칭 버튼 클릭
   const handleShow = () => {
     setShow(true);
@@ -66,27 +67,41 @@ const ProjectsQuickMatching = () => {
   };
 
   // d-day 계산
-  const calculateDday  = (deadline) => {
-    const now = new Date();
-    const endDate = new Date(deadline);
-    const remainingTime = endDate - now;
+  const CountdownTimer = ({ deadline }) => {
+    const calculateDday = (deadline) => {
+      const now = new Date();
+      const endDate = new Date(deadline);
+      const remainingTime = endDate - now;
 
-    // 시간, 분, 초 계산
-    const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(remainingTime / (1000 * 60 * 60));
-    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+      // 남은 시간 계산
+      const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
 
-    return { days, hours, minutes, seconds };
-  };
-  const displayDday  = (deadline) => {
-    const remainingTime = calculateDday(deadline);
+      return { days, hours, minutes, seconds };
+    };
+
+    const [remainingTime, setRemainingTime] = useState(calculateDday(deadline));
+
+    useEffect(() => {
+      const timer = setInterval(() => {
+        setRemainingTime(calculateDday(deadline));
+      }, 1000);
+
+      return () => {
+        clearInterval(timer);
+      };
+    }, [deadline]);
+
     const { days, hours, minutes, seconds } = remainingTime;
 
     return (
-        <div>
-          <span>남은 시간: </span>
-          <span>{days}일 {hours}시간 {minutes}분 {seconds}초</span>
+        <div className={'deadline'}>
+          <div className={'timer'}>{days}<span>Days</span></div>
+          <div className={'timer'}>{hours} <span>Hours</span></div>
+          <div className={'timer'}>{minutes}<span>Minutes</span></div>
+          <div className={'timer'}>{seconds}<span>Seconds</span></div>
         </div>
     );
   };
@@ -142,9 +157,7 @@ const ProjectsQuickMatching = () => {
                     </div>
                     <div className="modal-body">
                       <ul>
-                        <li>타입: {board.projectType}</li>
-                        <li>모집 마감 : {board.offerPeriod}</li>
-                        <li>{displayDday (board.offerPeriod)}</li>
+                        <CountdownTimer deadline={board.offerPeriod} />
                       </ul>
                       <div className="applicant-box">
                         <div className={'front-box'}>
@@ -184,6 +197,9 @@ const ProjectsQuickMatching = () => {
                         </Link>
                         <div className="like">❤️ {board.likeCount}</div>
                       </div>
+
+                      <div className={'project-type'}>{board.projectType}</div>
+
                       <div className="footer-right">
                         {currentPage > 1 && (
                             <button
@@ -193,7 +209,7 @@ const ProjectsQuickMatching = () => {
                               이전
                             </button>
                         )}
-                        {lastPage > 10 ? currentPage < lastPage : currentPage <= 10
+                        { currentPage < lastPage
                             && (
                                 <button
                                     className="btn btn-primary"

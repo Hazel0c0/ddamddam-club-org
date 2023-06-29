@@ -30,7 +30,7 @@
       align-items: center;
       justify-content: space-between;
       padding-bottom: 10px;
-      margin: 20px 20px 0 20px ;
+      margin: 20px 20px 0 20px;
 
       .close {
         color: #282c37;
@@ -54,7 +54,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         text-align: center;
-        background-color: #30A9DE;
+        background-color: #b3b3b3;
         color: #282c37;
         padding: 10px 20px;
         border-radius: 10px;
@@ -65,16 +65,42 @@
     .modal-body {
       padding-bottom: 20px;
       color: #282c37;
-      margin: 0 20px ;
+      margin: 0 20px;
+      text-align: center;
 
+      .deadline{
+        font-size: 25px;
+        margin: 15px 15px 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-family: sans-serif;
+        font-weight: lighter;
 
-      li {
-        margin-bottom: 10px;
-        font-weight: 550;
+          .timer {
+            font-size: 30px;
+            font-weight: 100;
+            color: white;
+            padding: 10px;
+            width: 200px;
+            background: #34314c;
+            border-radius: 10px;
+            border: 2px solid #34314c;
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
 
-        &:last-child {
-          margin-bottom: 0;
-        }
+            span {
+              color: #ffffff;
+              font-size: 15px;
+              font-weight: 400;
+              margin-top: 5px;
+            }
+          }
+
       }
 
       .applicant-box {
@@ -86,6 +112,7 @@
         .front-box {
           margin-bottom: 10px;
         }
+
         .position-img {
           margin-right: 10px;
           height: 80px;
@@ -100,6 +127,11 @@
       padding-top: 10px;
       color: #282c37;
 
+      .project-type {
+        font-weight: 550;
+        font-size: 17px;
+      }
+
       .footer-left {
         text-align: left;
         display: flex;
@@ -107,7 +139,7 @@
         .detail-btn {
           border-radius: 5px;
           border: none;
-          background-color: #30A9DE;
+          background-color: #4f78ff;
           width: fit-content;
           height: 38px;
           margin-right: 15px;
@@ -119,7 +151,7 @@
           cursor: pointer;
 
           &:hover {
-            background-color: #2b90d9;
+            background-color: #3051d0;
           }
         }
 
@@ -139,14 +171,15 @@
           padding: 5px 10px;
         }
       }
+
       .btn {
         font-weight: bold;
         color: #282c37;
-        background-color: #30A9DE;
-        border-color: #30A9DE;
+        background-color: #4f78ff;
+        border-color: #4f78ff;
 
         &:hover {
-          background-color: #2b90d9;
+          background-color: #3051d0;
         }
       }
     }
@@ -163,7 +196,7 @@
   color: white;
   align-items: center;
   text-align: center;
-  line-height: 25px;
+  line-height: 22px;
   background-color: rgb(61, 117, 199);
   border-color: rgb(61, 117, 199);
   animation: blinking 1.5s infinite;
