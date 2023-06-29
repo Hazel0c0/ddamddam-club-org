@@ -4,6 +4,7 @@ import kr.co.ddamddam.common.exception.ExceptionResponse;
 import kr.co.ddamddam.common.exception.custom.LoginException;
 import kr.co.ddamddam.common.exception.custom.NotFoundUserException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -15,15 +16,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class UserExceptionHandler {
     @ExceptionHandler(NotFoundUserException.class)
-    public ExceptionResponse<NotFoundUserException, Long> userException(NotFoundUserException e) {
+    public ResponseEntity<?> userException(NotFoundUserException e) {
         log.error("notFoundUserException : {} {} {}", e.getErrorCode(), e.getMessage(), e.getUserIdx());
-        return new ExceptionResponse<>(e, e.getUserIdx());
+        return ResponseEntity.status(e.getErrorCode().getHttpStatus().value()).body(e.getMessage());
     }
 
     @ExceptionHandler(LoginException.class)
-    public ExceptionResponse<LoginException, String> userEmailException(LoginException e) {
+    public ResponseEntity<?> userEmailException(LoginException e) {
         log.error("notFoundUserException : {} {} {}", e.getErrorCode(), e.getMessage(), e.getStr());
-        return new ExceptionResponse<>(e, e.getStr());
+        return ResponseEntity.status(e.getErrorCode().getHttpStatus().value()).body(e.getMessage());
     }
 
 }

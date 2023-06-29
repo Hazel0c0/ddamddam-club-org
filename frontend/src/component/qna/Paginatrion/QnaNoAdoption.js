@@ -33,7 +33,7 @@ const QnaNoAdoption = ({loginCheck, searchKeyword, searchValue}) => {
 
         const qnaList = await res.json();
         // console.log(qnaList)
-        console.log(`no-adoption qnaList = `,qnaList);
+        // console.log(`no-adoption qnaList = `,qnaList);
 
         setQnaList(qnaList.payload.qnas);
         setPageNation(qnaList.payload.pageInfo);
@@ -41,7 +41,7 @@ const QnaNoAdoption = ({loginCheck, searchKeyword, searchValue}) => {
 
 
     const currentPageHandler = (clickPageNum) => {
-        console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
+        // console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
         setClickCurrentPage(clickPageNum);
     }
 

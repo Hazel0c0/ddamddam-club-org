@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import "./scss/MypageChatRoomList.scss";
-import {getToken, getUserIdx} from "../common/util/login-util";
+import {getToken} from "../common/util/login-util";
 import {BASE_URL, MYPAGE} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import less from "../../src_assets/less.png";
 import than from "../../src_assets/than.png";
+import {httpStateCatcher} from "../common/util/HttpStateCatcherWrite";
 
 const MypageChatRoom = props => {
 
@@ -20,13 +21,6 @@ const MypageChatRoom = props => {
 
   const [chatRoomList, setChatRoomList] = useState([]);
   const [pageNation, setPageNation] = useState([]);
-  const [prevBtn, setPrevBtn] = useState(false);
-  const [nextBtn, setNextBtn] = useState(false);
-
-  //로그인 판별
-  const [checkLogin, setCheckLogin] = useState(false);
-
-  // 캐러셀
   const [carouselIndex, setCarouselIndex] = useState(1);
 
   const subStringContent = (str, n) => {
@@ -59,7 +53,7 @@ const MypageChatRoom = props => {
 
   const asyncProjectList = async () => {
 
-    console.log(`ACCESS_TOKEN : ${ACCESS_TOKEN}`); // 토큰 잘 나옴;;
+    // console.log(`ACCESS_TOKEN : ${ACCESS_TOKEN}`); // 토큰 잘 나옴;;
 
     // http://localhost:8181/api/ddamddam/mypage/chat-list?page=1&size=3
     const res = await fetch(
@@ -69,37 +63,18 @@ const MypageChatRoom = props => {
         headers: headerInfo,
       });
 
-    console.log(`res: `, res);
-
-    if (res.status === 400) {
-      alert('잘못된 요청 값 입니다.')
-      return;
-    } else if (res.status === 401) {
-      alert('로그인이 만료되었습니다.')
-      window.location.href = "/";
-    } else if (res.status === 403) {
-      alert('권한이 없습니다.')
-      window.location.href = "/";
-    } else if (res.status === 404) {
-      alert('요청을 찾을 수 없습니다.');
-      return;
-    } else if (res.status === 500) {
-      alert('잠시 후 다시 접속해주세요.[서버오류]');
-      return;
-    }
+    httpStateCatcher(res.status);
 
     const result = await res.json();
 
-    console.log(`result : `, result);
+    // console.log(`result : `, result);
 
     setChatRoomList(result.chatRoomList);
     setPageNation(result.pageInfo);
 
-    console.log(`chatRoomList : ${chatRoomList}`);
-    console.log(`pagenation : ${pageNation}`);
-
+    // console.log(`chatRoomList : ${chatRoomList}`);
+    // console.log(`pagenation : ${pageNation}`);
   };
-
 
   // 첫 렌더링 시 작성 게시글 전체 출력
   useEffect(() => {

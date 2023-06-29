@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import "./scss/MypageBoardList.scss";
 import {BASE_URL, MYPAGE} from '../common/config/HostConfig';
-import {getToken} from "../common/util/login-util";
+import {getToken, isLogin} from "../common/util/login-util";
 import PageNation from "../common/pageNation/PageNation";
 import {Link, useNavigate} from "react-router-dom";
+import {httpStateCatcher} from "../common/util/HttpStateCatcherWrite";
 
 /**
  * 내가 쓴 게시글 목록
@@ -35,9 +36,9 @@ const MypageBoardList = () => {
 
   // 로그인 상태 검증 핸들러
   const loginCheckHandler = (e) => {
-    console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
-    if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null) {
-      alert('로그인 후 이용가능합니다.')
+    // console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
+    if (!isLogin) {
+      alert('로그인 후 이용가능합니다.');
       e.preventDefault();
       redirection('/login');
     }
@@ -45,36 +46,20 @@ const MypageBoardList = () => {
 
   //현재 페이지 설정
   const currentPageHandler = (clickPageNum) => {
-    console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
+    // console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
     setClickCurrentPage(clickPageNum);
   }
 
   // 내가 쓴 게시글 목록 뿌려주기
   const asyncBoardList = async () => {
-    // setBoardList([]); // 중복 렌더링 방지
-    console.log(`ACCESS_TOKEN : ${ACCESS_TOKEN}`); // 토큰 잘 나옴;;
+    // console.log(`ACCESS_TOKEN : ${ACCESS_TOKEN}`);
 
     const res = await fetch(API_BASE_URL + `/board-list?page=${clickCurrentPage}&size=10`, {
       method: 'GET',
       headers: headerInfo,
     });
 
-    if (res.status === 400) {
-      alert('잘못된 요청 값 입니다.')
-      return;
-    } else if (res.status === 401) {
-      alert('로그인이 만료되었습니다.')
-      window.location.href = "/";
-    } else if (res.status === 403) {
-      alert('권한이 없습니다.')
-      window.location.href = "/";
-    } else if (res.status === 404) {
-      alert('요청을 찾을 수 없습니다.');
-      return;
-    } else if (res.status === 500) {
-      alert('잠시 후 다시 접속해주세요.[서버오류]');
-      return;
-    }
+    httpStateCatcher(res.status);
 
     // 오류 없이 값을 잘 받아왔다면
     const result = await res.json();

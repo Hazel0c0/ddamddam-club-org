@@ -9,6 +9,7 @@ import {ChatSharp, Window} from '@mui/icons-material';
 import {BsPersonFill} from "react-icons/bs";
 import back from "../../src_assets/back.png";
 
+
 const MentorsChat = () => {
   const {chatPageIdx, roomId} = useParams(); // 멘토 게시판 idx
   const [detailMember, setDetailMember] = useState({}); // 멘토게시판
@@ -100,7 +101,7 @@ const MentorsChat = () => {
   const menteeCountUp = e => {
 
     if(mentee === menteeCount){
-      alert('멘티 모집완료!');
+      alert('멘티가 모집 완료되었습니다!');
       return;
     }
 

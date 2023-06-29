@@ -6,7 +6,7 @@ import {getToken} from "../common/util/login-util";
 import {REVIEW} from "../common/config/HostConfig";
 import ReviewStarRating from "./StartRating/ReviewStarRating";
 import Common from "../common/Common";
-import {httpStateCatcherWrite} from "../common/util/HttpStateCatcherWrite";
+import {httpStateCatcher, httpStateCatcherWrite} from "../common/util/HttpStateCatcherWrite";
 
 const ReviewModify = () => {
   const redirection = useNavigate();
@@ -32,16 +32,16 @@ const ReviewModify = () => {
 
   // 수정 전 정보 띄워주기
   const asyncDetail = async () => {
-    console.log(reviewIdx);
+    // console.log(reviewIdx);
     const res = await fetch(`${REVIEW}/detail?reviewIdx=${reviewIdx}`, {
       method: 'GET',
       headers: requestHeader
     });
 
-    httpStateCatcherWrite(res.status);
+    httpStateCatcher(res.status);
 
     const result = await res.json();
-    console.log(`result = `, result)
+    // console.log(`result = `, result)
     setDetailReview(result);
     // 업데이트된 값으로 상태 업데이트
     setReviewRating(result.reviewRating);
@@ -92,7 +92,7 @@ const ReviewModify = () => {
       reviewLocation: reviewLocation
     };
 
-    console.log(`요청 보낼 data : ${JSON.stringify(data)}`);
+    // console.log(`요청 보낼 data : ${JSON.stringify(data)}`);
 
     const res = await fetch(`${REVIEW}/modify`, {
       method: 'PATCH',

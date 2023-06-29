@@ -2,6 +2,7 @@ package kr.co.ddamddam.user.entity;
 
 import kr.co.ddamddam.mentor.entity.Mentee;
 import kr.co.ddamddam.mentor.entity.Mentor;
+import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.entity.ProjectLike;
 import kr.co.ddamddam.qna.qnaBoard.entity.Qna;
 import kr.co.ddamddam.review.entity.Review;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 
 @Setter
 @Getter
-@ToString(exclude = {"mentor", "mentee", "qna", "review", "projects", "likedProjects"})
+@ToString(exclude = {"mentor", "mentee", "qna", "review", "projects"})
 @EqualsAndHashCode(of = "userIdx")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -88,6 +89,6 @@ public class User {
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     @Builder.Default
-    private List<ProjectLike> projects = new ArrayList<>();
+    private List<Project> projects = new ArrayList<>();
 }
 

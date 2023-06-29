@@ -4,7 +4,7 @@ import './scss/Header.scss';
 import Common from "./Common";
 import {Link, useNavigate} from "react-router-dom";
 import {deleteSession, getToken, isLogin} from "./util/login-util";
-import profileImg from "../../src_assets/IMG_4525.JPG"
+import profileImg from "../../src_assets/ProfileLogo.png"
 import {BASE_URL, AUTH} from "../../component/common/config/HostConfig";
 
 const Header = () => {

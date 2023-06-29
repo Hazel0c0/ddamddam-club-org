@@ -8,13 +8,11 @@ import {MENTOR, CHAT} from "../common/config/HostConfig";
 import less from "../../src_assets/less.png";
 import than from "../../src_assets/than.png";
 import {Link} from "react-router-dom";
-import profileImg from "../../src_assets/ProfileLogo.png"
-import {
-  getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
-  getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
-  getUserRole, isLogin
-} from '../common/util/login-util';
+import {MdEmojiPeople} from "react-icons/md";
+import {getToken, getUserIdx} from '../common/util/login-util';
 import {debounce} from "lodash";
+import {httpStateCatcher, httpStateCatcherDelete} from "../common/util/HttpStateCatcherWrite";
+import profileImg from "../../src_assets/ProfileLogo.png"
 
 
 const MentorsList = ({selectedSubjects}) => {
@@ -81,7 +79,10 @@ const MentorsList = ({selectedSubjects}) => {
         method: 'DELETE',
         headers: headerInfo
       })
-        .then(res => res.json())
+        .then(res => {
+          httpStateCatcherDelete(res.status);
+          return res.json();
+        })
         .then(json => {
           setMentorsList(json.mentors);
           setPageNation(json.pageInfo);
@@ -105,10 +106,11 @@ const MentorsList = ({selectedSubjects}) => {
       headers: headerInfo
     })
       .then(res => {
-        if (res.status === 500) {
-          alert('잠시 후 다시 접속해주세요.[서버오류]');
-          return;
-        }
+        httpStateCatcher(res.status);
+        // if (res.status === 500) {
+        //   alert('잠시 후 다시 접속해주세요.[서버오류]');
+        //   return;
+        // }
         return res.json();
       })
       .then(result => {
@@ -160,10 +162,11 @@ const MentorsList = ({selectedSubjects}) => {
     // console.log(`subjectsParam : ${subjectsParam}`)
     fetch(MENTOR + `/sublist?page=${carouselIndex}&size=9&subjects=${subjectsParam}`)
       .then(res => {
-        if (res.status === 500) {
-          alert('잠시 후 다시 접속해주세요.[서버오류]');
-          return;
-        }
+        httpStateCatcher(res.status);
+        // if (res.status === 500) {
+        //   alert('잠시 후 다시 접속해주세요.[서버오류]');
+        //   return;
+        // }
         return res.json();
       })
       .then(result => {

@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import "./scss/MypageProjectList.scss";
 import {RiVipCrownFill} from "react-icons/ri";
-import {getToken, getUserIdx} from "../common/util/login-util";
+import {getToken, isLogin} from "../common/util/login-util";
 import {BASE_URL, MYPAGE} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import less from "../../src_assets/less.png";
 import than from "../../src_assets/than.png";
+import {httpStateCatcher} from "../common/util/HttpStateCatcherWrite";
 
 const MypageProjectList = props => {
 
@@ -44,7 +45,7 @@ const MypageProjectList = props => {
   // 로그인 상태 검증 핸들러
   const loginCheckHandler = (e) => {
     console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
-    if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null) {
+    if (!isLogin) {
       alert('로그인 후 이용가능합니다.')
       e.preventDefault();
       redirection('/login');
@@ -53,7 +54,7 @@ const MypageProjectList = props => {
 
   const asyncProjectList = async () => {
 
-    console.log(`ACCESS_TOKEN : ${ACCESS_TOKEN}`); // 토큰 잘 나옴;;
+    // console.log(`ACCESS_TOKEN : ${ACCESS_TOKEN}`); // 토큰 잘 나옴;;
 
     // http://localhost:8181/api/ddamddam/mypage/project-list?page=1&size=3
     const res = await fetch(`${API_BASE_URL}/project-list?page=${carouselIndex}&size=3`, {
@@ -61,27 +62,11 @@ const MypageProjectList = props => {
       headers: headerInfo,
     });
 
-
-    if (res.status === 400) {
-      alert('잘못된 요청 값 입니다.')
-      return;
-    } else if (res.status === 401) {
-      alert('로그인이 만료되었습니다.')
-      window.location.href = "/";
-    } else if (res.status === 403) {
-      alert('권한이 없습니다.')
-      window.location.href = "/";
-    } else if (res.status === 404) {
-      alert('요청을 찾을 수 없습니다.');
-      return;
-    } else if (res.status === 500) {
-      alert('잠시 후 다시 접속해주세요.[서버오류]');
-      return;
-    }
+    httpStateCatcher(res.status);
 
     // 오류 없이 값을 잘 받아왔다면
     const result = await res.json();
-    console.log(`result :`, result);
+    // console.log(`result :`, result);
     setProjectList(result.posts);
     setPageNation(result.pageInfo);
   };
@@ -92,8 +77,6 @@ const MypageProjectList = props => {
   }, [carouselIndex]);
 
   return (
-
-
     <div className={'mypage-pj-wrapper'}>
 
       {projectList.length === 0 ? (

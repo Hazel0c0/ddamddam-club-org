@@ -17,7 +17,7 @@ export const kakaoLogin = async (navigate, code) => {
 
     const result = response.data;
 
-    // 세션스토리지에 토큰 & 회원 정보를 저장 (카카오 로그인 시 자동 로그인 불가)
+    // 세션스토리지에 토큰 & 회원 정보를 저장 (카카오 로그인 시 자동 로그인 불가하므로)
     sessionStorage.setItem('ACCESS_TOKEN', result.token);
     sessionStorage.setItem('LOGIN_USER_IDX', result.userIdx);
     sessionStorage.setItem('LOGIN_USER_EMAIL', result.userEmail);
@@ -33,8 +33,8 @@ export const kakaoLogin = async (navigate, code) => {
 
     window.location.href = '/'; // 토큰 받고 로그인 성공 후, 메인페이지로 돌아가기
   } catch (err) {
-    console.log('카카오 로그인 에러', err);
-    window.alert('로그인에 실패하였습니다.');
+    // console.log('카카오 로그인 에러', err);
+    window.alert('로그인에 실패하였습니다. 잠시 후에 다시 시도해주세요.');
     navigate('/login'); // 로그인 실패시 다시 로그인 화면으로
   }
 };

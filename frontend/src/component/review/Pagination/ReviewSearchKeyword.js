@@ -5,6 +5,7 @@ import {IoIosArrowForward} from "react-icons/io";
 import PageNation from "../../common/pageNation/PageNation";
 import {REVIEW} from "../../common/config/HostConfig";
 import ReviewStar from "../StartRating/ReviewStar";
+import {httpStateCatcher} from "../../common/util/HttpStateCatcherWrite";
 
 const ReviewSearchKeyword = ({loginCheck,searchKeyword}) => {
     const [reviewList, setReviewList] = useState([]);
@@ -23,19 +24,19 @@ const ReviewSearchKeyword = ({loginCheck,searchKeyword}) => {
             headers: {'content-type': 'application/json'}
         })
 
-        console.log(`요청 url = ${REVIEW}/search?keyword=${searchKeyword}?page=${clickCurrentPage}&size=10`)
-
+        // console.log(`요청 url = ${REVIEW}/search?keyword=${searchKeyword}?page=${clickCurrentPage}&size=10`)
+        httpStateCatcher(res.status);
         const reviewList = await res.json();
 
         setReviewList(reviewList.responseList);
         setPageNation(reviewList.pageInfo);
 
-        console.log(`searchKeyword reviewList = `,reviewList);
+        // console.log(`searchKeyword reviewList = `,reviewList);
     }
 
 
     const currentPageHandler = (clickPageNum) => {
-        console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
+        // console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
         setClickCurrentPage(clickPageNum);
     }
 
