@@ -5,6 +5,7 @@ import searchIcon from "../../src_assets/search-icon.png";
 import {GrPowerReset} from "react-icons/gr";
 import {COMPANY} from "../common/config/HostConfig";
 import {debounce} from "lodash";
+import {httpStateCatcher} from "../common/util/HttpStateCatcherWrite";
 
 const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChange}) => {
     const [selectedBtn, setSelectedBtn] = useState('전체');
@@ -58,7 +59,7 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChang
     //경력 선택 버튼
     const careerHandler = (e) => {
         let careerValue = e.target.value;
-        console.log(careerValue)
+        // console.log(careerValue);
         if (careerValue==='전체'){
             careerValue='';
         }
@@ -81,10 +82,7 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChang
                 headers: {'content-type': 'application/json'}
             });
 
-        if (res.status === 500) {
-            alert('잠시 후 다시 접속해주세요.[서버오류]');
-            return;
-        }
+        httpStateCatcher(res.status);
 
         let result = await res.json();
         let totalCount = result.pageInfo.totalCount;
@@ -100,10 +98,11 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChang
                 headers: {'content-type': 'application/json'}
             });
 
-        if (res.status === 500) {
-            alert('잠시 후 다시 접속해주세요.[서버오류]');
-            return;
-        }
+        httpStateCatcher(res.status);
+        // if (res.status === 500) {
+        //     alert('잠시 후 다시 접속해주세요.[서버오류]');
+        //     return;
+        // }
 
         result = await res.json();
         totalCount = result.pageInfo.totalCount;
@@ -119,10 +118,11 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChang
                 headers: {'content-type': 'application/json'}
             });
 
-        if (res.status === 500) {
-            alert('잠시 후 다시 접속해주세요.[서버오류]');
-            return;
-        }
+        httpStateCatcher(res.status);
+        // if (res.status === 500) {
+        //     alert('잠시 후 다시 접속해주세요.[서버오류]');
+        //     return;
+        // }
 
         result = await res.json();
         totalCount = result.pageInfo.totalCount;
