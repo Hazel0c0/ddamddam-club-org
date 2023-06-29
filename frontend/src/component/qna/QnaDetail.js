@@ -8,7 +8,12 @@ import speechBubble from "../../src_assets/speech-bubble.png";
 import {QNA, QNAREPLY} from "../common/config/HostConfig";
 import {getToken, getUserNickname} from "../common/util/login-util";
 import {debounce} from "lodash";
-import {httpStateCatcher} from "../common/util/HttpStateCatcher";
+import {
+  httpStateCatcherDelete,
+  httpStateCatcherModify,
+  httpStateCatcherReply,
+  httpStateCatcherWrite
+} from "../common/util/HttpStateCatcherWrite";
 
 const QnaDetail = () => {
     const redirection = useNavigate();
@@ -37,11 +42,7 @@ const QnaDetail = () => {
         headers: requestHeader
       })
 
-      if (res.status === 500) {
-        alert('잠시 후 다시 접속해주세요.[서버오류]');
-        return;
-      }
-
+      httpStateCatcherDelete(res.status);
       const result = await res.json();
       console.log(`result = ${result}`)
       setDetailQna(result.payload);
@@ -104,11 +105,7 @@ const QnaDetail = () => {
         })
       })
 
-      if (res.status === 400) { // 가입이 안되어있거나, 비번틀린 경우
-        const text = await res.text(); // 서버에서 온 문자열 읽기
-        alert(text);
-        return;
-      }
+      httpStateCatcherWrite(res.status);
 
       const replyData = await res.json();
       const replyList = replyData.payload;
@@ -122,7 +119,6 @@ const QnaDetail = () => {
       alert("댓글이 등록 되었습니다.");
 
       asyncDetail();
-
 
     }, 300)
 
@@ -169,6 +165,7 @@ const QnaDetail = () => {
         })
       })
 
+      httpStateCatcherModify(res.status);
       if (res.status === 400) { // 가입이 안되어있거나, 비번틀린 경우
         const text = await res.text(); // 서버에서 온 문자열 읽기
         alert(text);
@@ -192,7 +189,7 @@ const QnaDetail = () => {
         method: 'DELETE',
         headers: requestHeader
       })
-      console.log(`댓글 삭제 res ${JSON.stringify(res)}`)
+      httpStateCatcherDelete(res.status);
       alert("댓글이 삭제 되었습니다.");
       asyncDetail();
     }
@@ -214,6 +211,7 @@ const QnaDetail = () => {
         })
       })
 
+      httpStateCatcherDelete(res.status);
       if (res.status === 400) { // 가입이 안되어있거나, 비번틀린 경우
         const text = await res.text(); // 서버에서 온 문자열 읽기
         alert(text);
@@ -295,7 +293,7 @@ const QnaDetail = () => {
         // const result = await res;
         console.log(`result.body : ${result.body}`)
 
-        httpStateCatcher(result.status);
+        httpStateCatcherWrite(result.status);
         if (result.status === 200) {
           alert("삭제가 완료되었습니다.");
           redirection(-1);
@@ -383,8 +381,8 @@ const QnaDetail = () => {
 
                         {enterUserNickName === reply.replyWriter &&
                           <>
-                                                        <span className={'reply-modify'}
-                                                              onClick={() => replyModifyShowHandler(index)}>수정</span>
+                            <span className={'reply-modify'}
+                                  onClick={() => replyModifyShowHandler(index)}>수정</span>
                             <span className={'reply-delete'}
                                   onClick={() => replyDeleteHandler(reply.replyIdx)}>삭제</span>
                           </>

@@ -73,7 +73,7 @@ public class QnaService {
 
     public List<QnaTopListResponseDTO> getListTop3ByView() {
 
-        log.info("[Qna/Service] QNA 게시글 조회순 TOP3 정렬");
+//        log.info("[Qna/Service] QNA 게시글 조회순 TOP3 정렬");
 
         List<Qna> qnaListTop3 = qnaRepository.findTop3ByOrderByWeeklyViewCountDescReplyCountDesc();
 
@@ -91,7 +91,7 @@ public class QnaService {
 
     public QnaDetailResponseDTO getDetail(TokenUserInfo tokenUserInfo, Long boardIdx) {
 
-        log.info("[Qna/Service] QNA 게시글 상세보기 boardIdx - {}", boardIdx);
+//        log.info("[Qna/Service] QNA 게시글 상세보기 boardIdx - {}", boardIdx);
 
         validateToken.validateToken(tokenUserInfo); // 로그인 안한 경우를 걸러냄
 
@@ -123,7 +123,7 @@ public class QnaService {
 
     public QnaListPageResponseDTO getKeywordList(String keyword, String sort, PageDTO pageDTO) {
 
-        log.info("[Qna/Service] QNA 게시글 검색 - {}", keyword);
+//        log.info("[Qna/Service] QNA 게시글 검색 - {}", keyword);
 
         PageRequest pageable = getPageable(pageDTO);
 
@@ -141,7 +141,7 @@ public class QnaService {
 
     public Long writeBoard(TokenUserInfo tokenUserInfo, QnaInsertRequestDTO dto) {
 
-        log.info("[Qna/Service] QNA 게시글 작성 - {}", dto);
+//        log.info("[Qna/Service] QNA 게시글 작성 - {}", dto);
 
         validateToken.validateToken(tokenUserInfo); // 로그인 안 한 경우를 걸러냄
 
@@ -164,7 +164,7 @@ public class QnaService {
 
     public ResponseMessage deleteBoard(TokenUserInfo tokenUserInfo, Long boardIdx) {
 
-        log.info("[Qna/Service] QNA 게시글 삭제 - {}", boardIdx);
+//        log.info("[Qna/Service] QNA 게시글 삭제 - {}", boardIdx);
 
         Qna qna = validateDTO(tokenUserInfo, boardIdx);
 
@@ -203,7 +203,7 @@ public class QnaService {
 
     public ResponseMessage modifyBoard(TokenUserInfo tokenUserInfo, QnaInsertRequestDTO dto) {
 
-        log.info("[Qna/Service] QNA {}번 게시글 수정, payload - {}", dto.getBoardIdx(), dto);
+//        log.info("[Qna/Service] QNA {}번 게시글 수정, payload - {}", dto.getBoardIdx(), dto);
 
         Qna qna = validateDTO(tokenUserInfo, dto.getBoardIdx());
 
@@ -227,7 +227,7 @@ public class QnaService {
 
     public ResponseMessage updateViewCount(Long boardIdx) {
 
-        log.info("[Qna/Service] QNA 게시글 조회수 상승 - {}", boardIdx);
+//        log.info("[Qna/Service] QNA 게시글 조회수 상승 - {}", boardIdx);
 
         Qna qna = qnaRepository.findById(boardIdx).orElseThrow(() -> {
             throw new NotFoundBoardException(NOT_FOUND_BOARD, boardIdx);
@@ -244,7 +244,7 @@ public class QnaService {
 
     public ResponseMessage adoptQnaBoard(TokenUserInfo tokenUserInfo,  Long boardIdx) {
 
-        log.info("[Qna/Service] QNA 게시글 채택 완료 상태로 변경 - {}", boardIdx);
+//        log.info("[Qna/Service] QNA 게시글 채택 완료 상태로 변경 - {}", boardIdx);
 
         Qna qna = validateDTO(tokenUserInfo, boardIdx);
 
@@ -258,7 +258,7 @@ public class QnaService {
 
     public QnaListPageResponseDTO getListAdoption(PageDTO pageDTO) {
 
-        log.info("[Qna/Service] QNA 채택완료 상태인 게시글들만 조회");
+//        log.info("[Qna/Service] QNA 채택완료 상태인 게시글들만 조회");
 
         PageRequest pageable = getPageable(pageDTO);
         Page<Qna> qnas = qnaRepository.findByQnaAdoption(Y, pageable);
@@ -273,7 +273,7 @@ public class QnaService {
 
     public QnaListPageResponseDTO getListNonAdoption(PageDTO pageDTO) {
 
-        log.info("[Qna/Service] QNA 미채택 상태인 게시글들만 조회");
+//        log.info("[Qna/Service] QNA 미채택 상태인 게시글들만 조회");
 
         PageRequest pageable = getPageable(pageDTO);
         Page<Qna> qnas = qnaRepository.findByQnaAdoption(N, pageable);

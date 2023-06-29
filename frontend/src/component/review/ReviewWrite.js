@@ -5,7 +5,7 @@ import {REVIEW} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import ReviewStarRating from "./StartRating/ReviewStarRating";
 import {getToken} from "../common/util/login-util";
-import {httpStateCatcher} from "../common/util/HttpStateCatcher";
+import {httpStateCatcherWrite} from "../common/util/HttpStateCatcherWrite";
 // import Tags from '@yaireo/tagify/dist/react.tagify';
 // import {getWhitelistFromServer, getValue} from './hashTagConfig/mockServer'
 
@@ -78,7 +78,7 @@ const MentorsWrite = () => {
             headers: requestHeader,
             body: JSON.stringify(data)
         });
-        httpStateCatcher(res.status);
+        httpStateCatcherWrite(res.status);
         if (res.status === 200) {
             alert('작성이 완료되었습니다.')
             redirection('/reviews')

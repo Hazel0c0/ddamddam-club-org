@@ -6,7 +6,7 @@ import {QNA, REVIEW} from "../common/config/HostConfig";
 import {getToken, getUserIdx} from "../common/util/login-util";
 import ReviewStar from "./StartRating/ReviewStar";
 import back from "../../src_assets/back.png";
-import {httpStateCatcher} from "../common/util/HttpStateCatcher";
+import {httpStateCatcherWrite} from "../common/util/HttpStateCatcherWrite";
 
 const ReviewDetail = () => {
     const redirection = useNavigate();
@@ -27,7 +27,7 @@ const ReviewDetail = () => {
             headers: requestHeader
         })
 
-        httpStateCatcher(res.status);
+        httpStateCatcherWrite(res.status);
         // if (res.status === 500) {
         //     alert('잠시 후 다시 접속해주세요.[서버오류]');
         //     return;
@@ -48,7 +48,7 @@ const ReviewDetail = () => {
                 method: 'DELETE',
                 headers: requestHeader,
             });
-            httpStateCatcher(res.status);
+            httpStateCatcherWrite(res.status);
             if (res.status === 200) {
                 alert('삭제가 완료되었습니다.')
                 redirection(-1);

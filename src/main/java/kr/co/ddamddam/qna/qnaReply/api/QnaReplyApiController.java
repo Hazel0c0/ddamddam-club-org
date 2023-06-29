@@ -36,7 +36,7 @@ public class QnaReplyApiController {
     public ApplicationResponse<?> getList(
         @PathVariable Long boardIdx
     ) {
-        log.info("GET : /qna-reply/{} - 댓글 전체보기", boardIdx);
+//        log.info("GET : /qna-reply/{} - 댓글 전체보기", boardIdx);
 
         List<QnaReplyListResponseDTO> list = qnaReplyService.getList(boardIdx);
 
@@ -55,7 +55,7 @@ public class QnaReplyApiController {
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             @RequestBody QnaReplyInsertRequestDTO dto
     ) {
-        log.info("POST : /qna-reply/write - QNA {}번 게시글에 '{}' 댓글 작성", dto.getBoardIdx(), dto.getReplyContent());
+//        log.info("POST : /qna-reply/write - QNA {}번 게시글에 '{}' 댓글 작성", dto.getBoardIdx(), dto.getReplyContent());
 
         ResponseMessage result = qnaReplyService.writeReply(tokenUserInfo, dto);
 
@@ -80,7 +80,7 @@ public class QnaReplyApiController {
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             @PathVariable Long replyIdx
     ) {
-        log.info("DELETE : /qna-reply/delete/{} - QNA 댓글 삭제", replyIdx);
+//        log.info("DELETE : /qna-reply/delete/{} - QNA 댓글 삭제", replyIdx);
 
         ResponseMessage result = qnaReplyService.deleteReply(tokenUserInfo, replyIdx);
 
@@ -103,7 +103,7 @@ public class QnaReplyApiController {
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             @RequestBody QnaReplyModifyRequestDTO dto
     ) {
-        log.info("PATCH : /qna-reply/modify/{} - QNA 댓글 수정", dto.getReplyIdx());
+//        log.info("PATCH : /qna-reply/modify/{} - QNA 댓글 수정", dto.getReplyIdx());
 
         ResponseMessage result = qnaReplyService.modifyReply(tokenUserInfo, dto);
 
@@ -126,7 +126,7 @@ public class QnaReplyApiController {
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             @PathVariable Long replyIdx
     ) {
-        log.info("PATCH : /qna-reply/adopts/{} - QNA 댓글 채택", replyIdx);
+//        log.info("PATCH : /qna-reply/adopts/{} - QNA 댓글 채택", replyIdx);
 
         ResponseMessage result = qnaReplyService.adoptQnaReply(tokenUserInfo, replyIdx);
 

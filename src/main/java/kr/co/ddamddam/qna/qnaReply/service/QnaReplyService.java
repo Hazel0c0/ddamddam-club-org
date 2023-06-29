@@ -41,7 +41,7 @@ public class QnaReplyService {
 
     public List<QnaReplyListResponseDTO> getList(final Long boardIdx) {
 
-        log.info("[Qna/Service] QNA 댓글 전체 조회");
+//        log.info("[Qna/Service] QNA 댓글 전체 조회");
 
         List<QnaReply> replyDateAsc = qnaReplyRepository.findByQnaQnaIdxOrderByQnaReplyAdoptionDescQnaReplyDateAsc(boardIdx);
 
@@ -57,7 +57,7 @@ public class QnaReplyService {
             final TokenUserInfo tokenUserInfo,
             final QnaReplyInsertRequestDTO dto
     ) {
-        log.info("[QnaReply/Service] QNA 댓글 작성, index - {}, payload - {}", dto.getBoardIdx(), dto.getReplyContent());
+//        log.info("[QnaReply/Service] QNA 댓글 작성, index - {}, payload - {}", dto.getBoardIdx(), dto.getReplyContent());
 
         validateToken.validateToken(tokenUserInfo); // 로그인 안 한 경우 걸러내기
 
@@ -92,7 +92,7 @@ public class QnaReplyService {
             final TokenUserInfo tokenUserInfo,
             final Long replyIdx
     ) {
-        log.info("[Qna/Service] QNA 댓글 삭제, index - {}", replyIdx);
+//        log.info("[Qna/Service] QNA 댓글 삭제, index - {}", replyIdx);
 
         QnaReply qnaReply = validateDTO(tokenUserInfo, replyIdx);
 
@@ -115,7 +115,7 @@ public class QnaReplyService {
             final TokenUserInfo tokenUserInfo,
             final QnaReplyModifyRequestDTO dto
     ) {
-        log.info("[Qna/Service] QNA 댓글 수정, index - {}, payload - {}", dto.getReplyIdx(), dto.getReplyContent());
+//        log.info("[Qna/Service] QNA 댓글 수정, index - {}, payload - {}", dto.getReplyIdx(), dto.getReplyContent());
 
         QnaReply qnaReply = validateDTO(tokenUserInfo, dto.getReplyIdx());
 
@@ -134,7 +134,7 @@ public class QnaReplyService {
             final TokenUserInfo tokenUserInfo,
             final Long replyIdx
     ) {
-        log.info("[Qna/Service] QNA 댓글 채택, index - {}", replyIdx);
+//        log.info("[Qna/Service] QNA 댓글 채택, index - {}", replyIdx);
 
         validateToken.validateToken(tokenUserInfo);
 

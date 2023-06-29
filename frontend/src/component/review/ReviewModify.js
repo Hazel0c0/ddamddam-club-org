@@ -6,7 +6,7 @@ import {getToken} from "../common/util/login-util";
 import {REVIEW} from "../common/config/HostConfig";
 import ReviewStarRating from "./StartRating/ReviewStarRating";
 import Common from "../common/Common";
-import {httpStateCatcher} from "../common/util/HttpStateCatcher";
+import {httpStateCatcherWrite} from "../common/util/HttpStateCatcherWrite";
 
 const ReviewModify = () => {
   const redirection = useNavigate();
@@ -38,7 +38,7 @@ const ReviewModify = () => {
       headers: requestHeader
     });
 
-    httpStateCatcher(res.status);
+    httpStateCatcherWrite(res.status);
 
     const result = await res.json();
     console.log(`result = `, result)
@@ -100,7 +100,7 @@ const ReviewModify = () => {
       body: JSON.stringify(data)
     });
 
-    httpStateCatcher(res.status);
+    httpStateCatcherWrite(res.status);
     if (res.status === 200) {
       alert('수정이 완료되었습니다.');
       redirection(`/reviews/detail/${reviewIdx}`);

@@ -23,13 +23,13 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * TODO: 회원가입 요청을 처리하는 컨트롤러
+ * 회원가입 요청을 처리하는 컨트롤러
  */
 @RestController
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/ddamddam/auth")
-public class UserApiController {
+public class UserSignUpController {
 
     private final UserSignUpService userSingUpService;
 
