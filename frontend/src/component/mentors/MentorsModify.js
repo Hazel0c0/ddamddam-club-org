@@ -6,6 +6,7 @@ import { Link, useParams } from 'react-router-dom';
 import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
   getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
   getUserRole, isLogin } from '../common/util/login-util';
+import {httpStateCatcher, httpStateCatcherModify} from "../common/util/HttpStateCatcherWrite";
 
 
 const MentorsModify = () => {
@@ -39,10 +40,11 @@ const MentorsModify = () => {
       headers : headerInfo
     })
       .then((res) => {
-        if (res.status === 500) {
-          alert('잠시 후 다시 접속해주세요.[서버오류]');
-          return;
-        }
+        httpStateCatcher(res.status);
+        // if (res.status === 500) {
+        //   alert('잠시 후 다시 접속해주세요.[서버오류]');
+        //   return;
+        // }
         return res.json();
       })
       .then((result) => {
@@ -99,7 +101,10 @@ const MentorsModify = () => {
         headers: headerInfo,
         body: JSON.stringify(data),
       })
-        .then((res) => res.json())
+        .then((res) => {
+          httpStateCatcherModify(res.status);
+          return res.json()
+        })
         .then((json) => {
           alert('수정이 완료되었습니다.');
           window.location.href = '/mentors';
