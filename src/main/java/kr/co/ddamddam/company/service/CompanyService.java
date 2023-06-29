@@ -49,10 +49,9 @@ public class CompanyService {
     @Transactional
     public void processExternalData() throws IOException {
 
+        int displayCount = 100;
 
-        String ArrCount;
-        int page;
-        String url = "https://openapi.work.go.kr/opi/opi/opia/wantedApi.do?authKey=WNLIS5RDCEK7WOBRD73GA2VR1HJ&returnType=xml&display=480&callTp=L&region=&keyword==%EA%B0%9C%EB%B0%9C%EC%9E%90";
+        String url = "https://openapi.work.go.kr/opi/opi/opia/wantedApi.do?authKey=WNLIS5RDCEK7WOBRD73GA2VR1HJ&returnType=xml&display=100&callTp=L&occupation=024";
 
         HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
         conn.connect();
@@ -66,74 +65,98 @@ public class CompanyService {
 
         // Convert XML to JSON
         JSONObject xmlJSONObj = XML.toJSONObject(st.toString());
-
         String jsonPrettyPrintString = xmlJSONObj.toString(INDENT_FACTOR);
-
         JSONObject jsonObject = new JSONObject(jsonPrettyPrintString);
 
         // Get the 'wantedRoot' object
         JSONObject wantedRoot = jsonObject.getJSONObject("wantedRoot");
 
-        // Get the 'wanted' array from 'wantedRoot'
-        JSONArray wantedArray = wantedRoot.getJSONArray("wanted");
-
-        // Create a new JSON object with only the 'wanted' array
-        JSONObject newJson = new JSONObject();
-        newJson.put("wanted", wantedArray);
-
-        //마지막 페이지
+        // 전체의 값
         int finalPage = wantedRoot.getInt("total");
         System.out.println("finalPage = " + finalPage);
+        // 반복문 횟수
+        int arrPage = (int) Math.ceil(finalPage / (double) displayCount);
+        System.out.println("arrPage = " + arrPage);
 
         CompanyRequestDTO dto = new CompanyRequestDTO();
         List<CompanyRequestDTO> wantedList = new ArrayList<>();
 
-//        System.out.println(wantedArray.length());
-        for (int i = 0; i < wantedArray.length(); i++) {
+        for (int page = 1; page <= arrPage; page++) {
+            String pageUrl = "https://openapi.work.go.kr/opi/opi/opia/wantedApi.do?authKey=WNLIS5RDCEK7WOBRD73GA2VR1HJ&returnType=xml&display=100&callTp=L&startPage="+page+"&occupation=024";
+//            log.info("pageUrl : {}",pageUrl);
+            HttpURLConnection pageConn = (HttpURLConnection) new URL(pageUrl).openConnection();
+            pageConn.connect();
+            BufferedInputStream pageBis = new BufferedInputStream(pageConn.getInputStream());
+            BufferedReader pageReader = new BufferedReader(new InputStreamReader(pageBis));
+            StringBuffer pageSt = new StringBuffer();
+            String pageLine;
+            while ((pageLine = pageReader.readLine()) != null) {
+                pageSt.append(pageLine);
+            }
 
-            JSONObject value = wantedArray.getJSONObject(i);
-            // Extract the desired values from the JSON object
-            String title = value.getString("title");
-            String company = value.getString("company");
-            String career = value.getString("career");
-            String wantedInfoUrl = value.getString("wantedInfoUrl");
-            String basicAddr = value.getString("basicAddr");
-            String detailAddr = value.getString("detailAddr");
-            String sal = value.getString("sal");
-            String regDt = value.getString("regDt");
-            String closeDt = value.getString("closeDt");
+            // Convert XML to JSON for each page
+            JSONObject pageXmlJSONObj = XML.toJSONObject(pageSt.toString());
+            String pageJsonPrettyPrintString = pageXmlJSONObj.toString(INDENT_FACTOR);
+            JSONObject pageJsonObject = new JSONObject(pageJsonPrettyPrintString);
 
-            // Populate the DTO object with the extracted values
-            dto.setCompanyTitle(title);
-            dto.setCompanyName(company);
-            dto.setCompanyCareer(career);
-            dto.setCompanyUrl(wantedInfoUrl);
-            dto.setCompanyArea(basicAddr);
-            dto.setCompanyDetailArea(detailAddr);
-            dto.setCompanySal(sal);
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            dto.setCompanyDate(regDt);
-            dto.setCompanyEndDate(closeDt);
+            // Get the 'wantedRoot' object for each page
+            JSONObject pageWantedRoot = pageJsonObject.getJSONObject("wantedRoot");
 
+            // Get the 'wanted' array from 'wantedRoot' for each page
+            JSONArray wantedArray = pageWantedRoot.getJSONArray("wanted");
 
-            // Create a new Company entity
-            Company companyEntity = new Company();
-            companyEntity.setCompanyName(company);
-            companyEntity.setCompanyTitle(title);
-            companyEntity.setCompanyCareer(career);
-            companyEntity.setCompanyUrl(wantedInfoUrl);
-            companyEntity.setCompanyArea(basicAddr+detailAddr);
-            companyEntity.setCompanySal(sal);
+            for (int i = 0; i < wantedArray.length(); i++) {
+                JSONObject value = wantedArray.getJSONObject(i);
+
+                String title = value.getString("title");
+                String company = value.getString("company");
+                String career = value.getString("career");
+                String wantedInfoUrl = value.getString("wantedInfoUrl");
+                String basicAddr = value.getString("basicAddr");
+                String detailAddr = value.optString("detailAddr", "");
+                String sal = value.getString("sal");
+                String regDt = value.getString("regDt");
+                String closeDt = value.getString("closeDt");
+
+                // Create a new CompanyRequestDTO object
+//                Company companyEntity = new Company();
+                dto.setCompanyName(company);
+                dto.setCompanyTitle(title);
+                dto.setCompanyCareer(career);
+                dto.setCompanyUrl(wantedInfoUrl);
+                dto.setCompanyArea(detailAddr);
+                dto.setCompanySal(sal);
 //            formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            companyEntity.setCompanyDate(regDt);
-            companyEntity.setCompanyEnddate(closeDt);
+                dto.setCompanyDate(regDt);
+                dto.setCompanyEndDate(closeDt);
 
-            // Persist the Company entity
-            entityManager.persist(companyEntity);
-            entityManager.flush();
 
-            // Add the DTO object to the list if needed
-            wantedList.add(dto);
+                // Create a new Company entity
+                Company companyEntity = new Company();
+                companyEntity.setCompanyName(company);
+                companyEntity.setCompanyTitle(title);
+                companyEntity.setCompanyCareer(career);
+                companyEntity.setCompanyUrl(wantedInfoUrl);
+                companyEntity.setCompanyArea(basicAddr+detailAddr);
+                companyEntity.setCompanySal(sal);
+                companyEntity.setCompanyDate(regDt);
+                companyEntity.setCompanyEnddate(closeDt);
+
+                // Persist the Company entity
+                entityManager.persist(companyEntity);
+                entityManager.flush();
+
+                // Add the DTO object to the list if needed
+                wantedList.add(dto);
+
+                // Add the DTO object to the list
+                wantedList.add(dto);
+            }
+
+            // Close the resources for the current page
+            pageReader.close();
+            pageBis.close();
+            pageConn.disconnect();
         }
     }
 
