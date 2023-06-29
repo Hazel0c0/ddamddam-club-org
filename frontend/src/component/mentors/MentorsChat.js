@@ -9,6 +9,7 @@ import {ChatSharp, Window} from '@mui/icons-material';
 import {BsPersonFill} from "react-icons/bs";
 import back from "../../src_assets/back.png";
 
+
 const MentorsChat = () => {
   const {chatPageIdx, roomId} = useParams(); // 멘토 게시판 idx
   const [detailMember, setDetailMember] = useState({}); // 멘토게시판

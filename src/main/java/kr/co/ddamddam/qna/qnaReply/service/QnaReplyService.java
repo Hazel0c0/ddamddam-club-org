@@ -37,7 +37,6 @@ public class QnaReplyService {
     private final int REPLY_COUNT_DOWN = -1;
     private final QnaReplyRepository qnaReplyRepository;
     private final QnaRepository qnaRepository;
-    private final QnaService qnaService;
     private final UserRepository userRepository;
     private final ValidateToken validateToken;
 
@@ -147,8 +146,8 @@ public class QnaReplyService {
         Qna qna = qnaReply.getQna();
 
         // 게시글 작성자와 로그인한 회원이 동일한지 검증
-        qnaService.validateDTO(tokenUserInfo, qna.getQnaIdx());
-                
+        validateBoardDTO(tokenUserInfo, qna.getQnaIdx());
+
         if (qna.getQnaAdoption() == Y) {
             return FAIL;
         }
@@ -185,5 +184,29 @@ public class QnaReplyService {
         }
 
         return qnaReply;
+    }
+
+    /**
+     * 게시글의 작성자와 토큰의 유저가 동일한지 검사하는 기능
+     * @param tokenUserInfo - 로그인 중인 유저의 정보
+     * @param boardIdx - 클라이언트에서 요청한 게시글 번호
+     */
+    public Qna validateBoardDTO(TokenUserInfo tokenUserInfo, Long boardIdx) {
+        // 토큰 인증 실패
+        if (tokenUserInfo == null) {
+            throw new UnauthorizationException(UNAUTHENTICATED_USER, "로그인 후 이용 가능합니다.");
+        }
+
+        // 게시글 존재 여부 확인
+        Qna qna = qnaRepository.findById(boardIdx).orElseThrow(() -> {
+            throw new NotFoundBoardException(NOT_FOUND_BOARD, boardIdx);
+        });
+
+        // 토큰 내 회원 이메일과 게시글 작성자의 이메일이 일치하지 않음 -> 작성자가 아님 -> 수정 및 삭제 불가
+        if (!qna.getUser().getUserEmail().equals(tokenUserInfo.getUserEmail())) {
+            throw new UnauthorizationException(ACCESS_FORBIDDEN, tokenUserInfo.getUserEmail());
+        }
+
+        return qna;
     }
 }

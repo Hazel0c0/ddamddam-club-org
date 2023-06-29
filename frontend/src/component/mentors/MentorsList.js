@@ -12,6 +12,7 @@ import {MdEmojiPeople} from "react-icons/md";
 import {getToken, getUserIdx} from '../common/util/login-util';
 import {debounce} from "lodash";
 import {httpStateCatcher, httpStateCatcherDelete} from "../common/util/HttpStateCatcherWrite";
+import profileImg from "../../src_assets/ProfileLogo.png"
 
 
 const MentorsList = ({selectedSubjects}) => {
