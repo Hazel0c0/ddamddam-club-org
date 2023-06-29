@@ -5,9 +5,11 @@ import kr.co.ddamddam.common.exception.custom.NotFoundBoardException;
 import kr.co.ddamddam.common.exception.custom.NotFoundReplyException;
 import kr.co.ddamddam.common.exception.custom.NotFoundUserException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+// TODO : 안쓰니까 최종 배포 전에 삭제 ~
 /**
  * Sevice 에서 던진 에러를 잡아서 처리하는 핸들러
  */
@@ -17,23 +19,23 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class QnaExceptionHandler {
 
     @ExceptionHandler(NotFoundBoardException.class)
-    public ExceptionResponse<NotFoundBoardException, Long> boardException(NotFoundBoardException e) {
+    public ResponseEntity<?> boardException(NotFoundBoardException e) {
         // 에러 코드, 에러 메세지, 에러가 발생한 QNA 게시글 번호
         log.error("notFoundQnaBoardException : {} {} {}", e.getErrorCode(), e.getMessage(), e.getIdx());
-        return new ExceptionResponse<>(e, e.getIdx());
+        return ResponseEntity.status(e.getErrorCode().getHttpStatus().value()).body(e.getMessage());
     }
 
     @ExceptionHandler(NotFoundReplyException.class)
-    public ExceptionResponse<NotFoundReplyException, Long> replyException(NotFoundReplyException e) {
+    public ResponseEntity<?> replyException(NotFoundReplyException e) {
         // 에러 코드, 에러 메세지, 에러가 발생한 QNA 게시글 번호
         log.error("notFoundQnaBoardException : {} {} {}", e.getErrorCode(), e.getMessage(), e.getIdx());
-        return new ExceptionResponse<>(e, e.getIdx());
+        return ResponseEntity.status(e.getErrorCode().getHttpStatus().value()).body(e.getMessage());
     }
 
     @ExceptionHandler(NotFoundUserException.class)
-    public ExceptionResponse<NotFoundUserException, Long> userException(NotFoundUserException e) {
+    public ResponseEntity<?> userException(NotFoundUserException e) {
         log.error("notFoundUserException : {} {} {}", e.getErrorCode(), e.getMessage(), e.getUserIdx());
-        return new ExceptionResponse<>(e, e.getUserIdx());
+        return ResponseEntity.status(e.getErrorCode().getHttpStatus().value()).body(e.getMessage());
     }
 
 }

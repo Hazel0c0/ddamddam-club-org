@@ -23,8 +23,9 @@ const ReviewList = ({searchValue, searchKeyword}) => {
         if (ACCESS_TOKEN !== '' && ACCESS_TOKEN !== null) {
             setLoginCheck(true);
         }
-        console.log(`카테고리 : searchValue = ${searchValue}`)
-        console.log(`검색어 : searchKeyword = ${searchKeyword}`)
+        // console.log(`카테고리 : searchValue = ${searchValue}`)
+        // console.log(`검색어 : searchKeyword = ${searchKeyword}`)
+
         // console.log(`searchValue = ${searchKeyword}`)
         // // if (searchKeyword !== null && searchKeyword !== '') {
         // //     setPageTrue({

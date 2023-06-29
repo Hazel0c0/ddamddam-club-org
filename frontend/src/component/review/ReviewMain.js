@@ -4,6 +4,7 @@ import './scss/ReviewMain.scss';
 import {QNA, REVIEW} from "../common/config/HostConfig";
 import {Link} from "react-router-dom";
 import ReviewStar from "./StartRating/ReviewStar";
+import {httpStateCatcher} from "../common/util/HttpStateCatcherWrite";
 
 const QnaMain = () => {
     const [topReview, setTopReview] = useState([]);
@@ -16,14 +17,15 @@ const QnaMain = () => {
             headers: {'content-type': 'application/json'}
         });
 
-        if (res.status === 500) {
-            alert('잠시 후 다시 접속해주세요.[서버오류]');
-            return;
-        }
+        httpStateCatcher(res.status);
+        // if (res.status === 500) {
+        //     alert('잠시 후 다시 접속해주세요.[서버오류]');
+        //     return;
+        // }
 
         const reivewList = await res.json();
-        console.log(reivewList)
-        console.log(`top3의 결과 : ${reivewList}` );
+        // console.log(reivewList)
+        // console.log(`top3의 결과 : ${reivewList}` );
         setTopReview(reivewList);
 
     }

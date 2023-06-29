@@ -5,6 +5,7 @@ import {IoIosArrowForward} from "react-icons/io";
 import PageNation from "../../common/pageNation/PageNation";
 import {REVIEW} from "../../common/config/HostConfig";
 import ReviewStar from "../StartRating/ReviewStar";
+import {httpStateCatcher} from "../../common/util/HttpStateCatcherWrite";
 
 const ReviewTotal = ({loginCheck, searchKeyword, searchValue}) => {
     const [reviewList, setReviewList] = useState([]);
@@ -18,16 +19,17 @@ const ReviewTotal = ({loginCheck, searchKeyword, searchValue}) => {
     const asyncReviewRatingList = async () => {
         const responseUrl = `/search?keyword=${searchKeyword}&page=${clickCurrentPage}&size=10&sort=${searchValue}`
 
-        console.log(`rating의 responseUrl : `,responseUrl)
+        // console.log(`rating의 responseUrl : `,responseUrl)
         const res = await fetch(`${REVIEW}${responseUrl}`, {
             method: 'GET',
             headers: {'content-type': 'application/json'}
         });
 
-        if (res.status === 500) {
-            alert('잠시 후 다시 접속해주세요.[서버오류]');
-            return;
-        }
+        httpStateCatcher(res.status);
+        // if (res.status === 500) {
+        //     alert('잠시 후 다시 접속해주세요.[서버오류]');
+        //     return;
+        // }
 
         const reviewList = await res.json();
 
@@ -37,7 +39,7 @@ const ReviewTotal = ({loginCheck, searchKeyword, searchValue}) => {
 
 
     const currentPageHandler = (clickPageNum) => {
-        console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
+        // console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
         setClickCurrentPage(clickPageNum);
     }
 

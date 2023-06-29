@@ -9,7 +9,7 @@ const CompanyTemplate = () => {
     // const [searchCareer, setSearchCareer]
     const handleSearchChange = (value) => {
         setSearchValue(value);
-        console.log(`Search Page에서 넘어오는 카테고리입력 값 : ${value}`)
+        // console.log(`Search Page에서 넘어오는 카테고리입력 값 : ${value}`)
     }
 
     const handleSearchKeyword = (value) => {
@@ -17,12 +17,12 @@ const CompanyTemplate = () => {
             value = ` `
         }
         setSearchKeyword(value);
-        console.log(`Search Page에서 넘어오는 검색입력 값 : ${value}`)
+        // console.log(`Search Page에서 넘어오는 검색입력 값 : ${value}`)
     }
 
     const handleSearchCareer = (value) => {
                setSearchCareer(value);
-        console.log(`Search Page에서 넘어오는 경력입력 값 : ${value}`)
+        // console.log(`Search Page에서 넘어오는 경력입력 값 : ${value}`)
     }
 
     return (

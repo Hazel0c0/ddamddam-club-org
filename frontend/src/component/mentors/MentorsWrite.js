@@ -6,6 +6,7 @@ import {Link, useNavigate} from "react-router-dom";
 import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
     getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
     getUserRole, isLogin } from '../common/util/login-util';
+import {httpStateCatcherWrite} from "../common/util/HttpStateCatcherWrite";
 
 const MentorsWrite = () => {
     const redirection = useNavigate();
@@ -51,8 +52,6 @@ const MentorsWrite = () => {
             mentorMentee
         } = textInput;
 
-
-
         if (mentorTitle.length === 0 || mentorCurrent.length === 0 || mentorContent.length === 0) {
             alert('공백 없이 입력해주세요.');
         } else {
@@ -71,10 +70,11 @@ const MentorsWrite = () => {
                 headers: headerInfo,
                 body: JSON.stringify(data)
             })
-                .then(res =>{
-                   if(res.status === 400){
-                    alert('다시 작성하세요');
-                   }
+                .then(res => {
+                  httpStateCatcherWrite(res.status);
+                   // if(res.status === 400){
+                   //  alert('다시 작성하세요');
+                   // }
                     return res.json();
                 })
                 .then(json => {

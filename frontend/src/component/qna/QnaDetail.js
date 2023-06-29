@@ -9,9 +9,9 @@ import {QNA, QNAREPLY} from "../common/config/HostConfig";
 import {getToken, getUserNickname} from "../common/util/login-util";
 import {debounce} from "lodash";
 import {
+  httpStateCatcher,
   httpStateCatcherDelete,
   httpStateCatcherModify,
-  httpStateCatcherReply,
   httpStateCatcherWrite
 } from "../common/util/HttpStateCatcherWrite";
 
@@ -36,15 +36,15 @@ const QnaDetail = () => {
 
 
     const asyncDetail = async () => {
-      console.log(boardIdx);
+      // console.log(boardIdx);
       const res = await fetch(`${QNA}/${boardIdx}`, {
         method: 'GET',
         headers: requestHeader
       })
 
-      httpStateCatcherDelete(res.status);
+      httpStateCatcher(res.status);
       const result = await res.json();
-      console.log(`result = ${result}`)
+      // console.log(`result = ${result}`)
       setDetailQna(result.payload);
 
       const modifiedReplyList = result.payload.replyList.map((reply) => {
@@ -63,10 +63,9 @@ const QnaDetail = () => {
       });
       setCheckedReplyAdoption(modifiedCheckBtn);
 
-      console.log(`modifiedCheckBtn : ${JSON.stringify(modifiedCheckBtn)}`);
-
+      // console.log(`modifiedCheckBtn : ${JSON.stringify(modifiedCheckBtn)}`);
       // console.log(modifiedReplyList);
-      console.log(result.payload);
+      // console.log(result.payload);
 
       //배열만큼 수정폼 반복
       const updateModifiedBtn = result.payload.replyList.map((list, index) => {
@@ -74,7 +73,6 @@ const QnaDetail = () => {
       });
 
       setReplyModifyShow(updateModifiedBtn);
-      //
     }
 
     useEffect(() => {
@@ -83,7 +81,7 @@ const QnaDetail = () => {
 
 
     //댓글 작성
-    //TODO 중복클릭 방지 해야함
+    // TODO : 중복클릭 방지 해야함
     const writeReplyHandler = debounce(async () => {
 
       if (detailQna.boardAdoption === 'Y') {
@@ -129,7 +127,7 @@ const QnaDetail = () => {
           ...prev,
           [index]: true
         };
-        console.log('replyModifyShow:', updatedState);
+        // console.log('replyModifyShow:', updatedState);
         return updatedState;
       });
     };
@@ -141,7 +139,7 @@ const QnaDetail = () => {
           ...prev,
           [index]: false
         };
-        console.log('replyModifyShow:', updatedState);
+        // console.log('replyModifyShow:', updatedState);
         return updatedState;
       });
     }
@@ -199,7 +197,7 @@ const QnaDetail = () => {
     const adoptHandler = async (e) => {
       // if (enterUserNickName === )
       const confirmBtn = window.confirm("정말 채택하시겠습니까? 채택 완료 후 수정이 불가합니다.");
-      console.log(`replyIdx : ${e.target.closest('.reply-content-wrapper').querySelector('.replyIdx').value}`)
+      // console.log(`replyIdx : ${e.target.closest('.reply-content-wrapper').querySelector('.replyIdx').value}`)
 
       const replyIdxValue = e.target.closest('.reply-content-wrapper').querySelector('.replyIdx').value;
 
@@ -211,13 +209,12 @@ const QnaDetail = () => {
         })
       })
 
-      httpStateCatcherDelete(res.status);
+      httpStateCatcher(res.status);
       // if (res.status === 400) { // 가입이 안되어있거나, 비번틀린 경우
       //   const text = await res.text(); // 서버에서 온 문자열 읽기
       //   alert(text);
       //   return;
       // }
-
       // console.log(`replyData : ${JSON.stringify(replyData)}`);
       // console.log(`replyData : ${(replyData.payload)}`);
 
@@ -293,7 +290,7 @@ const QnaDetail = () => {
         // const result = await res;
         // console.log(`result.body : ${result.body}`)
 
-        httpStateCatcherWrite(result.status);
+        httpStateCatcherDelete(result.status);
         if (result.status === 200) {
           alert("삭제가 완료되었습니다.");
           redirection(-1);
