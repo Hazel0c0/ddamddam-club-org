@@ -6,6 +6,7 @@ import {IoIosArrowForward} from "react-icons/io";
 import PageNation from "../../common/pageNation/PageNation";
 import {QNA} from "../../common/config/HostConfig";
 import {getToken} from "../../common/util/login-util";
+import {httpStateCatcher} from "../../common/util/HttpStateCatcherWrite";
 
 const QnaNoAdoption = ({loginCheck,searchKeyword}) => {
     const [qnaList, setQnaList] = useState([]);
@@ -22,7 +23,9 @@ const QnaNoAdoption = ({loginCheck,searchKeyword}) => {
         // const res = await fetch(`${QNA}/search?keyword=${searchKeyword}`, {
             method: 'GET',
             headers: {'content-type': 'application/json'}
-        })
+        });
+
+        httpStateCatcher(res.status);
 
         console.log(`요청 url : ${QNA}/search?keyword=${searchKeyword}&page=${clickCurrentPage}&size=10`)
         const qnaList = await res.json();
@@ -30,12 +33,12 @@ const QnaNoAdoption = ({loginCheck,searchKeyword}) => {
         setQnaList(qnaList.payload.qnas);
         setPageNation(qnaList.payload.pageInfo);
 
-        console.log(`searchKeyword qnaList = `,qnaList);
+        // console.log(`searchKeyword qnaList = `,qnaList);
     }
 
 
     const currentPageHandler = (clickPageNum) => {
-        console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
+        // console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
         setClickCurrentPage(clickPageNum);
     }
 

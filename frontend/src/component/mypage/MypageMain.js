@@ -65,22 +65,26 @@ const MypageMain = props => {
           </div>
           <div className={'role text-box'}>
             <p className={'info-category'}>등급</p>
-            {
+            <p className={'info-text'}>
+              {
               USER_ROLE === 'COMMON' || USER_ROLE === 'SNS'
                 ? '일반회원'
                 : '관리자'
-            }
+              }
+            </p>
           </div>
           <div className={'email text-box'}>
             <p className={'info-category'}>메일</p>
-            <p className={'email'}>{USER_EMAIL}</p>
+            <p className={'info-text'}>{USER_EMAIL}</p>
           </div>
           <div className={'career text-box'}>
             <p className={'info-category'}>경력</p>
-            {USER_POSITION === 'BACKEND'
-              ? '백엔드'
-              : '프론트엔드'
-            } {USER_CAREER}년차
+            <p className={'info-text'}>
+              {USER_POSITION === 'BACKEND'
+                ? '백엔드'
+                : '프론트엔드'
+              } {USER_CAREER}년차
+            </p>
           </div>
           <div className={'writer-wrapper'}>
                     <Link to={'/mypage/modify'} className={'modify-btn'}>
@@ -88,7 +92,9 @@ const MypageMain = props => {
                     </Link>
                   </div>
                   <div>
-                    <Link to={'/mypage/password'}>비밀번호 변경</Link>
+                    <Link to={'/mypage/password'} className={'modify-btn'}>
+                      비밀번호 변경
+                    </Link>
                   </div>
         </div>
 

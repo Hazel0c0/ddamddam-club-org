@@ -13,7 +13,7 @@ const QnaTemplate = () => {
 
     const handleSearchKeyword = (value) => {
         setSearchKeyword(value);
-        console.log(`Search Page에서 넘어오는 검색입력 값 : ${value}`)
+        // console.log(`Search Page에서 넘어오는 검색입력 값 : ${value}`)
     }
 
     return (
