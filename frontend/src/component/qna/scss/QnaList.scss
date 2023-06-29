@@ -3,7 +3,6 @@
   justify-content: center;
 }
 
-
 .qna-list-wrapper {
   padding: 0px 370px 50px;
   display: flex;
@@ -129,4 +128,13 @@
     color: #828282;
     font-weight: 600;
   }
+}
+
+@media (max-width: 1024px) {
+
+  .qna-view-wrapper{
+    padding: 160px 70px 0;
+  }
+
+
 }
