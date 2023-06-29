@@ -32,14 +32,14 @@ const QnaTotal =({loginCheck, searchKeyword, searchValue}) => {
 
         const qnaList = await res.json();
         // console.log(qnaList)
-        console.log(`total qnaList = `,qnaList);
+        // console.log(`total qnaList = `,qnaList);
 
         setQnaList(qnaList.payload.qnas);
         setPageNation(qnaList.payload.pageInfo);
     }
 
     const currentPageHandler = (clickPageNum) => {
-        console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
+        // console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
         setClickCurrentPage(clickPageNum);
     }
 

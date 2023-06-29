@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import Common from "../common/Common";
 import "./scss/MypageMain.scss";
 import {Link} from "react-router-dom";
-import {MYPAGE} from "../common/config/HostConfig";
 import profileImg from "../../src_assets/anonymous.jpg";
 import {
   getToken,
@@ -16,24 +15,9 @@ import MypageBoardList from "./MypageBoardList";
 import MypageProjectList from "./MypageProjectList";
 import MypageChatRoom from "./MypageChatRoomList";
 
-/**
- * [               타이틀                ]
- * [ 유저 정보 ] [        콘텐츠          ]
- */
 const MypageMain = props => {
 
   const ACCESS_TOKEN = getToken(); // 토큰
-
-  //캐러셀
-  // const [currentPage, setCurrentPage] = useState(1);
-  const [carouselIndex, setCarouselIndex] = useState(1);
-
-  // headers
-  const headerInfo = {
-    'content-type': 'application/json',
-    'Authorization': 'Bearer ' + ACCESS_TOKEN
-  }
-
   const USER_NICKNAME = getUserNickname();
   const USER_PROFILE = getUserProfile();
   const USER_POSITION = getUserPosition();
@@ -41,8 +25,11 @@ const MypageMain = props => {
   const USER_CAREER = getUserCareer();
   const USER_ROLE = getUserRole();
 
-  // 모든 게시판
-  const [allBoardList, setAllBoardList] = useState([]);
+  // headers
+  const headerInfo = {
+    'content-type': 'application/json',
+    'Authorization': 'Bearer ' + ACCESS_TOKEN
+  }
 
   return (
     <>
@@ -98,7 +85,6 @@ const MypageMain = props => {
                   </div>
         </div>
 
-        {/* TODO : 콘텐츠 랩퍼 CSS 작성 */}
         {/* 하단에 참여 채팅, 프로젝트 정보, 작성 게시글 목록 보여주기 */}
         <div className={'mypage-content-wrapper'}>
           {/* 멘토 채팅방 목록 불러오기 */}
