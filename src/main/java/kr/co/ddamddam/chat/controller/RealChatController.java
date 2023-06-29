@@ -23,11 +23,9 @@ public class RealChatController {
     @MessageMapping("/chat") // 클라이언트에서 메시지 전송 시 '/chat'으로 매핑
 //    @SendTo("/topic/chat") // 구독 중인 클라이언트에게 메시지 전송
     public ChatMessageResponseDTO sendMessage(@Payload ChatMessageRequestDTO requestDTO) {
-        log.info("dto 제발: {}",requestDTO);
         // 채팅 메시지 처리 로직
         ChatMessageResponseDTO responseDTO = chatService.processChatMessage(requestDTO);
 //        simpMessagingTemplate.convertAndSend("/topic/"+requestDTO.getSenderId(),requestDTO.getMessage());
-        log.info("보낸다:{}",responseDTO);
         return responseDTO;
     }
 }

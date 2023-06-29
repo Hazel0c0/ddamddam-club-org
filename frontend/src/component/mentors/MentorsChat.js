@@ -99,12 +99,6 @@ const MentorsChat = () => {
   // 멘티 확정 시 렌더링
   const menteeCountUp = e => {
 
-    // menteeCountList.forEach((mentee) => {
-    //     if (mentee.userIdx === chatRoom[0].sender.userIdx) {
-    //       console.log(`Found user: ${mentee}`);
-    //     }
-    //   });
-
     if(mentee === menteeCount){
       alert('멘티 모집완료!');
       return;
@@ -136,9 +130,7 @@ const MentorsChat = () => {
             }).then((res) => {
               return res.json();
             }).then((result) => {
-              console.log('result!!!: ', result);
               setApplyMenteeList(result.menteeResponseDTOList);
-              console.log('applyMenteeList:!!!!', result.menteeResponseDTOList);
             }).catch((error) => {
               console.log('네트워크 요청 오류:', error);
             });
@@ -160,7 +152,6 @@ const MentorsChat = () => {
           return res.json();
         })
         .then((result) => {
-          console.log('삭제하기');
           setChatRoom(result);
           window.location.assign('/mentors/detail/chat/' + chatPageIdx+'/'+0);
         });
@@ -245,7 +236,6 @@ const MentorsChat = () => {
       return res.json();
     }).then((result) => {
       setApplyMenteeList(result.menteeResponseDTOList);
-      // console.log('applyMenteeList:', result.menteeResponseDTOList);
     }).catch((error) => {
       console.log('네트워크 요청 오류:', error);
     });
@@ -262,11 +252,9 @@ const MentorsChat = () => {
       return res.json();
     })
       .then((result) => {
-        console.log(result.completeMentee);
         setDetailMember(result);
         setMenteeCount(result.completeMentee)
         setMenteeCountList(result.menteeList);
-        console.log(result);
         if (result.userIdx !== enterUserIdx) {
           fetch(CHAT + '/mentee/list/' + chatPageIdx
             , {
@@ -293,7 +281,7 @@ const MentorsChat = () => {
             .then((allResult) => {
               if (allResult != undefined) {
                 setChatRoom(allResult);
-                console.log(allResult);
+                // console.log(allResult);
               }
               return;
             });
@@ -308,10 +296,7 @@ const MentorsChat = () => {
   useEffect(() => {
     const webSocketLogin = () => {
       ws.current = new WebSocket("ws://" + SOCKET_URL + "/socket/chat");
-
-      // ws.current.onopen = () => {
-      //   console.log("WebSocket 연결 성공");
-      // };
+     
       ws.current.onmessage = (message) => {
         try {
           const dataSet = JSON.parse(message.data);
@@ -336,14 +321,14 @@ const MentorsChat = () => {
   useEffect(() => {
     if (socketData !== undefined) {
       const tempData = chat.concat(socketData);
-      console.log(tempData);
+      // console.log(tempData);
       setChat(tempData);
     }
   }, [socketData]);
 
 // 입력한 메세지 담기
   const onText = event => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     setMsg(event.target.value);
   }
 
@@ -416,7 +401,7 @@ const MentorsChat = () => {
 //webSocket
 
 
-  console.log('접속한 userIdx: ' + enterUserIdx);
+  // console.log('접속한 userIdx: ' + enterUserIdx);
 
 
   useEffect(() => {

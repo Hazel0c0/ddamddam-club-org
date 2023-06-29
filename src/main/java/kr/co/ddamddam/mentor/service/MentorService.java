@@ -139,7 +139,7 @@ public class MentorService {
 
         List<Mentee> menteeList = menteeRepository.findByMentorMentorIdx(mentorIdx);
 
-        log.info("Mentor : {}", mentor);
+//        log.info("Mentor : {}", mentor);
 
         List<MenteeResponseDTO> menteeResponseDTOList = menteeList.stream().map(
                         mentee -> {
@@ -303,11 +303,8 @@ public class MentorService {
 
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
-//        Long userIdx = 6L;
-
-
         List<Mentee> menteeList = menteeRepository.findByMentorMentorIdx(mentorIdx);
-        log.info("menteeListService : {}",menteeList);
+//        log.info("menteeListService : {}",menteeList);
 
         List<MenteeResponseDTO> menteeResponseDTOList = menteeList.stream().map(
                 mentee -> {

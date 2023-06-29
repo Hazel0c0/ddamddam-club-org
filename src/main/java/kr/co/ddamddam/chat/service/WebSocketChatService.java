@@ -42,10 +42,10 @@ public class WebSocketChatService {
 
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
-        log.info("receive message: {}", message);
+//        log.info("receive message: {}", message);
         ObjectMapper objectMapper = new ObjectMapper();
         ChatValidateRequestDTO dto = objectMapper.readValue(message, ChatValidateRequestDTO.class);
-        log.info("hahaha: {} ",dto.getMentorIdx());
+//        log.info("hahaha: {} ",dto.getMentorIdx());
         // 필드 값 추출 예시
         Long mentorIdx = dto.getMentorIdx();
         Long senderId = dto.getSenderId();
@@ -55,12 +55,12 @@ public class WebSocketChatService {
 
 
         // 추출한 필드 값 사용 예시
-        log.info("roomId: {}", dto.getRoomId());
-        log.info("mentorIdx: {}", mentorIdx);
-        log.info("senderId: {}", senderId);
-        log.info("name: {}", name);
-        log.info("msg: {}", msg);
-        log.info("date: {}", date);
+//        log.info("roomId: {}", dto.getRoomId());
+//        log.info("mentorIdx: {}", mentorIdx);
+//        log.info("senderId: {}", senderId);
+//        log.info("name: {}", name);
+//        log.info("msg: {}", msg);
+//        log.info("date: {}", date);
         for (Session s : clients) {
             log.info(s.getId());
             s.getBasicRemote().sendText(message);
@@ -69,7 +69,7 @@ public class WebSocketChatService {
 
     @OnClose
     public void onClose(Session session) {
-        log.info("session close: {}", session.getId());
+//        log.info("session close: {}", session.getId());
         clients.remove(session);
     }
 }
