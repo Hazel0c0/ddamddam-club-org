@@ -100,7 +100,7 @@ const MentorsChat = () => {
   const menteeCountUp = e => {
 
     if(mentee === menteeCount){
-      alert('멘티 모집완료!');
+      alert('멘티가 모집 완료되었습니다!');
       return;
     }
 

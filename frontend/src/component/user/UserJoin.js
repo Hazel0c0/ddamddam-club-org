@@ -122,17 +122,17 @@ const UserJoin = () => {
         });
     };
 
-    let timeoutId;
-    // 닉네임 입력창 체인지 이벤트 핸들러
-    const nicknameHandler = (e) => {
-        setShowNickCertificationBtn(false);
+
+    // 닉네임 중복체크 서버 통신 함수
+    const fetchDuplicateNickCheck = async (e) => {
         //입력한 값을 상태변수에 저장
         // console.log(e.target.value);
 
         const nameRegex = /^[가-힣a-zA-Z]{2,8}$/;
 
-        const inputVal = e.target.value;
-
+        const inputVal = document.getElementById('nickname').value;
+      
+        // console.log('inputVal의 값 : '+inputVal)
         // 입력값 검증
         let msg; // 검증 메시지를 저장할 변수
         let flag; // 입력 검증체크 변수
@@ -143,28 +143,19 @@ const UserJoin = () => {
         } else if (!nameRegex.test(inputVal)) {
             msg = '닉네임은 한글 또는 영어로 2~8자여야 합니다.';
             flag = false;
-        } else {
-            msg = '사용 가능한 닉네임입니다.';
-            flag = true;
         }
 
+        
         saveInputState({
             key: 'userNickName',
             inputVal,
             msg,
             flag
-        })
-    };
+        });
+        if(nameRegex.test(inputVal)){
+            console.log(`inputNick : ${inputVal}`)
+        const res = await fetch(`${API_BASE_URL}/checknickname?nickname=${inputVal}`);
 
-
-    // 닉네임 중복체크 서버 통신 함수
-    const fetchDuplicateNickCheck = async (e) => {
-
-        const inputNickname = userValue.userNickName;
-        console.log(`inputNick : ${inputNickname}`)
-        const res = await fetch(`${API_BASE_URL}/checknickname?nickname=${inputNickname}`);
-
-        let msg = '', flag = false;
         if (res.status === 200) {
             const json = await res.json();
             //true면 중복, false면 사용가능
@@ -177,14 +168,16 @@ const UserJoin = () => {
             }else {
                 alert("사용 가능한 닉네임입니다.")
                 setShowNickCertificationBtn(true);
-
+                setCorrect({...correct, userNickName: true});
             }
-
         } else {
             alert('서버 통신이 원활하지 않습니다!');
         }
-    };
+        // const inputNickname = userValue.userNickName;
+        
+    }
 
+    };
 
     // 이메일 중복체크 서버 통신 함수
     const fetchDuplicateCheck = async (e) => {
@@ -592,7 +585,8 @@ const UserJoin = () => {
                         <div className={'nickname-wrapper'}>
                             <input type={"text"} className={'nickname'} id={'nickname'} name={'nickname'}
                                    placeholder={'닉네임'}
-                                   onChange={nicknameHandler}/>
+                                //    onChange={nicknameHandler}
+                                   />
 
                             {/*변경하기*/}
                             {showNickCertificationBtn

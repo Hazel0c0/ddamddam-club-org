@@ -58,7 +58,7 @@ const MypageUserModify = props => {
     // 검증 완료 체크에 대한 상태변수 관리
     const [correct, setCorrect] = useState({
         userName: true,
-        userNickName: true,
+        userNickName: false,
         userBirth: true,
         userPosition: true,
         userCareer: true
@@ -135,10 +135,49 @@ const MypageUserModify = props => {
 
 // 닉네임 중복체크 서버 통신 함수
     const fetchDuplicateNickCheck = async (e) => {
+        //입력한 값을 상태변수에 저장
+        // console.log(e.target.value);
 
-        const inputNickname = userValue.userNickName;
-        console.log(`inputNick : ${inputNickname}`)
-        const res = await fetch(`${API_BASE_NICK_URL}/checknickname?nickname=${inputNickname}`);
+        const nameRegex = /^[가-힣a-zA-Z]{2,8}$/;
+
+        const inputVal = document.getElementById('nickname').value;
+        if(USER_NICKNAME === inputVal){
+            const msg = '기존 닉네임입니다.';
+            const flag = true;
+            saveInputState({
+                key: 'userNickName',
+                inputVal,
+                msg,
+                flag
+            });
+        }
+        else{
+        // console.log('inputVal의 값 : '+inputVal)
+        // 입력값 검증
+        let msg; // 검증 메시지를 저장할 변수
+        let flag; // 입력 검증체크 변수
+        console.log(nameRegex.test(inputVal));
+        if (!inputVal) {
+            msg = '유저 닉네임은 필수입니다.';
+            flag = false;
+        } else if (!nameRegex.test(inputVal)) {
+            msg = '닉네임은 한글 또는 영어로 2~8자여야 합니다.';
+            flag = false;
+        }
+        //  else {
+        //     msg = '사용 가능한 닉네임입니다.';
+        //     flag = true;
+        // }
+        
+        saveInputState({
+            key: 'userNickName',
+            inputVal,
+            msg,
+            flag
+        });
+        if(nameRegex.test(inputVal)){
+            console.log(`inputNick : ${inputVal}`)
+        const res = await fetch(`${API_BASE_NICK_URL}/checknickname?nickname=${inputVal}`);
 
         if (res.status === 200) {
             const json = await res.json();
@@ -152,47 +191,18 @@ const MypageUserModify = props => {
             }else {
                 alert("사용 가능한 닉네임입니다.")
                 setShowNickCertificationBtn(true);
-
+                setCorrect({...correct, userNickName: true});
             }
-
         } else {
             alert('서버 통신이 원활하지 않습니다!');
         }
-    };
-
-// 닉네임 입력창 체인지 이벤트 핸들러
-    const nicknameHandler = e => {
-
-        //입력한 값을 상태변수에 저장
-        // console.log(e.target.value);
-
-        const nameRegex = /^[가-힣a-zA-Z]{2,8}$/;
-
-        const inputVal = e.target.value;
-
-        // console.log('inputVal의 값 : '+inputVal)
-        // 입력값 검증
-        let msg; // 검증 메시지를 저장할 변수
-        let flag; // 입력 검증체크 변수
-        console.log(nameRegex.test(inputVal));
-        if (!inputVal) {
-            msg = '유저 닉네임은 필수입니다.';
-            flag = false;
-        } else if (!nameRegex.test(inputVal)) {
-            msg = '닉네임은 한글 또는 영어로 2~8자여야 합니다.';
-            flag = false;
-        } else {
-            msg = '사용 가능한 닉네임입니다.';
-            flag = true;
         }
-        console.log(msg)
-        saveInputState({
-            key: 'userNickName',
-            inputVal,
-            msg,
-            flag
-        });
+        // const inputNickname = userValue.userNickName;
+        
+    }
+
     };
+
 
 // userBirth 입력값 변경 핸들러
     const birthHandler = (event) => {
@@ -228,6 +238,18 @@ const MypageUserModify = props => {
 
 //입력칸이 모두 검증에 통과했는지 여부를 검사
     const isValid = () => {
+        if(USER_NICKNAME === document.getElementById('nickname').value){
+            const inputVal = document.getElementById('nickname').value;
+            const msg = '기존 닉네임입니다';
+            const flag = true;
+            saveInputState({
+                key: 'userNickName',
+                inputVal,
+                msg,
+                flag
+            });
+        }
+
         for (const key in correct) {
             const flag = correct[key];
             if (!flag) return false;
@@ -383,11 +405,18 @@ const MypageUserModify = props => {
                     <div className={'input-nickname'}>
                         <div className={'nickname-wrapper'}>
                             <input type={"text"} className={'nickname'} id={'nickname'} name={'nickname'}
-                                   onChange={nicknameHandler}
+                                //    onChange={nicknameHandler}
                                    defaultValue={USER_NICKNAME}/>
-                            <button className={'check-btn'} onClick={fetchDuplicateNickCheck}>
-                                <div className={''}>중복확인</div>
-                            </button>
+                            {showNickCertificationBtn
+                                ?
+                                <button className={'endCheck-btn'} disabled={true}>
+                                    <div className={'endCheck-email'}>중복완료</div>
+                                </button>
+                                :
+                                <button className={'check-btn'} onClick={fetchDuplicateNickCheck}>
+                                    <div className={''}>중복확인</div>
+                                </button>
+                            }
                         </div>
                         <span className={correct.userNickName ? 'correct' : 'not-correct'}>{message.userNickName}</span>
 
