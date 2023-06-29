@@ -77,7 +77,7 @@ const MentorsMain = () => {
           </button>
         </div>
         <Link to={'/mentors/write'} className={'mentors-write-btn'}>
-          멘토 모집하기
+          멘티 모집하기
         </Link>
       </div>
       <MentorsList selectedSubjects={selectedSubjects}/>

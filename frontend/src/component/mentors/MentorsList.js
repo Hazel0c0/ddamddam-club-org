@@ -8,7 +8,7 @@ import {MENTOR, CHAT} from "../common/config/HostConfig";
 import less from "../../src_assets/less.png";
 import than from "../../src_assets/than.png";
 import {Link} from "react-router-dom";
-import {MdEmojiPeople} from "react-icons/md";
+import profileImg from "../../src_assets/ProfileLogo.png"
 import {
   getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
   getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
@@ -203,10 +203,10 @@ const MentorsList = ({selectedSubjects}) => {
             {mentor.title}
           </div>
           {
-            mentor.profile !== 'null'
+            mentor.profile !== null
               ? <div className={'profile-img'} style={{backgroundImage: `url(${mentor.profile})`}}>
               </div>
-              : <div className={'profile-img'}></div>
+              : <div className={'profile-img'} style={{backgroundImage : `url(${profileImg})`}}></div>
           }
 
 
