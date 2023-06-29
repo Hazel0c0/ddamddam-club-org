@@ -47,7 +47,12 @@ public class CompanyService {
 
     //api xml데이터를 json으로 변경해서 DB에 저장
     @Transactional
-    public void processExternalData(String url) throws IOException {
+    public void processExternalData() throws IOException {
+
+
+        String ArrCount;
+        int page;
+        String url = "https://openapi.work.go.kr/opi/opi/opia/wantedApi.do?authKey=WNLIS5RDCEK7WOBRD73GA2VR1HJ&returnType=xml&display=480&callTp=L&region=&keyword==%EA%B0%9C%EB%B0%9C%EC%9E%90";
 
         HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
         conn.connect();
@@ -56,7 +61,6 @@ public class CompanyService {
         StringBuffer st = new StringBuffer();
         String line;
         while ((line = reader.readLine()) != null) {
-
             st.append(line);
         }
 
@@ -77,8 +81,9 @@ public class CompanyService {
         JSONObject newJson = new JSONObject();
         newJson.put("wanted", wantedArray);
 
-//        System.out.println(jsonObject.toString(INDENT_FACTOR));
-//        System.out.println(newJson.toString());
+        //마지막 페이지
+        int finalPage = wantedRoot.getInt("total");
+        System.out.println("finalPage = " + finalPage);
 
         CompanyRequestDTO dto = new CompanyRequestDTO();
         List<CompanyRequestDTO> wantedList = new ArrayList<>();
@@ -129,22 +134,6 @@ public class CompanyService {
 
             // Add the DTO object to the list if needed
             wantedList.add(dto);
-
-            for (CompanyRequestDTO dto2 : wantedList) {
-                /*
-                System.out.println("Title: " + dto2.getCompanyTitle());
-                System.out.println("Company: " + dto2.getCompanyName());
-                System.out.println("Career: " + dto2.getCompanyCareer());
-                System.out.println("Wanted Info URL: " + dto2.getCompanyUrl());
-                System.out.println("Basic Address: " + dto2.getCompanyArea());
-                System.out.println("Detail Address: " + dto2.getCompanyDetailArea());
-                System.out.println("Salary: " + dto2.getCompanySal());
-                System.out.println("Registration Date: " + dto2.getCompanyDate());
-                System.out.println("Closing Date: " + dto2.getCompanyEndDate());
-                System.out.println("----------------------------------");
-
-                 */
-            }
         }
     }
 
