@@ -184,3 +184,56 @@
     margin-right: 0;
   }
 }
+
+@media (max-width: 414px) {
+  .project-list-container{
+  margin: 0 10px;
+  }
+
+  .projects-write-btn {
+    left: 60%;
+    transform: translateX(-50%);
+    top: 30px;
+  }
+
+  .project-list-wrapper {
+    padding: 35px 20px 50px;
+  }
+
+  .sort-title {
+    font-size: 24px;
+  }
+
+  .project-list {
+    width: 100%;
+    height: auto;
+    margin: 0 0 30px;
+    padding: 27px 15px 32.8px 15px;
+
+    .text-title {
+      width: 100%;
+      margin: 10px 0.8px 7px 0.2px;
+      font-size: 18px;
+    }
+
+    .text-content {
+      height: auto;
+      margin-bottom: 5px;
+      -webkit-line-clamp: unset;
+    }
+
+    .project-like-btn {
+      margin: -25px 0 0 0;
+    }
+  }
+
+  /* 추가된 스타일 */
+  .project-list-container {
+    grid-template-columns: 1fr;
+  }
+
+  .project-list {
+    width: 100%;
+    margin: 0 0 30px;
+  }
+}

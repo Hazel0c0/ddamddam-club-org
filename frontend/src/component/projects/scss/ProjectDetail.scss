@@ -173,4 +173,52 @@
       }
     }
   }
+
+  @media (max-width: 414px) {
+    .main-text-wrapper {
+      width: 700px;
+      padding: 20px;
+    }
+
+    .main-title {
+      font-size: 30px;
+    }
+
+    .main-sub-title {
+      font-size: 14px;
+    }
+
+    .info-detail-container {
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 10px;
+
+      .modify-btn {
+        margin-right: 0;
+        margin-bottom: 5px;
+      }
+
+      .icon-wrapper {
+        justify-content: center;
+      }
+    }
+
+    .main-content {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .project-date {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .category {
+      margin: 10px 0;
+    }
+
+    .btn-wrapper {
+      flex-wrap: wrap;
+    }
+  }
 }
