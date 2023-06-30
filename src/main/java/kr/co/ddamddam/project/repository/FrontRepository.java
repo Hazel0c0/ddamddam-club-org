@@ -11,4 +11,7 @@ import java.util.List;
 
 public interface FrontRepository extends JpaRepository<ApplicantOfFront,Long> {
     Page<ApplicantOfFront> findByUser(User user, Pageable pageable);
-    boolean existsByProjectAndUser(Project project, User user);}
+    boolean existsByProjectAndUser(Project project, User user);
+
+    void deleteByUser(User foundUser);
+}

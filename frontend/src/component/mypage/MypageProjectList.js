@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import "./scss/MypageProjectList.scss";
 import {RiVipCrownFill} from "react-icons/ri";
 import {getToken, getUserIdx} from "../common/util/login-util";
-import {BASE_URL, MYPAGE} from "../common/config/HostConfig";
+import {BASE_URL, MYPAGE, PROJECT} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import less from "../../src_assets/less.png";
 import than from "../../src_assets/than.png";
@@ -91,6 +91,27 @@ const MypageProjectList = props => {
     asyncProjectList();
   }, [carouselIndex]);
 
+  const projectClose = async (boardIdx) =>{
+    if (window.confirm("삭제 하시겠습니까?")) {
+      await fetch(`${PROJECT}/applicant/${boardIdx}`, {
+        method: 'DELETE',
+        headers: headerInfo
+      })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Request failed');
+            }
+            return response.json();
+          })
+          .then((data) => {
+            alert(data.payload)
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+    }
+  };
+
   return (
 
 
@@ -105,7 +126,14 @@ const MypageProjectList = props => {
       }
       <div className={'pj-wrapper'}>
         {projectList.map((project, index) => (
-          <div className={'pj-box'}>
+          <div className={'pj-box'} key={index}>
+            <button className={'project-close'}
+            style={{
+              backgroundColor:'transparent',
+              float: 'right',
+              border: 'none'
+            }}
+            onClick={()=>projectClose(project.boardIdx)}>X</button>
             <Link to={`/projects/detail?projectIdx=${project.boardIdx}`} onClick={loginCheckHandler}>
               <div className={'pj-title'}>{subStringContent(project.boardTitle, 35)}</div>
             </Link>
@@ -124,8 +152,9 @@ const MypageProjectList = props => {
                       </p>
                       : null
                   }
-                  {project.front.map((front) => (
-                    <p className={'small-text'}>{front}</p>
+                  {project.front.map((front,i) => (
+                    <p className={'small-text'}
+                    key={i}>{front}</p>
                   ))}
                 </div>
               </div>
@@ -139,8 +168,9 @@ const MypageProjectList = props => {
                     </p>
                     : null
                 }
-                {project.back.map((back) => (
-                  <p className={'small-text'}>{back}</p>
+                {project.back.map((back,index) => (
+                  <p className={'small-text'}
+                  key={index}>{back}</p>
 
                 ))}
               </div>

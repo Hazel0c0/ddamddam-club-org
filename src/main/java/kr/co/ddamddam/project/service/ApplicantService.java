@@ -21,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -59,7 +61,7 @@ public class ApplicantService {
         //유저 포지션별 분류
         if (foundUser.getUserPosition() == UserPosition.BACKEND) {
             System.out.println("이 유저는 backend 다");
-            if (backRepository.existsByProjectAndUser(currProject,foundUser)) {
+            if (backRepository.existsByProjectAndUser(currProject, foundUser)) {
                 throw new IllegalStateException("이미 신청되었습니다");
             } else if (currProject.getApplicantOfBacks().size() < currProject.getMaxBack()) {
                 log.info("남은자리 {}, MaxBack {}", currProject.getApplicantOfBacks().size(), currProject.getMaxBack());
@@ -76,7 +78,7 @@ public class ApplicantService {
             }
         } else {
             System.out.println("이 유저는 front 다");
-            if (frontRepository.existsByProjectAndUser(currProject,foundUser)) {
+            if (frontRepository.existsByProjectAndUser(currProject, foundUser)) {
                 throw new IllegalStateException("이미 신청되었습니다");
             } else if (currProject.getApplicantOfFronts().size() < currProject.getMaxFront()) {
                 log.info("남은자리 {}, maxFront {}", currProject.getApplicantOfFronts().size(), currProject.getMaxFront());
@@ -112,17 +114,28 @@ public class ApplicantService {
         validateToken.validateToken(tokenUserInfo);
 
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
-
-        Project currProject = projectService.getProject(projectIdx);
-
         User foundUser = userUtil.getUser(userIdx);
 
+        Project currProject = projectService.getProject(projectIdx);
         //유저 포지션별 분류
+
+                log.info("신청 취소한 유저 포지션 : {} ", foundUser.getUserPosition());
         if (foundUser.getUserPosition() == UserPosition.BACKEND) {
-            System.out.println("이 유저는 backend 다");
-            backRepository.deleteById(userIdx);
+            boolean isBack = backRepository.existsByProjectAndUser(currProject, foundUser);
+            if (isBack) {
+                log.info("프로젝트에 신청 했다면 ?  {} ", isBack);
+                backRepository.deleteByUser(foundUser);
+            } else {
+                throw new IllegalStateException("신청하지 않은 프로젝트입니다");
+            }
         } else {
-            frontRepository.deleteById(userIdx);
+            boolean isFront = frontRepository.existsByProjectAndUser(currProject, foundUser);
+            if (isFront) {
+                log.info("프로젝트에 신청 했다면 ?  {} ", isFront);
+                frontRepository.deleteByUser(foundUser);
+            } else {
+                throw new IllegalStateException("신청하지 않은 프로젝트입니다");
+            }
         }
     }
 

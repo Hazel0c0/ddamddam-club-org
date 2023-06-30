@@ -9,4 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BackRepository extends JpaRepository<ApplicantOfBack,Long> {
     Page<ApplicantOfBack> findByUser(User user, Pageable pageable);
-    boolean existsByProjectAndUser(Project project, User user);}
+    boolean existsByProjectAndUser(Project project, User user);
+
+    void deleteByUser(User foundUser);
+}

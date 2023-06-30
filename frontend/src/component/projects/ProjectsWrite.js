@@ -193,7 +193,7 @@ const ProjectsWrite = () => {
           </section>
 
           <section>
-                <textarea type="text"
+                <textarea
                           className={'boardContent'}
                           name="boardContent"
                           value={formData.boardContent}

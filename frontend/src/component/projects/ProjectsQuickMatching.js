@@ -146,8 +146,8 @@ const ProjectsQuickMatching = () => {
             onClick={handleOutsideClick} // 모달 밖 영역 클릭 시 handleOutsideClick 함수 호출
         >
           <div className="modal-container">
-            {quickDetail.map((board) => (
-                <React.Fragment key={board.id}>
+            {quickDetail.map((board,index) => (
+                <React.Fragment key={index}>
                   <div className="modal-contents">
                     <div className="modal-header">
                       <button className="close" onClick={handleClose}>
