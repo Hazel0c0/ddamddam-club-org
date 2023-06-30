@@ -2,17 +2,29 @@ import React, {useEffect, useState} from 'react';
 import Common from "../common/Common";
 import './scss/ReviewMain.scss';
 import {QNA, REVIEW} from "../common/config/HostConfig";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import ReviewStar from "./StartRating/ReviewStar";
 import {httpStateCatcher} from "../common/util/HttpStateCatcherWrite";
 import {useMediaQuery} from "react-responsive";
+import {getToken} from '../common/util/login-util';
 
 const QnaMain = () => {
     const [topReview, setTopReview] = useState([]);
+    const ACCESS_TOKEN = getToken();
+    const redirection = useNavigate();
 
     const presentationScreen = useMediaQuery({
         query: "(max-width: 414px)",
     });
+
+    const loginCheckHandler = e => {
+        if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null){
+          alert('로그인 후 이용가능합니다.')
+          e.preventDefault();
+          redirection('/login');
+          // return;
+      }
+      };
 
     //top3 목록 렌더링 필터 async
     const asyncTopList = async () => {
@@ -53,7 +65,7 @@ const QnaMain = () => {
                     <div className={'top-section-one'} key={review.boardIdx}>
 
                         <h1 className={'top-section-title'}>🔥 주간 조회수 TOP{index + 1} 🔥</h1>
-                        <Link to={`/reviews/detail/${review.boardIdx}`} className={'detail-link'}>
+                        <Link to={`/reviews/detail/${review.boardIdx}`} className={'detail-link'} onClick={loginCheckHandler}>
                             <section className={'top-section-wrapper'}>
 
                                 <div className={'company-name'}>{review.companyName}</div>

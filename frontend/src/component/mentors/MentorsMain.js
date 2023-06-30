@@ -14,7 +14,7 @@ const MentorsMain = () => {
 
   const loginCheckHandler = e => {
     if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null){
-      alert('로그인 후 작성 가능합니다.')
+      alert('로그인 후 이용가능합니다.')
       e.preventDefault();
       redirection('/login');
       // return;

@@ -18,6 +18,7 @@ const ProjectsMain = ({keyword}) => {
         'Authorization': 'Bearer ' + ACCESS_TOKEN
     }
     const navigate = useNavigate();
+    
     const childRef = useRef(null);
 
     const [isLike, setIsLike] = useState(false);
@@ -52,6 +53,7 @@ const ProjectsMain = ({keyword}) => {
             navigate(`/projects/detail?projectIdx=${projectIdx}`);
         } else {
             alert('로그인 후에 이용할 수 있습니다.');
+            navigate('/login');
         }
     };
 
@@ -67,6 +69,7 @@ const ProjectsMain = ({keyword}) => {
             navigate('/projects/write');
         } else {
             alert('로그인이 필요합니다.');
+            navigate('/login');
         }
     };
 
