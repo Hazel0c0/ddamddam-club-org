@@ -15,6 +15,9 @@ const ProjectsModify = () => {
   const navigate = useNavigate(); // useNavigate 훅 사용
   const [updatedFormData, setUpdatedFormData] = useState([]);
 
+  const $fileTag = useRef();
+  const [imgFile, setImgFile] = useState(null);
+
   const ACCESS_TOKEN = getToken();
 
   const headerInfo = {
@@ -36,11 +39,9 @@ const ProjectsModify = () => {
         })
         .then(data => {
           setUpdatedFormData(data.payload);
-
           console.log(data.payload);
-
-          console.log(' 이미지 사진 불러오기 : ')
-          console.log(data.payload.boardImg)
+          console.log(` img load : ${data.payload.boardImg}`);
+          setImgFile(data.payload.boardImg);
         })
         .catch(error => {
           console.error(error);
@@ -92,9 +93,6 @@ const ProjectsModify = () => {
       console.log(updatedFormData); // 예시: 콘솔에 데이터 출력
     }
   };
-
-  const $fileTag = useRef();
-  const [imgFile, setImgFile] = useState(null);
 
   const showThumbnailHandler = () => {
     const file = $fileTag.current.files[0];

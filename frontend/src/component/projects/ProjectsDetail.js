@@ -5,6 +5,7 @@ import {PROJECT} from "../common/config/HostConfig";
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import './scss/ProjectDetail.scss';
 import {getToken, getUserIdx, getUserNickname} from "../common/util/login-util";
+import { format } from 'date-fns';
 
 const ProjectsDetail = () => {
   const ACCESS_TOKEN = getToken();
@@ -20,6 +21,7 @@ const ProjectsDetail = () => {
   const [projectDetail, setProjectDetail] = useState([]);
   const [fileUrl, setFileUrl] = useState(''); // 새로운 상태 추가
   const [applyButtonColor, setApplyButtonColor] = useState(''); // New state variable
+  const [offerPeriodFormatted, setOfferPeriodFormatted] = useState(''); // 새로운 상태 추가
 
   const handleLikeClick = (projectId) => {
     // 서버에 좋아요 처리를 위한 POST 요청을 보냅니다
@@ -41,6 +43,7 @@ const ProjectsDetail = () => {
 
 
   const fetchProjectDetail = () => {
+
     fetch(PROJECT + `/detail/${projectIdx}`, {
       method: 'GET',
       headers: headerInfo
@@ -54,11 +57,15 @@ const ProjectsDetail = () => {
         .then(data => {
           setProjectDetail([data.payload]);
           console.log("프로젝트 디테일 dto")
+          console.log(` 마감 일자 형식 변경 ${data.payload.offerPeriod}`);
+          const offer=data.payload.offerPeriod;
+          const offerPeriodFormatted = format(new Date(offer), 'yyyy년 MM월 dd일 HH시 mm분');
+          setOfferPeriodFormatted(offerPeriodFormatted);
 
           // 내 게시글 신청하기 버튼 색상 변경
           const b_writer = data.payload.boardWriter;
           const userNickname = getUserNickname();
-          console.log(`${b_writer} = ${userNickname}`);
+          console.log(`내 게시글인가용 ? ${b_writer} = ${userNickname}`);
 
           const isOwner = b_writer === userNickname;
           setApplyButtonColor(isOwner ? 'gray' : ''); // Set the button color based on ownership
@@ -69,7 +76,7 @@ const ProjectsDetail = () => {
   };
 
 
-  const fileRequestURL = '//localhost:8181/api/ddamddam/project/load-s3';
+  const fileRequestURL = `${PROJECT}/load-s3`;
 
   const fetchFileImage = async () => {
     const res = await fetch(
@@ -203,7 +210,9 @@ const ProjectsDetail = () => {
 
                         <div className={'category'}>
                           <span className={'p-sub-title'}>모집 마감 일자</span>
-                          <span className={'sub-content'}>{de.offerPeriod}</span>
+                          {/*<span className={'sub-content'}>{de.offerPeriod}</span>*/}
+                          <span className={'sub-content'}>{offerPeriodFormatted}</span>
+
                         </div>
                       </div>
                     </section>

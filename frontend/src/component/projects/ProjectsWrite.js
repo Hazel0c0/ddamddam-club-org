@@ -1,22 +1,17 @@
-import React, {useRef, useState} from 'react';
-import Common from "../common/Common";
+import React, { useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Grid } from '@mui/material';
+import PropTypes from 'prop-types';
+import {getToken} from '../common/util/login-util';
+import Common from '../common/Common';
 import './scss/ProjectsWrite.scss';
-import {PROJECT} from "../common/config/HostConfig";
-import {Link, useNavigate} from "react-router-dom";
-import ProjectsTitle from "./main/ProjectsTitle";
-import {Grid} from "@mui/material";
-import * as PropTypes from "prop-types";
-import {
-  getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
-  getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
-  getUserRole, isLogin
-} from '../common/util/login-util';
-
+import { PROJECT } from '../common/config/HostConfig';
+import ProjectsTitle from './main/ProjectsTitle';
 
 const ProjectsWrite = () => {
   const today = new Date();
   const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-  const tomorrowFormatted = tomorrow.toISOString().split('T')[0];
+  const tomorrowFormatted = tomorrow.toISOString();
 
   const [formData
     , setFormData] = useState({
@@ -70,7 +65,7 @@ const ProjectsWrite = () => {
           .then(data => {
             // setFormData(data.formData);
             console.log("write post")
-            console.log(data); // Handle the response data
+            console.log(data);
             navigate('/projects')
           })
           .catch(error => {
@@ -92,34 +87,33 @@ const ProjectsWrite = () => {
 
     reader.onloadend = () => {
       setImgFile(reader.result);
-
     }
+    console.log(`imgFile : ${imgFile}`)
   };
-  console.log(imgFile)
 
   return (
       <>
         <ProjectsTitle/>
         <Common className={'project-write-wrapper'}>
 
-            {/* 이미지 */}
-            <Grid item xs={12}>
-              <div className="thumbnail-box" onClick={() => $fileTag.current.click()}>
-                <img
-                    src={imgFile || require('../../src_assets/image-add.png')}
-                    alt="profile"
-                />
-              </div>
-              <label className='signup-img-label' htmlFor='profile-img'>사진 추가하기</label>
-              <input
-                  id='profile-img'
-                  type='file'
-                  accept='image/*'
-                  ref={$fileTag}
-                  style={{display: 'none'}}
-                  onChange={showThumbnailHandler}
+          {/* 이미지 */}
+          <Grid item xs={12}>
+            <div className="thumbnail-box" onClick={() => $fileTag.current.click()}>
+              <img
+                  src={imgFile || require('../../src_assets/image-add.png')}
+                  alt="profile"
               />
-            </Grid>
+            </div>
+            <label className='signup-img-label' htmlFor='profile-img'>사진 추가하기</label>
+            <input
+                id='profile-img'
+                type='file'
+                accept='image/*'
+                ref={$fileTag}
+                style={{display: 'none'}}
+                onChange={showThumbnailHandler}
+            />
+          </Grid>
 
           <section className={'write-form-wrapper'}>
 
@@ -194,10 +188,10 @@ const ProjectsWrite = () => {
 
           <section>
                 <textarea
-                          className={'boardContent'}
-                          name="boardContent"
-                          value={formData.boardContent}
-                          onChange={handleInputChange}
+                    className={'boardContent'}
+                    name="boardContent"
+                    value={formData.boardContent}
+                    onChange={handleInputChange}
                 />
           </section>
 

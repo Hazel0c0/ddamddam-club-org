@@ -197,8 +197,8 @@
   align-items: center;
   text-align: center;
   line-height: 22px;
-  background-color: rgb(61, 117, 199);
-  border-color: rgb(61, 117, 199);
+  background-color: #446dfe;
+  border-color: #446dfe;
   animation: blinking 1.5s infinite;
   padding: 7px 20px;
   border-radius: 5px;
@@ -226,5 +226,15 @@
     font-size: 17px;
     left: 20px;
     padding: 5px 15px;
+  }
+}
+
+@media (max-width: 414px) {
+  .quick-btn {
+    animation: none;
+    left: -100px;
+    font-weight: 600;
+    top: 22px;
+    padding: 11px 13px
   }
 }

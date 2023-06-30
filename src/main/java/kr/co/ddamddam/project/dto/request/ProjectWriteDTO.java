@@ -7,6 +7,7 @@ import lombok.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -22,8 +23,10 @@ public class ProjectWriteDTO {
   private Long boardWriterIdx;
 
   @NotBlank
+  @Size(max = 100)
   private String boardTitle;
   @NotBlank
+  @Size(max = 3000)
   private String boardContent;
   private String projectType;
 
