@@ -334,21 +334,63 @@
 
   .top-wrapper {
     background-image: url("../../../src_assets/main-background.jpg");
-    background-size: 100%;
+    background-size: 300%;
     background-repeat: no-repeat;
     background-position-y: 10px;
   }
 
   .top-wrapper .input-font {
     margin-top: 50px;
-    height: 100px;
-    line-height: 70px;
-    font-size: 40px;
-    font-family: "IBM Plex Mono", sans-serif !important;
+    font-size: 55px;
+    line-height: 1;
   }
   .top-wrapper .arrow-text {
-    font-size: 12px;
+    width: 100%;
+    font-size: 13px;
     margin-bottom: 9px;
   }
 
+  .top-wrapper .input-font{
+    margin-top: 0;
+  }
+
+  .top-wrapper .show-arrow-wrapper{
+    width: 100%;
+  }
+
+  #add-info-wrapper .add-main .logo{
+    width: 40px;
+    margin-top: 80px;
+  }
+  #add-info-wrapper .add-main .main-text{
+    font-size: 16px;
+    padding: 0 30px;
+  }
+  #add-info-wrapper .add-mentor,
+  #add-info-wrapper .add-project{
+    margin-top: 100px;
+  }
+
+  //멘토 이미지
+  .mentorMain, .mentorChat{
+    width: 250px;
+  }
+
+  #add-info-wrapper .add-mentor .img-wrapper .mentorMain{
+    left: -40px;
+  }
+  #add-info-wrapper .add-mentor .img-wrapper .mentorChat{
+    top: -350px;
+    left: 40px;
+  }
+  #add-info-wrapper .add-mentor .img-wrapper{
+    height: 450px;
+  }
+
+  #add-info-wrapper .sub-text{
+    font-size: 14px;
+  }
+  #add-info-wrapper .main-title{
+    margin-bottom: 0;
+  }
 }

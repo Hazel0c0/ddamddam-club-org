@@ -195,10 +195,45 @@
 
     .d-day{
       width: fit-content;
+      font-size: 38px !important;
+      font-weight: 300;
     }
   }
   .company-mobile{
     display: flex;
+    align-items: center;
     width: 100%;
+  }
+  .company-list-wrapper .company-list .company-career, .company-list-wrapper .sort-wrapper .sort-career{
+    width: fit-content;
+    align-items: center;
+  }
+
+  .company-list-wrapper .company-list{
+    padding: 10px 20px;
+  }
+  .company-list-wrapper .company-list .d-day{
+    margin-right: 20px;
+  }
+
+
+  .company-list-wrapper .company-list .d-day,
+  .company-list-wrapper .company-list .company-career,
+  .company-list-wrapper .company-list .companyName,
+  .company-list-wrapper .company-list .title-wrapper,
+  .company-list-wrapper .company-list .date-wrapper{
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+  }
+
+  .company-list-wrapper .company-list .title-wrapper,
+  .company-list-wrapper .sort-wrapper .sort-title{
+    padding-left: 0;
+  }
+
+  .companyName{
+    font-weight: 600;
+    font-size: 15px;
   }
 }
