@@ -2,6 +2,10 @@ package kr.co.ddamddam.qna.qnaReply.dto.request;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * QNA 댓글 수정 요청 DTO
  */
@@ -13,8 +17,10 @@ import lombok.*;
 @Builder
 public class QnaReplyModifyRequestDTO {
 
-    // TODO : Validated 처리
+    @NotNull
     private Long replyIdx;
+    @NotBlank
+    @Size(min = 1, max = 1000)
     private String replyContent;
 
 }

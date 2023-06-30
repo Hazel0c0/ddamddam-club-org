@@ -12,10 +12,12 @@ import kr.co.ddamddam.qna.qnaReply.service.QnaReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static kr.co.ddamddam.common.exception.custom.ErrorCode.INVALID_PARAMETER;
 import static kr.co.ddamddam.common.response.ResponseMessage.*;
 
 @RestController
@@ -53,9 +55,14 @@ public class QnaReplyApiController {
     @PostMapping("/write")
     public ApplicationResponse<?> writeReply(
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
-            @RequestBody QnaReplyInsertRequestDTO dto
+            @RequestBody QnaReplyInsertRequestDTO dto,
+            BindingResult bindResult
     ) {
 //        log.info("POST : /qna-reply/write - QNA {}번 게시글에 '{}' 댓글 작성", dto.getBoardIdx(), dto.getReplyContent());
+
+        if (bindResult.hasErrors()) {
+            return ApplicationResponse.bad(INVALID_PARAMETER);
+        }
 
         ResponseMessage result = qnaReplyService.writeReply(tokenUserInfo, dto);
 
@@ -101,9 +108,14 @@ public class QnaReplyApiController {
     @PatchMapping("/modify")
     public ApplicationResponse<?> modifyReply(
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
-            @RequestBody QnaReplyModifyRequestDTO dto
+            @RequestBody QnaReplyModifyRequestDTO dto,
+            BindingResult bindResult
     ) {
 //        log.info("PATCH : /qna-reply/modify/{} - QNA 댓글 수정", dto.getReplyIdx());
+
+        if (bindResult.hasErrors()) {
+            return ApplicationResponse.bad(INVALID_PARAMETER);
+        }
 
         ResponseMessage result = qnaReplyService.modifyReply(tokenUserInfo, dto);
 
