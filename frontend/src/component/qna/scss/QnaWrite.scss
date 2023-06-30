@@ -101,12 +101,13 @@
 @import "@yaireo/tagify/dist/tagify.css";
 .tags-input{
   background-color: white;
-  width: 94%;
+  width: auto;
   border-radius: 8px;
   border: solid 1px #e6e6e6;
   padding: 2px 0px;
 
   .tagify{
+    width: 100%;
     border: none;
     padding: 0 3px;
     --tag-bg: #1e4fff;
@@ -135,4 +136,26 @@
 }
 .--tag-hover	{
   //background-color: #292834 !important;
+}
+
+@media (max-width: 1024px) {
+  .qna-write-wrapper{
+    padding: 130px 100px 0;
+  }
+  .qna-write-wrapper .main-title{
+    font-size: 38px;
+  }
+  .qna-write-wrapper .main-sub-title{
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  .qna-write-wrapper .write-form-wrapper .title-input-wrapper .title-text-input{
+    width: 92%;
+  }
+  .tags-input{
+    width: 92%;
+  }
+
+
 }

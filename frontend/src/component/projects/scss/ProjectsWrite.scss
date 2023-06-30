@@ -121,3 +121,26 @@
   text-align: center;
   margin-bottom: 20px;
 }
+
+@media (max-width: 1024px) {
+  .project-write-wrapper{
+    padding: 80px 100px;
+  }
+
+  .thumbnail-box img{
+    width: 170px;
+    max-width: 500px;
+    max-height: 400px;
+  }
+
+  .signup-img-label{
+    font-size: 14px;
+  }
+  .thumbnail-box{
+    margin-bottom: 5px;
+  }
+
+  .project-write-wrapper .write-form-wrapper .title-input-wrapper .title-text-input{
+    width: 95%;
+  }
+}

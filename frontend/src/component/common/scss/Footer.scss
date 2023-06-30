@@ -18,3 +18,9 @@
     text-align: center;
   }
 }
+
+@media (max-width: 1024px) {
+  .footer-wrapper .copyright{
+    font-size: 12.5px;
+  }
+}

@@ -361,3 +361,18 @@
    font-weight: 600;
    border: solid 1px #828282;
  }
+
+@media (max-width: 1024px) {
+  .join-wrapper .top-wrapper .logo{
+    padding-top: 0;
+  }
+
+  .join-wrapper .form-wrapper{
+    top: 22%;
+    width: 580px;
+  }
+
+  .join-wrapper .background{
+    height: 900px;
+  }
+}

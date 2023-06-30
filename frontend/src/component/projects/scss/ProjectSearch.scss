@@ -47,3 +47,23 @@
     margin-left: 20px;
     }
 }
+
+@media (max-width: 1024px) {
+  .project-search-wrapper{
+    padding: 55px 100px 35px;
+  }
+
+  .project-search-wrapper .search-wrapper .input-search{
+    width: 430px;
+  }
+
+  .project-search-wrapper .search-wrapper{
+    font-size: 14px;
+  }
+
+  .project-search-wrapper .search-btn{
+    font-size: 16px;
+    margin-left: 12px;
+  }
+
+}

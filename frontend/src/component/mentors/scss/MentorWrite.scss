@@ -111,3 +111,22 @@
   }
 
 }
+
+@media (max-width: 1024px) {
+  .mentors-write-wrapper{
+    padding: 130px 100px 0;
+  }
+  .mentors-write-wrapper .main-title{
+    font-size: 38px;
+  }
+  .mentors-write-wrapper .main-sub-title{
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  .mentors-write-wrapper .write-form-wrapper .title-input-wrapper .title-text-input{
+    width: 95.5%;
+  }
+
+
+}

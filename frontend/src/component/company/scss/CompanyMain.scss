@@ -7,7 +7,7 @@
 }
 
 .company-top-wrapper {
-  width: 1920px;
+  width: 100%;
   padding: 160px 370px 0;
 
   .title-wrapper {
@@ -149,6 +149,9 @@
       //background-color: white;
       margin-left: 5px;
       padding: 7px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       //border: none;
       //border-radius: 5px;
       background-color: #e6e6e6;
@@ -165,4 +168,73 @@
   font-family: 'IBM Plex Mono', sans-serif;
   font-size: 14px;
   margin-bottom: 5px;
+}
+
+@media (max-width: 1024px) {
+  .company-top-wrapper{
+    padding: 130px 100px 30px;
+  }
+
+  .company-top-wrapper .title-wrapper .main-title{
+    font-size: 38px;
+  }
+  .company-top-wrapper .title-wrapper .main-sub-title{
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  .company-top-wrapper .frontend-filter .frontend-title .title-text,
+  .company-top-wrapper .frontend-filter .backend-title .title-text,
+  .company-top-wrapper .frontend-filter .total-title .title-text, .company-top-wrapper .backend-filter .frontend-title .title-text, .company-top-wrapper .backend-filter .backend-title .title-text, .company-top-wrapper .backend-filter .total-title .title-text, .company-top-wrapper .total-filter .frontend-title .title-text, .company-top-wrapper .total-filter .backend-title .title-text, .company-top-wrapper .total-filter .total-title .title-text{
+    font-size: 18px;
+  }
+
+  .company-top-wrapper .frontend-filter .frontend-title .title-add,
+  .company-top-wrapper .frontend-filter .backend-title .title-add,
+  .company-top-wrapper .frontend-filter .total-title .title-add,
+  .company-top-wrapper .backend-filter .frontend-title .title-add,
+  .company-top-wrapper .backend-filter .backend-title .title-add,
+  .company-top-wrapper .backend-filter .total-title .title-add,
+  .company-top-wrapper .total-filter .frontend-title .title-add,
+  .company-top-wrapper .total-filter .backend-title .title-add,
+  .company-top-wrapper .total-filter .total-title .title-add{
+    font-size: 12px;
+  }
+
+  .company-top-wrapper .frontend-filter .frontend-count,
+  .company-top-wrapper .frontend-filter .backend-count,
+  .company-top-wrapper .frontend-filter .total-count,
+  .company-top-wrapper .backend-filter .frontend-count,
+  .company-top-wrapper .backend-filter .backend-count,
+  .company-top-wrapper .backend-filter .total-count,
+  .company-top-wrapper .total-filter .frontend-count,
+  .company-top-wrapper .total-filter .backend-count,
+  .company-top-wrapper .total-filter .total-count{
+    font-size: 40px;
+  }
+
+  .company-top-wrapper .frontend-filter,
+  .company-top-wrapper .backend-filter,
+  .company-top-wrapper .total-filter{
+    padding: 15px 15px;
+    width: 28%;
+    height: 80px;
+  }
+
+  .company-top-wrapper .search-container .search-wrapper .search-input .input-btn{
+    width: 170px;
+    font-size: 13px;
+  }
+
+  .company-top-wrapper .search-container .search-wrapper .search-input{
+    padding: 3px 10px;
+  }
+
+  .company-top-wrapper .search-container .select-wrapper .select-career{
+    height: 27px;
+    font-size: 13px;
+  }
+  .company-top-wrapper .search-container .reset-btn{
+    padding: 5.5px 6px;
+  }
 }

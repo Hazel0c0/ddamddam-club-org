@@ -3,7 +3,7 @@
   justify-content: center;
 }
 .mentors-list-wrapper {
-  padding: 35px 0px 50px;
+  padding: 35px 0px 70px;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -292,6 +292,62 @@ margin-right: 0;
     height: 35px;
     border-radius: 5px;
     background-color: #1e4fff;
+  }
+
+}
+
+@media (max-width: 1024px) {
+  .mentors-list-wrapper .mentors-list{
+    padding: 20px 10px 10px;
+    width: 261px;
+  }
+  .mentors-list-wrapper .mentors-list .profile-img{
+    width: 70px;
+    height: 70px;
+  }
+  .mentors-list-wrapper .mentors-list .list-text-wrapper{
+    width: 130px;
+  }
+
+  .mentors-list-wrapper .mentors-list .list-text-wrapper .writer{
+    font-size: 13px;
+    margin-bottom: 0;
+  }
+
+  .mentors-list-wrapper .mentors-list .list-text-wrapper .text{
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .mentors-list-wrapper .mentors-list .list-text-wrapper .category li{
+    width: 70px;
+    font-size: 9px;
+    height: 15px;
+  }
+
+  .mentors-list-wrapper .mentors-list .speech-bubble{
+    font-size: 9px;
+    top: -20px;
+  }
+
+  .mentors-list-wrapper .mentors-list .list-text-wrapper .mentor-career{
+    font-size: 10px;
+  }
+
+  .mentors-list-wrapper .less-icon,
+  .mentors-list-wrapper .than-icon{
+    width: 30px;
+  }
+
+  //모달
+  .modal{
+    --bs-modal-width : 450px;
+    --bs-modal-margin : 4rem !important;
+  }
+
+  #modal-container .main-section{
+    min-height: 350px;
+
   }
 
 }

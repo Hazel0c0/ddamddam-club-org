@@ -141,7 +141,6 @@
       margin-top: 40px;
       font-size: 17px;
       padding: 0 15px;
-      line-height: 1.4;
       min-height: 360px;
       max-height: 360px;
       width: 100%;
@@ -201,4 +200,26 @@
   }
 
 
+}
+
+
+@media (max-width: 1024px) {
+  .review-detail-wrapper{
+    padding: 130px 70px 50px;
+  }
+
+  .review-detail-wrapper .title-wrapper .main-title{
+    font-size: 38px;
+  }
+  .review-detail-wrapper .title-wrapper .main-sub-title{
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  .review-detail-wrapper .main-text-wrapper .main-content{
+    font-size: 16px;
+  }
+
+  .review-detail-wrapper .main-text-wrapper{
+    padding: 50px 30px 20px;
+  }
 }

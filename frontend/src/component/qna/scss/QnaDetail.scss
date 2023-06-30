@@ -376,3 +376,29 @@
   }
 
 }
+
+@media (max-width: 1024px) {
+  .qna-detail-wrapper{
+  padding: 130px 70px 50px;
+  }
+
+  .qna-detail-wrapper .main-title{
+    font-size: 38px;
+  }
+  .qna-detail-wrapper .main-sub-title{
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  .qna-detail-wrapper .main-text-wrapper{
+    padding: 50px 30px 20px;
+  }
+
+  .qna-detail-wrapper .main-text-wrapper .main-content{
+    font-size: 16px;
+  }
+
+  .qna-detail-wrapper .reply-wrapper .reply-list .reply-content-wrapper .reply-content-text{
+    width: 77%;
+    font-size: 16px;
+  }
+}

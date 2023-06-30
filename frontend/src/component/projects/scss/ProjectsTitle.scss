@@ -9,7 +9,7 @@
   .main-title {
     @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
     font-family: 'IBM Plex Mono', sans-serif !important;
-    width: 1180px;
+    width: 100%;
     height: 62px;
     flex-grow: 0;
     font-size: 43px;
@@ -45,5 +45,27 @@
     &:hover {
       background-color: #ccc;
     }
+  }
+}
+
+@media (max-width: 1024px) {
+  .projects-view-wrapper .main-sub-title{
+    width: 100%;
+  }
+
+  .projects-view-wrapper{
+    padding-left: 100px;
+  }
+
+  .projects-view-wrapper .main-title{
+    font-size: 38px;
+  }
+  .projects-view-wrapper .main-sub-title{
+    font-size: 14px;
+    margin-top: 53px;
+  }
+
+  .projects-view-wrapper .main-sub-title{
+    height: 0;
   }
 }

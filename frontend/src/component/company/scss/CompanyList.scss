@@ -1,5 +1,5 @@
 .company-list-wrapper {
-  width: 1920px;
+  width: 100%;
   padding: 60px 370px 50px;
   display: flex;
   flex-direction: column;
@@ -146,5 +146,42 @@
     margin: 50px auto;
     color: #828282;
     font-weight: 600;
+  }
+}
+
+@media (max-width: 1024px) {
+
+  .company-list-wrapper{
+    padding: 40px 100px 50px;
+  }
+
+  .company-list-wrapper .sort-wrapper .sort-dDay,
+  .company-list-wrapper .sort-wrapper .sort-career,
+  .company-list-wrapper .sort-wrapper .sort-companyName,
+  .company-list-wrapper .sort-wrapper .sort-title,
+  .company-list-wrapper .sort-wrapper .sort-date{
+    font-size: 13px;
+  }
+
+  .company-list-wrapper .company-list .d-day, .company-list-wrapper .company-list .company-career, .company-list-wrapper .company-list .companyName, .company-list-wrapper .company-list .title-wrapper, .company-list-wrapper .company-list .date-wrapper{
+    font-size: 13px;
+  }
+
+  .company-list-wrapper .company-list .d-day{
+    font-size: 25px;
+  }
+
+  .company-list-wrapper .company-list .title-wrapper .info-wrapper{
+    font-size: 11px;
+  }
+
+  .company-list-wrapper .company-list .title-wrapper,
+  .company-list-wrapper .sort-wrapper .sort-title{
+    padding-left: 15px;
+    width: 33%;
+  }
+  .company-list-wrapper .company-list .company-career,
+  .company-list-wrapper .sort-wrapper .sort-career{
+    width: 8%;
   }
 }

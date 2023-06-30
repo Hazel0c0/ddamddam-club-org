@@ -152,9 +152,12 @@
       }
 
       .arrowDetail {
-        margin: 0 30px;
-        width: 75px;
+        margin: 0 20px;
+        width: 40px;
+        //font-size: 30px;
         opacity: 0;
+        color: white;
+        font-weight: 200;
       }
     }
   }
@@ -270,7 +273,7 @@
 @media (max-width: 1024px) {
   .top-wrapper {
     background-image: url("../../../src_assets/main-background.jpg");
-    background-size: 100%;
+    background-size: 140%;
     background-repeat: no-repeat;
     background-position-y: 70px;
   }

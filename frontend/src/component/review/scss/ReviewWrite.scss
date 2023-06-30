@@ -172,4 +172,22 @@
 
 
 }
+@media (max-width: 1024px) {
+  .review-write-wrapper{
+    padding: 130px 100px 0;
+  }
+  .review-write-wrapper .main-title{
+    font-size: 38px;
+  }
+  .review-write-wrapper .main-sub-title{
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  .review-write-wrapper .review-company-detail .input-company-name .detail-text-input,
+  .review-write-wrapper .review-company-detail .input-company-job .detail-text-input,
+  .review-write-wrapper .review-company-detail .input-company-tenure .detail-text-input,
+  .review-write-wrapper .review-company-detail .input-company-location .detail-text-input{
+    width: 130px;
+  }
+}
 
