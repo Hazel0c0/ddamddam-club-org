@@ -12,10 +12,13 @@ import kr.co.ddamddam.qna.qnaBoard.service.QnaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static kr.co.ddamddam.common.exception.custom.ErrorCode.*;
 import static kr.co.ddamddam.common.response.ResponseMessage.FAIL;
 
 /**
@@ -92,9 +95,14 @@ public class QnaApiController {
     @PostMapping("/write")
     public ApplicationResponse<?> writeBoard(
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
-            @RequestBody QnaInsertRequestDTO dto
+            @Validated @RequestBody QnaInsertRequestDTO dto,
+            BindingResult bindResult
     ) {
 //        log.info("POST : /qna/write - 게시글 생성 {}", dto);
+
+        if (bindResult.hasErrors()) {
+            return ApplicationResponse.bad(INVALID_PARAMETER);
+        }
 
         Long boardIdx = qnaService.writeBoard(tokenUserInfo, dto);
 
@@ -135,9 +143,14 @@ public class QnaApiController {
     @PatchMapping("/modify/{boardIdx}")
     public ApplicationResponse<?> modifyBoard(
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
-            @RequestBody QnaInsertRequestDTO dto
+            @Validated @RequestBody QnaInsertRequestDTO dto,
+            BindingResult bindResult
     ) {
 //        log.info("PATCH : /qna/modify - 게시글 수정, payload - {}", dto);
+
+        if (bindResult.hasErrors()) {
+            return ApplicationResponse.bad(INVALID_PARAMETER);
+        }
 
         ResponseMessage result = qnaService.modifyBoard(tokenUserInfo, dto);
 

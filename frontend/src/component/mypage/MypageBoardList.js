@@ -29,7 +29,7 @@ const MypageBoardList = () => {
   const [carouselIndex, setCarouselIndex] = useState(1);
 
   const subStringContent = (str, n) => {
-    return str?.length > n
+    return str.length > n
       ? str.substr(0, n - 1) + "..."
       : str;
   }

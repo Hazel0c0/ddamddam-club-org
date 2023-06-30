@@ -5,6 +5,8 @@ import kr.co.ddamddam.qna.qnaHashtag.entity.Hashtag;
 import kr.co.ddamddam.user.entity.User;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,9 +21,12 @@ import java.util.List;
 @Builder
 public class QnaInsertRequestDTO {
 
-    // TODO : Validated 처리
     private Long boardIdx;
+    @NotBlank
+    @Size(min = 1, max = 100)
     private String boardTitle;
+    @NotBlank
+    @Size(min = 1, max = 1000)
     private String boardContent;
     private List<String> hashtagList;
 

@@ -11,7 +11,7 @@ import {debounce} from "lodash";
 import {
   httpStateCatcher,
   httpStateCatcherDelete,
-  httpStateCatcherModify,
+  httpStateCatcherModify, httpStateCatcherReply, httpStateCatcherReplyDelete, httpStateCatcherReplyModify,
   httpStateCatcherWrite
 } from "../common/util/HttpStateCatcherWrite";
 
@@ -81,7 +81,6 @@ const QnaDetail = () => {
 
 
     //댓글 작성
-    // TODO : 중복클릭 방지 해야함
     const writeReplyHandler = debounce(async () => {
 
       if (detailQna.boardAdoption === 'Y') {
@@ -163,12 +162,12 @@ const QnaDetail = () => {
         })
       })
 
-      httpStateCatcherModify(res.status);
-      if (res.status === 400) { // 가입이 안되어있거나, 비번틀린 경우
-        const text = await res.text(); // 서버에서 온 문자열 읽기
-        alert(text);
-        return;
-      }
+      httpStateCatcherReplyModify(res.status);
+      // if (res.status === 400) { // 가입이 안되어있거나, 비번틀린 경우
+      //   const text = await res.text(); // 서버에서 온 문자열 읽기
+      //   alert(text);
+      //   return;
+      // }
       setReplyModifyShow(false);
       asyncDetail();
       alert("댓글이 수정 되었습니다.");
@@ -178,7 +177,7 @@ const QnaDetail = () => {
     //댓글 삭제
     const replyDeleteHandler = async (replyIdx) => {
       if (detailQna.boardAdoption === 'Y') {
-        alert('이미 채택된 글은 댓글은 삭제하실 수 없습니다.');
+        alert('이미 채택된 글의 댓글은 삭제하실 수 없습니다.');
         return;
       }
 
@@ -187,7 +186,7 @@ const QnaDetail = () => {
         method: 'DELETE',
         headers: requestHeader
       })
-      httpStateCatcherDelete(res.status);
+      httpStateCatcherReplyDelete(res.status);
       alert("댓글이 삭제 되었습니다.");
       asyncDetail();
     }
@@ -209,7 +208,7 @@ const QnaDetail = () => {
         })
       })
 
-      httpStateCatcher(res.status);
+      httpStateCatcherReply(res.status);
       // if (res.status === 400) { // 가입이 안되어있거나, 비번틀린 경우
       //   const text = await res.text(); // 서버에서 온 문자열 읽기
       //   alert(text);
