@@ -119,10 +119,65 @@
 
   }
 
+
+
   @media (max-width: 1024px) {
 
     .review-top-wrapper{
       padding: 130px 100px 0;
+    }
+    .review-top-wrapper .top-view-wrapper {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+      .review-top-wrapper .top-view-wrapper .top-section-one {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        margin-top: 35px;
+      }
+        .review-top-wrapper .top-view-wrapper .top-section-one .top-section-title {
+          font-size: 14px;
+        }
+        .review-top-wrapper .top-view-wrapper .top-section-one .top-section-wrapper {
+          margin-top: 5px;
+          padding: 15px 17px 10px;
+          width: 260px;
+          height: 150px;
+        }
+        .review-top-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .company-name {
+          padding: 5px 15px;
+          // width: 100px;
+          height: fit-content;
+          font-size: 13px;
+          border-radius: 5px;
+          margin-bottom: 0;
+          text-align: center;
+      }
+      .review-top-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .review-title {
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+      .review-top-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .detail-wrapper {
+        line-height: 1.2;
+        margin-top: 0;
+        min-height: 17px;
+      }
+      .review-top-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .detail-wrapper .detail-reviewJob {
+        font-size: 8px;
+        margin-right: 5px;
+      }
+      .review-top-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .star{
+        margin-top: 10px;
+      }
+  
+  }
+
+  @media (max-width: 414px) {
+
+    .review-top-wrapper{
+      padding: 130px 10px 0 !important;
     }
     .review-top-wrapper .top-view-wrapper {
       display: flex;

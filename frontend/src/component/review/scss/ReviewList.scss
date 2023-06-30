@@ -157,13 +157,11 @@
     color: #828282;
     font-weight: 600;
   }
-
-
 }
 
 @media (max-width: 1024px) {
   
-
+  
   .review-list-wrapper {
     padding: 0px 110px 50px;
   }
@@ -179,7 +177,7 @@
   .review-list-wrapper .review-list .company-info-wrapper .company {
     padding: 5px 15px;
     font-size: 13px;
-}
+  }
   .review-list-wrapper .review-list .text-wrapper .text-content {
     font-size: 11px;
   }
@@ -187,7 +185,7 @@
     font-size: 16px;
     margin-bottom: 5px;
   }
-
+  
   .review-list-wrapper .review-list .text-wrapper .main-content .detail-wrapper .detail-reviewJob {
     font-size: 9px;
     margin-right: 7px;
@@ -205,11 +203,66 @@
   }
   .review-list-wrapper .review-list .right-section .review-info .write-date {
     font-size: 10px;
-}
-
+  }
   
+  @media (max-width: 414px) {
+    
+    .review-list-wrapper {
+      padding: 30px 30px 35px !important;
+    }
+    .review-list-wrapper .review-list {
+      margin-bottom: 10px;
+      padding: 20px;
+      height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .review-list-wrapper .review-list .text-wrapper {
+      width: 100%;
+      margin-right: 12px;
+    }
+    .review-list-wrapper .review-list .company-info-wrapper .company {
+      padding: 5px 15px;
+      font-size: 13px;
+    }
+    .review-list-wrapper .review-list .company-info-wrapper > div {
+      position: absolute;
+      margin: 0;
+      top: 10px;
+      right: 20px;
+    }
+    .review-list-wrapper .review-list .text-wrapper .text-content {
+      font-size: 11px;
+    }
+    .review-list-wrapper .review-list .text-wrapper .main-content .text-title {
+      font-size: 17px;
+      margin: 10px 0;
+      width: 100%;
+      word-break: break-all;
+    }
   
-
-
-
+    .review-list-wrapper .review-list .text-wrapper .main-content .detail-wrapper .detail-reviewJob {
+      font-size: 9px;
+      margin-right: 7px;
+    }
+    .review-list-wrapper .review-list .right-section .go-detail {
+      position: absolute;
+      right: 20px;
+      bottom: 15px;
+      margin-bottom: 9px;
+      font-size: 12px;
+      font-size: 15px;
+    }
+    .review-list-wrapper .review-list .right-section .review-info .icon-wrapper {
+      font-size: 15px;
+      margin-bottom: 3px;
+    }
+    .review-list-wrapper .review-list .right-section .review-info .icon-wrapper .view-count-icon {
+      width: 12px;
+    }
+    .review-list-wrapper .review-list .right-section .review-info .write-date {
+      font-size: 13px;
+    }
+  }
 }

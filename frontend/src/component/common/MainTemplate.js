@@ -10,9 +10,9 @@ const MainTemplate = () => {
     const inputText = 'Hi, We Are \nDDAMDDAM Club!';
     const subText = '땀땀클럽은 개발자들간의 커뮤니티 공간입니다.\n멘토링, 프로젝트 모집 등 다양한 콘텐츠를 즐겨보세요!';
     const [arrow, setArrow] = useState(false);
-    // const presentationScreen = useMediaQuery({
-    //     query: "(max-width: 1024px)",
-    // });
+    const presentationScreen = useMediaQuery({
+        query: "(max-width: 1024px)",
+    });
 
     useEffect(() => {
         const timer = setTimeout(() => {
