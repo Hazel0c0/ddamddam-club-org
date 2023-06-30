@@ -104,7 +104,7 @@ const MypageChatRoom = props => {
               <p className={'chat-sub-title'}>주제</p><p>{chatRoom.subject}</p>
             </div>
             <div className={'chat-submenu-box'}>
-              <p className={'chat-sub-title'}>현직</p><p>{chatRoom.current}</p>
+              <p className={'chat-sub-title'}>경력</p><p>{chatRoom.current !== '신입' ? chatRoom.current+'년' : chatRoom.current}</p>
             </div>
           </div>
         ))}

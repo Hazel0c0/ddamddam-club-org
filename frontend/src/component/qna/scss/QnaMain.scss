@@ -95,6 +95,11 @@
           font-size: 14px;
           @include content-center;
 
+          .speech-count-wrapper{
+            display: flex;
+            align-items: center;
+          }
+
           .view-count-wrapper {
             margin-right: 10px;
           }
@@ -113,4 +118,60 @@
       color: #292834;
     }
   }
+}
+
+
+@media (max-width: 1024px) {
+
+  .qna-view-wrapper{
+    padding: 130px 100px 0;
+  }
+  .qna-view-wrapper .top-view-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+  }
+    .qna-view-wrapper .top-view-wrapper .top-section-one {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      margin-top: 35px;
+    }
+      .qna-view-wrapper .top-view-wrapper .top-section-one .top-section-title,
+       .qna-view-wrapper .top-view-wrapper .top-section-two .top-section-title,
+        .qna-view-wrapper .top-view-wrapper .top-section-three .top-section-title {
+        font-size: 14px;
+      }
+      .qna-view-wrapper .top-view-wrapper .top-section-one .top-section-wrapper{
+        margin-top: 5px;
+        padding: 18px 25px 23px;
+        width: 250px;
+        height: 140px;
+      }
+      .qna-view-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .checked,
+       .qna-view-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .not-checked,
+        .qna-view-wrapper .top-view-wrapper .top-section-two .top-section-wrapper .checked,
+         .qna-view-wrapper .top-view-wrapper .top-section-two .top-section-wrapper .not-checked,
+          .qna-view-wrapper .top-view-wrapper .top-section-three .top-section-wrapper .checked,
+           .qna-view-wrapper .top-view-wrapper .top-section-three .top-section-wrapper .not-checked {
+        width: 130px;
+        height: 20px;
+        font-size: 14px;
+        border-radius: 5px;
+        margin-bottom: 11px;
+    }
+    .qna-view-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .qna-title{
+      font-size: 17px;
+      margin-bottom: 10px;
+    }
+    .qna-view-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .qna-content{
+      font-size: 11px;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      min-height: 20px;
+    }
+    .qna-view-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .icon-wrapper{
+      font-size: 11px;
+    }
+
 }
