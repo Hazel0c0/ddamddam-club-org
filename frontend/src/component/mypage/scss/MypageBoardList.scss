@@ -38,3 +38,12 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .board-list .board-title{
+    width: 90%;
+    margin-left: 15px;
+  }
+  .board-list .board-title > a{
+    padding: 0;
+  }
+}
