@@ -118,11 +118,33 @@ a {
 @media (max-width: 1024px) {
 
   .mypage-top-wrapper {
-    padding: 130px 100px 0 180px;
+    padding: 130px 100px 0 220px;
     font-size: 14px;
   }
 
-  
+  .less-icon, .than-icon{
+    width: 30px !important;
+  }
+  .than-icon{
+    right: -6.5% !important;
+  }
+
+  .less-icon{
+    left: -4.5% !important;
+  }
+
+  .mypage-top-wrapper .mypage-info-wrapper .profile-img{
+    width: 120px;
+    height: 120px;
+  }
+
+  .mypage-top-wrapper .mypage-info-wrapper .text-box{
+    height: fit-content;
+  }
+ 
+  .mypage-top-wrapper .mypage-info-wrapper div{
+    padding: 10px 13px;
+  }
 
   
 
@@ -133,7 +155,7 @@ a {
 
 
   .mypage-top-wrapper .mypage-info-wrapper {
-    width: 70px;
+    width: 180px;
     padding: 7px;
     border-radius: 10px;
     left: 10px;
