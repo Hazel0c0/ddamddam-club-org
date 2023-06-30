@@ -329,7 +329,9 @@ const MentorsChat = () => {
 
 // 입력한 메세지 담기
   const onText = event => {
-    // console.log(event.target.value);
+    if (event.target.value === ''){
+      return; 
+    }
     setMsg(event.target.value);
   }
 

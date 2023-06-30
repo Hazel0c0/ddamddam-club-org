@@ -1,13 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import Common from "../common/Common";
-import {Link} from "react-router-dom";
 import {MENTOR} from "../common/config/HostConfig";
 import './scss/MentorsMain.scss';
 import MentorsList from "./MentorsList";
+import {isLogin, getToken} from '../common/util/login-util';
+import {Link, useNavigate} from "react-router-dom";
 
 const MentorsMain = () => {
 
   const [selectedSubjects, setSelectedSubjects] = useState([]);
+  const redirection = useNavigate();
+  const ACCESS_TOKEN = getToken();
+
+  const loginCheckHandler = e => {
+    if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null){
+      alert('로그인 후 작성 가능합니다.')
+      e.preventDefault();
+      redirection('/login');
+      // return;
+  }
+  };
 
   useEffect(() => {
     // console.log(selectedSubjects)
@@ -76,9 +88,10 @@ const MentorsMain = () => {
             기타
           </button>
         </div>
-        <Link to={'/mentors/write'} className={'mentors-write-btn'}>
+          <Link to={'/mentors/write'}className={'mentors-write-btn'} onClick={loginCheckHandler}>
           멘티 모집하기
-        </Link>
+                {/* <button className={'mentors-write-btn'} onClick={loginCheckHandler}>멘티 모집하기</button> */}
+            </Link>
       </div>
       <MentorsList selectedSubjects={selectedSubjects}/>
     </Common>
