@@ -238,3 +238,30 @@
     padding: 5.5px 6px;
   }
 }
+
+@media (max-width: 414px) {
+  .company-top-wrapper .select-view-wrapper{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .company-top-wrapper{
+    padding: 130px 30px 30px;
+  }
+
+  .company-top-wrapper .frontend-filter,
+  .company-top-wrapper .backend-filter,
+  .company-top-wrapper .total-filter{
+    width: 100%;
+    margin-bottom: 7px;
+  }
+  .company-top-wrapper .search-container .select-wrapper .select-career{
+    height: 29.5px;
+  }
+  .company-top-wrapper .search-container .reset-btn{
+    padding: 7px;
+  }
+  .company-top-wrapper .search-container{
+    justify-content: space-between;
+  }
+}

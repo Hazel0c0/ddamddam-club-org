@@ -330,3 +330,25 @@
 }
 
 }
+@media (max-width: 414px) {
+
+  .top-wrapper {
+    background-image: url("../../../src_assets/main-background.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position-y: 10px;
+  }
+
+  .top-wrapper .input-font {
+    margin-top: 50px;
+    height: 100px;
+    line-height: 70px;
+    font-size: 40px;
+    font-family: "IBM Plex Mono", sans-serif !important;
+  }
+  .top-wrapper .arrow-text {
+    font-size: 12px;
+    margin-bottom: 9px;
+  }
+
+}

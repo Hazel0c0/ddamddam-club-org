@@ -6,6 +6,8 @@ import {Link, useNavigate} from "react-router-dom";
 import {deleteSession, getToken, isLogin} from "./util/login-util";
 import profileImg from "../../src_assets/ProfileLogo.png"
 import {BASE_URL, AUTH} from "../../component/common/config/HostConfig";
+import {Menu, Sidebar, SubMenu} from "react-pro-sidebar";
+import {MenuItem} from "@mui/material";
 
 const Header = () => {
 
@@ -95,6 +97,17 @@ const Header = () => {
 
     return (
       <Common className={'header-background'}>
+
+          {/*<Sidebar>*/}
+          {/*    <Menu>*/}
+          {/*        <SubMenu label="Charts">*/}
+          {/*            <MenuItem> Pie charts </MenuItem>*/}
+          {/*            <MenuItem> Line charts </MenuItem>*/}
+          {/*        </SubMenu>*/}
+          {/*        <MenuItem> Documentation </MenuItem>*/}
+          {/*        <MenuItem> Calendar </MenuItem>*/}
+          {/*    </Menu>*/}
+          {/*</Sidebar>*/}
 
           <div className={'header-wrapper'}>
               <Link to={'/'}>

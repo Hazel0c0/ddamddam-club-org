@@ -4,6 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {RxCalendar} from "react-icons/rx"
 import {Spinner} from 'reactstrap';
 import {throttle} from "lodash";
+import {useMediaQuery} from "react-responsive";
 
 const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
     const [companyList, setCompanyList] = useState([]);
@@ -22,6 +23,9 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         setGoWorknet([]); // 워크넷 링크 상태 초기화
     }, [searchKeyword, searchValue, searchCareer]);
 
+    const presentationScreen = useMediaQuery({
+        query: "(max-width: 414px)",
+    });
 
     useEffect(() => {
         console.log(`useEffect 실행`)
@@ -132,14 +136,6 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         }
     }
 
-    // console.log(`마지막 페이지 찾기의 page : `, page)
-    // console.log(`마지막 페이지 찾기의 finaPage : `, finalPage)
-    // if (page >= finalPage) {
-    //     // 마지막 페이지에 도달한 경우 스크롤 이벤트 리스너 제거
-    //     console.log('마지막 페이지 도달')
-    //     window.removeEventListener('scroll', handleScroll);
-    // }
-
     //d-day계산
     const convertToEndDate = (endDate) => {
         const currentYear = new Date().getFullYear();
@@ -169,13 +165,15 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
     }
     return (
         <>
-            <section className={'sort-wrapper'}>
-                <span className={'sort-dDay'}>D-day</span>
-                <span className={'sort-career'}>경력</span>
-                <span className={'sort-companyName'}>회사명</span>
-                <span className={'sort-title'}>채용내용</span>
-                <span className={'sort-date'}>날짜</span>
-            </section>
+            {!presentationScreen &&
+                <section className={'sort-wrapper'}>
+                    <span className={'sort-dDay'}>D-day</span>
+                    <span className={'sort-career'}>경력</span>
+                    <span className={'sort-companyName'}>회사명</span>
+                    <span className={'sort-title'}>채용내용</span>
+                    <span className={'sort-date'}>날짜</span>
+                </section>
+            }
             {companyList.map((company, index) => (
 
                 <section
@@ -184,8 +182,17 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
                     onMouseEnter={() => showLinkHandler(index)}
                     onMouseLeave={() => hiddenLinkHandler(index)}
                 >
-                    <div className={'d-day'}>{company.dDay}</div>
-                    <div className={'company-career'}>{company.companyCareer}</div>
+                    {!presentationScreen ?
+                        <>
+                            <div className={'d-day'}>{company.dDay}</div>
+                            <div className={'company-career'}>{company.companyCareer}</div>
+                        </>
+                        :
+                        <div className={'company-mobile'}>
+                            <div className={'d-day'}>{company.dDay}</div>
+                            <div className={'company-career'}>{company.companyCareer}</div>
+                        </div>
+                    }
                     <div className={'companyName'}>{company.companyName}</div>
                     <section className={'title-wrapper'}>
                         <div className={'title'}>{company.companyTitle}</div>
