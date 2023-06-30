@@ -371,6 +371,10 @@ const MentorsChat = () => {
     if (!chkLog) {
       setChkLog(true);
     }
+    if(msg === ''){
+      alert('공백없이 입력하세요');
+      return;
+    }
 
     if (msg !== '') {
       const data = {

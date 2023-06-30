@@ -1,6 +1,7 @@
 package kr.co.ddamddam.mentor.api;
 
 
+import kr.co.ddamddam.common.response.ApplicationResponse;
 import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.mentor.dto.page.MentorPageDTO;
 import kr.co.ddamddam.mentor.dto.request.MentorModifyRequestDTO;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static kr.co.ddamddam.common.exception.custom.ErrorCode.INVALID_PARAMETER;
 
 @RestController
 @Slf4j
@@ -78,6 +82,7 @@ public class MentorApiController {
     public ResponseEntity<?> write(
             @Validated @RequestBody MentorWriteRequestDTO dto
             ,@AuthenticationPrincipal TokenUserInfo userInfo
+            , BindingResult bindingResult
     ) {
         // 요청 URL(POST) /api/mentors
         // payload{
@@ -89,6 +94,9 @@ public class MentorApiController {
         //}
 //        log.info("/api/ddamddam/mentors POST!! - payload {}",dto);
         // 로그인한 토큰방식으로 user_idx값 받아와 서비스 파라미터에 넣기
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(INVALID_PARAMETER);
+        }
         MentorDetailResponseDTO responseDTO = mentorService.write(dto,userInfo);
 //        log.info("write RES : {}", responseDTO);
         return ResponseEntity.ok().body(responseDTO);
@@ -99,6 +107,7 @@ public class MentorApiController {
     public ResponseEntity<?> modify(
             @Validated @RequestBody MentorModifyRequestDTO dto
             ,@AuthenticationPrincipal TokenUserInfo userInfo
+            , BindingResult bindingResult
             ){
         // 요청 URL(PUT, PATCH) /api/mentors
         // payload{
@@ -111,7 +120,9 @@ public class MentorApiController {
         //}
 //        log.info("/api/ddamddam/mentors PUT!! - payload {}",dto);
 
-
+        if (bindingResult.hasErrors()){
+            return ResponseEntity.badRequest().body(INVALID_PARAMETER);
+        }
         try {
             MentorDetailResponseDTO responseDTO = mentorService.modify(dto,userInfo);
             return ResponseEntity.ok().body(responseDTO);

@@ -5,12 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatRoomRequestDTO {
+    @NotBlank
     private Long senderId;
 //    private Long receiverId;
+    @NotBlank
     private Long mentorIdx;
 }

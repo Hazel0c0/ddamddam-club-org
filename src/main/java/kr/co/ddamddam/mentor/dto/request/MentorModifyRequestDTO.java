@@ -20,10 +20,11 @@ public class MentorModifyRequestDTO {
     private Long mentorIdx;
 
     @NotBlank
-    @Size(min = 1 ,max = 30)
+    @Size(min = 1 ,max = 100)
     private String mentorTitle;
 
     @NotBlank
+    @Size(min = 1, max = 1000)
     private String mentorContent;
 
     @NotBlank

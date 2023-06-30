@@ -12,9 +12,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static kr.co.ddamddam.common.exception.custom.ErrorCode.INVALID_PARAMETER;
 
 @RestController
 @RequestMapping("/api/ddamddam/chat")
@@ -29,8 +32,12 @@ public class ChatController {
     public ResponseEntity<?> createChatRoom(
             @RequestBody ChatRoomRequestDTO dto
             , @AuthenticationPrincipal TokenUserInfo tokenUserInfo
+            , BindingResult bindingResult
     ) {
 //        log.info("requestDTO 들어옴: {}",dto);
+        if (bindingResult.hasErrors()){
+            return ResponseEntity.badRequest().body(INVALID_PARAMETER);
+        }
 
             ChatRoomResponseDTO responseDTO = chatService.createChatRoom(dto,tokenUserInfo);
 //            log.info("responseDTO 보냄 : {}", responseDTO.getRoomId());
@@ -39,10 +46,14 @@ public class ChatController {
 
     //멘티 채팅 저장
     @PostMapping("/mentee/{mentorIdx}/messages")
-    public ResponseEntity<ChatMessageResponseDTO> sendMessage(
+    public ResponseEntity<?> sendMessage(
             @PathVariable("mentorIdx") Long mentorId,
-            @RequestBody ChatMessageRequestDTO requestDTO
+            @RequestBody ChatMessageRequestDTO requestDTO,
+            BindingResult bindingResult
     ) {
+        if (bindingResult.hasErrors()){
+            return ResponseEntity.badRequest().body(INVALID_PARAMETER);
+        }
 //        log.info("메세지 저장:{}",requestDTO.getSenderId());
         ChatMessageResponseDTO responseDTO = chatService.sendMessage(mentorId, requestDTO);
 //        log.info("메세지 출력:{}",responseDTO);
@@ -51,10 +62,15 @@ public class ChatController {
 
     //멘토 채팅 저장
     @PostMapping("/mentor/{roomIdx}/messages")
-    public ResponseEntity<ChatMessageResponseDTO> saveMentorMsg(
+    public ResponseEntity<?> saveMentorMsg(
             @PathVariable("roomIdx") Long roomId,
             @RequestBody ChatMessageRequestDTO requestDTO
+            ,BindingResult bindingResult
     ) {
+
+        if (bindingResult.hasErrors()){
+            return ResponseEntity.badRequest().body(INVALID_PARAMETER);
+        }
 //        log.info("메세지 저장:{}",requestDTO.getSenderId());
         ChatMessageResponseDTO responseDTO = chatService.saveMentorMessage(roomId, requestDTO);
 //        log.info("메세지 출력:{}",responseDTO);
