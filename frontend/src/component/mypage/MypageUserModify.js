@@ -207,7 +207,7 @@ const MypageUserModify = props => {
 // userBirth 입력값 변경 핸들러
     const birthHandler = (event) => {
         const inputDate = event.target.value; // 입력받은 문자열
-        console.log(inputDate)
+        // console.log(inputDate)
         /*
         const year = parseInt(inputDate.substring(0, 4));
         const month = parseInt(inputDate.substring(4, 6));
@@ -240,6 +240,7 @@ const MypageUserModify = props => {
     const isValid = () => {
         if(USER_NICKNAME === document.getElementById('nickname').value){
             const inputVal = document.getElementById('nickname').value;
+            console.log('풀림');
             const msg = '기존 닉네임입니다';
             const flag = true;
             saveInputState({
@@ -314,8 +315,12 @@ const MypageUserModify = props => {
         // 이미지파일과 회원정보 JSON을 하나로 묶어야 함
         const userFormData = new FormData();
         userFormData.append('user', userJsonBlob);
+        if($fileTag.current.files[0] === undefined){
+            console.log('됨');
+            userFormData.append('profileImage', USER_PROFILE);
+        }else{
         userFormData.append('profileImage', $fileTag.current.files[0]);
-
+        }
         console.log('userFormData:', userFormData);
         console.log(`$fileTag.current.files[0] : `,$fileTag.current.files[0])
 
@@ -350,13 +355,14 @@ const MypageUserModify = props => {
 
 //회원수정 버튼 클릭 이벤트 핸들러
     const modifyButtonClickHandler = e => {
-        console.log(correct);
+        
+        // console.log(correct);
         e.preventDefault();  //submit기능 중단 시키기
         // const $nameInput = document.getElementsByName('name');
-        console.log(userValue);
-        console.log(isValid);
+        // console.log(userValue);
+        // console.log(isValid);
         // 회원수정 서버 요청
-        if (isValid()) {
+        if (isValid() || USER_NICKNAME === document.getElementById('nickname').value) {
             fetchModifyPost();
             // alert('회원수정 정보를 서버에 전송합니다.')
         } else {
