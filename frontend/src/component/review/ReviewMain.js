@@ -5,10 +5,14 @@ import {QNA, REVIEW} from "../common/config/HostConfig";
 import {Link} from "react-router-dom";
 import ReviewStar from "./StartRating/ReviewStar";
 import {httpStateCatcher} from "../common/util/HttpStateCatcherWrite";
+import {useMediaQuery} from "react-responsive";
 
 const QnaMain = () => {
     const [topReview, setTopReview] = useState([]);
 
+    const presentationScreen = useMediaQuery({
+        query: "(max-width: 414px)",
+    });
 
     //top3 목록 렌더링 필터 async
     const asyncTopList = async () => {
@@ -43,7 +47,8 @@ const QnaMain = () => {
                 <p className={'main-sub-title'}>근무했던 기업에 대한 정보를 공유해보세요.</p>
             </div>
 
-            <section className={'top-view-wrapper'}>
+            {!presentationScreen && 
+                <section className={'top-view-wrapper'}>
                 {topReview.map((review, index) => (
                     <div className={'top-section-one'} key={review.boardIdx}>
 
@@ -66,6 +71,8 @@ const QnaMain = () => {
                     </div>
                 ))}
             </section>
+            }
+            
         </Common>
     );
 };

@@ -6,11 +6,22 @@ import {REVIEW} from "../../common/config/HostConfig";
 import ReviewStar from "../StartRating/ReviewStar";
 import PageNation from "../../common/pageNation/PageNation";
 import {httpStateCatcher} from "../../common/util/HttpStateCatcherWrite";
+import {useMediaQuery} from "react-responsive";
 
 const ReviewTotal = ({loginCheck, searchKeyword, searchValue}) => {
     const [reviewList, setReviewList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
     const [clickCurrentPage, setClickCurrentPage] = useState(1);
+
+    const presentationScreen = useMediaQuery({
+        query: "(max-width: 414px)",
+    });
+
+    const subStringContent = (str, n) => {
+        return str?.length > n
+          ? str.substr(0, n - 1) + "..."
+          : str;
+      }
 
     useEffect(()=>{
         asyncReviewTotalList();
@@ -63,19 +74,25 @@ const ReviewTotal = ({loginCheck, searchKeyword, searchValue}) => {
                     </div>
                     <section className={'text-wrapper'}>
                         <div className={'main-content'}>
-                            <div className={'text-title'}>{review.reviewTitle}</div>
-                            <div className={'detail-wrapper'}>
-                                <div className={'detail-reviewJob'}><span
-                                    className={'sub-title'}>직무</span> {review.reviewJob}</div>
-                                <div className={'detail-reviewJob'}><span
-                                    className={'sub-title'}>근속년수</span>{review.reviewTenure}년
+                        {presentationScreen 
+                        ? <div className={'text-title'}>{subStringContent(review.reviewTitle, 46)}</div>
+                        : <div className={'text-title'}>{review.reviewTitle}</div>
+                        }
+                            {!presentationScreen &&
+                                <div className={'detail-wrapper'}>
+                                    <div className={'detail-reviewJob'}><span
+                                        className={'sub-title'}>직무</span> {review.reviewJob}</div>
+                                    <div className={'detail-reviewJob'}><span
+                                        className={'sub-title'}>근속년수</span>{review.reviewTenure}년
+                                    </div>
+                                    <div className={'detail-reviewJob'}><span
+                                        className={'sub-title'}>위치</span>{review.reviewLocation}</div>
                                 </div>
-                                <div className={'detail-reviewJob'}><span
-                                    className={'sub-title'}>위치</span>{review.reviewLocation}</div>
-                            </div>
-
+                            }
                         </div>
+                        {!presentationScreen &&
                         <div className={'text-content'}>{review.reviewContent}</div>
+                        }
                     </section>
                     <div className={'right-section'}>
                         <Link to={`/reviews/detail/${review.reviewIdx}`} className={'text'} onClick={loginCheckHandler}>
