@@ -114,3 +114,36 @@
     }
   }
 }
+
+
+@media (max-width: 414px) {
+  .qna-view-wrapper {
+    font-size: 12px;
+    //width: 414px;
+    padding: 0px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .main-title{
+    padding-top: 150px;
+  }
+  .top-view-wrapper {
+    width: 414px;
+
+  }
+  .qna-view-wrapper .top-view-wrapper .top-section-one .top-section-wrapper, .qna-view-wrapper .top-view-wrapper .top-section-two .top-section-wrapper, .qna-view-wrapper .top-view-wrapper .top-section-three .top-section-wrapper{
+    width: 100px;
+    height: 50px;
+    font-size: 10px;
+
+  }
+  .qna-view-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .checked, .qna-view-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .not-checked, .qna-view-wrapper .top-view-wrapper .top-section-two .top-section-wrapper .checked, .qna-view-wrapper .top-view-wrapper .top-section-two .top-section-wrapper .not-checked, .qna-view-wrapper .top-view-wrapper .top-section-three .top-section-wrapper .checked, .qna-view-wrapper .top-view-wrapper .top-section-three .top-section-wrapper .not-checked {
+//display: none;
+  }
+
+}
+
+
+
+
+

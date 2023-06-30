@@ -7,12 +7,16 @@ import PageNation from "../../common/pageNation/PageNation";
 import {QNA} from "../../common/config/HostConfig";
 import {getToken} from "../../common/util/login-util";
 import {httpStateCatcher} from "../../common/util/HttpStateCatcherWrite";
+import {useMediaQuery} from "react-responsive";
+
 
 const QnaTotal =({loginCheck, searchKeyword, searchValue}) => {
     const [qnaList, setQnaList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
     const [clickCurrentPage, setClickCurrentPage] = useState(1);
-
+    const presentationScreen = useMediaQuery({
+        query: "(max-width: 414px)",
+    });
     useEffect(()=>{
         asyncQnaTotalList();
     },[clickCurrentPage, searchKeyword, searchValue])
@@ -67,7 +71,8 @@ const QnaTotal =({loginCheck, searchKeyword, searchValue}) => {
 
                     <section className={'text-wrapper'}>
                         <div className={'text-title'} key={qna.boardTitle}>{qna.boardTitle}</div>
-                        <div className={'text-content'} key={qna.boardContent}>{qna.boardContent}</div>
+                        {!presentationScreen &&
+                        <div className={'text-content'} key={qna.boardContent}>{qna.boardContent}</div>}
                         <ul className={'text-hashTag'}>
                             {qna.hashtagList.map((hashTag, index) => (
                                 <li key={index}>#{hashTag}</li>
@@ -86,7 +91,8 @@ const QnaTotal =({loginCheck, searchKeyword, searchValue}) => {
                                      className={'speech-count-icon'}/><span>{qna.replyCount}</span>
                             </div>
                         </div>
-                        <div className={'write-date'} key={qna.boardDate}>{qna.boardDate}</div>
+                        {!presentationScreen &&
+                        <div className={'write-date'} key={qna.boardDate}>{qna.boardDate}</div>}
                     </section>
 
                     <Link to={`/qna/${qna.boardIdx}`} onClick={loginCheckHandler}>

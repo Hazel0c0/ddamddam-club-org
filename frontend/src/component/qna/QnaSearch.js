@@ -7,6 +7,7 @@ import {getToken} from "../common/util/login-util";
 import {GrPowerReset} from "react-icons/gr";
 import {debounce} from "lodash";
 // import {GrPowerReset} from '/react-icons/gr';
+import {useMediaQuery} from "react-responsive";
 const QnaSearch = ({onSearchChange, onSearchKeywordChange}) => {
     const [selectedBtn, setSelectedBtn] = useState('');
     const inputVal = useRef();
@@ -40,6 +41,9 @@ const QnaSearch = ({onSearchChange, onSearchKeywordChange}) => {
         // setSelectedBtn(value);
         // onClickCurrentPageChange(1);
     }
+    const presentationScreen = useMediaQuery({
+        query: "(max-width: 414px)",
+    });
 
     //디바운싱
     const searchHandlerChange = debounce((value) => {
@@ -68,6 +72,7 @@ const QnaSearch = ({onSearchChange, onSearchKeywordChange}) => {
 
     return (
         <Common className={'qna-search-wrapper'}>
+            {!presentationScreen &&
             <ul className={'sort-btn'}>
                 <li
                     onClick={handleInputChange}
@@ -91,6 +96,7 @@ const QnaSearch = ({onSearchChange, onSearchKeywordChange}) => {
                 </li>
 
             </ul>
+            }
             <div className={'search-wrapper'}>
                 <img src={searchIcon} alt={'search-icon'} className={'search-icon'}/>
                 <input className={'input-btn'} placeholder={'검색창'} name={'search'} onKeyUp={searchHandler} ref={inputVal}></input>
