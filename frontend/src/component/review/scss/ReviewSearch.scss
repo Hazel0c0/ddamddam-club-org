@@ -1,5 +1,5 @@
 .review-search-wrapper{
-  width: 1920px;
+  width: 100%;
   padding: 45px 370px 35px;
   display: flex;
   justify-content: space-between;
@@ -83,5 +83,36 @@
   .selected{
     color: #1e4fff;
     font-weight: 600;
+  }
+}
+
+@media (max-width: 1024px) {
+  .review-search-wrapper {
+    padding: 45px 110px 35px;
+  }
+  .review-search-wrapper .sort-btn li {
+    font-size: 13px;
+    padding: 0 5px;
+  }
+
+  .review-search-wrapper .search-wrapper {
+    padding: 0 2px 0 5px;
+  }
+    .review-search-wrapper .search-wrapper .search-icon {
+      width: 12px;
+    }
+    .review-search-wrapper .search-wrapper .input-btn {
+      width: 400px;
+      padding: 5px 5px;
+      font-size: 12px;
+    }
+    .review-search-wrapper .search-wrapper .reset-btn {
+      padding: 4px 5px;
+    }
+  .review-search-wrapper .write-btn {
+    padding: 9px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 12px;
   }
 }

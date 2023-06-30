@@ -5,7 +5,7 @@
 
 
 .review-list-wrapper {
-  width: 1920px;
+  width: 100%;
   padding: 0px 370px 50px;
   display: flex;
   flex-direction: column;
@@ -157,6 +157,59 @@
     color: #828282;
     font-weight: 600;
   }
+
+
+}
+
+@media (max-width: 1024px) {
+  
+
+  .review-list-wrapper {
+    padding: 0px 110px 50px;
+  }
+  .review-list-wrapper .review-list {
+    margin-bottom: 10px;
+    padding: 20px 24px;
+    height: 70px;
+  }
+  .review-list-wrapper .review-list .text-wrapper {
+    width: 470px;
+    margin-right: 12px;
+  }
+  .review-list-wrapper .review-list .company-info-wrapper .company {
+    padding: 5px 15px;
+    font-size: 13px;
+}
+  .review-list-wrapper .review-list .text-wrapper .text-content {
+    font-size: 11px;
+  }
+  .review-list-wrapper .review-list .text-wrapper .main-content .text-title {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+
+  .review-list-wrapper .review-list .text-wrapper .main-content .detail-wrapper .detail-reviewJob {
+    font-size: 9px;
+    margin-right: 7px;
+  }
+  .review-list-wrapper .review-list .right-section .go-detail {
+    margin-bottom: 9px;
+    font-size: 12px;
+  }
+  .review-list-wrapper .review-list .right-section .review-info .icon-wrapper {
+    font-size: 10px;
+    margin-bottom: 3px;
+  }
+  .review-list-wrapper .review-list .right-section .review-info .icon-wrapper .view-count-icon {
+    width: 12px;
+  }
+  .review-list-wrapper .review-list .right-section .review-info .write-date {
+    font-size: 10px;
+}
+
+  
+  
+
 
 
 }

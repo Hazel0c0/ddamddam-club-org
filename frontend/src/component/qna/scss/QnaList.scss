@@ -85,6 +85,7 @@
       .icon-wrapper {
         font-size: 16px;
         display: flex;
+        align-items: center;
         justify-content: center;
         margin-bottom: 7px;
 
@@ -97,7 +98,6 @@
           width: 16px;
           margin-right: 3px;
         }
-
       }
 
       .write-date{
@@ -131,10 +131,98 @@
 }
 
 @media (max-width: 1024px) {
-
-  .qna-view-wrapper{
-    padding: 160px 70px 0;
+  .qna-search-wrapper {
+    padding: 45px 110px 35px;
   }
+  .qna-search-wrapper .sort-btn li {
+    font-size: 13px;
+    padding: 0 5px;
+  }
+
+  .qna-search-wrapper .search-wrapper {
+    padding: 0 2px 0 5px;
+  }
+  .qna-search-wrapper .search-wrapper .search-icon {
+    width: 12px;
+  }
+  .qna-search-wrapper .search-wrapper .input-btn {
+    width: 400px;
+    padding: 5px 5px;
+    font-size: 12px;
+  }
+  .qna-search-wrapper .search-wrapper .reset-btn {
+    padding: 4px 5px;
+  }
+  .qna-search-wrapper .write-btn {
+    padding: 9px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 12px;
+  }
+
+  .qna-list-wrapper {
+    padding: 0px 110px 50px;
+  }
+  .qna-list-wrapper .qna-list {
+    margin-bottom: 10px;
+    padding: 20px 24px;
+    height: 70px;
+  }
+
+  .qna-list-wrapper .qna-list .checked, .qna-list-wrapper .qna-list .not-checked {
+    width: 90px;
+    height: 25px;
+    padding: 7px 17px;
+    font-size: 11px;
+    margin-right: 25px;
+  }
+  .qna-list-wrapper .qna-list .text-wrapper {
+    width: 470px;
+    margin-right: 12px;
+  }
+  .qna-list-wrapper .qna-list .text-wrapper .text-title {
+    font-size: 13px;
+    margin-bottom: 5px;
+  }
+  .qna-list-wrapper .qna-list .text-wrapper .text-content {
+    font-size: 11px;
+    margin-bottom: 9px;
+  }
+  .qna-list-wrapper .qna-list .text-wrapper .text-hashTag {
+    font-size: 9px;
+    font-weight: 400;
+  }
+  .qna-list-wrapper .qna-list .qna-info {
+    width: 110px;
+  }
+  .qna-list-wrapper .qna-list .qna-info .qna-writer {
+    font-size: 10px;
+    margin-bottom: 4px;
+  }
+  .qna-list-wrapper .qna-list .qna-info .icon-wrapper {
+    font-size: 10px;
+    margin-bottom: 4px;
+  }
+  .qna-list-wrapper .qna-list .qna-info .icon-wrapper .view-count-wrapper {
+    margin-right: 7px;
+  }
+  .qna-list-wrapper .qna-list .qna-info .icon-wrapper .view-count-icon,
+   .qna-list-wrapper .qna-list .qna-info .icon-wrapper .speech-count-icon {
+    width: 10px;
+    margin-right: 2px;
+  }
+  .qna-list-wrapper .qna-list .qna-info .write-date {
+    font-size: 10px;
+  }
+  .qna-list-wrapper .qna-list .go-detail {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 11px;
+  }
+
 
 
 }

@@ -56,3 +56,40 @@
 
 
 }
+
+
+@media (max-width: 1024px) {
+
+  .mypage-chat-wrapper {
+    width: 100%;
+    margin-bottom: 70px;
+  }
+
+  .mypage-top-wrapper .mypage-content-wrapper .mypage-sub-title {
+    font-size: 1.1em;
+    margin: 20px 0;
+  }
+
+  .mypage-chat-wrapper .chat-box {
+    width: 230px;
+    height: 170px;
+    margin: 0px 10px;
+    padding: 20px;
+  }
+  .mypage-chat-wrapper .chat-box .chat-title {
+    height: 35px;
+    font-size: 1em;
+    line-height: 140%;
+}
+  .mypage-chat-wrapper .chat-box .chat-submenu-box {
+    margin-top: 4px;
+    padding: 7px 0;
+    font-size: 12px;
+  }
+  .mypage-chat-wrapper .chat-box .chat-sub-title {
+    margin-right: 7px;
+    padding: 5px 11px;
+  }
+
+  
+}
