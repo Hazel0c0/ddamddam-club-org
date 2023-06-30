@@ -148,9 +148,7 @@ const MentorsList = ({selectedSubjects}) => {
     })
       .then(res => res.json())
       .then(result => {
-        alert('채팅방 입장! 멘토와 즐거운 채팅~');
-        // console.log('방 생성');
-        // console.log(`setRoomId의 값 : ${result.roomId}`);
+        // alert('채팅방 입장! 멘토와 즐거운 채팅~');
         window.location.href = `/mentors/detail/chat/${chatPageIdx}/${result.roomId}`;
 
       })
