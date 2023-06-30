@@ -52,18 +52,18 @@ public class ApplicantApiController {
     }
 
     // 신청 취소
-    @DeleteMapping("/{userIdx}/{projectIdx}")
+    @DeleteMapping("/{boardIdx}")
     public ApplicationResponse<?> cancel(
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
-            @RequestBody @PathVariable Long projectIdx
+            @RequestBody @PathVariable Long boardIdx
     ) {
-        log.info("/api/ddamddam/applicant/user={}/board={} DELETE !! ", tokenUserInfo.getUserIdx(), projectIdx);
+        log.info("/api/ddamddam/applicant/user={}/board={} DELETE !! ", tokenUserInfo.getUserIdx(), boardIdx);
 
         try {
-            applicantService.cancel(tokenUserInfo, projectIdx);
-            return ApplicationResponse.ok("DELETE SUCCESS!");
+            applicantService.cancel(tokenUserInfo, boardIdx);
+            return ApplicationResponse.ok("프로젝트 신청이 취소되었습니다.");
         } catch (Exception e) {
-            return ApplicationResponse.error("ERROR");
+            return ApplicationResponse.error(e.getMessage());
         }
     }
 }

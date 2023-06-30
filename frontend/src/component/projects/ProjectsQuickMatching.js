@@ -7,6 +7,7 @@ import './scss/QuickMatching.scss';
 import frontIcon from "../../src_assets/front.png";
 import backIcon from "../../src_assets/back-icon.png";
 import xIcon from "../../src_assets/x.png";
+import {use} from "js-joda";
 
 
 const ProjectsQuickMatching = () => {
@@ -21,9 +22,10 @@ const ProjectsQuickMatching = () => {
   // 퀵 매칭 모달창
   const [quickDetail, setQuickDetail] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [lastPage, setLastPage] = useState('')
   const [show, setShow] = useState(false);
 
+  console.log('lastPage'+lastPage);
   // 퀵 매칭 버튼 클릭
   const handleShow = () => {
     setShow(true);
@@ -35,6 +37,12 @@ const ProjectsQuickMatching = () => {
     setShow(false);
   };
 
+  // 모달 밖 영역 클릭 시 모달 닫기
+  const handleOutsideClick = (e) => {
+    if (e.target.classList.contains('modal-box')) {
+      handleClose();
+    }
+  };
   // 퀵 매칭 데이터 불러오기
   const quick = PROJECT + `/quick?position=${USER_POSITION}&page=${currentPage}`;
   const quickMatchingFetchData = () => {
@@ -51,10 +59,51 @@ const ProjectsQuickMatching = () => {
         })
         .then(res => {
           if (res) {
-            console.log(res.payload.projects);
+            // console.log(res.payload.projects);
             setQuickDetail(res.payload.projects);
+            setLastPage(res.payload.pageInfo.endPage);
           }
         });
+  };
+
+  // d-day 계산
+  const CountdownTimer = ({ deadline }) => {
+    const calculateDday = (deadline) => {
+      const now = new Date();
+      const endDate = new Date(deadline);
+      const remainingTime = endDate - now;
+
+      // 남은 시간 계산
+      const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+      return { days, hours, minutes, seconds };
+    };
+
+    const [remainingTime, setRemainingTime] = useState(calculateDday(deadline));
+
+    useEffect(() => {
+      const timer = setInterval(() => {
+        setRemainingTime(calculateDday(deadline));
+      }, 1000);
+
+      return () => {
+        clearInterval(timer);
+      };
+    }, [deadline]);
+
+    const { days, hours, minutes, seconds } = remainingTime;
+
+    return (
+        <div className={'deadline'}>
+          <div className={'timer'}>{days}<span>Days</span></div>
+          <div className={'timer'}>{hours} <span>Hours</span></div>
+          <div className={'timer'}>{minutes}<span>Minutes</span></div>
+          <div className={'timer'}>{seconds}<span>Seconds</span></div>
+        </div>
+    );
   };
 
   // 지원자 현황
@@ -92,10 +141,13 @@ const ProjectsQuickMatching = () => {
               Quick Matching
             </button>
         }
-        <div className={show ? 'modal-box show' : 'modal-box'}>
+        <div
+            className={show ? 'modal-box show' : 'modal-box'}
+            onClick={handleOutsideClick} // 모달 밖 영역 클릭 시 handleOutsideClick 함수 호출
+        >
           <div className="modal-container">
-            {quickDetail.map((board) => (
-                <React.Fragment key={board.id}>
+            {quickDetail.map((board,index) => (
+                <React.Fragment key={index}>
                   <div className="modal-contents">
                     <div className="modal-header">
                       <button className="close" onClick={handleClose}>
@@ -105,35 +157,34 @@ const ProjectsQuickMatching = () => {
                     </div>
                     <div className="modal-body">
                       <ul>
-                        <li>타입: {board.projectType}</li>
-                        <li>모집 마감 : {board.offerPeriod}</li>
+                        <CountdownTimer deadline={board.offerPeriod} />
                       </ul>
                       <div className="applicant-box">
                         <div className={'front-box'}>
                           <div className={'position-text'}>front</div>
-                        {renderApplicantImages(
-                            board.applicantOfFront,
-                            frontIcon,
-                            'front'
-                        )}
-                        {renderApplicantImages(
-                            board.maxFront - board.applicantOfFront,
-                            xIcon,
-                            'front'
-                        )}
+                          {renderApplicantImages(
+                              board.applicantOfFront,
+                              frontIcon,
+                              'front'
+                          )}
+                          {renderApplicantImages(
+                              board.maxFront - board.applicantOfFront,
+                              xIcon,
+                              'front'
+                          )}
                         </div>
                         <div className={'back-box'}>
                           <div className={'position-text'}>back</div>
                           {renderApplicantImages(
-                            board.applicantOfBack,
-                            backIcon,
-                            'back'
-                        )}
-                        {renderApplicantImages(
-                            board.maxBack - board.applicantOfBack,
-                            xIcon, 'back'
-                        )}
-                      </div>
+                              board.applicantOfBack,
+                              backIcon,
+                              'back'
+                          )}
+                          {renderApplicantImages(
+                              board.maxBack - board.applicantOfBack,
+                              xIcon, 'back'
+                          )}
+                        </div>
                       </div>
                     </div>
                     <div className="modal-footer">
@@ -146,6 +197,9 @@ const ProjectsQuickMatching = () => {
                         </Link>
                         <div className="like">❤️ {board.likeCount}</div>
                       </div>
+
+                      <div className={'project-type'}>{board.projectType}</div>
+
                       <div className="footer-right">
                         {currentPage > 1 && (
                             <button
@@ -155,14 +209,15 @@ const ProjectsQuickMatching = () => {
                               이전
                             </button>
                         )}
-                        {currentPage <= 10 && (
-                            <button
-                                className="btn btn-primary"
-                                onClick={handleNextPage}
-                            >
-                              다음
-                            </button>
-                        )}
+                        { currentPage < lastPage
+                            && (
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={handleNextPage}
+                                >
+                                  다음
+                                </button>
+                            )}
                       </div>
                     </div>
                   </div>
