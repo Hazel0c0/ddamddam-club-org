@@ -5,6 +5,7 @@ import {getToken, isLogin} from "../common/util/login-util";
 import PageNation from "../common/pageNation/PageNation";
 import {Link, useNavigate} from "react-router-dom";
 import {httpStateCatcher} from "../common/util/HttpStateCatcherWrite";
+import {useMediaQuery} from "react-responsive";
 
 /**
  * 내가 쓴 게시글 목록
@@ -27,6 +28,10 @@ const MypageBoardList = () => {
   const [prevBtn, setPrevBtn] = useState(false);
   const [nextBtn, setNextBtn] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(1);
+
+  const presentationScreen = useMediaQuery({
+    query: "(max-width: 414px)",
+  });
 
   const subStringContent = (str, n) => {
     return str.length > n
