@@ -206,23 +206,45 @@ const MypageUserModify = props => {
 
 // userBirth 입력값 변경 핸들러
     const birthHandler = (event) => {
-        const inputDate = event.target.value; // 입력받은 문자열
-        // console.log(inputDate)
-        /*
-        const year = parseInt(inputDate.substring(0, 4));
-        const month = parseInt(inputDate.substring(4, 6));
-        const day = parseInt(inputDate.substring(6, 8));
-
-        const localDate = new Date(year, month - 1, day); // JavaScript의 Date 객체 생성
-    */
-
-
-        setUserValue(prevValue => ({
-            ...prevValue,
-            userBirth: inputDate // Date 객체로 입력받음
-        }));
-
-    };
+    const inputDate = event.target.value; // 입력받은 값 (YYYY-MM-DD 형식)
+  
+    // 현재 날짜와 비교
+    const currentDate = new Date();
+    const selectedDate = new Date(inputDate);
+  
+    if (isNaN(selectedDate.getTime())) {
+      // 잘못된 형식인 경우, 다시 입력 요청
+      alert('잘못된 형식입니다. YYYY-MM-DD 형식으로 입력해주세요.');
+      setCorrect({...correct, userBirth: false});
+      event.target.value = USER_BIRTH;
+      return;
+    }
+  
+    if (selectedDate > currentDate) {
+      // 미래 날짜인 경우, 다시 입력 요청
+      alert('미래 날짜입니다. 올바른 날짜로 다시 입력해주세요.');
+      setCorrect({...correct, userBirth: false});
+      event.target.value = USER_BIRTH;
+      return;
+    }
+  
+    if (selectedDate.getFullYear() < 1900) {
+      // 1900년 이전인 경우, 다시 입력 요청
+      alert('1900년 이전의 날짜입니다. 올바른 날짜로 다시 입력해주세요.');
+      setCorrect({...correct, userBirth: false});
+      event.target.value = USER_BIRTH;
+      return;
+    }
+  
+    // YYYY-MM-DD 형식의 날짜를 YYYYMMDD 형식으로 변환
+    // const formattedDate = inputDate.replaceAll('-', '');
+    setCorrect({...correct, userBirth: true});
+    // 유효한 생년월일로 처리할 경우
+    setUserValue(prevValue => ({
+      ...prevValue,
+      userBirth: inputDate,
+    }));
+  };
 
 // 포지션 입력받기 핸들러
     const [selectedPosition, setSelectedPosition] = useState('');
@@ -238,11 +260,12 @@ const MypageUserModify = props => {
 
 //입력칸이 모두 검증에 통과했는지 여부를 검사
     const isValid = () => {
-        if(USER_NICKNAME === document.getElementById('nickname').value){
-            const inputVal = document.getElementById('nickname').value;
+        const inputVal = document.getElementById('nickname').value;
+        if(USER_NICKNAME === inputVal){
             console.log('풀림');
             const msg = '기존 닉네임입니다';
             const flag = true;
+            setCorrect({...correct, userNickName: true});
             saveInputState({
                 key: 'userNickName',
                 inputVal,
@@ -250,7 +273,7 @@ const MypageUserModify = props => {
                 flag
             });
         }
-
+            console.log(correct);
         for (const key in correct) {
             const flag = correct[key];
             if (!flag) return false;
@@ -298,7 +321,6 @@ const MypageUserModify = props => {
 
     // 회원수정 처리 서버 요청
     const fetchModifyPost = async () => {
-
 
         console.log(`fetchSignUpPost의 userValue : ${userValue}`);
         // console.log(userValue.userNickName);
@@ -355,19 +377,36 @@ const MypageUserModify = props => {
 
 //회원수정 버튼 클릭 이벤트 핸들러
     const modifyButtonClickHandler = e => {
-        
+        e.preventDefault(); 
+        const inputVal = document.getElementById('nickname').value;
+        if(USER_NICKNAME === inputVal){
+            // console.log('풀림');
+            // const msg = '기존 닉네임입니다';
+            // const flag = true;
+            // setCorrect({...correct, userNickName: true});
+            // saveInputState({
+            //     key: 'userNickName',
+            //     inputVal,
+            //     msg,
+            //     flag
+            // });
+            fetchModifyPost();
+        }else{
+            if (isValid()) {
+                fetchModifyPost();
+                // alert('회원수정 정보를 서버에 전송합니다.')
+            } else {
+                alert('입력란을 다시 확인해주세요!');
+            }
+        }
         // console.log(correct);
-        e.preventDefault();  //submit기능 중단 시키기
+         //submit기능 중단 시키기
         // const $nameInput = document.getElementsByName('name');
         // console.log(userValue);
         // console.log(isValid);
         // 회원수정 서버 요청
-        if (isValid() || USER_NICKNAME === document.getElementById('nickname').value) {
-            fetchModifyPost();
-            // alert('회원수정 정보를 서버에 전송합니다.')
-        } else {
-            alert('입력란을 다시 확인해주세요!');
-        }
+        // if (isValid() || USER_NICKNAME === document.getElementById('nickname').value) {
+            
     }
 
     return (
@@ -379,10 +418,18 @@ const MypageUserModify = props => {
             <div className={'background'}></div>
             <section className={'form-wrapper'}>
                 <div className={"thunmbnail-box"} onClick={() => $fileTag.current.click()}>
-                    <img src={imgFile || USER_PROFILE}
+                    {USER_PROFILE === null ? 
+                        <img src={imgFile || require('../../src_assets/ProfileLogo.png')}
                          alt={'profileImg'}
                          className={'profile-img'}
                     />
+                    :
+                        <img src={imgFile || USER_PROFILE}
+                         alt={'profileImg'}
+                         className={'profile-img'}
+                    />
+                    }
+                    
                 </div>
                 <label className='signup-img-label' htmlFor='profile-img'>프로필을 등록해주세요</label>
                 <input
