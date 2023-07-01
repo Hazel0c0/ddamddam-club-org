@@ -403,6 +403,12 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .qna-detail-wrapper .reply-wrapper .reply-list .reply-content-wrapper .speechBubbleText-wrapper .speechBubbleText-icon{
+    width: 75px;
+  }
+}
+
 @media (max-width: 414px) {
   .qna-detail-wrapper{
     padding: 10px;

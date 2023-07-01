@@ -8,6 +8,9 @@ import profileImg from "../../src_assets/ProfileLogo.png"
 import {BASE_URL, AUTH} from "../../component/common/config/HostConfig";
 import {Menu, Sidebar, SubMenu} from "react-pro-sidebar";
 import {MenuItem} from "@mui/material";
+import {useMediaQuery} from "react-responsive";
+import {RxHamburgerMenu} from "react-icons/rx";
+import {IoCloseOutline} from "react-icons/io5";
 
 const Header = () => {
 
@@ -28,18 +31,21 @@ const Header = () => {
         'Authorization': 'Bearer ' + ACCESS_TOKEN
     };
 
+    const presentationScreen = useMediaQuery({
+        query: "(max-width: 414px)",
+    });
+
     //프로필사진 이미지 패치
-    const fetchProfileImage = async() => {
-        if (getToken() === null){
+    const fetchProfileImage = async () => {
+        if (getToken() === null) {
             return
         }
-        const res = await fetch(profileRequestURL,{
-              method: 'GET',
-              headers: headerInfo
-          }
-
+        const res = await fetch(profileRequestURL, {
+                method: 'GET',
+                headers: headerInfo
+            }
         );
-        if(res.status === 200) {
+        if (res.status === 200) {
             //서버에서 s3 url이 응답된다.
             const imgUrl = await res.text();
             setProfileUrl(imgUrl);
@@ -49,15 +55,15 @@ const Header = () => {
     useEffect(() => {
         fetchProfileImage();
 
-    }, [profileUrl,dropdownOpen]);
+    }, [profileUrl, dropdownOpen]);
 
     //로그아웃
     const logoutHandler = () => {
-        const confirmBtn  = window.confirm("정말 로그아웃 하시겠습니까?")
-        if (confirmBtn){
+        const confirmBtn = window.confirm("정말 로그아웃 하시겠습니까?")
+        if (confirmBtn) {
             deleteSession();
             navigation('/');
-        }else {
+        } else {
             return;
         }
     }
@@ -74,7 +80,7 @@ const Header = () => {
     }
     const handleMouseLeave = (event) => {
 
-        if (dropdownOpen){
+        if (dropdownOpen) {
             console.log(event.target.className)
             setAnimating(true);
 
@@ -95,78 +101,150 @@ const Header = () => {
         }
     };
 
+    //햄버거 버튼
+    const sideBar = useRef(null);
+    const [showSide, setShowSide] = useState(false);
+    const [showBack, setShowBack] = useState(false);
+
+    const showSideHandler = () => {
+        setShowSide(true);
+        setShowBack(true);
+    }
+
+    const closeHandler = () => {
+        setShowSide(false);
+        setShowBack(false);
+    }
+
+    // const sideBarHandler = (e) =>{
+    //     console.log('클릭 이벤트 발생')
+    //     if (!e.target.className.contain(sideBar)){
+    //         setShowSide(false);
+    //     }
+    // }
+
+    useEffect(() => {
+
+    }, [showSide, setShowBack])
+
     return (
-      <Common className={'header-background'}>
+        <Common className={'header-background'}>
 
-          {/*<Sidebar>*/}
-          {/*    <Menu>*/}
-          {/*        <SubMenu label="Charts">*/}
-          {/*            <MenuItem> Pie charts </MenuItem>*/}
-          {/*            <MenuItem> Line charts </MenuItem>*/}
-          {/*        </SubMenu>*/}
-          {/*        <MenuItem> Documentation </MenuItem>*/}
-          {/*        <MenuItem> Calendar </MenuItem>*/}
-          {/*    </Menu>*/}
-          {/*</Sidebar>*/}
-
-          <div className={'header-wrapper'}>
-              <Link to={'/'}>
-                  <img className={'logo'} src={logo} alt="logo"/>
-              </Link>
-              <ul className={'category-wrapper'}
-                  onMouseEnter={handleMouseEnter}
-                  ref={categoryRef}
-              >
-                  <li>모집</li>
-                  <li>취업게시판</li>
-                  <li>Q&A</li>
-              </ul>
-
-
-              <div className="login-wrapper">
-
-                  {ACCESS_TOKEN === null || ACCESS_TOKEN === ''
-                    ? <>
-                        <Link to={'/login'} className={'login'}>로그인</Link>
-                        <Link to={'/join'} className={'sign-in'}>회원가입</Link>
-                    </>
-                    :
-                    <>
-                        <div className={'logout'} onClick={logoutHandler}>LOGOUT</div>
-                        <Link to={'/myPage'} className={'myPage'}>
-                            <img src={profileUrl ? profileUrl : profileImg} alt={'profileImg'} className={'profile-img'}/>
+            {presentationScreen ?
+                <>
+                    <div className={'header-wrapper'}>
+                        <Link to={'/'} className={'logo-wrapper'}>
+                            <img className={'logo'} src={logo} alt="logo"/>
                         </Link>
-                    </>
+                        <RxHamburgerMenu className={'hamburger-btn'} onClick={showSideHandler}/>
+                    </div>
 
-                  }
-              </div>
-          </div>
 
-          {/* 네비게이션 바 */}
-          {dropdownOpen && (
-              <>
-            <nav
-              className={`navigation-bar ${animating ? 'animating' : ''}`}
-              onMouseLeave={handleMouseLeave}
-              ref={navigationRef}
-            >
-                <ul>
-                    <li><Link to={'/mentors'}>멘토・멘티</Link></li>
-                    <li><Link to={'/projects'}>프로젝트 모집</Link></li>
-                </ul>
-                <ul>
-                    <li><Link to={'/reviews'}>취업 후기</Link></li>
-                    <li><Link to={'/companies'}>채용공고</Link></li>
-                </ul>
+                    {/* Onclick으로 */}
+                    {showSide &&
+                        <>
+                            <Sidebar className={'sideBar-wrapper'} ref={sideBar}>
+                                <Menu>
 
-                <ul>
-                    <li><Link to={'/qna'}>Q&A</Link></li>
-                </ul>
-            </nav>
-                  <div className={'background'} ref={backgroundBlack}></div>
-              </>
-          )}
-      </Common>
+                                    <div className={'close-btn-wrapper'}>
+                                        {ACCESS_TOKEN !== '' && ACCESS_TOKEN !== null &&
+                                            <Link to={'/myPage'} className={'myPage'}>
+                                                <img src={profileUrl ? profileUrl : profileImg} alt={'profileImg'}
+                                                     className={'profile-img'}/>
+                                            </Link>
+                                        }
+                                        <IoCloseOutline className={'close-btn'} onClick={closeHandler}/>
+                                    </div>
+                                    <div className={'menu-wrapper'}>
+                                        <SubMenu label="모집">
+                                            <MenuItem><Link to={'/mentors'}> 멘토・멘티 </Link></MenuItem>
+                                            <MenuItem><Link to={'/projects'}> 프로젝트 모집 </Link></MenuItem>
+                                        </SubMenu>
+                                        <SubMenu label="취업게시판">
+                                            <MenuItem><Link to={'/reviews'}> 취업 후기 </Link></MenuItem>
+                                            <MenuItem><Link to={'/companies'}> 채용공고 </Link></MenuItem>
+                                        </SubMenu>
+                                        <MenuItem><Link to={'/qna'}> Q&A </Link></MenuItem>
+                                    </div>
+                                    <div className={'login-wrapper'}>
+                                    {ACCESS_TOKEN === null || ACCESS_TOKEN === ''
+                                        ?
+                                        <div id={'logout'}>
+                                            <Link to={'/login'} className={'login'}>로그인</Link>
+                                            <Link to={'/join'} className={'sign-in'}>회원가입</Link>
+                                        </div>
+                                        :
+                                        <>
+                                            <div id={'logout'} onClick={logoutHandler}>LOGOUT</div>
+                                        </>
+                                    }
+                                    </div>
+                                </Menu>
+                            </Sidebar>
+                            <div className={'show-black'} onClick={closeHandler}></div>
+                        </>
+                    }
+
+                </>
+                : <div className={'header-wrapper'}>
+                    <Link to={'/'}>
+                        <img className={'logo'} src={logo} alt="logo"/>
+                    </Link>
+                    <ul className={'category-wrapper'}
+                        onMouseEnter={handleMouseEnter}
+                        ref={categoryRef}
+                    >
+                        <li>모집</li>
+                        <li>취업게시판</li>
+                        <li>Q&A</li>
+                    </ul>
+
+
+                    <div className="login-wrapper">
+
+                        {ACCESS_TOKEN === null || ACCESS_TOKEN === ''
+                            ? <>
+                                <Link to={'/login'} className={'login'}>로그인</Link>
+                                <Link to={'/join'} className={'sign-in'}>회원가입</Link>
+                            </>
+                            :
+                            <>
+                                <div className={'logout'} onClick={logoutHandler}>LOGOUT</div>
+                                <Link to={'/myPage'} className={'myPage'}>
+                                    <img src={profileUrl ? profileUrl : profileImg} alt={'profileImg'}
+                                         className={'profile-img'}/>
+                                </Link>
+                            </>
+
+                        }
+                    </div>
+                </div>
+            }
+
+            {dropdownOpen && (
+                <>
+                    <nav
+                        className={`navigation-bar ${animating ? 'animating' : ''}`}
+                        onMouseLeave={handleMouseLeave}
+                        ref={navigationRef}
+                    >
+                        <ul>
+                            <li><Link to={'/mentors'}>멘토・멘티</Link></li>
+                            <li><Link to={'/projects'}>프로젝트 모집</Link></li>
+                        </ul>
+                        <ul>
+                            <li><Link to={'/reviews'}>취업 후기</Link></li>
+                            <li><Link to={'/companies'}>채용공고</Link></li>
+                        </ul>
+
+                        <ul>
+                            <li><Link to={'/qna'}>Q&A</Link></li>
+                        </ul>
+                    </nav>
+                    <div className={'background'} ref={backgroundBlack}></div>
+                </>
+            )}
+        </Common>
 
     );
 };

@@ -273,11 +273,14 @@
 @media (max-width: 1024px) {
   .top-wrapper {
     background-image: url("../../../src_assets/main-background.jpg");
-    background-size: 140%;
+    background-size: 160%;
     background-repeat: no-repeat;
     background-position-y: 70px;
   }
 
+  .top-wrapper .input-font{
+    margin-top: 20px;
+  }
   #add-info-wrapper {
     .add-main {
       .logo {
@@ -392,5 +395,134 @@
   }
   #add-info-wrapper .main-title{
     margin-bottom: 0;
+  }
+
+  #add-info-wrapper .add-project .img-wrapper .projectDetail,
+  #add-info-wrapper .add-project .img-wrapper .projectMain{
+    width:230px;
+  }
+  #add-info-wrapper .add-project .img-wrapper{
+    flex-direction: column;
+  }
+
+  #add-info-wrapper .add-project .img-wrapper .arrowDetail{
+    transform: rotate(90deg);
+    margin: 0;
+    width: 20px;
+    padding: 20px 0px;
+  }
+
+  #add-info-wrapper .add-company{
+    margin-top: 100px;
+    padding: 50px 0;
+    flex-direction: column;
+
+  }
+  #add-info-wrapper .add-company .review-wrapper{
+    margin-right: 0;
+  }
+
+  #add-info-wrapper .add-qna{
+    flex-direction: column;
+  }
+
+  .qna{
+    width: 370px;
+  }
+
+  #add-info-wrapper .add-qna .text-wrapper{
+    margin: 0;
+  }
+
+  #add-info-wrapper .sub-text{
+    margin-bottom: 30px;
+  }
+
+  #add-info-wrapper .add-qna{
+    margin-top: 100px;
+  }
+
+  #add-info-wrapper .number{
+    font-size: 80px;
+  }
+
+  //헤더 만들기
+  .header-background .header-wrapper{
+    justify-content: space-between;
+    padding: 0 33px;
+  }
+
+  .logo-wrapper{
+    width: 50px;
+    height: 24px;
+  }
+  .header-background .header-wrapper .logo{
+    width: 50px;
+    height: 24px;
+  }
+  .hamburger-btn{
+    font-size: 20px;
+  }
+
+  .sideBar-wrapper{
+    position: fixed !important;
+    right: 0;
+    height: 100vh;
+    z-index: 9999;
+  }
+  .css-dip3t8{
+    background-color: #fafafa !important;
+  }
+  .close-btn-wrapper{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 25px 10px 20px 20px;
+  }
+  .close-btn{
+    font-size: 25px;
+    font-weight: 200;
+    //width: 20px;
+  }
+
+  #logout{
+    margin-top: 280px;
+    font-size: 17px !important;
+  }
+
+  .show-black{
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 9998;
+  }
+  .css-16jesut >.ps-menu-button{
+    height: 60px !important;
+  }
+  .css-12w9als{
+    font-size: 17px;
+  }
+
+  .css-honxw6{
+    width: 7px !important;
+    height: 7px !important;
+  }
+  .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root{
+    height: 60px;
+    font-size: 17px !important;
+    padding-left: 20px !important;
+  }
+
+
+  .myPage,
+  .profile-img{
+    width: 40px;
+    height: 40px;
+  }
+
+  .login-wrapper{
+    padding: 0 20px;
   }
 }
