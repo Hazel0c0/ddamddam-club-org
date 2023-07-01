@@ -423,3 +423,87 @@
 
 }
 
+
+@media (max-width: 414px) {
+  .mentors-chat-wrapper{
+    padding: 130px 50px 50px;
+  }
+  .mentors-chat-wrapper .mentor-detail-wrapper{
+    width: 310px;
+    height: 600px;
+  }
+  .mentors-chat-wrapper .mentor-chat-room{
+    width: 310px;
+    height: 600px;
+  }
+
+  .mentors-chat-wrapper .mentor-detail-wrapper .top-section{
+    margin-bottom: 15px;
+  }
+
+  .mentors-chat-wrapper .mentor-detail-wrapper .writer-section .writer-text-wrapper .etc-wrapper .detail-sub-text{
+    font-size: 11px;
+  }
+  .mentors-chat-wrapper .mentor-detail-wrapper .writer-section .writer-text-wrapper .etc-wrapper div:not(.current){
+    font-size: 11px;
+  }
+  .mentors-chat-wrapper .mentor-detail-wrapper .writer-section .writer-text-wrapper .detail-writer{
+    font-size: 15px;
+  }
+
+  .mentors-chat-wrapper .mentor-detail-wrapper .writer-section .writer-text-wrapper .detail-sub-title{
+    font-size: 13px;
+  }
+
+  //멘토소개 본문
+  .mentors-chat-wrapper .mentor-detail-wrapper .main-section .main-section-text{
+    font-size: 15.5px;
+  }
+  .mentors-chat-wrapper .mentor-detail-wrapper .main-section{
+    min-height: 260px;
+    max-height: 260px;
+    overflow: auto;
+  }
+
+  .mentors-chat-wrapper .mentor-detail-wrapper .application-btn,
+  .mentors-chat-wrapper .mentor-detail-wrapper .mentor-back-room{
+    font-size: 15px;
+    width: 120px;
+    height: 30px;
+  }
+
+
+  //채팅영역
+  .mentors-chat-wrapper .mentor-chat-room .input-section .text-input{
+    font-size: 10px;
+  }
+  .mentors-chat-wrapper .mentor-chat-room .input-section .send-btn{
+    width: 15%;
+  }
+  .mentors-chat-wrapper .mentor-chat-room .input-section .text-input{
+    width: 82%;
+  }
+
+  .mentors-chat-wrapper .mentor-chat-room .chating-list {
+    padding: 10px 20px;
+}
+.mentors-chat-wrapper .mentor-chat-room .chating-list .sender-wrapper {
+  margin-bottom: 10px;
+  font-size: 10px;
+}
+.mentors-chat-wrapper .mentor-chat-room .chating-list .receiver-wrapper {
+  margin-bottom: 10px;
+  font-size: 10px;
+}
+.mentors-chat-wrapper .mentor-chat-room .chating-list .receiver-wrapper .receiver-content {
+  padding: 3px 9px;
+  font-size: 12px;
+}
+.mentors-chat-wrapper .mentor-chat-room .chating-list .sender-wrapper .sender-content {
+  padding: 3px 9px;
+  font-size: 12px;
+}
+
+
+
+}
