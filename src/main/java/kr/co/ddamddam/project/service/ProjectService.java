@@ -62,7 +62,7 @@ public class ProjectService {
       log.info("is like pageable !!");
       return PageRequest.of(
           dto.getPage() - 1,
-          3,
+          dto.getSize(),
           Sort.by("likeCount").descending()
       );
       // 퀵 매칭 (포지션) 정렬
