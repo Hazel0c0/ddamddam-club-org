@@ -89,15 +89,17 @@ const MypageProjectList = props => {
       })
           .then((response) => {
             if (!response.ok) {
-              throw new Error('Request failed');
+              throw new Error('삭제에 실패하였습니다. 잠시 후에 다시 시도해주세요.');
             }
             return response.json();
           })
           .then((data) => {
-            alert(data.payload)
+            alert(data.payload);
+            asyncProjectList();
           })
           .catch((error) => {
-            console.log(error)
+            console.log(error);
+            alert(error);
           });
     }
   };
@@ -121,13 +123,24 @@ const MypageProjectList = props => {
               float: 'right',
               border: 'none'
             }}
-            onClick={()=>projectClose(project.boardIdx)}>X</button>
+            onClick={()=>projectClose(project.boardIdx)}>
+              {presentationScreen
+                ? '신청취소'
+                : 'X'
+              }
+            </button>
             <Link to={`/projects/detail?projectIdx=${project.boardIdx}`} onClick={loginCheckHandler}>
-              <div className={'pj-title'}>{subStringContent(project.boardTitle, 35)}</div>
+              {presentationScreen
+                ? <div className={'pj-title'}>{subStringContent(project.boardTitle, 40)}</div>
+                : <div className={'pj-title'}>{subStringContent(project.boardTitle, 35)}</div>
+              }
             </Link>
             <div className={'pj-writer small-text'}>
             </div>
             {/*백, 프론트 리스트 뿌리기*/}
+            {presentationScreen
+              ? null
+              :
             <div className={'participants-list'}>
               <div className={'list-box'}>
                 <p className={'pj-sub-title small-text'}>FRONT</p>
@@ -163,6 +176,7 @@ const MypageProjectList = props => {
                 ))}
               </div>
             </div>
+            }
           </div>
         ))}
       </div>
