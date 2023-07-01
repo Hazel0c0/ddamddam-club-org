@@ -331,4 +331,10 @@ public class MentorService {
                 .menteeResponseDTOList(menteeResponseDTOList)
                 .build();
     }
+
+    public List<Mentor> getAllList() {
+
+        return mentorRepository.findAll();
+
+    }
 }

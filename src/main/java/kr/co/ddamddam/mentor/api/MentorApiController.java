@@ -9,6 +9,7 @@ import kr.co.ddamddam.mentor.dto.request.MentorWriteRequestDTO;
 import kr.co.ddamddam.mentor.dto.response.MenteeListResponseDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorDetailResponseDTO;
 import kr.co.ddamddam.mentor.dto.response.MentorListResponseDTO;
+import kr.co.ddamddam.mentor.entity.Mentor;
 import kr.co.ddamddam.mentor.service.MentorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +49,16 @@ public class MentorApiController {
         MentorListResponseDTO dto = mentorService.getList(mentorPageDTO);
 
         return ResponseEntity.ok().body(dto);
+    }
+
+    @GetMapping("/allList")
+    public ResponseEntity<?> allList(
+    ){
+//        log.info("/api/ddamddam/mentors/list?page{}&size={}", pageDTO.getPage(), pageDTO.getSize());
+
+        List<Mentor> mentorList = mentorService.getAllList();
+        log.info("allList : {}", mentorList);
+        return ResponseEntity.ok().body(mentorList);
     }
 
     // 멘토페이지 주제검색 목록 조회

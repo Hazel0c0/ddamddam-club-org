@@ -13,6 +13,7 @@ import {getToken, getUserIdx, isLogin} from '../common/util/login-util';
 import {debounce} from "lodash";
 import {httpStateCatcher, httpStateCatcherDelete} from "../common/util/HttpStateCatcherWrite";
 import profileImg from "../../src_assets/ProfileLogo.png"
+import {useMediaQuery} from 'react-responsive';
 
 
 const MentorsList = ({selectedSubjects}) => {
@@ -44,6 +45,11 @@ const MentorsList = ({selectedSubjects}) => {
   const [carouselIndex, setCarouselIndex] = useState(1);
 
   const ACCESS_TOKEN = getToken(); // 토큰
+
+  // 핸드폰 버전
+  const presentationScreen = useMediaQuery({
+    query: "(max-width: 414px)",
+  });
 
   // headers
   const headerInfo = {
