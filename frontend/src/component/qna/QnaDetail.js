@@ -34,7 +34,6 @@ const QnaDetail = () => {
     //수정버튼 누르면 수정할 수 있게
     const [replyModifyShow, setReplyModifyShow] = useState([]);
 
-
     const asyncDetail = async () => {
       // console.log(boardIdx);
       const res = await fetch(`${QNA}/${boardIdx}`, {
