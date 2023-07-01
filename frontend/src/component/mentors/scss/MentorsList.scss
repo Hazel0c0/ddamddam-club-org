@@ -358,6 +358,7 @@ margin-right: 0;
     width: 313px;
     margin-right: 0;
   }
+  
   .mentors-list-wrapper .mentors-list .profile-img{
     width: 70px;
     height: 70px;
@@ -395,9 +396,17 @@ margin-right: 0;
     margin-top: 7px;
 }
 
-  .mentors-list-wrapper .less-icon,
+  .mentors-list-wrapper .less-icon{
+    width: 30px;
+    width: 35px;
+    top: 30px;
+    right: 50px;
+  }
   .mentors-list-wrapper .than-icon{
     width: 30px;
+    width: 35px;
+    top: 30px;
+    right: 0;
   }
 
   //모달
