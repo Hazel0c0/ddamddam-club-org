@@ -7,6 +7,7 @@ import {BsCheckLg} from "react-icons/bs"
 import {useNavigate, Link} from 'react-router-dom';
 import {BASE_URL as BASE, AUTH, JOININ, EMAIL, BASE_URL} from '../../component/common/config/HostConfig';
 import useDebounce from "./UseDebounce";
+import {useMediaQuery} from "react-responsive";
 
 const UserJoin = () => {
 
@@ -500,6 +501,9 @@ const birthHandler = (event) => {
         }
     };
 
+    const presentationScreen = useMediaQuery({
+        query: "(max-width: 414px)",
+    });
 
     //렌더링이 끝난 이후 실행되는 함수
     useEffect(() => {
@@ -508,10 +512,14 @@ const birthHandler = (event) => {
 
     return (
         <Common className={'join-wrapper'}>
-            <section className={'top-wrapper'}>
-                <img src={logo} alt={'logo'} className={'logo'}/>
-                <div className={'main-title'}>HI,WE ARE<br/>DDAMDDAM CLUB</div>
-            </section>
+            {presentationScreen
+                ? null
+                : <section className={'top-wrapper'}>
+                      <img src={logo} alt={'logo'} className={'logo'}/>
+                      <div className={'main-title'}>HI,WE ARE<br/>DDAMDDAM CLUB</div>
+                 </section>
+            }
+
             <div className={'background'}></div>
             <section className={'form-wrapper'}>
                 <div className={"thunmbnail-box"} onClick={() => $fileTag.current.click()}>
