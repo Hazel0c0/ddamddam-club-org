@@ -131,34 +131,6 @@
 }
 
 @media (max-width: 1024px) {
-  .qna-search-wrapper {
-    padding: 45px 110px 35px;
-  }
-  .qna-search-wrapper .sort-btn li {
-    font-size: 13px;
-    padding: 0 5px;
-  }
-
-  .qna-search-wrapper .search-wrapper {
-    padding: 0 2px 0 5px;
-  }
-  .qna-search-wrapper .search-wrapper .search-icon {
-    width: 12px;
-  }
-  .qna-search-wrapper .search-wrapper .input-btn {
-    width: 400px;
-    padding: 8px;
-    font-size: 12px;
-  }
-  .qna-search-wrapper .search-wrapper .reset-btn {
-    padding: 4px 5px;
-  }
-  .qna-search-wrapper .write-btn {
-    padding: 9px 10px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 12px;
-  }
 
   .qna-list-wrapper {
     padding: 0px 110px 50px;
@@ -236,37 +208,29 @@
   .qna-list-wrapper .qna-list{
     height: 130px;
     padding: 10px;
+    position: relative;
+    background-color: orange;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
   }
-  .qna-list-wrapper .qna-list .text-wrapper .text-title {
-    font-size: 15px;
-    //width: 300px;
-  }
-  .qna-list-wrapper .qna-list .text-wrapper .text-content {
-    font-size: 13px;
+  .qna-list-wrapper .qna-list .text-wrapper {
+
+    width: 100%;
+    padding: 0 10px;
+
+    .text-content {
+      font-size: 13px;
+    }
+    .text-title {
+      font-size: 15px;
+    }
   }
   .qna-list-wrapper .qna-list .checked, .qna-list-wrapper .qna-list .not-checked {
-    margin-bottom: 80px;
-    font-size: 13px;
+    font-size: 14px;
     padding: 5px 5px 5px 5px;
-    width: 250px;
-    margin-right: 10px;
-
+    width: 100px;
+    margin: 0;
   }
 
-  .qna-list-wrapper .qna-list .text-wrapper {
-    margin-top: 200px;
-    margin-right: 150px;
-    height: 200px;
-    width: 300px;
-  }
-
-  .qna-list-wrapper .qna-list .qna-info {
-    font-size: 10px;
-    margin-top: 10px;
-    margin-right: 20px;
-  }
-  .qna-list-wrapper .qna-list .qna-info .qna-writer {
-    margin-top: 10px;
-    width: 80px;
-  }
 }
