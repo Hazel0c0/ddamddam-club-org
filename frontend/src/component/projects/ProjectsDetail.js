@@ -58,6 +58,8 @@ const ProjectsDetail = () => {
           setProjectDetail([data.payload]);
           console.log("프로젝트 디테일 dto")
           console.log(` 마감 일자 형식 변경 ${data.payload.offerPeriod}`);
+
+          // date 형식 변환
           const offer = data.payload.offerPeriod;
           const offerPeriodFormatted = format(new Date(offer), 'yy년 MM월 dd일 HH:mm');
           setOfferPeriodFormatted(offerPeriodFormatted);

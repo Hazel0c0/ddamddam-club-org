@@ -13,10 +13,10 @@ const ProjectsModify = () => {
   const searchParams = new URLSearchParams(location.search);
   const projectIdx = searchParams.get('projectIdx');
   const navigate = useNavigate(); // useNavigate 훅 사용
-  const [updatedFormData, setUpdatedFormData] = useState([]);
+  const [formData, setFormData] = useState([]);
 
   const $fileTag = useRef();
-  const [imgFile, setImgFile] = useState(null);
+  const [imgFile, setImgFile] = useState();
 
   const ACCESS_TOKEN = getToken();
 
@@ -38,9 +38,10 @@ const ProjectsModify = () => {
           return response.json();
         })
         .then(data => {
-          setUpdatedFormData(data.payload);
           console.log(data.payload);
-          console.log(` img load : ${data.payload.boardImg}`);
+          setFormData(data.payload);
+
+          console.log(`img load : ${data.payload.boardImg}`);
           setImgFile(data.payload.boardImg);
         })
         .catch(error => {
@@ -48,10 +49,11 @@ const ProjectsModify = () => {
         });
   }, []);
 
+  console.log(`기존 img 데이터 : ${imgFile}`)
 
   const handleInputChange = (e) => {
     const {name, value} = e.target;
-    setUpdatedFormData((prevFormData) => ({
+    setFormData((prevFormData) => ({
       ...prevFormData,
       // 입력값이 없으면 기존 정보 사용
       [name]: value || prevFormData[name],
@@ -60,19 +62,22 @@ const ProjectsModify = () => {
   }
 
   const modifySubmitHandler = async () => {
-    console.log(updatedFormData);
+    console.log(formData);
     console.log('projectIdx:', projectIdx);
 
-    const {projectImg, boardTitle, boardContent, projectType, maxFront, maxBack,} = updatedFormData;
+    const {projectImg, boardTitle, boardContent, projectType, maxFront, maxBack,} = formData;
 
     const projectJsonBlob = new Blob(
-        [JSON.stringify(updatedFormData)],
+        [JSON.stringify(formData)],
         {type: 'application/json'}
     );
+    const uploadImg = $fileTag.current.files[0];
+    console.log(`uploadImg : ${uploadImg}`);
+    console.log(`upload img : ${!!uploadImg}`)
+
     const projectFormData = new FormData();
     projectFormData.append('project', projectJsonBlob);
-    projectFormData.append('projectImage', $fileTag.current.files[0]);
-
+    projectFormData.append('projectImage', uploadImg);
 
     // 작성완료 버튼을 눌렀을 때 실행되는 함수
     if (window.confirm("작성을 완료하시겠습니까?")) {
@@ -82,15 +87,18 @@ const ProjectsModify = () => {
         body: projectFormData
       }).then(response => response.json())
           .then(data => {
-            setUpdatedFormData(data.formData);
-            console.log(data); // Handle the response data
+            setFormData(data.formData);
+            console.log(`작성 완료 !!`)
+            console.log(data.formData);
+            console.log(data.payload)
+            setImgFile(data.payload.boardImg);
 
             navigate(`/projects/detail?projectIdx=${projectIdx}`)
           })
           .catch(error => {
             console.error(error);
           });
-      console.log(updatedFormData); // 예시: 콘솔에 데이터 출력
+      console.log(formData); // 예시: 콘솔에 데이터 출력
     }
   };
 
@@ -110,7 +118,7 @@ const ProjectsModify = () => {
         <ProjectsTitle/>
         <Common className={'project-write-wrapper'}>
 
-          <div key={updatedFormData.boardIdx}>
+          <div key={formData.boardIdx}>
 
             {/* 이미지 */}
             <div className={'thumbnail-box'} onClick={() => $fileTag.current.click()}>
@@ -132,18 +140,18 @@ const ProjectsModify = () => {
 
             <section className={'write-form-wrapper'}>
               <input type="hidden"
-                     value={updatedFormData.boardIdx}
+                     value={formData.boardIdx}
                      name="boardIdx"
               />
               <div className={'project-date'}>
                 {/* 수정 후에는  변경 되도록 */}
                 <span className={'sub-title'}>작성일자</span>
-                <span className={'sub-content'}>{updatedFormData.projectDate}</span>
+                <span className={'sub-content'}>{formData.projectDate}</span>
               </div>
 
               <div className={'writer'}>
                 <span className={'sub-title'}>작성자</span>
-                <span className={'sub-content'}>{updatedFormData.boardWriter}</span>
+                <span className={'sub-content'}>{formData.boardWriter}</span>
               </div>
 
               {/* write - 공통 데이터 */}
@@ -151,10 +159,10 @@ const ProjectsModify = () => {
                 <h1 className={'sub-title'}>제목</h1>
                 <input
                     type={"text"}
-                    placeholder={updatedFormData.boardTitle}
+                    placeholder={formData.boardTitle}
                     className={'title-text-input'}
                     name={'boardTitle'}
-                    defaultValue={updatedFormData.boardTitle}
+                    defaultValue={formData.boardTitle}
                     onChange={handleInputChange}
                 />
               </div>
@@ -164,7 +172,7 @@ const ProjectsModify = () => {
                   <div className={'sub-title'}>프로젝트 타입</div>
                   <select className="subject-select"
                           name="projectType"
-                          value={updatedFormData.projectType}
+                          value={formData.projectType}
 
                           onChange={handleInputChange}
                   >
@@ -180,7 +188,7 @@ const ProjectsModify = () => {
                   <div className={'sub-title'}>프론트</div>
                   <select className="mentee-text-input"
                           name="maxFront"
-                          value={updatedFormData.maxFront}
+                          value={formData.maxFront}
                           onChange={handleInputChange}
                   >
                     <option value="1">1명</option>
@@ -192,7 +200,7 @@ const ProjectsModify = () => {
                   <div className={'sub-title'}>back</div>
                   <select className="mentee-text-input"
                           name="maxBack"
-                          value={updatedFormData.maxBack}
+                          value={formData.maxBack}
                           onChange={handleInputChange}
                   >
                     <option value="1">1명</option>
@@ -209,7 +217,7 @@ const ProjectsModify = () => {
                          placeholder={'기한을 입력해주세요'}
                          name="offerPeriod"
                          className={'current-text-input'}
-                         defaultValue={updatedFormData.offerPeriod}
+                         defaultValue={formData.offerPeriod}
                          onChange={handleInputChange}
                   />까지
                 </div>
@@ -218,10 +226,10 @@ const ProjectsModify = () => {
 
             <section>
                 <textarea type="text"
-                          placeholder={updatedFormData.boardContent}
+                          placeholder={formData.boardContent}
                           className={'boardContent'}
                           name="boardContent"
-                          value={updatedFormData.boardContent}
+                          value={formData.boardContent}
                           onChange={handleInputChange}
                 />
             </section>
