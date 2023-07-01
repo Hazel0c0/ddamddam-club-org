@@ -175,8 +175,12 @@
   }
 
   @media (max-width: 414px) {
+    .project-detail-wrapper {
+      padding: 0;
+    }
+
     .main-text-wrapper {
-      width: 700px;
+      width: 350px;
       padding: 20px;
     }
 
