@@ -8,6 +8,7 @@ import frontIcon from "../../src_assets/front.png";
 import backIcon from "../../src_assets/back-icon.png";
 import xIcon from "../../src_assets/x.png";
 import {use} from "js-joda";
+import {useMediaQuery} from "react-responsive";
 
 
 const ProjectsQuickMatching = () => {
@@ -65,6 +66,9 @@ const ProjectsQuickMatching = () => {
           }
         });
   };
+  const presentationScreen = useMediaQuery({
+    query: "(max-width: 414px)",
+  });
 
   // d-day 계산
   const CountdownTimer = ({ deadline }) => {
@@ -98,10 +102,10 @@ const ProjectsQuickMatching = () => {
 
     return (
         <div className={'deadline'}>
-          <div className={'timer'}>{days}<span>Days</span></div>
-          <div className={'timer'}>{hours} <span>Hours</span></div>
-          <div className={'timer'}>{minutes}<span>Minutes</span></div>
-          <div className={'timer'}>{seconds}<span>Seconds</span></div>
+          <div className={'timer'}>{days}<span>{presentationScreen?' d':'Days'}</span></div>
+          <div className={'timer'}>{hours}<span>{presentationScreen?' h':'Hours'}</span></div>
+          <div className={'timer'}>{minutes}<span>{presentationScreen?' m':'Minutes'}</span></div>
+          <div className={'timer'}>{seconds}<span>{presentationScreen?' S':'Seconds'}</span></div>
         </div>
     );
   };
