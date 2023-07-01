@@ -144,7 +144,7 @@
       }
       .qna-view-wrapper .top-view-wrapper .top-section-one .top-section-wrapper{
         margin-top: 5px;
-        padding: 18px 25px 23px;
+        padding: 13px 25px;
         width: 250px;
         height: 140px;
       }
@@ -154,15 +154,18 @@
          .qna-view-wrapper .top-view-wrapper .top-section-two .top-section-wrapper .not-checked,
           .qna-view-wrapper .top-view-wrapper .top-section-three .top-section-wrapper .checked,
            .qna-view-wrapper .top-view-wrapper .top-section-three .top-section-wrapper .not-checked {
-        width: 130px;
-        height: 20px;
-        font-size: 14px;
+        width: 80px;
+        height: auto;
+        font-size: 12px;
         border-radius: 5px;
-        margin-bottom: 11px;
+        margin-bottom: 3px;
+        padding: 6px;
     }
     .qna-view-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .qna-title{
       font-size: 17px;
       margin-bottom: 10px;
+      height: 25.5px;
+      overflow: hidden;
     }
     .qna-view-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .qna-content{
       font-size: 11px;

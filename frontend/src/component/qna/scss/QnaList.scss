@@ -147,7 +147,7 @@
   }
   .qna-search-wrapper .search-wrapper .input-btn {
     width: 400px;
-    padding: 5px 5px;
+    padding: 8px;
     font-size: 12px;
   }
   .qna-search-wrapper .search-wrapper .reset-btn {
@@ -165,14 +165,15 @@
   }
   .qna-list-wrapper .qna-list {
     margin-bottom: 10px;
-    padding: 20px 24px;
-    height: 70px;
+    padding: 10px 12px;
+    height: auto;
   }
 
   .qna-list-wrapper .qna-list .checked, .qna-list-wrapper .qna-list .not-checked {
     width: 90px;
-    height: 25px;
-    padding: 7px 17px;
+    height: auto;
+    border-radius: 4px;
+    padding: 9px 17px;
     font-size: 11px;
     margin-right: 25px;
   }
@@ -196,7 +197,7 @@
     width: 110px;
   }
   .qna-list-wrapper .qna-list .qna-info .qna-writer {
-    font-size: 10px;
+    font-size: 13px;
     margin-bottom: 4px;
   }
   .qna-list-wrapper .qna-list .qna-info .icon-wrapper {
