@@ -16,9 +16,8 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
   @Query("SELECT p FROM Project p " +
-      "INNER JOIN p.applicantOfBacks af " +
       "WHERE (p.maxBack - SIZE(p.applicantOfBacks)) > 0 " +
-      "AND p.projectIdx IN (SELECT a.project.projectIdx FROM ApplicantOfBack a WHERE a.user.userIdx <> :userIdx) " +
+      "AND p.projectIdx NOT IN (SELECT a.project.projectIdx FROM ApplicantOfBack a WHERE a.user.userIdx = :userIdx) " +
       "AND p.user.userIdx <> :userIdx " +
       "ORDER BY (p.maxBack - SIZE(p.applicantOfBacks)) ASC, " +
       "SIZE(p.applicantOfFronts) DESC, " +
@@ -28,9 +27,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
   Page<Project> backQuickMatchingSort(@Param("userIdx") Long userIdx, Pageable pageable);
 
   @Query("SELECT p FROM Project p " +
-      "INNER JOIN p.applicantOfFronts af " +
       "WHERE (p.maxFront - SIZE(p.applicantOfFronts)) > 0 " +
-      "AND p.projectIdx IN (SELECT a.project.projectIdx FROM ApplicantOfFront a WHERE a.user.userIdx <> :userIdx) " +
+      "AND p.projectIdx NOT IN (SELECT a.project.projectIdx FROM ApplicantOfFront a WHERE a.user.userIdx = :userIdx) " +
       "AND p.user.userIdx <> :userIdx " +
       "ORDER BY (p.maxFront - SIZE(p.applicantOfFronts)) ASC, " +
       "SIZE(p.applicantOfBacks) DESC, " +

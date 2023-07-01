@@ -119,7 +119,7 @@ const ProjectsDetail = () => {
                     }
                     return res.json()
                 })
-                .then(res =>{
+                .then(res => {
                     setProjectDetail([res.payload]);
                     console.log(res)
                     console.log(`response.payload : ${res.payload}`);
@@ -132,29 +132,27 @@ const ProjectsDetail = () => {
         }
     };
 
-    const handleApply = () => {
+    const handleApply = async () => {
         if (window.confirm('정말로 신청하시겠습니까?')) {
-            fetch(PROJECT + ` / applicant /${projectIdx}`, {
+            const res = await fetch(`${PROJECT}/applicant/${projectIdx}`, {
                 method: 'PATCH',
                 headers: headerInfo,
                 body: JSON.stringify({}),
             })
-                .then((response) => {
-                    if (response.status === 400) {
-                        return response.text();
-                    }
-                    console.log('신청 성공')
-                    console.log(response.json());
-                    fetchProjectDetail();
-                    alert('신청이 완료되었습니다');
-                })
-                .then((errorMessage) => {
-                    if (errorMessage) {
+                .then(async res => {
+                    if (res.status === 200) {
+                        console.log('신청 성공');
+                        console.log(res.json());
+                        fetchProjectDetail();
+                        alert('신청이 완료되었습니다');
+                    } else {
+                        const errorMessage = await res.text();
                         alert(errorMessage);
                     }
                 })
                 .catch((error) => {
                     console.error(error);
+                    alert(error.text());
                 });
         }
     };
