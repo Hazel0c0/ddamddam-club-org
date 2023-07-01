@@ -43,7 +43,7 @@ public class ProjectDetailResponseDTO {
      */
     private boolean completion;
 
-    private String projectDate; // 게시글 작성 날짜
+    private LocalDateTime projectDate; // 게시글 작성 날짜
     private LocalDateTime offerPeriod; //모집기간
 
     private int likeCount;
@@ -62,14 +62,9 @@ public class ProjectDetailResponseDTO {
         this.completion = (project.getMaxFront() - project.getApplicantOfFronts().size()) == 0 && (project.getMaxBack() - project.getApplicantOfBacks().size()) == 0;
         this.likeCount =project.getLikeCount();
         this.offerPeriod = project.getOfferPeriod();
-
-        this.projectDate = formatProjectDate(project.getProjectDate());
+        this.projectDate = project.getProjectDate();
     }
 
-    private String formatProjectDate(LocalDateTime projectDate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd  HH:mm");
-        return projectDate.format(formatter);
-    }
 
 
 }
