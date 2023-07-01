@@ -170,11 +170,12 @@
     }
   }
 
-
 }
+
 @media (max-width: 1024px) {
   .review-write-wrapper{
     padding: 130px 100px 0;
+    //height: 650px;
   }
   .review-write-wrapper .main-title{
     font-size: 38px;
@@ -189,5 +190,89 @@
   .review-write-wrapper .review-company-detail .input-company-location .detail-text-input{
     width: 130px;
   }
+}
+@media (max-width: 414px){
+  .review-write-wrapper{
+    padding: 10px;
+  }
+  .review-write-wrapper .review-company-detail{
+    font-size: 13px;
+    margin: 3px 0;
+    display: contents;
+
+  }
+  .review-write-wrapper .review-company-detail .input-company-name, .review-write-wrapper .review-company-detail .input-company-job, .review-write-wrapper .review-company-detail .input-company-tenure, .review-write-wrapper .review-company-detail .input-company-location{
+
+  }
+  .review-write-wrapper .review-company-detail .input-company-name .detail-text-input,
+  .review-write-wrapper .review-company-detail .input-company-job .detail-text-input,
+  .review-write-wrapper .review-company-detail .input-company-tenure .detail-text-input,
+  .review-write-wrapper .review-company-detail .input-company-location .detail-text-input{
+    width: 150px;
+    font-size: 13px;
+    margin-left: 15px;
+    height: 30px;
+    margin-bottom: 10px;
+  }
+  .review-write-wrapper .review-company-detail .input-company-job .detail-text-input,
+  .review-write-wrapper .review-company-detail .input-company-location .detail-text-input{
+    margin-left: 25px;
+
+  }
+  .review-write-wrapper .review-company-detail .input-company-name .tenure-text-input, .review-write-wrapper .review-company-detail .input-company-job .tenure-text-input, .review-write-wrapper .review-company-detail .input-company-tenure .tenure-text-input, .review-write-wrapper .review-company-detail .input-company-location .tenure-text-input{
+    width: 80px;
+    margin-left: 3px;
+    height: 30px;
+  }
+  .review-write-wrapper .review-company-detail .input-company-name .fix-text, .review-write-wrapper .review-company-detail .input-company-job .fix-text, .review-write-wrapper .review-company-detail .input-company-tenure .fix-text, .review-write-wrapper .review-company-detail .input-company-location .fix-text{
+    right: 0px;
+    left: 120px;
+  }
+  .review-write-wrapper .sub-title{
+    font-size: 13px;
+  }
+  .review-write-wrapper .content{
+    min-height: 200px;
+    font-size: 13px;
+  }
+  .review-write-wrapper .content-wrapper .star-rating-wrapper{
+    height: 50px;
+
+  }
+  .review-write-wrapper .content-wrapper .star-rating-wrapper .star-rating-title{
+    font-size: 13px;
+  }
+  .review-write-wrapper .content-wrapper .star-rating-wrapper .css-iljtu2-MuiRating-root{
+    font-size: 20px;
+  }
+  .review-write-wrapper .btn-wrapper .close-btn{
+    font-size: 13px;
+    width: 130px;
+    height: 30px;
+  }
+  .review-write-wrapper .btn-wrapper .submit-btn{
+    font-size: 13px;
+    width: 130px;
+    height: 30px;
+    margin-bottom: 30px;
+  }
+  .review-write-wrapper .main-title{
+    font-size: 24px;
+    padding-top: 100px;
+
+  }
+  .title-wrapper{
+    height: 200px;
+    //margin-bottom: 20px;
+  }
+  .review-write-wrapper .write-form-wrapper .title-text-input{
+    height: 30px;
+    font-size: 13px;
+  }
+  .review-write-wrapper .write-form-wrapper{
+    margin-top: 0px;
+  }
+
+
 }
 
