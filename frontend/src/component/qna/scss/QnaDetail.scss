@@ -440,9 +440,11 @@
     margin-bottom: 20px;
   }
   .qna-detail-wrapper .main-text-wrapper .info-detail-container {
-
-    margin-left: 10px;
     justify-content: start;
+
+    .detail-wrapper {
+      width: 100%;
+    }
 
     .detail-wrapper .category .sub-title,
     .detail-wrapper .category .sub-content,
