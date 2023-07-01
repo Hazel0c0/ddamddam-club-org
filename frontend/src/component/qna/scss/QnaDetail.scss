@@ -404,31 +404,55 @@
   .qna-detail-wrapper .main-text-wrapper .main-content{
     min-height: 80px;
     max-height: 300px;
+    font-size: 13px;
   }
   .qna-detail-wrapper .reply-wrapper {
     margin-bottom: 200px;
     margin-top: 10px;
+    font-size: 13px;
 
   }
   .qna-detail-wrapper .main-text-wrapper .checked-wrapper .not-checked {
     //margin-bottom: 60px;
     width: 100px;
     height: 25px;
+    font-size: 13px;
 
   }
   .qna-detail-wrapper .main-text-wrapper .checked-wrapper{
     //margin-bottom: 30px;
     height: 100px;
+    font-size: 13px;
+    margin-top: 10px;
 
   }
 
-  .detail-wrapper {
-    font-size: 10px;
-  }
 
   .qna-detail-wrapper .reply-wrapper .reply-input-wrapper{
     width: 180px;
     height: 80px;
+    font-size: 13px;
+  }
+  .qna-detail-wrapper .reply-wrapper .reply-input-wrapper .input-submit-btn{
+    font-size: 13px;
+
+  }
+  .qna-detail-wrapper .reply-wrapper .reply-input-wrapper .reply-input{
+    width: 300 px;
+    font-size: 13px;
+
+  }
+  .qna-detail-wrapper .reply-wrapper .reply-title{
+    font-size: 13px;
+  }
+  .qna-detail-wrapper .main-text-wrapper .info-detail-container{
+    font-size: 11px;
+  }
+  .qna-detail-wrapper .category{
+    font-size: 13px;
+  }
+  .category {
+    font-size: 13px;
   }
 
 
