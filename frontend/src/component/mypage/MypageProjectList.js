@@ -7,6 +7,7 @@ import {Link, useNavigate} from "react-router-dom";
 import less from "../../src_assets/less.png";
 import than from "../../src_assets/than.png";
 import {httpStateCatcher} from "../common/util/HttpStateCatcherWrite";
+import {useMediaQuery} from "react-responsive";
 
 const MypageProjectList = props => {
 
@@ -19,6 +20,10 @@ const MypageProjectList = props => {
     'content-type': 'application/json',
     'Authorization': 'Bearer ' + ACCESS_TOKEN
   }
+
+  const presentationScreen = useMediaQuery({
+    query: "(max-width: 414px)",
+  });
 
   const [projectList, setProjectList] = useState([]);
   const [pageNation, setPageNation] = useState([]);
