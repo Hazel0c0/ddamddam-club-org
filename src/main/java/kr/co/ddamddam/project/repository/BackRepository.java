@@ -11,5 +11,5 @@ public interface BackRepository extends JpaRepository<ApplicantOfBack,Long> {
     Page<ApplicantOfBack> findByUser(User user, Pageable pageable);
     boolean existsByProjectAndUser(Project project, User user);
 
-    void deleteByUser(User foundUser);
+    void deleteByProjectAndUser(Project currProject, User foundUser);
 }

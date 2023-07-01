@@ -118,21 +118,20 @@ public class ApplicantService {
 
         Project currProject = projectService.getProject(projectIdx);
         //유저 포지션별 분류
-
-                log.info("신청 취소한 유저 포지션 : {} ", foundUser.getUserPosition());
+        log.info("신청 취소한 유저 포지션 : {} ", foundUser.getUserPosition());
         if (foundUser.getUserPosition() == UserPosition.BACKEND) {
             boolean isBack = backRepository.existsByProjectAndUser(currProject, foundUser);
+            log.info("{}번 프로젝트에 신청 했다면 ?  {} ", projectIdx, isBack);
             if (isBack) {
-                log.info("프로젝트에 신청 했다면 ?  {} ", isBack);
-                backRepository.deleteByUser(foundUser);
+                backRepository.deleteByProjectAndUser(currProject,foundUser);
             } else {
                 throw new IllegalStateException("신청하지 않은 프로젝트입니다");
             }
         } else {
             boolean isFront = frontRepository.existsByProjectAndUser(currProject, foundUser);
+            log.info("{}번 프로젝트에 신청 했다면 ?  {} ", projectIdx, isFront);
             if (isFront) {
-                log.info("프로젝트에 신청 했다면 ?  {} ", isFront);
-                frontRepository.deleteByUser(foundUser);
+                frontRepository.deleteByProjectAndUser(currProject,foundUser);
             } else {
                 throw new IllegalStateException("신청하지 않은 프로젝트입니다");
             }
