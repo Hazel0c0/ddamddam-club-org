@@ -226,3 +226,46 @@
 
 
 }
+
+@media (max-width: 414px) {
+  .qna-list-wrapper {
+    padding: 10px;
+
+  }
+  .qna-list-wrapper .qna-list{
+    height: 130px;
+    padding: 10px;
+  }
+  .qna-list-wrapper .qna-list .text-wrapper .text-title {
+    font-size: 15px;
+    //width: 300px;
+  }
+  .qna-list-wrapper .qna-list .text-wrapper .text-content {
+    font-size: 13px;
+  }
+  .qna-list-wrapper .qna-list .checked, .qna-list-wrapper .qna-list .not-checked {
+    margin-bottom: 80px;
+    font-size: 13px;
+    padding: 5px 5px 5px 5px;
+    width: 250px;
+    margin-right: 10px;
+
+  }
+
+  .qna-list-wrapper .qna-list .text-wrapper {
+    margin-top: 200px;
+    margin-right: 150px;
+    height: 200px;
+    width: 300px;
+  }
+
+  .qna-list-wrapper .qna-list .qna-info {
+    font-size: 10px;
+    margin-top: 10px;
+    margin-right: 20px;
+  }
+  .qna-list-wrapper .qna-list .qna-info .qna-writer {
+    margin-top: 10px;
+    width: 80px;
+  }
+}

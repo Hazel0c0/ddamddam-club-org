@@ -7,6 +7,7 @@ import {getToken, getUserIdx, getUserName, getUserNickname
     , getUserBirth, getUserPosition, getUserCareer, getUserProfile} from "../common/util/login-util";
 import {BsCheckLg} from "react-icons/bs";
 import './scss/MypageModify.scss';
+import {useMediaQuery} from "react-responsive";
 
 
 
@@ -15,6 +16,10 @@ const MypageUserModify = props => {
     const ACCESS_TOKEN = getToken();
     const API_BASE_URL = BASE_URL + MYPAGE;
     const redirection = useNavigate();
+
+    const presentationScreen = useMediaQuery({
+        query: "(max-width: 414px)",
+    });
 
     //useRef로 태그 참조하기
     const $fileTag = useRef();
@@ -411,10 +416,11 @@ const MypageUserModify = props => {
 
     return (
         <Common className={'modify-wrapper'}>
+            {!presentationScreen &&
             <section className={'top-wrapper'}>
                 <img src={logo} alt={'logo'} className={'logo'}/>
                 <div className={'main-title'}>HI,WE ARE<br/>DDAMDDAM CLUB</div>
-            </section>
+            </section>}
             <div className={'background'}></div>
             <section className={'form-wrapper'}>
                 <div className={"thunmbnail-box"} onClick={() => $fileTag.current.click()}>

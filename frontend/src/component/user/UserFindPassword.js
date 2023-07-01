@@ -8,11 +8,15 @@ import Common from "../common/Common";
 import logo from "../../src_assets/logo(white).png";
 import {BsCheckLg} from "react-icons/bs";
 import {useNavigate} from "react-router-dom";
+import {useMediaQuery} from "react-responsive";
 
 const UserFindPassword = () => {
 
   const REQUEST_URL = BASE_URL + AUTH + '/modify-password';
   const redirection = useNavigate();
+  const presentationScreen = useMediaQuery({
+    query: "(max-width: 414px)",
+  });
 
 
   //검증 메세지에 대한 상태변수 관리
@@ -212,10 +216,11 @@ const UserFindPassword = () => {
 
   return (
     <Common className={'change-wrapper'}>
+      {!presentationScreen &&
       <section className={'top-wrapper'}>
         <img src={logo} alt={'logo'} className={'logo'}/>
         <div className={'main-title'}>HI,WE ARE<br/>DDAMDDAM CLUB</div>
-      </section>
+      </section>}
       <div className={'background'}></div>
       <section className={'form-wrapper'}>
         <h1 className={'title'}>비밀번호 변경</h1>

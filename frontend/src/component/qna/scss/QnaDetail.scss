@@ -402,3 +402,63 @@
     font-size: 16px;
   }
 }
+
+@media (max-width: 414px) {
+  .qna-detail-wrapper{
+    padding: 10px;
+  }
+
+  .qna-detail-wrapper .main-sub-title{
+    font-size: 13px;
+  }
+  .qna-detail-wrapper .main-title{
+    font-size: 24px;
+    margin-left: 40px;
+  }
+  .qna-detail-wrapper .main-text-wrapper .qna-title{
+    font-size: 16px;
+    width: 180px;
+    margin-top: 150px;
+  }
+  .qna-detail-wrapper .main-text-wrapper .hashTag-wrapper{
+    width: 180px;
+    margin-bottom: 0px;
+  }
+  .qna-detail-wrapper .main-text-wrapper{
+    height: 600px;
+  }
+  .qna-detail-wrapper .main-text-wrapper .main-content{
+    min-height: 80px;
+    max-height: 300px;
+  }
+  .qna-detail-wrapper .reply-wrapper {
+    margin-bottom: 200px;
+    margin-top: 10px;
+
+  }
+  .qna-detail-wrapper .main-text-wrapper .checked-wrapper .not-checked {
+    //margin-bottom: 60px;
+    width: 100px;
+    height: 25px;
+
+  }
+  .qna-detail-wrapper .main-text-wrapper .checked-wrapper{
+    //margin-bottom: 30px;
+    height: 100px;
+
+  }
+
+  .detail-wrapper {
+    font-size: 10px;
+  }
+
+  .qna-detail-wrapper .reply-wrapper .reply-input-wrapper{
+    width: 180px;
+    height: 80px;
+  }
+
+
+
+}
+
+

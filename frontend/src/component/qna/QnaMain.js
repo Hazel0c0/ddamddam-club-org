@@ -7,6 +7,7 @@ import {QNA} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import {getToken} from "../common/util/login-util";
 import {httpStateCatcher} from "../common/util/HttpStateCatcherWrite";
+import {useMediaQuery} from "react-responsive";
 
 const QnaMain = () => {
 
@@ -23,6 +24,10 @@ const QnaMain = () => {
             // return;
         }
     }
+  const presentationScreen = useMediaQuery({
+    query: "(max-width: 414px)",
+  });
+
 
     useEffect(() => {
         fetch(QNA + '/top')
@@ -56,6 +61,7 @@ const QnaMain = () => {
                 <p className={'main-sub-title'}>땀땀클럽 회원들과 개발 지식을 공유할 수 있는 공간입니다.</p>
             </div>
 
+          {!presentationScreen &&
             <section className={'top-view-wrapper'}>
                 {topViewQna.map((qna, index) => (
                     <div className={'top-section-one'} key={qna.boardIdx}>
@@ -88,6 +94,7 @@ const QnaMain = () => {
                     </div>
                 ))}
             </section>
+          }
         </Common>
     );
 };
