@@ -279,14 +279,14 @@ const QnaDetail = () => {
           alert('이미 채택된 글은 수정 또는 삭제하실 수 없습니다.');
           return;
         }
-        const result = fetch(`${QNA}/delete/${boardIdx}`, {
+        const res = fetch(`${QNA}/delete/${boardIdx}`, {
           method: 'DELETE',
           headers: requestHeader,
           body: JSON.stringify({
             boardIdx: boardIdx
           })
         });
-        // const result = await res;
+        const result = await res;
         // console.log(`result.body : ${result.body}`)
 
         httpStateCatcherDelete(result.status);

@@ -17,6 +17,13 @@ const QnaTotal =({loginCheck, searchKeyword, searchValue}) => {
     const presentationScreen = useMediaQuery({
         query: "(max-width: 414px)",
     });
+
+    const subStringContent = (str, n) => {
+        return str?.length > n
+          ? str.substr(0, n - 1) + "..."
+          : str;
+    }
+
     useEffect(()=>{
         asyncQnaTotalList();
     },[clickCurrentPage, searchKeyword, searchValue])
@@ -70,7 +77,11 @@ const QnaTotal =({loginCheck, searchKeyword, searchValue}) => {
                     }
 
                     <section className={'text-wrapper'}>
-                        <div className={'text-title'} key={qna.boardTitle}>{qna.boardTitle}</div>
+                        {presentationScreen
+                          ? <div className={'text-title'} key={qna.boardTitle}>{subStringContent(qna.boardTitle, 38)}</div>
+                          : <div className={'text-title'} key={qna.boardTitle}>{qna.boardTitle}</div>
+                        }
+
                         {!presentationScreen &&
                         <div className={'text-content'} key={qna.boardContent}>{qna.boardContent}</div>}
                         <ul className={'text-hashTag'}>
