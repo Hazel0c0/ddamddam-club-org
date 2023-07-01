@@ -202,13 +202,12 @@
 
 @media (max-width: 414px) {
   .qna-list-wrapper {
-    padding: 30px ;
+    padding: 20px 30px 30px;
   }
   .qna-list-wrapper .qna-list{
     height: 160px;
     padding: 20px;
     position: relative;
-    background-color: orange;
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -233,6 +232,31 @@
 
   .qna-list-wrapper .qna-list .qna-info {
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .qna-writer {
+      margin: 0;
+    }
+
+    .icon-wrapper {
+      font-size: 15px;
+      margin-bottom: 0;
+
+      .view-count-icon, .speech-count-icon {
+        width: 13px;
+        margin-right: 3px;
+      }
+    }
+
+
+  }
+
+  .qna-list-wrapper .qna-list .go-detail {
+    font-size: 15px;
+    top: 15px;
+    right: 15px;
   }
 
   .qna-list-wrapper .qna-list .checked, .qna-list-wrapper .qna-list .not-checked {

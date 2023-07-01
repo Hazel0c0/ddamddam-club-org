@@ -40,8 +40,8 @@ public class QnaListResponseDTO {
      */
     public QnaListResponseDTO(Qna qna, List<String> hashtagList) {
         this.boardIdx = qna.getQnaIdx();
-        this.boardTitle = truncate(qna.getQnaTitle(), 30);
-        this.boardContent = truncate(qna.getQnaContent(), 50);
+        this.boardTitle = truncate(qna.getQnaTitle(), 25);
+        this.boardContent = truncate(qna.getQnaContent(), 40);
         this.boardWriter = qna.getQnaWriter();
         this.boardDate = qna.getQnaDate();
         this.boardAdoption = qna.getQnaAdoption();

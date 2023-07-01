@@ -91,7 +91,10 @@ const QnaTotal =({loginCheck, searchKeyword, searchValue}) => {
                         </ul>
                     </section>
                     <section className={'qna-info'}>
-                        <div className={'qna-writer'} key={qna.boardWriter}>{qna.boardWriter}</div>
+                        {presentationScreen
+                          ? <div className={'qna-writer'} key={qna.boardWriter}>{qna.boardWriter} 님의 질문</div>
+                          : <div className={'qna-writer'} key={qna.boardWriter}>{qna.boardWriter}</div>
+                        }
                         <div className={'icon-wrapper'}>
                             <div className={'view-count-wrapper'}>
                                 <img src={viewIcon} alt={'view-count'}

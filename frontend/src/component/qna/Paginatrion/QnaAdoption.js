@@ -7,11 +7,15 @@ import PageNation from "../../common/pageNation/PageNation";
 import {QNA} from "../../common/config/HostConfig";
 import {getToken} from "../../common/util/login-util";
 import {httpStateCatcher} from "../../common/util/HttpStateCatcherWrite";
+import {useMediaQuery} from "react-responsive";
 
-const QnaNoAdoption =({loginCheck, searchKeyword, searchValue}) => {
+const QnaAdoption =({loginCheck, searchKeyword, searchValue}) => {
     const [qnaList, setQnaList] = useState([]);
     const [pageNation, setPageNation] = useState([]);
     const [clickCurrentPage, setClickCurrentPage] = useState(1);
+    const presentationScreen = useMediaQuery({
+        query: "(max-width: 414px)",
+    });
 
     useEffect(()=>{
         asyncQnaNoAdoptionList();
@@ -72,7 +76,10 @@ const QnaNoAdoption =({loginCheck, searchKeyword, searchValue}) => {
                         </ul>
                     </section>
                     <section className={'qna-info'}>
-                        <div className={'qna-writer'} key={qna.boardWriter}>{qna.boardWriter}</div>
+                        {presentationScreen
+                          ? <div className={'qna-writer'} key={qna.boardWriter}>{qna.boardWriter} 님의 질문</div>
+                          : <div className={'qna-writer'} key={qna.boardWriter}>{qna.boardWriter}</div>
+                        }
                         <div className={'icon-wrapper'}>
                             <div className={'view-count-wrapper'}>
                                 <img src={viewIcon} alt={'view-count'}
@@ -108,4 +115,4 @@ const QnaNoAdoption =({loginCheck, searchKeyword, searchValue}) => {
     );
 };
 
-export default QnaNoAdoption;
+export default QnaAdoption;
