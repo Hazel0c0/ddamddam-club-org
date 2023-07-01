@@ -34,7 +34,7 @@ public class MypageController {
         @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
         MyPagePageDTO myPagePageDTO
     ) {
-        log.info("GET : MypageController/getBoardList - tokenUserInfo : {}", tokenUserInfo);
+//        log.info("GET : MypageController/getBoardList - tokenUserInfo : {}", tokenUserInfo);
 
         MypageBoardPageResponseDTO boardList = myPageService.getBoardList(tokenUserInfo, myPagePageDTO);
 
@@ -47,11 +47,9 @@ public class MypageController {
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
             MyPagePageDTO myPagePageDTO
     ){
-        log.info("chattttttttttt {}", tokenUserInfo);
-        // {?page=1&size=3}
-        MypageChatPageResponseDTO chatRoomList = myPageService.getChatList(tokenUserInfo, myPagePageDTO);
+//        log.info("chat {}", tokenUserInfo);
 
-        log.info("chatRoomList!!!!! {}", chatRoomList);
+        MypageChatPageResponseDTO chatRoomList = myPageService.getChatList(tokenUserInfo, myPagePageDTO);
 
         return ResponseEntity.ok().body(chatRoomList);
     }
@@ -64,12 +62,9 @@ public class MypageController {
             , @RequestPart(value = "profileImage", required = false) MultipartFile profileImg
             ,BindingResult result
     ) throws IOException {
-
-
-
-        log.info("수정요청 발생");
-        log.info("modify: {}",dto);
-        log.info("inputImg : {}",profileImg);
+//        log.info("수정요청 발생");
+//        log.info("modify: {}",dto);
+//        log.info("inputImg : {}",profileImg);
 
         if (result.hasErrors()) {
             log.warn(result.toString());
@@ -82,7 +77,6 @@ public class MypageController {
             uploadFilePath = myPageService.uploadProfileImage(profileImg);
         }
 
-
         myPageService.myPageModify(dto, tokenUserInfo,uploadFilePath);
 
         return ResponseEntity.ok().body("회원정보 수정완료!");
@@ -93,14 +87,13 @@ public class MypageController {
     public ResponseEntity<?> loads3(
             @AuthenticationPrincipal TokenUserInfo userInfo
     ) {
-        log.info("/api/auth/load-s3 GET - user: {}", userInfo);
+//        log.info("/api/auth/load-s3 GET - user: {}", userInfo);
         try {
             String profilePath = myPageService.getProfilePath(Long.valueOf(userInfo.getUserIdx()));
             return ResponseEntity.ok().body(profilePath);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
-
         }
     }
 
@@ -113,7 +106,7 @@ public class MypageController {
     public ResponseEntity<?> afterModify(
             @AuthenticationPrincipal TokenUserInfo tokenUserInfo
     ) {
-        log.info("MypageController - /mypage/after-modify, token : {}, userProfile : {}", tokenUserInfo);
+//        log.info("MypageController - /mypage/after-modify, token : {}, userProfile : {}", tokenUserInfo);
 
         MypageAfterModifyResponseDTO afterModifyUserInfo
                 = myPageService.mypageAfterModify(tokenUserInfo);
@@ -126,15 +119,15 @@ public class MypageController {
         @AuthenticationPrincipal TokenUserInfo tokenUserInfo,
         MyPagePageDTO myPagePageDTO
     ) {
-        log.info("/api/ddamddam/page={}$size={}", myPagePageDTO.getPage(), myPagePageDTO.getSize());
+//        log.info("/api/ddamddam/page={}$size={}", myPagePageDTO.getPage(), myPagePageDTO.getSize());
 
         Long userIdx = Long.valueOf(tokenUserInfo.getUserIdx());
 
-        log.info("mypage - userIdx {} ", userIdx);
+//        log.info("mypage - userIdx {} ", userIdx);
 
         MypageProjectPageResponseDTO arrayProjectList = myPageService.getArrayProjectList(userIdx, myPagePageDTO);
 
-        System.out.println("myProjectList = " + arrayProjectList);
+//        System.out.println("myProjectList = " + arrayProjectList);
 
         return ResponseEntity.ok().body(arrayProjectList);
     }

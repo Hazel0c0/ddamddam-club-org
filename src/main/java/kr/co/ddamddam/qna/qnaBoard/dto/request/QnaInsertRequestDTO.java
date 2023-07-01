@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * QNA 게시글 작성 요청 DTO
+ * QNA 게시글 작성, 수정 요청 DTO
  */
 @Getter
 @ToString

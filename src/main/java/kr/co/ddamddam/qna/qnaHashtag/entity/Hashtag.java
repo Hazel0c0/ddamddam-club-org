@@ -23,7 +23,7 @@ public class Hashtag {
     @Column(name = "hashtag_idx")
     private Long hashtagIdx; // 식별번호
 
-    @Column(name = "hashtag_content", length = 10)
+    @Column(name = "hashtag_content", length = 15)
     private String hashtagContent; // 해시태그 내용
 
     @ManyToOne(fetch = FetchType.LAZY)
