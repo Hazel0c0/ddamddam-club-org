@@ -648,7 +648,10 @@ const birthHandler = (event) => {
                     {/*<input type={"text"} className={'career'} name={'userCareer'} defaultValue={''} id={'userCareer'}*/}
                     {/*       placeholder={'경력 (ex.1년 이상)'} onChange={careerHandler}/>*/}
 
-
+                    {
+                        presentationScreen &&
+                      <div className={'presentation-birth'}>생년월일을 선택하세요</div>
+                    }
                     <input type={"date"} className={'birth'} id={'userBirth'} name={'userBirth'}
                            placeholder={'생년월일 8자리 (ex.19960214)'} onChange={birthHandler}/>
 
