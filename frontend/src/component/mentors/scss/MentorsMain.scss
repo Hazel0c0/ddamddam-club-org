@@ -124,7 +124,52 @@
     margin-top: 5px;
     font-size: 14px;
   }
-
-
 }
 
+
+
+
+
+
+
+@media (max-width: 414px) {
+
+  .mentors-top-wrapper{
+    padding: 80px 50px 0;
+  }
+  .mentors-top-wrapper .mentors-medium-wrapper {
+    flex-direction: column;
+  }
+
+  .mentors-top-wrapper .mentors-medium-wrapper .mentors-write-btn{
+    padding: 3px 5px;
+    font-size: 5px;
+    margin: 20px auto 0;
+  }
+  .mentors-top-wrapper .mentors-medium-wrapper .mentors-sort-list {
+    padding: 4.5px 6.5px;
+    margin-top: 12px;
+  }
+  .mentors-top-wrapper .mentors-medium-wrapper .mentors-sort-list .sort-front,
+  .mentors-top-wrapper .mentors-medium-wrapper .mentors-sort-list .sort-back,
+  .mentors-top-wrapper .mentors-medium-wrapper .mentors-sort-list .sort-employee,
+  .mentors-top-wrapper .mentors-medium-wrapper .mentors-sort-list .sort-etc,
+  .mentors-top-wrapper .mentors-medium-wrapper .mentors-sort-list .selected{
+    text-align: center;
+    width: 58px;
+    height: 15px;
+    font-size: 3px;
+  }
+  .mentors-top-wrapper .mentors-medium-wrapper .mentors-sort-list .sort-title{
+    font-size: 5.5px;
+  }
+
+  .mentors-top-wrapper .main-title{
+    font-size: 25px;
+  }
+  .mentors-top-wrapper .sub-title{
+    margin-top: 3px;
+    font-size: 8px;
+  }
+
+}

@@ -329,7 +329,9 @@ const MentorsChat = () => {
 
 // 입력한 메세지 담기
   const onText = event => {
-    // console.log(event.target.value);
+    // if (event.target.value === ''){
+    //   return; 
+    // }
     setMsg(event.target.value);
   }
 
@@ -395,11 +397,11 @@ const MentorsChat = () => {
       } else {
         alert('WebSocket 연결이 열려 있지 않습니다.');
       }
-
       setMsg('');
     } else {
       alert('메시지를 입력해주세요.');
-      document.getElementById('msg').focus();
+      document.querySelector('.text-input').focus();
+      return;
     }
   };
 
@@ -530,17 +532,16 @@ const MentorsChat = () => {
                           value={msg} onChange={onText}
                           onKeyDown={(ev) => {
                             if (ev.keyCode === 13) {
+                              ev.preventDefault(); 
                               send();
                             }
                           }}
                           placeholder={'대화를 입력해 멘토님과 이야기를 나눠보세요!'}>
                 </textarea>
 
-
           <button className={'send-btn'} onClick={send}>
             SEND
           </button>
-          {/* </div> */}
 
         </section>
       </div>

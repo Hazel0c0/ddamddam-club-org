@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {Link, useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import Common from "../common/Common";
 import Modal from 'react-bootstrap/Modal';
@@ -7,9 +8,8 @@ import './scss/MentorsList.scss';
 import {MENTOR, CHAT} from "../common/config/HostConfig";
 import less from "../../src_assets/less.png";
 import than from "../../src_assets/than.png";
-import {Link} from "react-router-dom";
 import {MdEmojiPeople} from "react-icons/md";
-import {getToken, getUserIdx} from '../common/util/login-util';
+import {getToken, getUserIdx, isLogin} from '../common/util/login-util';
 import {debounce} from "lodash";
 import {httpStateCatcher, httpStateCatcherDelete} from "../common/util/HttpStateCatcherWrite";
 import profileImg from "../../src_assets/ProfileLogo.png"
@@ -21,6 +21,7 @@ const MentorsList = ({selectedSubjects}) => {
   const [pageNation, setPageNation] = useState([]);
   const [prevBtn, setPrevBtn] = useState(false);
   const [nextBtn, setNextBtn] = useState(false);
+  const redirection = useNavigate();
 
   //로그인 판별
   const [checkLogin, setCheckLogin] = useState(false);
@@ -98,6 +99,13 @@ const MentorsList = ({selectedSubjects}) => {
   };
 
   const handleShow = (e) => {
+    
+    if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null){
+      alert('로그인 후 이용가능합니다.')
+      e.preventDefault();
+      redirection('/login');
+      return;
+    }
     setShow(true)
     const detailIdx = e.target.closest('.mentors-list').querySelector('.member-idx').value;
 
@@ -140,9 +148,7 @@ const MentorsList = ({selectedSubjects}) => {
     })
       .then(res => res.json())
       .then(result => {
-        alert('채팅방 입장! 멘토와 즐거운 채팅~');
-        // console.log('방 생성');
-        // console.log(`setRoomId의 값 : ${result.roomId}`);
+        // alert('채팅방 입장! 멘토와 즐거운 채팅~');
         window.location.href = `/mentors/detail/chat/${chatPageIdx}/${result.roomId}`;
 
       })

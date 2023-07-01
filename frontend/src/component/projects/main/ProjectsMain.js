@@ -12,14 +12,15 @@ import {useMediaQuery} from "react-responsive";
 
 const ProjectsMain = ({keyword}) => {
 
-  // 토큰
-  const ACCESS_TOKEN = getToken();
-  const headerInfo = {
-    'content-type': 'application/json',
-    'Authorization': 'Bearer ' + ACCESS_TOKEN
-  }
-  const navigate = useNavigate();
-  const childRef = useRef(null);
+    // 토큰
+    const ACCESS_TOKEN = getToken();
+    const headerInfo = {
+        'content-type': 'application/json',
+        'Authorization': 'Bearer ' + ACCESS_TOKEN
+    }
+    const navigate = useNavigate();
+
+    const childRef = useRef(null);
 
   const [isLike, setIsLike] = useState(false);
   const [showPopularProjects, setShowPopularProjects] = useState(true);
@@ -52,12 +53,13 @@ const ProjectsMain = ({keyword}) => {
   const handleShowDetails = (projectIdx) => {
     console.log('게시판 번호: ', projectIdx);
 
-    if (isLogin()) {
-      navigate(`/projects/detail?projectIdx=${projectIdx}`);
-    } else {
-      alert('로그인 후에 이용할 수 있습니다.');
-    }
-  };
+        if (isLogin()) {
+            navigate(`/projects/detail?projectIdx=${projectIdx}`);
+        } else {
+            alert('로그인 후에 이용할 수 있습니다.');
+            navigate('/login');
+        }
+    };
 
 
   useEffect(() => {
@@ -66,13 +68,14 @@ const ProjectsMain = ({keyword}) => {
 
   console.log(`is login ? ${isLogin()}`);
 
-  const handleWriteClick = () => {
-    if (isLogin()) {
-      navigate('/projects/write');
-    } else {
-      alert('로그인이 필요합니다.');
-    }
-  };
+    const handleWriteClick = () => {
+        if (isLogin()) {
+            navigate('/projects/write');
+        } else {
+            alert('로그인이 필요합니다.');
+            navigate('/login');
+        }
+    };
 
   const presentationScreen = useMediaQuery({
     query: "(max-width: 414px)",

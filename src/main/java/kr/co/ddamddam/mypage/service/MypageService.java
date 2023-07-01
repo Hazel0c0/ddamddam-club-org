@@ -350,7 +350,9 @@ public class MypageService {
                 user.setUserBirth(dto.getUserBirth());
                 user.setUserCareer(dto.getUserCareer());
                 user.setUserPosition(UserPosition.valueOf(dto.getUserPosition()));
-                user.setUserProfile(uploadedFilePath);
+                if (uploadedFilePath != null){
+                    user.setUserProfile(uploadedFilePath);
+                }
 
                 userRepository.save(user);
 //        }
