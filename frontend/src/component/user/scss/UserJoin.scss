@@ -376,3 +376,32 @@
     height: 900px;
   }
 }
+
+
+
+@media (max-width: 414px) {
+
+  .join-wrapper {
+
+    height: 1100px;
+
+    .form-wrapper {
+      top: 50px;
+      width: 100%;
+      height: fit-content;
+      box-shadow: none;
+
+      // 중복확인 버튼
+      .check-btn {
+        padding: 0;
+        height: 45px;
+        font-size: 12px;
+      }
+
+      .signup-img-label {
+        margin: 10px 0;
+      }
+
+    }
+  }
+}
