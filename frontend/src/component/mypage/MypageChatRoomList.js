@@ -89,7 +89,7 @@ const MypageChatRoom = props => {
       ) : null}
 
       {pageNation.prev &&
-        <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
+        <img src={less} alt={"less-icon"} className={'mypage-less-icon'} onClick={handlePrevious}/>
       }
       <div className={'chat-wrapper'}>
         {chatRoomList.map((chatRoom, index) => (
@@ -110,7 +110,7 @@ const MypageChatRoom = props => {
         ))}
       </div>
       {pageNation.next &&
-        <img src={than} alt={"than-icon"} className={'than-icon'} onClick={handleNext}/>
+        <img src={than} alt={"than-icon"} className={'mypage-than-icon'} onClick={handleNext}/>
       }
 
     </div>
