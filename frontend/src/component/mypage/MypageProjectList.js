@@ -89,15 +89,17 @@ const MypageProjectList = props => {
       })
           .then((response) => {
             if (!response.ok) {
-              throw new Error('Request failed');
+              throw new Error('삭제에 실패하였습니다. 잠시 후에 다시 시도해주세요.');
             }
             return response.json();
           })
           .then((data) => {
-            alert(data.payload)
+            alert(data.payload);
+            asyncProjectList();
           })
           .catch((error) => {
-            console.log(error)
+            console.log(error);
+            alert(error);
           });
     }
   };

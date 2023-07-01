@@ -79,7 +79,7 @@ const ReviewDetail = () => {
                 <section className={'info-detail-container'}>
                     <div className={'info-wrapper'}>
                         {enterUserIdx === String(detailReview.userIdx) &&
-                          <div className={'category'}>
+                          <div className={'category btn-wrapper'}>
                               <Link to={`/reviews/modify/${reviewIdx}`} className={'modify-btn'}>수정</Link>
                               <span className={'delete-btn'} onClick={deleteHandler}>삭제</span>
                           </div>
