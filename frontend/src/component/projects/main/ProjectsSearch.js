@@ -6,6 +6,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {PROJECT} from "../../common/config/HostConfig";
 import {isLogin} from "../../common/util/login-util";
 import ProjectsQuickMatching from "../ProjectsQuickMatching";
+import {useMediaQuery} from "react-responsive";
 
 const ProjectsSearch = () => {
   const [searchText, setSearchText] = useState([]);
@@ -42,7 +43,9 @@ const ProjectsSearch = () => {
         });
 
   }
-
+  const presentationScreen = useMediaQuery({
+    query: "(max-width: 414px)",
+  });
 
   return (
       <Common className={'project-search-wrapper'}>
@@ -56,6 +59,7 @@ const ProjectsSearch = () => {
           ></input>
         </div>
 
+        {!presentationScreen &&
         <div>
           <div className={'search-btn'}
                onClick={handleSearchClick}
@@ -63,6 +67,7 @@ const ProjectsSearch = () => {
           >search
           </div>
         </div>
+        }
 
         {isLogin() &&
             <ProjectsQuickMatching />

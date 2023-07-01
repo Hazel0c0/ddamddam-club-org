@@ -68,7 +68,7 @@
       margin: 0 20px;
       text-align: center;
 
-      .deadline{
+      .deadline {
         font-size: 25px;
         margin: 15px 15px 25px;
         display: flex;
@@ -78,28 +78,28 @@
         font-family: sans-serif;
         font-weight: lighter;
 
-          .timer {
-            font-size: 30px;
-            font-weight: 100;
-            color: white;
-            padding: 10px;
-            width: 200px;
-            background: #34314c;
-            border-radius: 10px;
-            border: 2px solid #34314c;
-            margin: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        .timer {
+          font-size: 30px;
+          font-weight: 100;
+          color: white;
+          padding: 10px;
+          width: 200px;
+          background: #34314c;
+          border-radius: 10px;
+          border: 2px solid #34314c;
+          margin: 10px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
 
-            span {
-              color: #ffffff;
-              font-size: 15px;
-              font-weight: 400;
-              margin-top: 5px;
-            }
+          span {
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 400;
+            margin-top: 5px;
           }
+        }
 
       }
 
@@ -197,8 +197,8 @@
   align-items: center;
   text-align: center;
   line-height: 22px;
-  background-color: rgb(61, 117, 199);
-  border-color: rgb(61, 117, 199);
+  background-color: #446dfe;
+  border-color: #446dfe;
   animation: blinking 1.5s infinite;
   padding: 7px 20px;
   border-radius: 5px;
@@ -222,9 +222,47 @@
 }
 
 @media (max-width: 1024px) {
-  .quick-btn{
+  .quick-btn {
     font-size: 17px;
     left: 20px;
     padding: 5px 15px;
   }
+}
+
+@media (max-width: 414px) {
+  .modal-box .modal-container {
+    width: 340px;
+  }
+  .modal-box .modal-container .modal-header .modal-title {
+    font-size: 25px;
+    padding: 5px;
+  }
+  .modal-box .modal-container .modal-body .deadline{
+    width: fit-content;
+    margin:10px  auto  20px;
+  }
+  .modal-box .modal-container .modal-body .deadline .timer {
+    font-size: 20px;
+    width: fit-content;
+    margin: 5px;
+    display: inline;
+    padding:10px 10px;
+  }
+  .modal-box .modal-container .modal-body .applicant-box .position-img {
+    height: 70px;
+  }
+
+  .modal-box .modal-container .modal-footer .footer-left .detail-btn ,
+  .modal-box .modal-container .modal-footer .footer-right .btn{
+    height: fit-content;
+    padding: 5px;
+  }
+  .quick-btn {
+    animation: none;
+    left: -100px;
+    font-weight: 600;
+    top: 22px;
+    padding: 11px 13px
+  }
+
 }
