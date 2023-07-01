@@ -232,7 +232,7 @@
     padding: 130px 30px 30px;
 
     .main-text-wrapper {
-      padding: 0;
+      padding: 20px 0 0;
       margin: 20px 0 0;
       width: 100%;
 
@@ -263,7 +263,14 @@
         .sub-title {
           width: 70px;
         }
+      }
 
+      .main-content {
+        height: fit-content;
+        max-height: none;
+        margin-bottom: 40px;
+        font-size: 14px;
+        line-height: 200%;
       }
 
     }

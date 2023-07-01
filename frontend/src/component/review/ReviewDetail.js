@@ -7,6 +7,7 @@ import {getToken, getUserIdx} from "../common/util/login-util";
 import ReviewStar from "./StartRating/ReviewStar";
 import back from "../../src_assets/back.png";
 import {httpStateCatcherDelete, httpStateCatcherWrite} from "../common/util/HttpStateCatcherWrite";
+import {useMediaQuery} from "react-responsive";
 
 const ReviewDetail = () => {
     const redirection = useNavigate();
@@ -19,6 +20,10 @@ const ReviewDetail = () => {
         'content-type': 'application/json',
         'Authorization': 'Bearer ' + ACCESS_TOKEN
     };
+
+    const presentationScreen = useMediaQuery({
+        query: "(max-width: 414px)",
+    });
 
     const asyncDetail = async () => {
         // console.log(reviewIdx);
@@ -66,10 +71,13 @@ const ReviewDetail = () => {
             <div className={'title-wrapper'}>
                 <p className={'main-title'}>취업후기</p>
                 <p className={'main-sub-title'}>근무했던 기업에 대한 정보를 공유해보세요.</p>
-                <Link to={'/reviews'} className={'back-btn'}>
-                    <img src={back} alt={'back-icon'} className={'back-icon'}/>
-                    {/*<span className={'back-text'}>Back</span>*/}
-                </Link>
+                {presentationScreen
+                  ? null
+                  : <Link to={'/reviews'} className={'back-btn'}>
+                        <img src={back} alt={'back-icon'} className={'back-icon'}/>
+                        {/*<span className={'back-text'}>Back</span>*/}
+                    </Link>
+                }
             </div>
 
             <section className={'main-text-wrapper'}>
