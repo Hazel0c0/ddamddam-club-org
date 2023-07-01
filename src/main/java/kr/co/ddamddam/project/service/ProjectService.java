@@ -59,7 +59,7 @@ public class ProjectService {
     private Pageable getPageable(ProjectPageDTO dto, ProjectSearchRequestDto searchDto) {
 
         if (searchDto.isLike()) {
-            log.info("is like pageable !!");
+            log.info("is like pageable !! {}",searchDto.isLike());
             return PageRequest.of(
                 dto.getPage() - 1,
                 dto.getSize(),
@@ -67,10 +67,10 @@ public class ProjectService {
             );
             // 퀵 매칭 (포지션) 정렬
         } else if (StringUtils.isNotEmpty(searchDto.getPosition())) {
-            log.info("position pageable !!");
+            log.info("position pageable !! getSize : {}",dto.getSize());
             return PageRequest.of(
                 dto.getPage() - 1,
-                1
+                dto.getSize()
             );
         }
         // 최신순 정렬 : 기본값
@@ -110,7 +110,7 @@ public class ProjectService {
 
     private Page<Project> quickSearch(Pageable pageable, ProjectSearchRequestDto searchDto, Long userIdx) {
 
-        // 포지션별 조회 : 포지션별 남은자리 적은 순 정렬
+        // 포지션별 조회
         if ("FRONTEND".equals(searchDto.getPosition())) {
             log.info("position FRONTEND search !!");
             return projectRepository.frontQuickSort(userIdx, pageable);
@@ -222,7 +222,8 @@ public class ProjectService {
         Page<Project> projectPage = null;
         try {
             projectPage = quickSearch(pageable, searchDto, userIdx);
-            log.info("ProjectService/quickMatching/projectPage {}", projectPage);
+            log.info("/quickMatching/projectPage {}", projectPage);
+            log.info("/quickMatching/userIdx {}", userIdx);
         } catch (Exception e) {
             log.error("quickMatching error !! : {}", e.getMessage());
         }
