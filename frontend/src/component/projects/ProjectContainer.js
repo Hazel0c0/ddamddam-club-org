@@ -7,6 +7,7 @@ import logo from '../../src_assets/logo.png';
 
 import ProjectsImage from './ProjectsImage';
 import {PROJECT} from '../common/config/HostConfig';
+import {da} from "date-fns/locale";
 
 const ProjectContainer
     = ({
@@ -23,6 +24,7 @@ const ProjectContainer
           const writeDate = new Date(p.projectDate);
           const timeDiff = Math.abs(currentDate - writeDate);
           const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+          console.log(`new box : ${daysDiff}`)
 
           return (
               <section

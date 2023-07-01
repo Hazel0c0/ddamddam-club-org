@@ -5,7 +5,7 @@ import {PROJECT} from "../common/config/HostConfig";
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import './scss/ProjectDetail.scss';
 import {getToken, getUserIdx, getUserNickname} from "../common/util/login-util";
-import { format } from 'date-fns';
+import {format} from 'date-fns';
 
 const ProjectsDetail = () => {
   const ACCESS_TOKEN = getToken();
@@ -19,10 +19,10 @@ const ProjectsDetail = () => {
   const searchParams = new URLSearchParams(location.search);
   const projectIdx = searchParams.get('projectIdx');
   const [projectDetail, setProjectDetail] = useState([]);
-  const [fileUrl, setFileUrl] = useState(''); // 새로운 상태 추가
-  const [applyButtonColor, setApplyButtonColor] = useState(''); // New state variable
-  const [offerPeriodFormatted, setOfferPeriodFormatted] = useState(''); // 새로운 상태 추가
-
+  const [fileUrl, setFileUrl] = useState('');
+  const [applyButtonColor, setApplyButtonColor] = useState('');
+  const [offerPeriodFormatted, setOfferPeriodFormatted] = useState('');
+  const [writeDateFormatted, setWriteDateFormatted] = useState('')
   const handleLikeClick = (projectId) => {
     // 서버에 좋아요 처리를 위한 POST 요청을 보냅니다
     fetch(PROJECT + `/like/${projectId}`, {
@@ -58,9 +58,14 @@ const ProjectsDetail = () => {
           setProjectDetail([data.payload]);
           console.log("프로젝트 디테일 dto")
           console.log(` 마감 일자 형식 변경 ${data.payload.offerPeriod}`);
-          const offer=data.payload.offerPeriod;
-          const offerPeriodFormatted = format(new Date(offer), 'yyyy년 MM월 dd일 HH시 mm분');
+
+          // date 형식 변환
+          const offer = data.payload.offerPeriod;
+          const offerPeriodFormatted = format(new Date(offer), 'yy년 MM월 dd일 HH:mm');
           setOfferPeriodFormatted(offerPeriodFormatted);
+
+          const writeDateFormatted = format(new Date(data.payload.projectDate), 'yy년 MM월 dd일 HH:mm');
+          setWriteDateFormatted(writeDateFormatted);
 
           // 내 게시글 신청하기 버튼 색상 변경
           const b_writer = data.payload.boardWriter;
@@ -68,7 +73,7 @@ const ProjectsDetail = () => {
           console.log(`내 게시글인가용 ? ${b_writer} = ${userNickname}`);
 
           const isOwner = b_writer === userNickname;
-          setApplyButtonColor(isOwner ? 'gray' : ''); // Set the button color based on ownership
+          setApplyButtonColor(isOwner ? 'gray' : '');
         })
         .catch(error => {
           console.error(error);
@@ -150,6 +155,7 @@ const ProjectsDetail = () => {
   };
 
   return (
+
       <>
         <ProjectsTitle/>
         <Common className={'project-detail-wrapper'}>
@@ -160,7 +166,8 @@ const ProjectsDetail = () => {
 
                     <div className={'project-date'}>
                       <span className={'p-sub-title'}>작성일자</span>
-                      <span className={'sub-content'}>{de.projectDate}</span>
+                      <span className={'sub-content'}>{writeDateFormatted}</span>
+
                     </div>
 
                     <div className={'project-title'}>{de.boardTitle}</div>
@@ -212,7 +219,6 @@ const ProjectsDetail = () => {
                           <span className={'p-sub-title'}>모집 마감 일자</span>
                           {/*<span className={'sub-content'}>{de.offerPeriod}</span>*/}
                           <span className={'sub-content'}>{offerPeriodFormatted}</span>
-
                         </div>
                       </div>
                     </section>
