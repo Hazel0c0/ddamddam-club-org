@@ -1,5 +1,6 @@
 package kr.co.ddamddam.review.api;
 
+import kr.co.ddamddam.common.response.ApplicationResponse;
 import kr.co.ddamddam.config.security.TokenUserInfo;
 import kr.co.ddamddam.review.dto.page.PageDTO;
 import kr.co.ddamddam.review.dto.request.ReviewModifyRequestDTO;
@@ -13,10 +14,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static kr.co.ddamddam.common.exception.custom.ErrorCode.INVALID_PARAMETER;
 
 @RestController
 @Slf4j
@@ -110,10 +114,15 @@ public class ReviewApiController {
     @PostMapping("/write")
     public  ResponseEntity<?> write(
             @Validated @RequestBody ReviewWriteRequestDTO dto
-            ,@AuthenticationPrincipal TokenUserInfo tokenUserInfo
+            ,@AuthenticationPrincipal TokenUserInfo tokenUserInfo,
+            BindingResult bindResult
     ) throws ReviewNotFoundException {
         log.info("POST : /reviews/write - 게시글 생성 {}", dto);
 //        Long userIdx = 1L;
+        if (bindResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(INVALID_PARAMETER);
+        }
+
         ReviewDetailResponseDTO responseDTO = reviewService.write(dto,tokenUserInfo);
         return ResponseEntity.ok().body(responseDTO);
     }
@@ -122,9 +131,14 @@ public class ReviewApiController {
     @RequestMapping(value = "/modify",method = {RequestMethod.PUT,RequestMethod.PATCH})
     public ResponseEntity<?> modify(
             @Validated @RequestBody ReviewModifyRequestDTO dto
-            ,@AuthenticationPrincipal TokenUserInfo tokenUserInfo
+            ,@AuthenticationPrincipal TokenUserInfo tokenUserInfo,
+            BindingResult bindResult
     ){
         log.info("/api/ddamddam/reviews PUT!! - payload {}",dto);
+
+        if (bindResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(INVALID_PARAMETER);
+        }
 
         try {
             ReviewDetailResponseDTO responseDTO = reviewService.modify(dto,tokenUserInfo);

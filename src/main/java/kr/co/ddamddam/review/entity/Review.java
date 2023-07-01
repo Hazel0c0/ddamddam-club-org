@@ -27,7 +27,7 @@ public class Review {
      @Column(name = "review_idx")
     private Long reviewIdx;
 
-    @Column(name = "review_title",nullable = false, length = 300)
+    @Column(name = "review_title",nullable = false, length = 100)
     private String reviewTitle;
 
     @Column(name = "review_company",nullable = false, length = 50)
@@ -36,7 +36,7 @@ public class Review {
     @Column(name = "review_Location",nullable = false, length = 50)
     private String reviewLocation;
 
-    @Column(name ="review_content", nullable = false , length = 3000)
+    @Column(name ="review_content", nullable = false , length = 1000)
     private String reviewContent;
 
     @Column(name ="review_rating", nullable = false, columnDefinition = "FLOAT(4,2)")
