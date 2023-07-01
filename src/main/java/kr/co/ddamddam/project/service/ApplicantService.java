@@ -109,7 +109,6 @@ public class ApplicantService {
         return foundUser;
     }
 
-    // TODO : 취소 처리 전에 로그인 유저가 해당 프로젝트에 신청이 되어있는 상태인지 검사하는 로직이 필요합니다. - 예원
     public void cancel(TokenUserInfo tokenUserInfo, Long projectIdx) {
         validateToken.validateToken(tokenUserInfo);
 

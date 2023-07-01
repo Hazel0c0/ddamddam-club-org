@@ -15,7 +15,6 @@ import kr.co.ddamddam.mypage.dto.page.MyPagePageDTO;
 import kr.co.ddamddam.mypage.dto.page.PageMaker;
 import kr.co.ddamddam.mypage.dto.request.MypageModifyRequestDTO;
 import kr.co.ddamddam.mypage.dto.response.*;
-//import kr.co.ddamddam.project.dto.page.PageResponseDTO; // TODO : 페이징 통일해야합니다...ㅋㅋ
 import kr.co.ddamddam.project.entity.Project;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfBack;
 import kr.co.ddamddam.project.entity.applicant.ApplicantOfFront;
@@ -359,23 +358,6 @@ public class MypageService {
 
     }
 
-// TODO : 사용안하는지 확인하고 지우기
-
-    /**
-     * 프로젝트 목록 조회 조회
-     *
-     * @param userIdx : 로그인한 회원 idx
-     * @return : 내가 만든 프로젝트 게시판 목록
-     */
-    public List<MypageProjectResponseDTO> getProjectList(Long userIdx) {
-
-        // 내가 작성한 프로젝트 모든 게시글 찾기
-        List<Project> myProjects = projectRepository.findByUserUserIdx(userIdx);
-        System.out.println("mypage - foundProject = " + myProjects);
-
-        return toDtoList(myProjects);
-    }
-
     /**
      * @return : 내가 신청한 프로젝트 목록 조회
      */
@@ -385,7 +367,7 @@ public class MypageService {
         // 로그인한 유저 객체 가져오기
         User user = userUtil.getUser(userIdx);
         UserPosition userPosition = user.getUserPosition();
-        log.info("user : {}  , 포지션 : {} !!", user, userPosition);
+//        log.info("user : {}  , 포지션 : {} !!", user, userPosition);
 
         List<Project> arrayProjects = new ArrayList<>();
         MypageProjectPageResponseDTO pageResponseDTO;
@@ -441,9 +423,9 @@ public class MypageService {
                 // 게시글 작성자의 포지션 가져오기
                 UserPosition writerPosition = project.getUser().getUserPosition();
                 MypageProjectResponseDTO dto = new MypageProjectResponseDTO(project, writerPosition);
-                log.info("setFront !!");
+//                log.info("setFront !!");
                 dto.setFront(project);
-                log.info("setBack !!");
+//                log.info("setBack !!");
                 dto.setBack(project);
                 return dto;
             })
@@ -453,7 +435,7 @@ public class MypageService {
 
     public MypageAfterModifyResponseDTO mypageAfterModify(TokenUserInfo tokenUserInfo) {
 
-        log.info("MypageService - mypageAfterModify, token : {}", tokenUserInfo);
+//        log.info("MypageService - mypageAfterModify, token : {}", tokenUserInfo);
 
         User user = validateToken.validateToken(tokenUserInfo);
 

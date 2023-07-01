@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
-// TODO : 회원가입 요청 DTO
 @Setter
 @Getter
 @ToString

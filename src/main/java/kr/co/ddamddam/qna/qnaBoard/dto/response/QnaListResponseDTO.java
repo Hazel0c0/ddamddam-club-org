@@ -21,7 +21,6 @@ import static kr.co.ddamddam.common.common.TruncateString.*;
 @Builder
 public class QnaListResponseDTO {
 
-    // TODO : Validated 처리
     private Long boardIdx; // 식별번호
     private String boardTitle;
     private String boardContent;

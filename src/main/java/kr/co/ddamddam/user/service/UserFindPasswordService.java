@@ -74,7 +74,6 @@ public class UserFindPasswordService {
             // 메일 발송
             emailSender.send(emailForm);
         } catch (MessagingException | UnsupportedEncodingException e) {
-            e.printStackTrace(); // TODO : 테스트 후 삭제
             throw new MessageException(MESSAGE_SEND_ERROR, userEmail);
         }
     }
