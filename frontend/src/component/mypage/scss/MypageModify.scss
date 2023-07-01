@@ -221,3 +221,62 @@
     top: 30%;
     transform: translateY(-50%);
   }
+
+@media (max-width: 414px){
+  .modify-wrapper .form-wrapper {
+    padding: 10px;
+    width: 350px;
+    height: 400px;
+  }
+  .modify-wrapper .top-wrapper{
+    padding: 10px;
+  }
+  .modify-wrapper {
+    padding: 10px;
+  }
+  .modify-wrapper .form-wrapper .profile-img {
+    width: 80px;
+    height: 80px;
+  }
+  .modify-wrapper .form-wrapper .input-detail .input-nickname .nickname-wrapper .nickname{
+    height: 30px;
+    width: 260px;
+    font-size: 13px;
+  }
+  .modify-wrapper .form-wrapper .input-detail .name{
+    height: 30px;
+    font-size: 13px;
+  }
+  .check-btn{
+    height: 30px;
+    width: 60px;
+    font-size: 10px;
+    padding: 5px;
+  }
+  .modify-wrapper .form-wrapper .input-detail .career, .modify-wrapper .form-wrapper .input-detail .birth{
+    height: 30px;
+    font-size: 13px;
+    padding: 5px;
+  }
+  .pw, .email-input, .pw-check, .nickname, .email-select, .name, .career, .birth, .position-select{
+    height: 30px;
+    font-size: 13px;
+    padding: 5px;
+  }
+  .modify-wrapper .form-wrapper .signup-img-label{
+    height: 80px;
+    margin-bottom: 10px;
+  }
+  .modify-wrapper .top-wrapper .main-title{
+    margin: 0px;
+    padding-top: 200px;
+  }
+  .modify-wrapper .submit-btn{
+    font-size: 13px;
+    width: 200px;
+  }
+  .modify-wrapper .background{
+    height: 600px;
+  }
+
+}
