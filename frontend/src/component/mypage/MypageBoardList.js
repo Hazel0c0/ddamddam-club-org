@@ -93,25 +93,37 @@ const MypageBoardList = () => {
               {
                 board.boardType === 'Q&A' &&
                 <Link to={`/qna/${board.boardIdx}`} onClick={loginCheckHandler}>
-                  {subStringContent(board.boardTitle, 40)}
+                  {presentationScreen
+                    ? subStringContent(board.boardTitle, 28)
+                    : subStringContent(board.boardTitle, 40)
+                  }
                 </Link>
               }
               {
                 board.boardType === '멘토/멘티' &&
                 <Link to={`/mentors/detail/chat/${board.boardIdx}/0`} onClick={loginCheckHandler}>
-                  {subStringContent(board.boardTitle, 40)}
+                  {presentationScreen
+                    ? subStringContent(board.boardTitle, 28)
+                    : subStringContent(board.boardTitle, 40)
+                  }
                 </Link>
               }
               {
                 board.boardType === '프로젝트 모집' &&
                 <Link to={`/projects/detail?projectIdx=${board.boardIdx}`} onClick={loginCheckHandler}>
-                  {subStringContent(board.boardTitle, 40)}
+                  {presentationScreen
+                    ? subStringContent(board.boardTitle, 28)
+                    : subStringContent(board.boardTitle, 40)
+                  }
                 </Link>
               }
               {
                 board.boardType === '취업후기' &&
                 <Link to={`/reviews/detail/${board.boardIdx}`} onClick={loginCheckHandler}>
-                  {subStringContent(board.boardTitle, 40)}
+                  {presentationScreen
+                    ? subStringContent(board.boardTitle, 28)
+                    : subStringContent(board.boardTitle, 40)
+                  }
                 </Link>
               }
             </div>
