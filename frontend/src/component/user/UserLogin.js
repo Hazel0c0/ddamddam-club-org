@@ -79,7 +79,7 @@ const UserLogin = () => {
      * 자동로그인 체크 안 한 경우 : 세션스토리지에 저장 (브라우저가 종료되면 사라짐)
      */
     if (isChecked === false) {
-      console.log('자동로그인 안함!!');
+      // console.log('자동로그인 안함!!');
       sessionStorage.setItem('ACCESS_TOKEN', token);
       sessionStorage.setItem('LOGIN_USER_IDX', userIdx);
       sessionStorage.setItem('LOGIN_USER_EMAIL', userEmail);
@@ -97,7 +97,7 @@ const UserLogin = () => {
      * 자동 로그인 체크한 경우 : 로컬스토리지에 저장 (브라우저가 종료되어도 클라이언트에 보관됨)
      */
     if (isChecked === true) {
-    console.log('자동로그인 함!!');
+    // console.log('자동로그인 함!!');
       localStorage.setItem('ACCESS_TOKEN', token);
       localStorage.setItem('LOGIN_USER_IDX', userIdx);
       localStorage.setItem('LOGIN_USER_EMAIL', userEmail);
