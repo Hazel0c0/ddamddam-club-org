@@ -8,7 +8,6 @@ import ProjectContainer from "./ProjectContainer";
 
 const LatestProjects = forwardRef((
     {
-      // url,
       sortTitle,
       handleLikeClick,
       handleShowDetails,

@@ -47,6 +47,7 @@ public class ApplicantApiController {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("자신의 게시글에는 신청을 할 수 없습니다");
         } catch (Exception e) {
+          log.info("e.error msg : {}",e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
