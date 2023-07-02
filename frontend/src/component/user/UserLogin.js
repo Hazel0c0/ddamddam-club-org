@@ -69,7 +69,6 @@ const UserLogin = () => {
       userBirth,
       userPosition,
       userCareer,
-      userPoint,
       userProfile,
       userRole
     } = payload;
@@ -89,7 +88,6 @@ const UserLogin = () => {
       sessionStorage.setItem('LOGIN_USER_BIRTH', userBirth);
       sessionStorage.setItem('LOGIN_USER_POSITION', userPosition);
       sessionStorage.setItem('LOGIN_USER_CAREER', userCareer);
-      sessionStorage.setItem('LOGIN_USER_POINT', userPoint);
       sessionStorage.setItem('LOGIN_USER_PROFILE', userProfile);
       sessionStorage.setItem('LOGIN_USER_ROLE', userRole);
     }
@@ -107,7 +105,6 @@ const UserLogin = () => {
       localStorage.setItem('LOGIN_USER_BIRTH', userBirth);
       localStorage.setItem('LOGIN_USER_POSITION', userPosition);
       localStorage.setItem('LOGIN_USER_CAREER', userCareer);
-      localStorage.setItem('LOGIN_USER_POINT', userPoint);
       localStorage.setItem('LOGIN_USER_PROFILE', userProfile);
       localStorage.setItem('LOGIN_USER_ROLE', userRole);
     }

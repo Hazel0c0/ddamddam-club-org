@@ -27,7 +27,6 @@ export const kakaoLogin = async (navigate, code) => {
     sessionStorage.setItem('LOGIN_USER_BIRTH', result.userBirth);
     sessionStorage.setItem('LOGIN_USER_POSITION', result.userPosition);
     sessionStorage.setItem('LOGIN_USER_CAREER', result.userCareer);
-    sessionStorage.setItem('LOGIN_USER_POINT', result.userPoint);
     sessionStorage.setItem('LOGIN_USER_PROFILE', result.userProfile);
     sessionStorage.setItem('LOGIN_USER_ROLE', result.userRole);
 

@@ -77,14 +77,6 @@ export const getUserCareer = () => {
   return sessionStorage.getItem('LOGIN_USER_CAREER');
 };
 
-// 로그인 유저의 보유 포인트를 반환하는 함수
-export const getUserPoint = () => {
-  if (localStorage.getItem('ACCESS_TOKEN') !== null) {
-    return localStorage.getItem('LOGIN_USER_POINT');
-  }
-  return sessionStorage.getItem('LOGIN_USER_POINT');
-};
-
 // 로그인 유저의 프로필 사진 경로를 반환하는 함수
 export const getUserProfile = () => {
   if (localStorage.getItem('ACCESS_TOKEN') !== null) {

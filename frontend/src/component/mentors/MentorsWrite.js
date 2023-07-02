@@ -4,7 +4,7 @@ import './scss/MentorWrite.scss';
 import {MENTOR} from "../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import { getToken, getUserIdx, getUserEmail, getUserName, getUserNickname, getUserRegdate,
-    getUserBirth, getUserPosition, getUserCareer, getUserPoint, getUserProfile,
+    getUserBirth, getUserPosition, getUserCareer, getUserProfile,
     getUserRole, isLogin } from '../common/util/login-util';
 import {httpStateCatcherWrite} from "../common/util/HttpStateCatcherWrite";
 
