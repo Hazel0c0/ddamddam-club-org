@@ -19,10 +19,11 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
       "WHERE (p.maxBack - SIZE(p.applicantOfBacks)) > 0 " +
       "AND p.projectIdx NOT IN (SELECT a.project.projectIdx FROM ApplicantOfBack a WHERE a.user.userIdx = :userIdx) " +
       "AND p.user.userIdx <> :userIdx " +
-      "ORDER BY (p.maxBack - SIZE(p.applicantOfBacks)) ASC, " +
+      "ORDER BY " +
+      "p.offerPeriod ASC, " +
+      "(p.maxBack - SIZE(p.applicantOfBacks)) ASC, " +
       "SIZE(p.applicantOfFronts) DESC, " +
       "SIZE(p.applicantOfBacks) DESC, " +
-      "p.offerPeriod ASC, " +
       "p.likeCount DESC")
   Page<Project> backQuickMatchingSort(@Param("userIdx") Long userIdx, Pageable pageable);
 
@@ -30,10 +31,11 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
       "WHERE (p.maxFront - SIZE(p.applicantOfFronts)) > 0 " +
       "AND p.projectIdx NOT IN (SELECT a.project.projectIdx FROM ApplicantOfFront a WHERE a.user.userIdx = :userIdx) " +
       "AND p.user.userIdx <> :userIdx " +
-      "ORDER BY (p.maxFront - SIZE(p.applicantOfFronts)) ASC, " +
+      "ORDER BY " +
+      "p.offerPeriod ASC, " +
+      "(p.maxFront - SIZE(p.applicantOfFronts)) ASC, " +
       "SIZE(p.applicantOfBacks) DESC, " +
       "SIZE(p.applicantOfFronts) DESC, " +
-      "p.offerPeriod ASC, " +
       "p.likeCount DESC")
   Page<Project> frontQuickMatchingSort(@Param("userIdx") Long userIdx, Pageable pageable);
 
