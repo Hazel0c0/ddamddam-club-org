@@ -27,7 +27,7 @@ public class ReviewModifyRequestDTO {
     @Size(min = 1, max = 100)
     private String reviewTitle;
 
-    @Size(min = 1, max = 1000)
+    @Size(min = 1, max = 3000)
     private String reviewContent;
 
     @Min(1)

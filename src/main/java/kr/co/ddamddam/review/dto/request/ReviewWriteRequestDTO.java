@@ -25,7 +25,7 @@ public class ReviewWriteRequestDTO {
     private String reviewTitle;
 
     @NotBlank(message = "내용을 입력해주세요.")
-    @Size(min = 1, max = 1000)
+    @Size(min = 1, max = 3000)
     private String reviewContent;
 
     @Min(1)

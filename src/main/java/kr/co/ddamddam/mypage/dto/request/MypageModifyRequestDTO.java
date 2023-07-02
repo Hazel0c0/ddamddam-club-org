@@ -16,7 +16,6 @@ import java.time.LocalDate;
 public class MypageModifyRequestDTO {
 
     private String userNickName;
-
     private String userPosition;
     private int userCareer;
     private String userName;

@@ -20,7 +20,7 @@ public class MentorWriteRequestDTO {
     private String mentorTitle;
 
     @NotBlank
-    @Size(min = 1, max = 1000)
+    @Size(min = 1, max = 3000)
     private String mentorContent;
 
     @NotBlank

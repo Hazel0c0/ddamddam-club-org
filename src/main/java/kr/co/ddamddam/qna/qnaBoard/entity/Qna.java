@@ -30,7 +30,7 @@ public class Qna {
     @Column(name = "qna_title", nullable = false, length = 100)
     private String qnaTitle;
 
-    @Column(name = "qna_content", nullable = false, length = 1000)
+    @Column(name = "qna_content", nullable = false, length = 3000)
     private String qnaContent;
 
     @Column(name = "qna_writer", nullable = false, length = 10)
