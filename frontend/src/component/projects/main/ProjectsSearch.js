@@ -26,7 +26,7 @@ const ProjectsSearch = () => {
   };
 
   const handleSearchClick = () => {
-    fetch(PROJECT + `?keyword=${searchText}`, {
+    fetch(`${PROJECT}?keyword=${searchText}`, {
       method: 'GET'
     })
         .then(res => {

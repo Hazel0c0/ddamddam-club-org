@@ -45,7 +45,7 @@ const ProjectsDetail = () => {
 
     const fetchProjectDetail = () => {
 
-        fetch(PROJECT + `/detail/${projectIdx}`, {
+        fetch(`${PROJECT}/detail/${projectIdx}`, {
             method: 'GET',
             headers: headerInfo
         })
@@ -82,11 +82,9 @@ const ProjectsDetail = () => {
     };
 
 
-    const fileRequestURL = `${PROJECT}/load-s3`;
-
     const fetchFileImage = async () => {
         const res = await fetch(
-            `${fileRequestURL}?projectIdx=${projectIdx}`, {
+            `${PROJECT}/load-s3?projectIdx=${projectIdx}`, {
                 method: 'GET',
             });
         if (res.status === 200) {
@@ -177,16 +175,13 @@ const ProjectsDetail = () => {
                                 {fileUrl && <img
                                     src={fileUrl}
                                     alt="Project Image" className={'project-img'}
-                                    style={{
-                                        height: 350
-                                    }}
                                 />}
                                 <section className={'info-detail-container'}>
                                     <div className={'detail-wrapper'}>
 
                                         {(getUserNickname() === de.boardWriter) && (
                                             <div className={'category'}>
-                                                <Link to={` / projects / modify ? projectIdx =${projectIdx}`}
+                                                <Link to={`/projects/modify?projectIdx=${projectIdx}`}
                                                       className={'modify-btn'}>
                                                     수정
                                                 </Link>

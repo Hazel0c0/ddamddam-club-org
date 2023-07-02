@@ -101,7 +101,7 @@ public class ProjectService {
     // 검색어 조회
     if (searchDto.getKeyword() != null) {
       log.info("KEYWORD search !! : {}", searchDto.getKeyword());
-      return projectRepository.findProjectsBySearchWord(pageable, searchDto.getKeyword());
+      return projectRepository.findProjectsByKeyword(pageable, searchDto.getKeyword());
     }
     // 조건 X
     log.info("search !!");
