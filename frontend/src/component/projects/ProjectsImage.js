@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {CRIENT_HOST, PROJECT} from "../common/config/HostConfig";
+import profileImg from "../../src_assets/ProfileLogo.png";
+
 
 
 const ProjectsImage = ({projectIdx}) => {
@@ -44,11 +46,17 @@ const ProjectsImage = ({projectIdx}) => {
 
   return (
     <div className={'project-img-wrapper'}>
-      <img
+      {fileUrl === '' 
+        ? <img
+        src={profileImg}
+        alt="Project Image"
+        className={'project-img'}/>
+        : <img
         src={fileUrl}
         alt="Project Image"
         className={'project-img'}
-      />
+      />}
+      
     </div>
   );
 };

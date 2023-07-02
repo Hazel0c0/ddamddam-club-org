@@ -46,10 +46,6 @@ const MentorsList = ({selectedSubjects}) => {
 
   const ACCESS_TOKEN = getToken(); // 토큰
 
-  // 핸드폰 버전
-  const presentationScreen = useMediaQuery({
-    query: "(max-width: 414px)",
-  });
 
   // headers
   const headerInfo = {
@@ -215,7 +211,7 @@ const MentorsList = ({selectedSubjects}) => {
              onClick={handleShow}>
           <input type={'hidden'} value={mentor.idx} className={'member-idx'}/>
           <div className={'speech-bubble'} key={mentor.title}>
-            {mentor.title}
+            {subStringContent(mentor.title, 25)}
           </div>
           {
             mentor.profile !== null

@@ -49,12 +49,12 @@ const MentorsModify = () => {
       })
       .then((result) => {
         setDetailMentor(result);
-        // console.log(result);
+        console.log(result);
         setTextInput({
             mentorTitle: result.title,
             mentorContent: result.content,
             mentorSubject: result.subject,
-            mentorMentee: result.metee,
+            mentorMentee: result.mentee,
             mentorCurrent: result.current,
         });
       });
@@ -136,6 +136,7 @@ const MentorsModify = () => {
                         <h1 className={'sub-title'}>주제</h1>
                         <select className="subject-select"
                                 onChange={handleSelect}
+                                key={textInput.mentorSubject}
                                 defaultValue={textInput.mentorSubject}
                                 name="mentorSubject"
                         >
@@ -150,6 +151,7 @@ const MentorsModify = () => {
                         <h1 className={'sub-title'}>모집인원</h1>
                         <select className="mentee-text-input"
                                 onChange={handleSelect}
+                                key={textInput.mentorMentee}
                                 defaultValue={textInput.mentorMentee}
                                 name="mentorMentee"
                         >

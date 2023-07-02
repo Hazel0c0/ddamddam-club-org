@@ -17,7 +17,7 @@ public class ChatMessageRequestDTO {
     @NotBlank
     private Long roomId;
     @NotBlank
-    @Size(min= 1, max = 300)
+    @Size(min= 1, max = 2000)
     private String message;
     @NotBlank
     private Long senderId;
