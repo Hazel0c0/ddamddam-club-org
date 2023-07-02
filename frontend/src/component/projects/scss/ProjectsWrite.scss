@@ -167,8 +167,8 @@
     height: 180px;
   }
   .thumbnail-box img {
-    width: 80px;
-    height: 80px;
+    width: 100%;
+    height: 100%;
   }
   .main-title {
     font-size: 24px;
@@ -236,10 +236,10 @@
     font-size: 13px;
     margin-bottom: 5px;
   }
-  .project-write-wrapper .title-text-input, .project-write-wrapper .subject-selec{
+  .project-write-wrapper .title-text-input, .project-write-wrapper .subject-selec {
     margin-right: 20px;
   }
-  .project-write-wrapper .write-form-wrapper .title-input-wrapper{
+  .project-write-wrapper .write-form-wrapper .title-input-wrapper {
     margin-bottom: 5px;
   }
 }
