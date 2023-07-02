@@ -72,7 +72,7 @@
     font-size: 15px;
     border: none;
 
-    .close-btn-a{
+    .close-btn-a {
       height: 42px;
     }
 
@@ -97,6 +97,7 @@
   }
 
 }
+
 .thumbnail-box {
   width: fit-content;
   height: fit-content;
@@ -123,24 +124,122 @@
 }
 
 @media (max-width: 1024px) {
-  .project-write-wrapper{
+  .project-write-wrapper {
     padding: 80px 100px;
   }
 
-  .thumbnail-box img{
+  .thumbnail-box img {
     width: 170px;
     max-width: 500px;
     max-height: 400px;
   }
 
-  .signup-img-label{
+  .signup-img-label {
     font-size: 14px;
   }
-  .thumbnail-box{
+  .thumbnail-box {
     margin-bottom: 5px;
   }
 
-  .project-write-wrapper .write-form-wrapper .title-input-wrapper .title-text-input{
+  .project-write-wrapper .write-form-wrapper .title-input-wrapper .title-text-input {
     width: 95%;
+  }
+}
+
+
+@media (max-width: 414px) {
+  .projects-view-wrapper .main-title {
+    font-size: 24px;
+    height: 110px;
+    padding-top: 70px;
+    margin-bottom: 5px;
+  }
+  .project-write-wrapper {
+    padding: 10px;
+    height: 700px;
+  }
+  .projects-view-wrapper .title-wrapper {
+    padding: 10px;
+    height: 160px;
+  }
+  .projects-view-wrapper {
+    padding: 10px;
+    height: 180px;
+  }
+  .thumbnail-box img {
+    width: 80px;
+    height: 80px;
+  }
+  .main-title {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+  .projects-view-wrapper {
+    margin-bottom: 0px;
+  }
+
+  .project-write-wrapper .write-form-wrapper .select-input-wrapper {
+    display: contents;
+  }
+  .projects-view-wrapper .main-sub-title {
+    font-size: 13px;
+    margin-top: 5px;
+  }
+  .project-write-wrapper .title-text-input, .project-write-wrapper .subject-select, .project-write-wrapper .career-select, .project-write-wrapper .current-text-input, .project-write-wrapper .mentee-text-input {
+    font-size: 13px;
+    padding: 5px;
+    height: 30px;
+    margin-left: 25px;
+  }
+  .project-write-wrapper .write-form-wrapper .title-input-wrapper .title-text-input {
+    padding: 5px;
+    width: 300px;
+  }
+  .project-write-wrapper .sub-title {
+    font-size: 13px;
+    margin-top: 5px;
+    margin-left: 5px;
+    width: 75px;
+  }
+  .project-write-wrapper .boardContent {
+    font-size: 13px;
+    min-height: 300px;
+  }
+  .project-write-wrapper .btn-wrapper .close-btn {
+    font-size: 13px;
+    padding: 5px;
+    width: 130px;
+    height: 30px;
+  }
+
+  .project-write-wrapper .btn-wrapper .submit-btn {
+    font-size: 13px;
+    padding: 5px;
+    width: 130px;
+    height: 30px;
+  }
+  .project-write-wrapper .write-form-wrapper .title-input-wrapper .title-text-input {
+    height: 30px;
+    margin-left: 40px;
+  }
+  .signup-img-label {
+    font-size: 13px;
+  }
+  .css-13i4rnv-MuiGrid-root {
+    margin-top: 0px;
+  }
+  .project-write-wrapper .mentee-text-input {
+    margin-right: 10px;
+    margin-left: 15px;
+  }
+  .project-write-wrapper .project-type, .project-write-wrapper .applicant, .project-write-wrapper .offerPeriod {
+    font-size: 13px;
+    margin-bottom: 5px;
+  }
+  .project-write-wrapper .title-text-input, .project-write-wrapper .subject-selec{
+    margin-right: 20px;
+  }
+  .project-write-wrapper .write-form-wrapper .title-input-wrapper{
+    margin-bottom: 5px;
   }
 }

@@ -130,3 +130,59 @@
 
 
 }
+
+@media (max-width: 414px){
+  .mentors-write-wrapper{
+    padding: 10px;
+  }
+
+  .mentors-write-wrapper .main-sub-title{
+    margin-bottom: 20px;
+  }
+  .mentors-write-wrapper .write-form-wrapper{
+    margin-top: 20px;
+  }
+  .mentors-write-wrapper .content{
+    min-height: 200px;
+    font-size: 13px;
+  }
+  .mentors-write-wrapper .main-title{
+    font-size: 24px;
+    padding-top: 100px;
+  }
+  .mentors-write-wrapper .main-sub-title{
+    font-size: 13px;
+  }
+  .mentors-write-wrapper .write-form-wrapper .select-input-wrapper{
+    display: contents;
+  }
+  .mentors-write-wrapper .sub-title{
+    font-size: 13px;
+  }
+  .mentors-write-wrapper .title-text-input, .mentors-write-wrapper .subject-select, .mentors-write-wrapper .career-select, .mentors-write-wrapper .current-text-input, .mentors-write-wrapper .mentee-text-input{
+    font-size: 13px;
+    height: 30px;
+    padding: 5px;
+    margin-left: 30px;
+  }
+  .mentors-write-wrapper .write-form-wrapper .title-input-wrapper .title-text-input{
+    width: 300px;
+    padding: 5px;
+    height: 30px;
+  }
+  .mentors-write-wrapper .title-text-input, .mentors-write-wrapper .subject-select, .mentors-write-wrapper .career-select, .mentors-write-wrapper .mentee-text-input{
+    margin-right: 10px;
+  }
+  .mentors-write-wrapper .btn-wrapper .close-btn{
+    font-size: 13px;
+    padding: 5px;
+    width: 130px;
+    height: 30px;
+  }
+  .mentors-write-wrapper .btn-wrapper .submit-btn{
+    font-size: 13px;
+    padding: 5px;
+    width: 130px;
+    height: 30px;
+  }
+}
