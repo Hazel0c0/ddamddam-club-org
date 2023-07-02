@@ -32,7 +32,6 @@ public class KakaoLoginResponseDTO {
     private LocalDate userBirth;
     private String userPosition;
     private int userCareer;
-    private Long userPoint;
     private String userProfile;
     private String userRole;
 
@@ -47,7 +46,6 @@ public class KakaoLoginResponseDTO {
         this.userBirth = user.getUserBirth();
         this.userPosition = String.valueOf(user.getUserPosition());
         this.userCareer = user.getUserCareer();
-        this.userPoint = user.getUserPoint();
         this.userProfile = user.getUserProfile();
         this.userRole = String.valueOf(user.getUserRole());
     }
