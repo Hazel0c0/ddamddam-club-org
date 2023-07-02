@@ -17,6 +17,13 @@ const QnaTotal =({loginCheck, searchKeyword, searchValue}) => {
     const presentationScreen = useMediaQuery({
         query: "(max-width: 414px)",
     });
+
+    const subStringContent = (str, n) => {
+        return str?.length > n
+          ? str.substr(0, n - 1) + "..."
+          : str;
+    }
+
     useEffect(()=>{
         asyncQnaTotalList();
     },[clickCurrentPage, searchKeyword, searchValue])
@@ -70,7 +77,11 @@ const QnaTotal =({loginCheck, searchKeyword, searchValue}) => {
                     }
 
                     <section className={'text-wrapper'}>
-                        <div className={'text-title'} key={qna.boardTitle}>{qna.boardTitle}</div>
+                        {presentationScreen
+                          ? <div className={'text-title'} key={qna.boardTitle}>{subStringContent(qna.boardTitle, 38)}</div>
+                          : <div className={'text-title'} key={qna.boardTitle}>{qna.boardTitle}</div>
+                        }
+
                         {!presentationScreen &&
                         <div className={'text-content'} key={qna.boardContent}>{qna.boardContent}</div>}
                         <ul className={'text-hashTag'}>
@@ -80,7 +91,10 @@ const QnaTotal =({loginCheck, searchKeyword, searchValue}) => {
                         </ul>
                     </section>
                     <section className={'qna-info'}>
-                        <div className={'qna-writer'} key={qna.boardWriter}>{qna.boardWriter}</div>
+                        {presentationScreen
+                          ? <div className={'qna-writer'} key={qna.boardWriter}>{qna.boardWriter} 님의 질문</div>
+                          : <div className={'qna-writer'} key={qna.boardWriter}>{qna.boardWriter}</div>
+                        }
                         <div className={'icon-wrapper'}>
                             <div className={'view-count-wrapper'}>
                                 <img src={viewIcon} alt={'view-count'}

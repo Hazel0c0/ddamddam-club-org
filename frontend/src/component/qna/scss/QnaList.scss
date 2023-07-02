@@ -131,34 +131,6 @@
 }
 
 @media (max-width: 1024px) {
-  .qna-search-wrapper {
-    padding: 45px 110px 35px;
-  }
-  .qna-search-wrapper .sort-btn li {
-    font-size: 13px;
-    padding: 0 5px;
-  }
-
-  .qna-search-wrapper .search-wrapper {
-    padding: 0 2px 0 5px;
-  }
-  .qna-search-wrapper .search-wrapper .search-icon {
-    width: 12px;
-  }
-  .qna-search-wrapper .search-wrapper .input-btn {
-    width: 400px;
-    padding: 8px;
-    font-size: 12px;
-  }
-  .qna-search-wrapper .search-wrapper .reset-btn {
-    padding: 4px 5px;
-  }
-  .qna-search-wrapper .write-btn {
-    padding: 9px 10px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 12px;
-  }
 
   .qna-list-wrapper {
     padding: 0px 110px 50px;
@@ -230,43 +202,67 @@
 
 @media (max-width: 414px) {
   .qna-list-wrapper {
-    padding: 10px;
-
+    padding: 20px 30px 30px;
   }
   .qna-list-wrapper .qna-list{
-    height: 130px;
-    padding: 10px;
-  }
-  .qna-list-wrapper .qna-list .text-wrapper .text-title {
-    font-size: 15px;
-    //width: 300px;
-  }
-  .qna-list-wrapper .qna-list .text-wrapper .text-content {
-    font-size: 13px;
-  }
-  .qna-list-wrapper .qna-list .checked, .qna-list-wrapper .qna-list .not-checked {
-    margin-bottom: 80px;
-    font-size: 13px;
-    padding: 5px 5px 5px 5px;
-    width: 250px;
-    margin-right: 10px;
-
+    height: 160px;
+    padding: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
   }
 
   .qna-list-wrapper .qna-list .text-wrapper {
-    margin-top: 200px;
-    margin-right: 150px;
-    height: 200px;
-    width: 300px;
+
+    width: 100%;
+    margin: 10px 0;
+
+    .text-content {
+      font-size: 13px;
+    }
+    .text-title {
+      font-size: 15px;
+    }
+    .text-hashTag {
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
   }
 
   .qna-list-wrapper .qna-list .qna-info {
-    font-size: 10px;
-    margin-top: 10px;
-    margin-right: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .qna-writer {
+      margin: 0;
+    }
+
+    .icon-wrapper {
+      font-size: 15px;
+      margin-bottom: 0;
+
+      .view-count-icon, .speech-count-icon {
+        width: 13px;
+        margin-right: 3px;
+      }
+    }
+
+
   }
-  .qna-list-wrapper .qna-list .qna-info .qna-writer {
-    margin-top: 10px;
-    width: 80px;
+
+  .qna-list-wrapper .qna-list .go-detail {
+    font-size: 15px;
+    top: 15px;
+    right: 15px;
   }
+
+  .qna-list-wrapper .qna-list .checked, .qna-list-wrapper .qna-list .not-checked {
+    font-size: 13px;
+    padding: 5px ;
+    width: 100px;
+  }
+
 }

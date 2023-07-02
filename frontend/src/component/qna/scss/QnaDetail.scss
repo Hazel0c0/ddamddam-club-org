@@ -411,39 +411,54 @@
 
 @media (max-width: 414px) {
   .qna-detail-wrapper{
-    padding: 10px;
-  }
-
-  .qna-detail-wrapper .main-sub-title{
-    font-size: 13px;
-  }
-  .qna-detail-wrapper .main-title{
-    font-size: 24px;
-    margin-left: 40px;
+    padding: 30px;
   }
   .qna-detail-wrapper .main-text-wrapper .qna-title{
-    font-size: 16px;
-    width: 180px;
-    margin-top: 150px;
+    font-size: 17px;
+    width: 100%;
+    margin-top: 20px;
   }
-  .qna-detail-wrapper .main-text-wrapper .hashTag-wrapper{
-    width: 180px;
-    margin-bottom: 0px;
+  .qna-detail-wrapper .main-text-wrapper .hashTag-wrapper {
+    width: 100%;
+    margin-bottom: 20px;
+    justify-content: start;
+  }
+  .qna-detail-wrapper .main-text-wrapper .hashTag-wrapper .hashTag {
+    margin: 3px 5px;
+    font-size: 14px;
   }
   .qna-detail-wrapper .main-text-wrapper{
-    height: 600px;
+    width: 100%;
+    height: fit-content;
+    margin: 30px 0 30px;
+    padding: 10px;
   }
   .qna-detail-wrapper .main-text-wrapper .main-content{
-    min-height: 80px;
-    max-height: 300px;
+    min-height: 120px;
+    max-height: none;
     font-size: 13px;
+    margin-bottom: 20px;
   }
-  .qna-detail-wrapper .reply-wrapper {
-    margin-bottom: 200px;
-    margin-top: 10px;
-    font-size: 13px;
+  .qna-detail-wrapper .main-text-wrapper .info-detail-container {
+    justify-content: start;
 
+    .detail-wrapper {
+      width: 100%;
+    }
+
+    .detail-wrapper .category .sub-title,
+    .detail-wrapper .category .sub-content,
+    {
+      font-size: 14px;
+    }
   }
+
+  .qna-detail-wrapper .main-text-wrapper .checked-wrapper{
+    height: 50px;
+    font-size: 15px;
+    margin: 0;
+  }
+
   .qna-detail-wrapper .main-text-wrapper .checked-wrapper .not-checked {
     //margin-bottom: 60px;
     width: 100px;
@@ -451,43 +466,74 @@
     font-size: 13px;
 
   }
-  .qna-detail-wrapper .main-text-wrapper .checked-wrapper{
-    //margin-bottom: 30px;
-    height: 100px;
-    font-size: 13px;
+
+  .qna-detail-wrapper .reply-wrapper .reply-input-wrapper {
+    border-radius: 10px;
+    padding: 10px;
+    height: fit-content;
     margin-top: 10px;
+    background-color: #f0f0f0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: space-between;
 
-  }
-
-
-  .qna-detail-wrapper .reply-wrapper .reply-input-wrapper{
-    width: 180px;
-    height: 80px;
-    font-size: 13px;
-  }
-  .qna-detail-wrapper .reply-wrapper .reply-input-wrapper .input-submit-btn{
-    font-size: 13px;
-
-  }
-  .qna-detail-wrapper .reply-wrapper .reply-input-wrapper .reply-input{
-    width: 300px;
-    font-size: 13px;
-
-  }
-  .qna-detail-wrapper .reply-wrapper .reply-title{
-    font-size: 13px;
-  }
-  .qna-detail-wrapper .main-text-wrapper .info-detail-container{
-    font-size: 11px;
-  }
-  .qna-detail-wrapper .category{
-    font-size: 13px;
-  }
-  .category {
-    font-size: 13px;
+    .reply-input {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 10px;
+    }
   }
 
+  .qna-detail-wrapper .reply-wrapper .reply-list {
 
+    padding: 20px 15px;
+
+    .reply-top-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+
+      .reply-modify, .reply-delete {
+        position: absolute;
+        right: 0;
+      }
+
+      .reply-modify {
+        right: 40px;
+      }
+    }
+
+    .reply-content-wrapper {
+      width: 100%;
+      padding: 0;
+      position: relative;
+
+      .reply-content-text {
+        margin-top: 10px;
+        width: 100%;
+        word-break: break-all;
+      }
+
+      .reply-modify-content {
+        width: 100%;
+        height: 100px;
+        margin-bottom: 40px;
+      }
+      .reply-modify-cancel-btn {
+        position: absolute;
+        bottom: 0;
+        right: 100px;
+      }
+      .reply-modify-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
 
 }
 

@@ -112,7 +112,7 @@ const MypageProjectList = props => {
       ) : null}
 
       {pageNation.prev &&
-        <img src={less} alt={"less-icon"} className={'less-icon'} onClick={handlePrevious}/>
+        <img src={less} alt={"less-icon"} className={'mypage-less-icon'} onClick={handlePrevious}/>
       }
       <div className={'pj-wrapper'}>
         {projectList.map((project, index) => (
@@ -181,7 +181,7 @@ const MypageProjectList = props => {
         ))}
       </div>
       {pageNation.next &&
-        <img src={than} alt={"than-icon"} className={'than-icon'} onClick={handleNext}/>
+        <img src={than} alt={"than-icon"} className={'mypage-than-icon'} onClick={handleNext}/>
       }
 
     </div>

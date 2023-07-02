@@ -383,7 +383,7 @@
 
   .join-wrapper {
 
-    height: 1100px;
+    height: 900px;
 
     .form-wrapper {
       top: 50px;
@@ -394,12 +394,16 @@
       // 중복확인 버튼
       .check-btn {
         padding: 0;
-        height: 45px;
         font-size: 12px;
       }
 
       .signup-img-label {
         margin: 10px 0;
+      }
+
+      .presentation-birth {
+        font-size: 14px;
+        margin: 10px 0 5px;
       }
 
     }
