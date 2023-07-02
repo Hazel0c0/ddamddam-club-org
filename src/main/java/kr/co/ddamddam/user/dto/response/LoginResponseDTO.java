@@ -32,7 +32,6 @@ public class LoginResponseDTO {
     private LocalDate userBirth;
     private UserPosition userPosition;
     private int userCareer;
-    private Long userPoint;
     private String userProfile;
     private UserRole userRole;
 
@@ -52,7 +51,6 @@ public class LoginResponseDTO {
         this.userBirth = user.getUserBirth();
         this.userPosition = user.getUserPosition();
         this.userCareer = user.getUserCareer();
-        this.userPoint = user.getUserPoint();
         this.userProfile = user.getUserProfile();
         this.userRole = user.getUserRole();
         this.token = token;

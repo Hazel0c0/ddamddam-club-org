@@ -11,7 +11,7 @@ import java.security.PrivateKey;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-// TODO: 회원가입 완료 후 클라이언트에게 응답할 데이터를 담는 객체
+// 회원가입 완료 후 클라이언트에게 응답할 데이터를 담는 객체
 @Setter
 @Getter
 @ToString

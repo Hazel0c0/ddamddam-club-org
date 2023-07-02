@@ -21,10 +21,11 @@ import java.sql.Timestamp;
 public class ReviewWriteRequestDTO {
 
     @NotBlank(message = "제목을 입력해주세요.")
-    @Size(min = 1, max = 30)
+    @Size(min = 1, max = 100)
     private String reviewTitle;
 
     @NotBlank(message = "내용을 입력해주세요.")
+    @Size(min = 1, max = 3000)
     private String reviewContent;
 
     @Min(1)

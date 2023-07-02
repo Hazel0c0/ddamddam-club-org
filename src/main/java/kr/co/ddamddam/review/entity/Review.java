@@ -27,7 +27,7 @@ public class Review {
      @Column(name = "review_idx")
     private Long reviewIdx;
 
-    @Column(name = "review_title",nullable = false, length = 300)
+    @Column(name = "review_title",nullable = false, length = 100)
     private String reviewTitle;
 
     @Column(name = "review_company",nullable = false, length = 50)

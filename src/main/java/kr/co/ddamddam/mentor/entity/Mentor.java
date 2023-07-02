@@ -29,7 +29,7 @@ public class Mentor {
     @Column(name = "mentor_title", nullable = false, length = 100)
     private String mentorTitle;
 
-    @Column(name = "mentor_content",nullable = false, length = 1000)
+    @Column(name = "mentor_content",nullable = false, length = 3000)
     private String mentorContent;
 
     @Column(name = "mentor_subject",nullable = false)

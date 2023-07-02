@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * Sevice 에서 던진 에러를 잡아서 처리하는 핸들러
+ * Sevice 또는 Controller 에서 던진 에러를 잡아서 처리하는 핸들러
  */
 
 @Slf4j

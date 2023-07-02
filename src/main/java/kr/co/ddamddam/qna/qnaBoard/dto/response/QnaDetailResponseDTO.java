@@ -20,7 +20,6 @@ import java.util.List;
 @Builder
 public class QnaDetailResponseDTO {
 
-    // TODO : Validated 처리
     private Long boardIdx; // 식별번호
     private String boardTitle;
     private String boardContent;

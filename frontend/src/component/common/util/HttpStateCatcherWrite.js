@@ -25,7 +25,7 @@ export function httpStateCatcher (status) {
 
 export function httpStateCatcherWrite (status) {
   if (status === 400) {
-    alert('제목은 100자 이내, 내용은 1000자 이내로 공백없이 작성해주세요.');
+    alert('제목은 100자 이내, 내용은 3000자 이내로 공백없이 작성해주세요.');
     return;
   } else if (status === 401) {
     alert('로그인이 만료되었습니다.');
@@ -82,7 +82,7 @@ export function httpStateCatcherModify (status) {
 
 export function httpStateCatcherReply (status) {
   if (status === 400) {
-    alert('댓글은 500자 이내로 작성해주세요.');
+    alert('댓글은 1000자 이내로 작성해주세요.');
     return;
   } else if (status === 401) {
     alert('로그인이 만료되었습니다.');

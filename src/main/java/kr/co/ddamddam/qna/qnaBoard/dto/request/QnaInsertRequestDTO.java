@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * QNA 게시글 작성 요청 DTO
+ * QNA 게시글 작성, 수정 요청 DTO
  */
 @Getter
 @ToString
@@ -26,7 +26,7 @@ public class QnaInsertRequestDTO {
     @Size(min = 1, max = 100)
     private String boardTitle;
     @NotBlank
-    @Size(min = 1, max = 1000)
+    @Size(min = 1, max = 3000)
     private String boardContent;
     private List<String> hashtagList;
 

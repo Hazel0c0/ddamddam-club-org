@@ -24,20 +24,18 @@ public class ReviewModifyRequestDTO {
     @NotNull
     private Long reviewIdx;
 
-    @Size(min =1, max = 30)
+    @Size(min = 1, max = 100)
     private String reviewTitle;
 
+    @Size(min = 1, max = 3000)
     private String reviewContent;
 
     @Min(1)
     private Float reviewRating;
 
-
     private String reviewJob;
 
     private int reviewTenure;
-
-//    private Long reviewCompany;
 
     private String companyName;
 

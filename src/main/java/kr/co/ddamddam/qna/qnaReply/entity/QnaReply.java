@@ -26,7 +26,7 @@ public class QnaReply {
     @Column(name = "qna_reply_idx")
     private Long qnaReplyIdx; // 식별번호
 
-    @Column(name = "qna_reply_content", nullable = false, length = 500)
+    @Column(name = "qna_reply_content", nullable = false, length = 1000)
     private String qnaReplyContent;
 
     @Column(name = "qna_reply_writer", nullable = false, length = 10)
