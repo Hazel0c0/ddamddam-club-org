@@ -13,6 +13,12 @@ const QnaMain = () => {
     const ACCESS_TOKEN = getToken();
     const redirection = useNavigate();
 
+    const subStringContent = (str, n) => {
+        return str.length > n
+          ? str.substr(0, n - 1) + "..."
+          : str;
+      }
+
     const presentationScreen = useMediaQuery({
         query: "(max-width: 414px)",
     });
@@ -71,7 +77,7 @@ const QnaMain = () => {
                                 <div className={'company-name'}>{review.companyName}</div>
                                 <ReviewStar starCount ={review.boardRating}/>
 
-                                <div className={'review-title'}>{review.boardTitle}</div>
+                                <div className={'review-title'}>{subStringContent(review.boardTitle,15)}</div>
                                 {/*<div className={'qna-content'}>{review.boardTitle}</div>*/}
                                 <section className={'detail-wrapper'}>
                                     <div className={'detail-reviewJob'}><span className={'sub-title'}>직무</span>{review.boardJob}</div>

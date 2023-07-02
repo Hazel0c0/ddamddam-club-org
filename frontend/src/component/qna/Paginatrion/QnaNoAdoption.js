@@ -65,15 +65,15 @@ const QnaNoAdoption = ({loginCheck, searchKeyword, searchValue}) => {
             {qnaList.map((qna) => (
                 <section className={'qna-list'} key={qna.boardIdx}>
                     {qna.boardAdoption === 'Y'
-                        ? <div className={'checked'} key={qna.boardAdoption}>
+                        ? <div className={'checked'} >
                             채택완료</div>
-                        : <div className={'not-checked'} key={qna.boardAdoption}>
+                        : <div className={'not-checked'} >
                             미채택</div>
                     }
 
                     <section className={'text-wrapper'}>
-                        <div className={'text-title'} key={qna.boardTitle}>{qna.boardTitle}</div>
-                        <div className={'text-content'} key={qna.boardContent}>{qna.boardContent}</div>
+                        <div className={'text-title'}>{qna.boardTitle}</div>
+                        <div className={'text-content'}>{qna.boardContent}</div>
                         <ul className={'text-hashTag'}>
                             {qna.hashtagList.map((hashTag, index) => (
                                 <li key={index}>#{hashTag}</li>
@@ -82,8 +82,8 @@ const QnaNoAdoption = ({loginCheck, searchKeyword, searchValue}) => {
                     </section>
                     <section className={'qna-info'}>
                         {presentationScreen
-                          ? <div className={'qna-writer'} key={qna.boardWriter}>{qna.boardWriter} 님의 질문</div>
-                          : <div className={'qna-writer'} key={qna.boardWriter}>{qna.boardWriter}</div>
+                          ? <div className={'qna-writer'} >{qna.boardWriter} 님의 질문</div>
+                          : <div className={'qna-writer'} >{qna.boardWriter}</div>
                         }
                         <div className={'icon-wrapper'}>
                             <div className={'view-count-wrapper'}>
@@ -95,7 +95,7 @@ const QnaNoAdoption = ({loginCheck, searchKeyword, searchValue}) => {
                                      className={'speech-count-icon'}/><span>{qna.replyCount}</span>
                             </div>
                         </div>
-                        <div className={'write-date'} key={qna.boardDate}>{qna.boardDate}</div>
+                        <div className={'write-date'}>{qna.boardDate}</div>
                     </section>
 
                     <Link to={`/qna/${qna.boardIdx}`} onClick={loginCheckHandler}>

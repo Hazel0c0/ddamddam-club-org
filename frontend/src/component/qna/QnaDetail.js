@@ -333,7 +333,7 @@ const QnaDetail = () => {
 
                   <div className={'category'}>
                     <span className={'sub-title'}>작성일자</span>
-                    <span className={'sub-content'}>2023.06.23</span>
+                    <span className={'sub-content'}>{detailQna.boardDate}</span>
                   </div>
 
                   <div className={'icon-wrapper'}>
