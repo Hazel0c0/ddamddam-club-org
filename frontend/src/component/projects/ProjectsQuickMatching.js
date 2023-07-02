@@ -61,6 +61,8 @@ const ProjectsQuickMatching = () => {
                 if (res) {
                     console.log(res.payload.projects);
                     setQuickDetail(res.payload.projects);
+                    console.log('page info !!');
+                    console.log(res.payload.pageInfo);
                     setLastPage(res.payload.pageInfo.endPage);
                     console.log('lastPage : ' + lastPage);
                 }

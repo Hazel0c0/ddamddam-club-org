@@ -60,8 +60,8 @@ const UserJoin = () => {
 
     // 검증 완료 체크에 대한 상태변수 관리
     const [correct, setCorrect] = useState({
-        userEmail: false,
-        userCode: false,
+        userEmail: true,
+        userCode: true,
         userPw: false,
         passwordCheck: false,
         userName: false,
