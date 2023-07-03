@@ -156,7 +156,7 @@ const MentorsList = ({selectedSubjects}) => {
       })
   },300)
 
-  const {title, content, subject, current, nickName, date, mentee, career, idx, userIdx} = detailMember;
+  const {title, content, subject, current, nickName, date, mentee, career, idx, userIdx, profile} = detailMember;
 
 
   // 첫 렌더링 시 출력
@@ -264,7 +264,11 @@ const MentorsList = ({selectedSubjects}) => {
         </section>
 
         <section className={'writer-section'}>
-          <div className={'detail-profile-img'}></div>
+        {profile !== null 
+          ? <div className={'detail-profile-img'} style={{backgroundImage: `url(${profile})`}}></div>
+          : <div className={'detail-profile-img'} style={{backgroundImage: `url(${profile})`}}></div>
+          }
+          
           <div className={'writer-text-wrapper'}>
             <h2 className={'detail-writer'}>{nickName}</h2>
             <h3 className={'detail-sub-title'}>{title}</h3>
