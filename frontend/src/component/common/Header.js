@@ -81,7 +81,7 @@ const Header = () => {
     const handleMouseLeave = (event) => {
 
         if (dropdownOpen) {
-            console.log(event.target.className)
+            // console.log(event.target.className)
             setAnimating(true);
 
             if (navigationRef.current) {

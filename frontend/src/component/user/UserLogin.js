@@ -32,8 +32,8 @@ const UserLogin = () => {
   // 로그인 핸들러
   const loginHandler = async () => {
     // ID와 비밀번호 상태 값 사용
-    console.log('ID:', email);
-    console.log('Password:', password);
+    // console.log('ID:', email);
+    // console.log('Password:', password);
 
     const res = await fetch(`${REQUEST_URL}`, {
       method: 'POST',
@@ -57,7 +57,7 @@ const UserLogin = () => {
       return;
     }
 
-    console.log(`payload 의 값 : ${JSON.stringify(payload)}`);
+    // console.log(`payload 의 값 : ${JSON.stringify(payload)}`);
 
     const {
       token,

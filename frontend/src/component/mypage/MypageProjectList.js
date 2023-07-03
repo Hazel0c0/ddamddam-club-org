@@ -49,7 +49,7 @@ const MypageProjectList = props => {
 
   // 로그인 상태 검증 핸들러
   const loginCheckHandler = (e) => {
-    console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
+    // console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
     if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null) {
       alert('로그인 후 이용가능합니다.')
       e.preventDefault();
@@ -98,8 +98,8 @@ const MypageProjectList = props => {
             asyncProjectList();
           })
           .catch((error) => {
-            console.log(error);
-            alert(error);
+            // console.log(error);
+            alert('서버와의 통신이 불안정합니다. 잠시 후에 다시 시도해주세요.');
           });
     }
   };

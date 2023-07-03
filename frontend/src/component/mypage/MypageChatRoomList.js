@@ -43,7 +43,7 @@ const MypageChatRoom = props => {
 
   // 로그인 상태 검증 핸들러
   const loginCheckHandler = (e) => {
-    console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
+    // console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
     if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null) {
       alert('로그인 후 이용가능합니다.')
       e.preventDefault();

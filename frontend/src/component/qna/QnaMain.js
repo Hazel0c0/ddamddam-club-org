@@ -42,7 +42,7 @@ const QnaMain = () => {
             .then(result => {
                 if (!!result) {
                     setTopViewQna(result.payload);
-                    console.log(result);
+                    // console.log(result);
                 }
             })
 

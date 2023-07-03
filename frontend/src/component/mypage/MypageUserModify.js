@@ -161,7 +161,7 @@ const MypageUserModify = props => {
         // 입력값 검증
         let msg; // 검증 메시지를 저장할 변수
         let flag; // 입력 검증체크 변수
-        console.log(nameRegex.test(inputVal));
+        // console.log(nameRegex.test(inputVal));
         if (!inputVal) {
             msg = '유저 닉네임은 필수입니다.';
             flag = false;
@@ -181,7 +181,7 @@ const MypageUserModify = props => {
             flag
         });
         if(nameRegex.test(inputVal)){
-            console.log(`inputNick : ${inputVal}`)
+            // console.log(`inputNick : ${inputVal}`)
         const res = await fetch(`${API_BASE_NICK_URL}/checknickname?nickname=${inputVal}`);
 
         if (res.status === 200) {
@@ -255,7 +255,7 @@ const MypageUserModify = props => {
     const [selectedPosition, setSelectedPosition] = useState('');
     const positionHandler = e => {
         const selectedValue = e.target.value;
-        console.log(selectedValue);
+        // console.log(selectedValue);
         setSelectedPosition(selectedValue);
         setUserValue(prevValue =>({
             ...prevValue,
@@ -267,7 +267,7 @@ const MypageUserModify = props => {
     const isValid = () => {
         const inputVal = document.getElementById('nickname').value;
         if(USER_NICKNAME === inputVal){
-            console.log('풀림');
+            // console.log('풀림');
             const msg = '기존 닉네임입니다';
             const flag = true;
             setCorrect({...correct, userNickName: true});
@@ -278,7 +278,7 @@ const MypageUserModify = props => {
                 flag
             });
         }
-            console.log(correct);
+            // console.log(correct);
         for (const key in correct) {
             const flag = correct[key];
             if (!flag) return false;
@@ -297,7 +297,7 @@ const MypageUserModify = props => {
 
     // 로그인 상태 검증 핸들러
     const loginCheckHandler = (e) => {
-        console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
+        // console.log(`ACCESS_TOKEN = ${ACCESS_TOKEN}`)
         if (ACCESS_TOKEN === '' || ACCESS_TOKEN === null){
             alert('로그인 후 이용가능합니다.')
             e.preventDefault();
@@ -307,7 +307,7 @@ const MypageUserModify = props => {
 
     // 회원정보 수정 후 스토리지 정보 갱신
     const updateStorage = (result) => {
-        console.log(`updateStorage : ${result.userName}`);
+        // console.log(`updateStorage : ${result.userName}`);
         if (localStorage.getItem('ACCESS_TOKEN') !== null) {
             localStorage.setItem('LOGIN_USER_NAME', result.userName);
             localStorage.setItem('LOGIN_USER_NICKNAME', result.userNickName);
@@ -327,7 +327,7 @@ const MypageUserModify = props => {
     // 회원수정 처리 서버 요청
     const fetchModifyPost = async () => {
 
-        console.log(`fetchSignUpPost의 userValue : ${userValue}`);
+        // console.log(`fetchSignUpPost의 userValue : ${userValue}`);
         // console.log(userValue.userNickName);
 
         const headerModify = new Headers();
@@ -343,13 +343,13 @@ const MypageUserModify = props => {
         const userFormData = new FormData();
         userFormData.append('user', userJsonBlob);
         if($fileTag.current.files[0] === undefined){
-            console.log('됨');
+            // console.log('됨');
             userFormData.append('profileImage', USER_PROFILE);
         }else{
         userFormData.append('profileImage', $fileTag.current.files[0]);
         }
-        console.log('userFormData:', userFormData);
-        console.log(`$fileTag.current.files[0] : `,$fileTag.current.files[0])
+        // console.log('userFormData:', userFormData);
+        // console.log(`$fileTag.current.files[0] : `,$fileTag.current.files[0])
 
         const res = await fetch(`${API_BASE_URL}/modify`, {
             // const res = await fetch(`//localhost:8181/api/ddamddam/mypage/modify`, {
@@ -358,7 +358,7 @@ const MypageUserModify = props => {
             body: userFormData
         });
 
-        console.log(res)
+        // console.log(res)
         if (res.status === 200) {
             alert('회원 정보 수정에 성공했습니다!');
 

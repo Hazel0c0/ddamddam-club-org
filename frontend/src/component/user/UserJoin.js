@@ -61,8 +61,8 @@ const UserJoin = () => {
 
     // 검증 완료 체크에 대한 상태변수 관리
     const [correct, setCorrect] = useState({
-        userEmail: true,
-        userCode: true,
+        userEmail: false,
+        userCode: false,
         userPw: false,
         passwordCheck: false,
         userName: false,
@@ -137,7 +137,7 @@ const UserJoin = () => {
         // 입력값 검증
         let msg; // 검증 메시지를 저장할 변수
         let flag; // 입력 검증체크 변수
-        console.log(nameRegex.test(inputVal));
+        // console.log(nameRegex.test(inputVal));
         if (!inputVal) {
             msg = '유저 닉네임은 필수입니다.';
             flag = false;
@@ -154,7 +154,7 @@ const UserJoin = () => {
             flag
         });
         if(nameRegex.test(inputVal)){
-            console.log(`inputNick : ${inputVal}`)
+            // console.log(`inputNick : ${inputVal}`)
         const res = await fetch(`${API_BASE_URL}/checknickname?nickname=${inputVal}`);
 
         if (res.status === 200) {
@@ -184,13 +184,13 @@ const UserJoin = () => {
     const fetchDuplicateCheck = async (e) => {
 
         const inputEmail = userValue.userEmail;
-        console.log(`inputEmail : ${inputEmail}`)
+        // console.log(`inputEmail : ${inputEmail}`)
         const res = await fetch(`${API_BASE_URL}/check?email=${inputEmail}`);
 
         let msg = '', flag = false;
         if (res.status === 200) {
             const json = await res.json();
-            console.log(json);
+            // console.log(json);
             if (json) {
                 alert("이메일이 중복되었습니다");
                 return;
@@ -215,7 +215,7 @@ const UserJoin = () => {
         setCertification(true);
 
         const inputEmail = userValue.userEmail;
-        console.log(`인증하기 메일 보내기 inputEmail주소 : ${inputEmail}`)
+        // console.log(`인증하기 메일 보내기 inputEmail주소 : ${inputEmail}`)
         const res = fetch(`${EMAIL}/send`, {
             method: 'POST',
             headers: {'content-type': 'application/json'},
@@ -224,13 +224,13 @@ const UserJoin = () => {
             })
         })
         setShowCodeCertificationBtn(false);
-        console.log(res)
+        // console.log(res)
     }
 
     //코드 입력 완료
     const submitCodeHander = async () => {
         const code = emailCode.current.value;
-        console.log(`입력 code value : ${code}`);
+        // console.log(`입력 code value : ${code}`);
 
         const res = await fetch(`${EMAIL}/check`, {
             method: 'POST',
@@ -242,8 +242,8 @@ const UserJoin = () => {
 
         const result = await res.json();
 
-        console.log(`result = ${JSON.stringify(result)}`);
-        console.log(`result.checkResult = ${result.checkResult}`);
+        // console.log(`result = ${JSON.stringify(result)}`);
+        // console.log(`result.checkResult = ${result.checkResult}`);
         // console.log(JSON.stringify(result))
         // console.log(`코드 입력 후 result : ${result}`)
 
@@ -267,9 +267,9 @@ const UserJoin = () => {
         //이메일 입력
         const inputEmail = e.target.value;
 
-        console.log(`emailDomain : `, emailDomain)
+        // console.log(`emailDomain : `, emailDomain)
         const inputVal = `${inputEmail}@${emailDomain}`;
-        console.log(`emailResult Value : ${inputVal}`);
+        // console.log(`emailResult Value : ${inputVal}`);
         // const emailRegex = /^[a-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/;
         const emailRegex = /^[a-z0-9\.\-_]+/;
 
@@ -287,13 +287,14 @@ const UserJoin = () => {
     //이메일 도메인 선택
     const handleEmailChange = (e) => {
         const emailDomainValue = e.target.value;
-        console.log(`emailDomainValue의 값 : `, emailDomainValue);
+        // console.log(`emailDomainValue의 값 : `, emailDomainValue);
         setEmailDomain(emailDomainValue);
 
         //이메일 입력
-        const inputEmail = document.querySelector('.email-input').value;console.log(`emailDomain : `, emailDomain)
+        const inputEmail = document.querySelector('.email-input').value;
+        // console.log(`emailDomain : `, emailDomain)
         const inputVal = `${inputEmail}@${emailDomainValue}`;
-        console.log(`emailResult Value : ${inputVal}`);
+        // console.log(`emailResult Value : ${inputVal}`);
 
         let msg = '', flag = true;
 
@@ -435,7 +436,7 @@ const birthHandler = (event) => {
 
     // 회원가입 처리 서버 요청
     const fetchSignUpPost = async () => {
-        console.log(`fetchSignUpPost의 userValue : ${userValue}`);
+        // console.log(`fetchSignUpPost의 userValue : ${userValue}`);
 
 
         // JSON을 Blob타입으로 변경 후 FormData에 넣기
@@ -450,7 +451,7 @@ const birthHandler = (event) => {
         userFormData.append('profileImage', $fileTag.current.files[0]);
         // userFormData.append('profileImage', $fileTag.current.files[0],{ type: `image/jpeg`});
 
-        console.log(`userFormData : `,userFormData)
+        // console.log(`userFormData : `,userFormData)
 
         const res = await fetch(`${API_BASE_URL}/signup`, {
             method: 'POST',
@@ -472,9 +473,9 @@ const birthHandler = (event) => {
 
     //회원가입 버튼 클릭 이벤트 핸들러
     const joinButtonClickHandler = e => {
-        console.log(correct);
+        // console.log(correct);
         e.preventDefault();  //submnsole.log(userValue)
-        console.log(isValid)
+        // console.log(isValid)
         // console.log(`imgFile의 값 : `,imgFile)
         // 회원가입 서버 요청
         if (isValid()) {
@@ -507,7 +508,7 @@ const birthHandler = (event) => {
 
     //렌더링이 끝난 이후 실행되는 함수
     useEffect(() => {
-        console.log(emailDomain)
+        // console.log(emailDomain)
     }, [emailValue, imgFile, emailDomain]);
 
     return (
