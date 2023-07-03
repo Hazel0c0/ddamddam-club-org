@@ -144,15 +144,15 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChang
             </div>
 
             <section className={'select-view-wrapper'}>
-                <div className={'frontend-filter'} onClick={handleInputChange}>
+                <div className={selectedBtn === 'front' ? 'frontend-filter selected' : 'frontend-filter'} onClick={handleInputChange}>
                     <div className={'frontend-title'}>
-                        <span className={'title-text selected'}>프론트엔드</span>
+                        <span className={'title-text'}>프론트엔드</span>
                         <span className={'title-add'}>+채용공고 보러가기</span>
                     </div>
                     <span className={'frontend-count'}>{count.frontCount}</span>
                 </div>
 
-                <div className={'backend-filter'} onClick={handleInputChange}>
+                <div className={selectedBtn === 'back' ? 'backend-filter selected' : 'backend-filter'} onClick={handleInputChange}>
                     <div className={'backend-title'}>
                         <span className={'title-text'}>백엔드</span>
                         <span className={'title-add'}>+채용공고 보러가기</span>
@@ -160,7 +160,7 @@ const CompanyMain = ({onSearchChange, onSearchKeywordChange, onSearchCareerChang
                     <span className={'backend-count'}>{count.backCount}</span>
                 </div>
 
-                <div className={'total-filter'} onClick={handleInputChange}>
+                <div className={selectedBtn === '' ? 'total-filter selected' : 'total-filter'} onClick={handleInputChange}>
                     <div className={'total-title'}>
                         <span className={'title-text'}>개발직군 전체</span>
                         <span className={'title-add'}>+채용공고 보러가기</span>

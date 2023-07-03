@@ -321,7 +321,7 @@
 
   #add-info-wrapper .add-company .review,
   #add-info-wrapper .add-company .company{
-    width: 370px;
+    width: 350px;
   }
 
   .mentorMain,
@@ -337,7 +337,7 @@
 
   .top-wrapper {
     background-image: url("../../../src_assets/main-background.jpg");
-    background-size: 300%;
+    background-size: 400%;
     background-repeat: no-repeat;
     background-position-y: 10px;
   }
@@ -414,7 +414,7 @@
 
   #add-info-wrapper .add-company{
     margin-top: 100px;
-    padding: 50px 0;
+    padding: 50px 50px;
     flex-direction: column;
 
   }
@@ -425,9 +425,9 @@
   #add-info-wrapper .add-qna{
     flex-direction: column;
   }
-
+  #add-info-wrapper .add-company .review, #add-info-wrapper .add-company .company,
   .qna{
-    width: 370px;
+    width: 340px;
   }
 
   #add-info-wrapper .add-qna .text-wrapper{
@@ -515,6 +515,9 @@
     padding-left: 20px !important;
   }
 
+  #add-info-wrapper .main-title{
+    padding-top: 0;
+  }
 
   .myPage,
   .profile-img{
@@ -525,4 +528,9 @@
   .login-wrapper{
     padding: 0 20px;
   }
+  .add-company,
+  .add-qna{
+    padding: 0 50px;
+  }
+
 }

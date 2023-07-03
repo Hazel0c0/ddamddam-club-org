@@ -32,6 +32,12 @@
     justify-content: start;
   }
 
+  .selected{
+    font-weight: 900;
+    //border-bottom: 2px solid #1e4fff !important;
+  }
+
+
   .frontend-filter,
   .backend-filter,
   .total-filter {
@@ -45,6 +51,7 @@
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
+
 
     //타이틀 부분
     .frontend-title,
@@ -65,9 +72,7 @@
         font-size: 14px;
       }
 
-      .selected{
-        font-weight: 700;
-      }
+
     }
 
     .frontend-count,
@@ -174,9 +179,12 @@
   .company-top-wrapper{
     padding: 130px 100px 30px;
   }
-
+  .company-top-wrapper .title-wrapper{
+    height: auto;
+  }
   .company-top-wrapper .title-wrapper .main-title{
     font-size: 38px;
+    padding-top: 0px;
   }
   .company-top-wrapper .title-wrapper .main-sub-title{
     font-size: 14px;

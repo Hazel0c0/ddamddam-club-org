@@ -78,7 +78,7 @@
 
       .detail-profile-img {
         background-image: url("../../../src_assets/IMG_4525.JPG");
-        background-size: 112px;
+        background-size: 100%;
         width: 120px;
         height: 120px;
         border-radius: 200px;
@@ -235,7 +235,8 @@
       }
 
       .profile-img {
-        background-image: url("../../../src_assets/IMG_4525.JPG");
+        background-color: white;
+        //background-image: url("../../../src_assets/IMG_4525.JPG");
         background-size: 42px;
         width: 50px;
         height: 50px;
@@ -430,7 +431,8 @@
   }
   .mentors-chat-wrapper .mentor-detail-wrapper{
     width: 310px;
-    height: 600px;
+    height: 640px;
+    margin-bottom: 20px;
   }
   .mentors-chat-wrapper .mentor-chat-room{
     width: 310px;

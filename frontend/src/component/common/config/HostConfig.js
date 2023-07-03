@@ -8,8 +8,8 @@ if(hostname === 'localhost') {
 }else if(hostname === 'ddamddamclub.shop') {
   backendHost = 'http://3.39.47.226';  // 배포 테스트용
 }
-console.log('client hostname: ', hostname);
-console.log('server hostname: ', backendHost);
+// console.log('client hostname: ', hostname);
+// console.log('server hostname: ', backendHost);
 
 //host주소
 export const CRIENT_HOST = hostname;
@@ -34,5 +34,5 @@ export const MYPAGE = "/api/ddamddam/mypage";
 export const COMPANY = backendHost + "/api/ddamddam/companies";
 
 export const FIND_PASSWORD = "/api/ddamddam/auth/find-password";
-// export const SOCKET_URL = "3.39.47.226";
-export const SOCKET_URL = "localhost:8181";
+export const SOCKET_URL = "3.39.47.226";
+// export const SOCKET_URL = "localhost:8181";

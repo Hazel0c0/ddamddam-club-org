@@ -3,6 +3,7 @@ import {COMPANY, REVIEW} from "../../common/config/HostConfig";
 import {Link, useNavigate} from "react-router-dom";
 import {RxCalendar} from "react-icons/rx"
 import {Spinner} from 'reactstrap';
+import {useMediaQuery} from "react-responsive";
 
 const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
     const [companyList, setCompanyList] = useState([]);
@@ -10,7 +11,7 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
     const [page, setPage] = useState(1);
     const [getFetch, setGetFetch] = useState(true);
     const [finalPage, setFinalPage] = useState(1);
-
+    const [searchResult, setSearchResult] = useState(false);
     //워크넷 링크 상태관리
     const [goWorknet, setGoWorknet] = useState([]);
 
@@ -21,32 +22,36 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         setGoWorknet([]); // 워크넷 링크 상태 초기화
     }, [searchKeyword, searchValue, searchCareer]);
 
+    const presentationScreen = useMediaQuery({
+        query: "(max-width: 414px)",
+    });
 
     useEffect(() => {
-        console.log(`useEffect 실행`)
-
         if (getFetch) {
             fetchData(page);
         }
-    }, [page, searchKeyword, searchValue, searchCareer]);
+
+        if (finalPage === 0) {
+            setSearchResult(true);
+            setIsLoading(false)
+            window.removeEventListener('scroll', handleScroll);
+            return;
+        }
+    }, [page, searchKeyword, searchValue, searchCareer, getFetch,finalPage]);
 
     useEffect(() => {
-        if (getFetch) {
-            // 스크롤 이벤트 리스너 등록
-            window.addEventListener('scroll', handleScroll);
+        // 스크롤 이벤트 리스너 등록
+        window.addEventListener('scroll', handleScroll);
 
-            return () => {
-                // 컴포넌트 언마운트 시 스크롤 이벤트 리스너 제거
-                window.removeEventListener('scroll', handleScroll);
-            };
-        }
-    }, [getFetch]);
+        return () => {
+            // 컴포넌트 언마운트 시 스크롤 이벤트 리스너 제거
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     const fetchData = async (page) => {
-        // console.log(`set 후 현재 page : `, page)
-        // console.log(`set 후 현재 finalPage : `, finalPage)
+        // window.removeEventListener('scroll', handleScroll);
 
-        setIsLoading(true)
         const res = await fetch(
             `${COMPANY}/searchFront?keyword=${searchKeyword}&page=${page}&size=10&career=${searchCareer}`,
             {
@@ -58,20 +63,16 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
             alert('잠시 후 다시 접속해주세요.[서버오류]');
             return;
         }
-
-        // console.log(`현재 페이지 url : ${COMPANY}/searchAll?keyword=${searchKeyword}&page=${page}&size=10&career=${searchCareer}`)
-
         const result = await res.json();
 
         //마지막 페이지 계산해서 로딩 막기
         const totalCount = result.pageInfo.totalCount;
         const totalPage = Math.ceil(totalCount / 10);
         setFinalPage(totalPage);
+        console.log(`totalPage:`, totalPage)
 
         if (page !== 1 && page === finalPage) {
-            console.log('결과 없음!!!!')
             setGetFetch(false)
-            setIsLoading(false)
             window.removeEventListener('scroll', handleScroll);
             return;
         }
@@ -95,26 +96,13 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
         setGoWorknet((prevGoWorknet) => [...prevGoWorknet, ...new Array(companyLists.length).fill(false)]);
         setCompanyList((prevCompanyList) => [...prevCompanyList, ...modifyCompanyList]);
         setIsLoading(false)
-        console.log(`modifyCompanyList : `, modifyCompanyList)
-
+        setGetFetch(true)
     }
 
     let throttleTimer = null;
     const handleScroll = (e) => {
-        // console.log(`getfetch의 값 : `, getFetch)
         if (getFetch) {
-            // console.log(`스크롤 이벤트 발생`);
-            // console.log(`마지막 페이지 찾기의 page : `, page)
-            // console.log(`마지막 페이지 찾기의 finaPage : `, finalPage)
-
             if (throttleTimer !== null) return;
-            if (finalPage > 1 && finalPage === page) {
-                setIsLoading(false);
-                return;
-            }
-
-
-            setIsLoading(false)
 
             throttleTimer = setTimeout(() => {
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -124,20 +112,11 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
                     setPage((prevPage) => prevPage + 1);
                 }
                 throttleTimer = null;
-            }, 1500)
+            }, 1000)
+            setIsLoading(true);
 
-            console.log(`loding true!!`)
-            setIsLoading(true)
         }
     }
-
-    // console.log(`마지막 페이지 찾기의 page : `, page)
-    // console.log(`마지막 페이지 찾기의 finaPage : `, finalPage)
-    // if (page >= finalPage) {
-    //     // 마지막 페이지에 도달한 경우 스크롤 이벤트 리스너 제거
-    //     console.log('마지막 페이지 도달')
-    //     window.removeEventListener('scroll', handleScroll);
-    // }
 
     //d-day계산
     const convertToEndDate = (endDate) => {
@@ -168,62 +147,76 @@ const CompanyTotal = ({searchKeyword, searchValue, searchCareer}) => {
     }
     return (
         <>
-            <section className={'sort-wrapper'}>
-                <span className={'sort-dDay'}>D-day</span>
-                <span className={'sort-career'}>경력</span>
-                <span className={'sort-companyName'}>회사명</span>
-                <span className={'sort-title'}>채용내용</span>
-                <span className={'sort-date'}>날짜</span>
-            </section>
+            {!presentationScreen &&
+                <section className={'sort-wrapper'}>
+                    <span className={'sort-dDay'}>D-day</span>
+                    <span className={'sort-career'}>경력</span>
+                    <span className={'sort-companyName'}>회사명</span>
+                    <span className={'sort-title'}>채용내용</span>
+                    <span className={'sort-date'}>날짜</span>
+                </section>
+            }
             {companyList.map((company, index) => (
-                    <section
-                        key={`${company.companyIdx}-${index}`}
-                        className={'company-list'}
-                        onMouseEnter={() => showLinkHandler(index)}
-                        onMouseLeave={() => hiddenLinkHandler(index)}
-                    >
-                        <div className={'d-day'}>{company.dDay}</div>
-                        <div className={'company-career'}>{company.companyCareer}</div>
-                        <div className={'companyName'}>{company.companyName}</div>
-                        <section className={'title-wrapper'}>
-                            <div className={'title'}>{company.companyTitle}</div>
 
-                            <div className={'info-wrapper'}>
-                                <div className={'info-salary-text'}>
-                                    <span className={'info-title'}>월급</span>
-                                    <span className={'info-content'}>{company.companySal}</span>
-                                </div>
-                                <div className={'info-location-text'}>
-                                    <span className={'info-title'}>위치</span>
-                                    <span className={'info-content'}>{company.companyArea}</span>
-                                </div>
-                            </div>
-                        </section>
-
-                        <div className={'date-wrapper'}>
-                            <RxCalendar className={'date-icon'}/>
-                            <span className={'date'}>{company.companyDate} ~ {company.companyEnddate}</span>
+                <section
+                    key={`${company.companyIdx}-${index}`}
+                    className={'company-list'}
+                    onMouseEnter={() => showLinkHandler(index)}
+                    onMouseLeave={() => hiddenLinkHandler(index)}
+                >
+                    {!presentationScreen ?
+                        <>
+                            <div className={'d-day'}>{company.dDay}</div>
+                            <div className={'company-career'}>{company.companyCareer}</div>
+                        </>
+                        :
+                        <div className={'company-mobile'}>
+                            <div className={'d-day'}>{company.dDay}</div>
+                            <div className={'company-career'}>{company.companyCareer}</div>
                         </div>
-                        {goWorknet[index] &&
-                            <button onClick={() => window.open(`${company.companyUrl}`, '_blank')}
-                                    className={'go-worknet'}>
-                                클릭시 워크넷 채용정보 페이지로 이동합니다.
-                            </button>
-                        }
+                    }
+                    <div className={'companyName'}>{company.companyName}</div>
+                    <section className={'title-wrapper'}>
+                        <div className={'title'}>{company.companyTitle}</div>
 
+                        <div className={'info-wrapper'}>
+                            <div className={'info-salary-text'}>
+                                <span className={'info-title'}>급여</span>
+                                <span className={'info-content'}>{company.companySal}</span>
+                            </div>
+                            <div className={'info-location-text'}>
+                                <span className={'info-title'}>위치</span>
+                                <span className={'info-content'}>{company.companyArea}</span>
+                            </div>
+                        </div>
                     </section>
+
+                    <div className={'date-wrapper'}>
+                        <RxCalendar className={'date-icon'}/>
+                        <span className={'date'}>{company.companyDate} ~ {company.companyEnddate}</span>
+                    </div>
+                    {goWorknet[index] &&
+                        <button onClick={() => window.open(`${company.companyUrl}`, '_blank')}
+                                className={'go-worknet'}>
+                            클릭시 워크넷 채용정보 페이지로 이동합니다.
+                        </button>
+                    }
+
+                </section>
+
+
             ))}
 
-            {isLoading && page !== finalPage &&
-                <div className={'grow-wrapper'}>
-                    <Spinner type={"grow"}></Spinner>
-                    <Spinner type={"grow"}></Spinner>
-                    <Spinner type={"grow"}></Spinner>
-                </div>
-            }
-            {!getFetch &&
-                <div className={'no-search-result'}>마지막 페이지 입니다.</div>
-            }
+            {/*{isLoading && page !== finalPage && finalPage!==0 &&*/}
+            {/*    <div className={'grow-wrapper'}>*/}
+            {/*        <Spinner type={"grow"}></Spinner>*/}
+            {/*        <Spinner type={"grow"}></Spinner>*/}
+            {/*        <Spinner type={"grow"}></Spinner>*/}
+            {/*    </div>*/}
+            {/*}*/}
+            {/*{searchResult && !isLoading &&*/}
+            {/*    <div className={'no-search-result'}>마지막 페이지 입니다.</div>*/}
+            {/*}*/}
         </>
     );
 };

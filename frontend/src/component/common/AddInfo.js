@@ -9,6 +9,7 @@ import review from "../../src_assets/add-info/review.png";
 import company from "../../src_assets/add-info/company.png";
 import qna from "../../src_assets/add-info/qna.png";
 import {TfiArrowUp} from "react-icons/tfi";
+import {useMediaQuery} from "react-responsive";
 
 
 const AddInfo = () => {
@@ -17,6 +18,10 @@ const AddInfo = () => {
     const $projectMain = useRef(null)
     const $arrowDetail = useRef(null)
     const $projectDetail = useRef(null)
+    const presentationScreen = useMediaQuery({
+        query: "(max-width: 414px)",
+    });
+
 
     useEffect(() => {
         const options = {
@@ -84,8 +89,8 @@ const AddInfo = () => {
 
     }, [])
 
-    const scrollTop = () =>{
-        window.scrollTo(0,0);
+    const scrollTop = () => {
+        window.scrollTo(0, 0);
     }
 
     return (
@@ -170,12 +175,24 @@ const AddInfo = () => {
                     <div className={'text-wrapper'}>
                         <span className={'number'}>5</span>
                         <span className={'main-title'}>QNA</span>
-                        <span className={'sub-text'}>
+                        {!presentationScreen ?
+                            <span className={'sub-text'}>
                            지식을 공유하고 도움을 주고받을 수 있는 공간입니다.<br/>
                            다양한 주제와 기술에 관련된 질문과 답변을 올릴 수 있으며,<br/>
                            커뮤니티의 활발한 참여를 통해 실무에서 겪는 문제를 해결하는 데<br/>
                            도움을 줍니다.
                             </span>
+
+                            :
+                            <span className={'sub-text'}>
+                           지식을 공유하고 도움을 주고받을 수 있는 공간입니다.<br/>
+                           다양한 주제와 기술에 관련된 질문과<br/>답변을 올릴 수 있으며,
+                           커뮤니티의 활발한 참여를 통해<br/>실무에서 겪는 문제를 해결하는 데
+                           도움을 줍니다.
+                            </span>
+
+                        }
+
                     </div>
                     <img src={qna} alt={'프로젝트 디테일'} className={'qna'}/>
 
