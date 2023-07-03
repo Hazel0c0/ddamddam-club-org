@@ -234,7 +234,7 @@
     width: 340px;
   }
   .modal-box .modal-container .modal-header .modal-title {
-    font-size: 25px;
+    font-size: 20px;
     padding: 5px;
   }
   .modal-box .modal-container .modal-body .deadline{
@@ -264,5 +264,8 @@
     top: 22px;
     padding: 11px 13px
   }
-
+  .modal-box .modal-container .modal-footer .project-type{
+    position: absolute;
+    bottom: 65px;
+  }
 }
