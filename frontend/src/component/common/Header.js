@@ -116,16 +116,17 @@ const Header = () => {
         setShowBack(false);
     }
 
-    // const sideBarHandler = (e) =>{
-    //     console.log('클릭 이벤트 발생')
-    //     if (!e.target.className.contain(sideBar)){
-    //         setShowSide(false);
-    //     }
-    // }
-
     useEffect(() => {
 
     }, [showSide, setShowBack])
+
+    const linkHandler = (value) =>{
+        return () =>{
+        setShowSide(false);
+        setShowBack(false);
+        navigation(`/`,value);
+        }
+    }
 
     return (
         <Common className={'header-background'}>
@@ -148,7 +149,7 @@ const Header = () => {
 
                                     <div className={'close-btn-wrapper'}>
                                         {ACCESS_TOKEN !== '' && ACCESS_TOKEN !== null &&
-                                            <Link to={'/myPage'} className={'myPage'}>
+                                            <Link to={'/myPage'} className={'myPage'} onClick={linkHandler('myPage')}>
                                                 <img src={profileUrl ? profileUrl : profileImg} alt={'profileImg'}
                                                      className={'profile-img'}/>
                                             </Link>
@@ -157,21 +158,21 @@ const Header = () => {
                                     </div>
                                     <div className={'menu-wrapper'}>
                                         <SubMenu label="모집">
-                                            <MenuItem><Link to={'/mentors'}> 멘토・멘티 </Link></MenuItem>
-                                            <MenuItem><Link to={'/projects'}> 프로젝트 모집 </Link></MenuItem>
+                                            <Link to={'/mentors'} onClick={linkHandler('mentors')}><MenuItem> 멘토・멘티 </MenuItem></Link>
+                                            <Link to={'/projects'} onClick={linkHandler('projects')}><MenuItem> 프로젝트 모집 </MenuItem></Link>
                                         </SubMenu>
                                         <SubMenu label="취업게시판">
-                                            <MenuItem><Link to={'/reviews'}> 취업 후기 </Link></MenuItem>
-                                            <MenuItem><Link to={'/companies'}> 채용공고 </Link></MenuItem>
+                                            <Link to={'/reviews'} onClick={linkHandler('reviews')}><MenuItem> 취업 후기 </MenuItem></Link>
+                                            <Link to={'/companies'} onClick={linkHandler('companies')}><MenuItem> 채용공고 </MenuItem></Link>
                                         </SubMenu>
-                                        <MenuItem><Link to={'/qna'}> Q&A </Link></MenuItem>
+                                        <Link to={'/qna'} onClick={linkHandler('qna')}><MenuItem> Q&A </MenuItem></Link>
                                     </div>
                                     <div className={'login-wrapper'}>
                                     {ACCESS_TOKEN === null || ACCESS_TOKEN === ''
                                         ?
                                         <div id={'logout'}>
-                                            <Link to={'/login'} className={'login'}>로그인</Link>
-                                            <Link to={'/join'} className={'sign-in'}>회원가입</Link>
+                                            <Link to={'/login'} className={'login'} onClick={linkHandler('login')}>로그인</Link>
+                                            <Link to={'/join'} className={'sign-in'} onClick={linkHandler('join')}>회원가입</Link>
                                         </div>
                                         :
                                         <>

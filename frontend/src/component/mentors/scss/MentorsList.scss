@@ -356,28 +356,28 @@ margin-right: 0;
 
 @media (max-width: 414px) {
   .mentors-list-wrapper .mentors-list{
-    padding: 20px 10px 10px;
+    padding: 20px 20px 10px;
     width: 313px;
     margin-right: 0;
   }
   
   .mentors-list-wrapper .mentors-list .profile-img{
-    width: 70px;
-    height: 70px;
-    margin-right: 30px;
+    width: 90px;
+    height: 90px;
+    margin-right: 20px;
   }
   .mentors-list-wrapper .mentors-list .list-text-wrapper{
-    width: 100px;
+    width: 170px;
   }
 
   .mentors-list-wrapper .mentors-list .list-text-wrapper .writer{
-    font-size: 7px;
+    font-size: 13px;
     margin-bottom: 0;
   }
 
   .mentors-list-wrapper .mentors-list .list-text-wrapper .text{
-    height: 20px;
-    font-size: 7px;
+    height: 33px;
+    font-size: 10px;
   }
 
   .mentors-list-wrapper .mentors-list .list-text-wrapper .category li{
@@ -392,7 +392,8 @@ margin-right: 0;
   }
 
   .mentors-list-wrapper .mentors-list .list-text-wrapper .mentor-career{
-    font-size: 7px;
+    font-size: 10px;
+    margin-top: 0px;
   }
   .mentors-list-wrapper .mentors-list .list-text-wrapper .category {
     margin-top: 7px;
@@ -421,7 +422,18 @@ margin-right: 0;
   }
 
   #modal-container .main-section{
-    min-height: 290px;
+    min-height: 250px;
+  }
+
+  #modal-container .main-section .main-section-text{
+    font-size: 14px;
+  }
+  #modal-container .writer-section .detail-profile-img{
+    margin-right: 10px;
+  }
+  #modal-container .writer-section .writer-text-wrapper .detail-sub-title{
+    font-size: 13px;
+    width: 100px;
   }
 
 }

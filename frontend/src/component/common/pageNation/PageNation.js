@@ -3,6 +3,10 @@ import {RxDoubleArrowLeft, RxDoubleArrowRight} from 'react-icons/rx'
 import './PageNation.scss'
 const PageNation = ({pageNation, currentPageHandler, clickCurrentPage}) => {
     const pageAmount = () => {
+        console.log(`pageNation : `, pageNation);
+        console.log(`currentPageHandler : `, currentPageHandler)
+        console.log(`clickCurrentPage : `, clickCurrentPage)
+
         const pageList = [];
 
         if (pageNation.currentPage !== 1 && pageNation.totalCount !== 0) {
@@ -39,9 +43,10 @@ const PageNation = ({pageNation, currentPageHandler, clickCurrentPage}) => {
         }
         // const finalPage = Math.ceil(PageNation.endPage)
         const finalPage = Math.ceil(pageNation.totalCount/10);
+        console.log(`Math.floor((pageNation.totalCount) / 10) + 1 : `,Math.floor((pageNation.totalCount) / 10) + 1)
         if (pageNation.currentPage !== finalPage && pageNation.totalCount !== 0) {
             pageList.push(
-                <li className="page-item" onClick={() => currentPageHandler(Math.floor((pageNation.totalCount) / 10 + 1))}>
+                <li className="page-item" onClick={() => currentPageHandler(Math.ceil((pageNation.totalCount) / 10))}>
                     <div className="page-link end"
                          >
                         <RxDoubleArrowRight />

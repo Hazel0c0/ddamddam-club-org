@@ -49,7 +49,7 @@ const ReviewTotal = ({loginCheck, searchKeyword, searchValue}) => {
 
 
     const currentPageHandler = (clickPageNum) => {
-        // console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
+        console.log(`페이지 클릭 시 현재 페이지 번호 : ${clickPageNum}`)
         setClickCurrentPage(clickPageNum);
     }
 

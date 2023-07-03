@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import CompanyMain from "./CompanyMain";
 import CompanyList from "./CompanyList";
+import {TfiArrowUp} from "react-icons/tfi";
 
 const CompanyTemplate = () => {
     const [searchValue, setSearchValue] = useState('');
@@ -25,6 +26,10 @@ const CompanyTemplate = () => {
         // console.log(`Search Page에서 넘어오는 경력입력 값 : ${value}`)
     }
 
+    const scrollTop = () => {
+        window.scrollTo(0, 0);
+    }
+
     return (
         <>
             <CompanyMain
@@ -37,7 +42,9 @@ const CompanyTemplate = () => {
                 searchKeyword={searchKeyword}
                 searchCareer={searchCareer}
             />
-
+            <button className={'go-top-btn'} onClick={scrollTop}>
+                <TfiArrowUp className={'top-arrow'}/>
+            </button>
         </>
     );
 };

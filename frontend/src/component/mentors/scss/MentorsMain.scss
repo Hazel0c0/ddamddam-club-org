@@ -142,8 +142,10 @@
   }
 
   .mentors-top-wrapper .mentors-medium-wrapper .mentors-write-btn{
-    padding: 3px 5px;
-    font-size: 5px;
+    padding: 7px 14px;
+    //width: 80px;
+    //height: 35px;
+    font-size: 11px;
     margin: 20px auto 0;
   }
   .mentors-top-wrapper .mentors-medium-wrapper .mentors-sort-list {
@@ -158,18 +160,21 @@
     text-align: center;
     width: 58px;
     height: 15px;
-    font-size: 3px;
+    font-size: 9.5px;
   }
   .mentors-top-wrapper .mentors-medium-wrapper .mentors-sort-list .sort-title{
-    font-size: 5.5px;
+    font-size: 9px;
   }
 
   .mentors-top-wrapper .main-title{
-    font-size: 25px;
+    font-size: 35px;
   }
   .mentors-top-wrapper .sub-title{
     margin-top: 3px;
-    font-size: 8px;
+    font-size: 12px;
+  }
+  .mentors-top-wrapper .title-wrapper{
+    height: auto;
   }
 
 }
