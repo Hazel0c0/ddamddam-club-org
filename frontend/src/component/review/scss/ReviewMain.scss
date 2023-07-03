@@ -179,7 +179,7 @@
   @media (max-width: 414px) {
 
     .review-top-wrapper{
-      padding: 130px 10px 0 !important;
+      padding: 80px 10px 0 !important;
     }
     .review-top-wrapper .top-view-wrapper {
       display: flex;
@@ -226,5 +226,18 @@
       .review-top-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .star{
         margin-top: 10px;
       }
-  
+
+    .review-top-wrapper .main-title{
+      font-size: 38px;
+      font-weight: 500;
+      margin-bottom: 0;
+    }
+    .review-top-wrapper .main-sub-title{
+      font-size: 14px;
+      margin-top: 3px;
+    }
+    .review-top-wrapper .title-wrapper{
+      height: auto;
+      padding: 0 20px;
+    }
   }

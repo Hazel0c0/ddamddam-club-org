@@ -184,8 +184,8 @@
   .qna-view-wrapper {
     font-size: 12px;
     //width: 414px;
-    padding: 0px;
-    padding-left: 15px;
+    //padding: 0px;
+    //padding-left: 15px;
     padding-right: 15px;
   }
   .main-title{
@@ -203,6 +203,19 @@
   }
   .qna-view-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .checked, .qna-view-wrapper .top-view-wrapper .top-section-one .top-section-wrapper .not-checked, .qna-view-wrapper .top-view-wrapper .top-section-two .top-section-wrapper .checked, .qna-view-wrapper .top-view-wrapper .top-section-two .top-section-wrapper .not-checked, .qna-view-wrapper .top-view-wrapper .top-section-three .top-section-wrapper .checked, .qna-view-wrapper .top-view-wrapper .top-section-three .top-section-wrapper .not-checked {
 //display: none;
+  }
+  .qna-view-wrapper{
+    padding: 80px 30px 0px;
+  }
+  .qna-view-wrapper .main-sub-title{
+    font-size: 14px;
+    margin-top: 0;
+  }
+  .qna-view-wrapper .main-title{
+    font-size: 35px;
+  }
+  .qna-view-wrapper .title-wrapper{
+    height: auto;
   }
 
 }

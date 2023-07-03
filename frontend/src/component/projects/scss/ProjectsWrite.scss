@@ -149,10 +149,10 @@
 
 @media (max-width: 414px) {
   .projects-view-wrapper .main-title {
-    font-size: 24px;
-    height: 110px;
+    font-size: 32px;
+    height: auto;
     padding-top: 70px;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
   }
   .project-write-wrapper {
     padding: 10px;
@@ -160,7 +160,8 @@
   }
   .projects-view-wrapper .title-wrapper {
     padding: 10px;
-    height: 160px;
+    margin-top: 60px;
+    //height: 160px;
   }
   .projects-view-wrapper {
     padding: 10px;
@@ -183,7 +184,7 @@
   }
   .projects-view-wrapper .main-sub-title {
     font-size: 13px;
-    margin-top: 5px;
+    margin-top: -4px;
   }
   .project-write-wrapper .title-text-input, .project-write-wrapper .subject-select, .project-write-wrapper .career-select, .project-write-wrapper .current-text-input, .project-write-wrapper .mentee-text-input {
     font-size: 13px;
