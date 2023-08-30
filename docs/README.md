@@ -1,8 +1,14 @@
 # ;; CLUB
 
 ### LINK 👉 <span style="color:aqua"> ddamddamclub.shop </span>
-데스크탑, 모바일 접속 가능 🙌
+<img src="https://github.com/5slob/ddamddamclub/assets/122959190/a68c6df0-d4d9-4197-85ab-7e6c38ffac69.gif" width="100%"/>
+※MainPage
+<br><br><br>
 
+
+<img src="https://github.com/5slob/ddamddamclub/assets/122959190/87710eb3-7c39-4428-b95c-af7fe4a641ba.png" width="550"/><br>
+※데스크탑(1920x1080px, 1024x1080px), 모바일(Width:414px) 접속 가능 🙌<br>
+※발표자료는 docs폴더에 있습니다. 🙌
 <br><br>
 
 ### 목차
@@ -53,8 +59,44 @@
 <br><br>
 
 ### 🔨 기술 스택
-
 ---
+#### 📜 FRONT
+<p align="left">
+  <img src="https://img.shields.io/badge/HTML5-%23E34F26.svg?style=flat-square&logo=html5&logoColor=white" alt="HTML5" height="25"/>
+  <img src="https://img.shields.io/badge/CSS3-%231572B6.svg?style=flat-square&logo=css3&logoColor=white" alt="CSS3" height="25"/>
+  <img src="https://img.shields.io/badge/JavaScript-%23323330.svg?style=flat-square&logo=javascript&logoColor=%23F7DF1E" alt="JavaScript" height="25"/>
+  <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=black" alt="React" height="25"/>
+  <img src="https://img.shields.io/badge/Sass-CC6699?style=flat-square&logo=Sass&logoColor=white" alt="Sass" height="25"/>
+</p>
+
+#### 🛠️ BACK
+<p align="left">
+  <img src="https://img.shields.io/badge/Java-%23ED8B00.svg?style=flat-square&logo=openjdk&logoColor=white" alt="Java" height="25"/>
+  <img src="https://img.shields.io/badge/Spring-%236DB33F.svg?style=flat-square&logo=spring&logoColor=white" alt="Spring" height="25"/>
+  <img src="https://img.shields.io/badge/JSON-000000?style=flat-square&logo=json&logoColor=white" alt="JSON" height="25"/>
+  <img src="https://github.com/5slob/ddamddamclub/assets/122959190/e19475ae-cc51-488d-a944-4ad3f67bcf0e)" alt="JPA" height="25"/>
+</p>
+
+#### 📀 DB
+<p align="left">
+  <img src="https://img.shields.io/badge/MariaDB-003545?style=flat-square&logo=mariadb&logoColor=white" alt="MariaDB" height="25"/>
+</p>
+
+#### ✂️ Tool
+<p align="left">
+  <img src="https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=flat-square&logo=intellij-idea&logoColor=white" alt="IntelliJ IDEA" height="25"/>
+  <img src="https://img.shields.io/badge/VisualStudioCode-007ACC?style=flat-square&logo=VisualStudioCode&logoColor=white" alt="VisualStudio Code" height="25"/>
+</p>
+
+#### ⭐️ etc
+<p align="left">
+  <img src="https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white" alt="Git" height="25"/>
+  <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white" alt="GitHub" height="25"/>
+  <img src="https://img.shields.io/badge/Amazon%20AWS-232F3E?style=flat-square&logo=amazonaws&logoColor=white" alt="AWS" height="25"/>
+  <img src="https://img.shields.io/badge/Postman-FF6C37?style=flat-square&logo=Postman&logoColor=white" alt="Postman" height="25"/>
+</p>
+<br>
+
 
 
 <br><br>
@@ -82,6 +124,7 @@
 - 작성자가 멘토가 되어 멘티의 채팅방 조회, 채팅메세지들을 볼 수 있습니다.
 - 멘토가 멘티들을 확정해 멘티의 목록을 확인할 수 있습니다.
 - 멘티는 멘토에게 신청하기를 눌러 1 대 1 실시간 채팅을 할 수 있습니다.
+<img src="https://github.com/5slob/ddamddamclub/assets/122959190/36d40ff7-92b2-4e26-87c6-1f8cd7e69341.gif" width="450" />
 
 ### 📄 프로젝트 모집
 - 키워드(제목, 내용)를 통해 게시글을 조회 할 수 있습니다
@@ -93,7 +136,7 @@
 - 회원은 게시글을 클릭하면 상세보기 확인할 수 있으며, 모집글에 신청을 할 수 있습니다
     - 본인의 게시글에는 신청을 할 수 없습니다
 - 회원은 [ 남은 자리, 참가 인원, 마감일자 , 인기순] 의 조건을 통해 빠르게 시작할 수 있는 프로젝트를 매칭 받을 수 있습니다
-
+<img src="https://github.com/5slob/ddamddamclub/assets/122959190/2e151161-c943-4f93-b1fe-634fea1fd1e6).gif" width="450" />
 
 ### 📄 Q&A
 - 회원은 질문 게시글 작성이 가능합니다.
@@ -110,6 +153,7 @@
   - 게시글의 제목, 내용, 해시태그로 검색이 가능합니다.
 - 회원은 주간 인기글을 조회할 수 있습니다.
   - 월요일 0시부터 일요일 11시 59분까지의 주간 조회수를 기준으로 갱신되는 인기글을 조회할 수 있습니다.
+<img src="https://github.com/5slob/ddamddamclub/assets/122959190/9e1fae44-2518-4ae2-936e-adfb1c961d19.gif" width="450" />
 
 ### 📄 취업후기
 - 여러가지 회사에 대한 회원들의 생생한 후기를 볼 수 있습니다.
@@ -118,14 +162,15 @@
 - 취업후기의 상세보기를 클릭할 때마다 조회수가 상승합니다.
 - 조회수순, 평점순, 최신순으로 정렬해서 글을 볼 수 있습니다.
 - 검색창으로 키워드 검색이 가능합니다.
+<img src="https://github.com/5slob/ddamddamclub/assets/122959190/de8d8a2d-874e-4a5c-acef-9cc64dd771f8.gif" width="450" />
 
 ### 📄 채용공고 확인
 
 - 24시간을 간격으로 업데이트되는 API 정보로 개발자 채용공고를 볼 수 있습니다.
 - 백엔드와 프론트엔드 별로 채용공고를 나눠서 조회할 수 있습니다.
-- 경력별로 공고 나눠서 조회가 가능합니다.
+- 경력별로 공고 나눠서 조회가 가능합니다. 
 - 키워드 검색시 포지션과 경력을 선택후에 중복으로 조회가 가능합니다.
-
+<img src="https://github.com/5slob/ddamddamclub/assets/122959190/98dbc1a7-0e29-44e1-9a02-6ce885d41f0c.gif" width="450"/>
 <br><br>
 
 ### 📜 개발 이력
