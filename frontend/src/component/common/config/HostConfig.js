@@ -6,7 +6,7 @@ let backendHost; // 백엔드 호스트 이름
 if(hostname === 'localhost') {
   backendHost = 'http://localhost:8181';    // 로컬 테스트용
 }else if(hostname === 'ddamddamclub.shop') {
-  backendHost = 'http://3.39.47.226';  // 배포 테스트용
+  backendHost = 'http://3.39.220.80/';  // 배포 테스트용
 }
 // console.log('client hostname: ', hostname);
 // console.log('server hostname: ', backendHost);
